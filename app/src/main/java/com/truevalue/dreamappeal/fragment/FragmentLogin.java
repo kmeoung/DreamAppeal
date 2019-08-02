@@ -38,15 +38,12 @@ public class FragmentLogin extends BaseFragment {
 
     @OnClick({R.id.btn_login, R.id.btn_register})
     public void onViewClicked(View view) {
-        String strTemp = "";
         switch (view.getId()) {
             case R.id.btn_login: // 로그인 버튼
-                strTemp = "로그인";
+                replaceFragmentRight(R.id.login_container,new FragmentNormalLogin(),true);
                 break;
             case R.id.btn_register: // 회원가입 버튼
-                strTemp = "회원가입";
                 break;
         }
-        Toast.makeText(getContext(), strTemp + "버튼 클릭", Toast.LENGTH_SHORT).show();
     }
 }
