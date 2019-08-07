@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="250dp"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical"
+    android:paddingTop="20dp">
+
+    <!--프로필 버튼-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:id="@+id/ll_profile">
+
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/drawer_user"
+            android:layout_marginRight="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="일반 프로필"
+            android:textSize="24sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/nanum_square_round_b"/>
+
+    </LinearLayout>
+    <!--프로필 버튼-->
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingTop="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingLeft="20dp"
+            android:layout_marginTop="10dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/gray"
+                android:text="팔로잉"
+                android:textSize="20sp"
+                android:fontFamily="@font/nanum_square_round_b"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:text="0"
+                android:textSize="20sp"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:id="@+id/tv_following"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingLeft="20dp"
+            android:layout_marginTop="10dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/gray"
+                android:text="드림 포인트"
+                android:textSize="20sp"
+                android:fontFamily="@font/nanum_square_round_b"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:text="0"
+                android:textSize="20sp"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:id="@+id/tv_dream_point"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <!--로그아웃 버튼-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/drawer_gray"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:id="@+id/ll_logout">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="로그아웃"
+            android:gravity="center_vertical"
+            android:paddingLeft="20dp"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/nanum_square_round_b"/>
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/logout_btn"
+            android:layout_marginRight="20dp"/>
+
+    </LinearLayout>
+    <!--로그아웃 버튼-->
+
+</LinearLayout>

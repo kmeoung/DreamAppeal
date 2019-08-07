@@ -8,4 +8,12 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!--TabLayout 폰트 설정-->
+    <style name="tab_text" parent="android:TextAppearance.Widget.TabWidget">
+        <item name="android:fontFamily">@font/nanum_square_round_b</item>
+        <item name="android:text">24sp</item>
+    </style>
+
 </resources>
+
+

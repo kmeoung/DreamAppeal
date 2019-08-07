@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!--상단 버튼 및 정보들-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+                <!--나의 꿈-->
+                <LinearLayout
+                    android:id="@+id/ll_dreams"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/blue_box"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_dream_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:gravity="center"
+                        android:text="첫번째 꿈"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_dream_level"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:gravity="center"
+                        android:text="LV.00"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+
+
+                </LinearLayout>
+                <!--나의 꿈-->
+                <!--팔로워-->
+                <LinearLayout
+                    android:id="@+id/ll_follower"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/blue_box"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_follwer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:gravity="center"
+                        android:text="팔로워"
+                        android:textColor="@color/gray"
+                        android:textSize="18sp" />
+
+
+                </LinearLayout>
+                <!--팔로워-->
+                <!--실현성과-->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_performance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:gravity="center"
+                        android:text="실현성과"
+                        android:textColor="@color/gray"
+                        android:textSize="18sp" />
+
+
+                </LinearLayout>
+                <!--실현성과-->
+
+                <!--실천인증-->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_certified"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:gravity="center"
+                        android:text="실천인증"
+                        android:textColor="@color/gray"
+                        android:textSize="18sp" />
+
+
+                </LinearLayout>
+                <!--실천인증-->
+
+            </LinearLayout>
+            <!--상단 버튼 및 정보들-->
+
+            <!--상단 꿈 설명-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/edit_text_round_bg"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <!--꿈 프로필 이미지-->
+                    <ImageView
+                        android:id="@+id/iv_dream_profile"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_marginRight="20dp"
+                        android:src="@drawable/drawer_user" />
+                    <!--꿈 프로필 이미지-->
+
+                    <!--꿈 수식어 및 꿈 명-->
+                    <LinearLayout
+                        android:id="@+id/ll_set_dream_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center|left"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_dream_modifier"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/nanum_square_round_r"
+                            android:text="OOO"
+                            android:textColor="@color/black"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/tv_dream_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/nanum_square_round_b"
+                            android:maxLength="30"
+                            android:text="OOOOO"
+                            android:textColor="@color/black"
+                            android:textSize="20sp" />
+
+                    </LinearLayout>
+                    <!--꿈 수식어 및 꿈 명-->
+
+                </LinearLayout>
+
+                <!--꿈 소개-->
+                <TextView
+                    android:id="@+id/tv_dream_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:text="OOO OOO OOO OOO OOO OOO OOO OO"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+                <!--꿈 소개-->
+
+                <!--내 꿈 설명-->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_recycle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp" />
+                <!--내 꿈 설명-->
+
+                <Button
+                    android:id="@+id/btn_dream_more_view"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="right"
+                    android:background="@null"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:text="더보기 >"
+                    android:textColor="@color/gray" />
+            </LinearLayout>
+            <!--상단 꿈 설명-->
+
+            <!--내 꿈 이유-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/edit_text_round_bg"
+                android:orientation="vertical"
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp">
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/reason" />
+
+                <!--내 꿈 이유-->
+                <TextView
+                    android:id="@+id/tv_reason"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:maxLines="3"
+                    android:paddingRight="15dp"
+                    android:text="OOO OO OOOO OOOO OO OOO OOO OOOO OOOO OO OOO OOOO OOOO OOOO OOO OO OOOO OOO OOOOOO OOOOOO OOOO OOO OOO OOOO OOO OOOOO OOOOO OOOO OO OOOOOO OOO OO OOOO OOOO OO OOO OOO OOOO OOOO OO OOO OOOO OOOO OOOO OOO OO OOOO OOO OO OOOO OOOO OO OOO OOO OOOO OOOO OO OOO OOOO OOOO OOOO OOO OO OOOO"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+                <!--내 꿈 이유-->
+
+                <!--내 꿈 이유 더보기 버튼-->
+                <Button
+                    android:id="@+id/btn_reason_more_view"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="right"
+                    android:background="@null"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:text="더보기 >"
+                    android:textColor="@color/gray" />
+                <!--내 꿈 이유 더보기 버튼-->
+
+            </LinearLayout>
+            <!--내 꿈 이유-->
+
+            <LinearLayout
+                android:id="@+id/ll_flame"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@null"
+                android:gravity="center|left"
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp">
+
+                <!--불꽃 (좋아요)-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"
+                        android:scaleX="0.7"
+                        android:scaleY="0.7"
+                        android:src="@drawable/flame" />
+
+                    <TextView
+                        android:id="@+id/tv_flame"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:text="0개"
+                        android:textColor="@color/black"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+                <!--불꽃 (좋아요)-->
+
+                <!--댓글-->
+                <LinearLayout
+                    android:id="@+id/ll_comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"
+                        android:scaleX="0.7"
+                        android:scaleY="0.7"
+                        android:src="@drawable/conversation" />
+
+                    <TextView
+                        android:id="@+id/tv_comment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:text="0개"
+                        android:textColor="@color/black"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+                <!--댓글-->
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

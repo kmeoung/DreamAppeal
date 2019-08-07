@@ -13,22 +13,6 @@
         android:layout_marginRight="54dp"
         android:src="@drawable/login_logo" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="80dp"
-        android:src="@drawable/login_comment_1" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="80dp"
-        android:layout_marginRight="40dp"
-        android:src="@drawable/login_comment_2"
-        android:layout_marginTop="5dp"/>
-
     <Space
         android:layout_width="1dp"
         android:layout_height="0dp"
@@ -43,7 +27,8 @@
         android:background="@drawable/color_btn"
         android:text="로그인"
         android:textColor="@color/white"
-        android:textSize="17.5sp" />
+        android:textSize="17.5sp"
+        android:fontFamily="@font/nanum_square_round_b"/>
 
     <Button
         android:id="@+id/btn_register"
@@ -56,6 +41,7 @@
         android:text="회원가입"
         android:textColor="@color/white"
         android:textSize="17.5dp"
-        android:layout_marginBottom="110dp"/>
+        android:layout_marginBottom="110dp"
+        android:fontFamily="@font/nanum_square_round_b"/>
 
 </LinearLayout>

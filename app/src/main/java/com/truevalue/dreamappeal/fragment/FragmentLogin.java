@@ -43,6 +43,7 @@ public class FragmentLogin extends BaseFragment {
                 replaceFragmentRight(R.id.login_container,new FragmentNormalLogin(),true);
                 break;
             case R.id.btn_register: // 회원가입 버튼
+                replaceFragmentRight(R.id.login_container,new FragmentRegister(),true);
                 break;
         }
     }

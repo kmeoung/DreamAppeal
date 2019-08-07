@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@null"
@@ -17,14 +18,13 @@
             android:layout_width="48dp"
             android:layout_height="match_parent"
             android:scaleType="fitCenter"
-            android:scaleX="0.5"
-            android:scaleY="0.5"
-            android:src="@drawable/back_btn" />
+            android:src="@drawable/ic_back" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:fontFamily="@font/nanum_square_round_b"
             android:gravity="center"
             android:text="로그인"
             android:textColor="@color/white"
@@ -44,12 +44,14 @@
         android:layout_marginTop="20dp"
         android:layout_marginRight="54dp"
         android:background="@drawable/edit_text_round_bg"
-        android:paddingLeft="10dp"
+        android:fontFamily="@font/nanum_square_round_b"
         android:hint="아이디를 입력해주세요"
-        android:textColorHint="@color/gray"
+        android:imeOptions="actionNext"
+        android:inputType="textEmailAddress"
         android:lines="1"
         android:maxLines="1"
-        android:imeOptions="actionNext"/>
+        android:paddingLeft="10dp"
+        android:textColorHint="@color/gray" />
 
     <EditText
         android:id="@+id/et_password"
@@ -59,23 +61,27 @@
         android:layout_marginTop="10dp"
         android:layout_marginRight="54dp"
         android:background="@drawable/edit_text_round_bg"
-        android:paddingLeft="10dp"
+        android:fontFamily="@font/nanum_square_round_b"
         android:hint="비밀번호를 입력해주세요"
-        android:textColorHint="@color/gray"
+        android:imeOptions="actionDone"
+        android:inputType="textPassword"
         android:lines="1"
         android:maxLines="1"
-        android:imeOptions="actionDone"/>
+        android:paddingLeft="10dp"
+        android:textColorHint="@color/gray" />
 
     <Button
+        android:id="@+id/btn_login"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginLeft="54dp"
         android:layout_marginTop="18dp"
         android:layout_marginRight="54dp"
         android:background="@drawable/color_btn"
+        android:fontFamily="@font/nanum_square_round_b"
         android:text="로그인"
-        android:textSize="17.5sp"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white"
+        android:textSize="17.5sp" />
 
 
 </LinearLayout>

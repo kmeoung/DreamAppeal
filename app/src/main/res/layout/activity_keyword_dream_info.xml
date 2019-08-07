@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/v_status"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" />
+
+    <!--툴바-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/colorAccent"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_back" />
+
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/nanum_square_round_b"
+            android:gravity="center"
+            android:text="핵심 문장으로 내꿈 설명하기"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tv_text_btn"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/nanum_square_round_b"
+            android:gravity="center"
+            android:text="확인"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+    </LinearLayout>
+    <!--툴바-->
+
+    <!--핵심 문장으로 설명하는 내꿈-->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nanum_square_round_b"
+            android:text="핵심 문장으로 설명하는 "
+            android:textColor="@color/black"
+            android:textSize="23sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nanum_square_round_b"
+            android:text="내꿈"
+            android:textColor="@color/colorAccent"
+            android:textSize="23sp" />
+
+    </LinearLayout>
+    <!--핵심 문장으로 설명하는 내꿈-->
+
+    <!--페이지 내용 설명-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/nanum_square_round_r"
+        android:text="내꿈을 한문장으로 표현하고,"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/nanum_square_round_r"
+        android:text="어떤 일을 하는지 설명해주세요."
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+    <!--페이지 내용 설명-->
+
+    <!--내 꿈 한문장 표현-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/nanum_square_round_b"
+        android:text="내꿈을 한문장으로 표현하면?"
+        android:textColor="@color/colorAccent"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/et_my_dream_keyword"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/nanum_square_round_b"
+        android:gravity="center"
+        android:hint="입력해주세요"
+        android:imeOptions="actionNext"
+        android:lines="1"
+        android:inputType="text"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+    <!--내 꿈 한문장 표현-->
+
+
+    <!--구체적으로 어떤 일을 하는 사람인지-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/nanum_square_round_b"
+            android:text="구체적으로 어떤 일을 하는 사람인가요?"
+            android:textColor="@color/colorAccent"
+            android:textSize="18sp" />
+
+        <!--상세 설명 1-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/circle_gray" />
+
+            <EditText
+                android:id="@+id/et_dream_detail_1"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:hint="입력해주세요"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:lines="1"
+                android:maxLines="1"
+                android:paddingLeft="5dp"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+        <!--상세 설명 1-->
+
+        <!--상세 설명 2-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/circle_gray" />
+
+            <EditText
+                android:id="@+id/et_dream_detail_2"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:hint="입력해주세요"
+                android:imeOptions="actionNext"
+                android:lines="1"
+                android:maxLines="1"
+                android:paddingLeft="5dp"
+                android:inputType="text"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+        <!--상세 설명 2-->
+
+        <!--상세 설명 3-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/circle_gray" />
+
+            <EditText
+                android:id="@+id/et_dream_detail_3"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:hint="입력해주세요"
+                android:imeOptions="actionDone"
+                android:lines="1"
+                android:maxLines="1"
+                android:paddingLeft="5dp"
+                android:inputType="text"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+        <!--상세 설명 3-->
+
+    </LinearLayout>
+    <!--구체적으로 어떤 일을 하는 사람인지-->
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+    <!--Divider-->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray" />
+    <!--Divider-->
+
+    <!--예시 화면-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/vp_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tl_tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            app:tabIndicator="@null">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="5dp"
+                android:layout_height="5dp"
+                android:icon="@drawable/circle_gray" />
+
+        </com.google.android.material.tabs.TabLayout>
+
+    </RelativeLayout>
+    <!--예시 화면-->
+
+    <!--Divider-->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray" />
+    <!--Divider-->
+
+</LinearLayout>

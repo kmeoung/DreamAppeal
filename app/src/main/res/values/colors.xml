@@ -4,7 +4,11 @@
     <color name="colorPrimaryDark">#a0a0a0</color>
     <color name="colorAccent">#00b0f0</color>
 
+    <color name="black">#000000</color>
     <color name="background">#fefefe</color>
     <color name="white">#ffffff</color>
     <color name="gray">#a0a0a0</color>
+    <color name="bottom_nav_color">#fafafa</color>
+    <color name="drawer_gray">#dfdfdf</color>
+    <color name="tab_none_select_gray">#818181</color>
 </resources>
