@@ -7,9 +7,9 @@
 
     <com.google.android.material.tabs.TabLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="38dp"
         android:id="@+id/tl_tab"
-        app:tabTextAppearance="@style/tab_text"
+        app:tabTextAppearance="@style/profile_main_tab_font"
         app:tabSelectedTextColor="@color/black"
         app:tabTextColor="@color/tab_none_select_gray">
 
@@ -21,7 +21,7 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="실현 성과" />
+            android:text="실현 성과"/>
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="match_parent"

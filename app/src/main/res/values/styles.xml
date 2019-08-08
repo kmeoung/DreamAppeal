@@ -9,9 +9,10 @@
     </style>
 
     <!--TabLayout 폰트 설정-->
-    <style name="tab_text" parent="android:TextAppearance.Widget.TabWidget">
-        <item name="android:fontFamily">@font/nanum_square_round_b</item>
-        <item name="android:text">24sp</item>
+    <style name="profile_main_tab_font" parent="android:TextAppearance.Widget.TabWidget">
+        <item name="android:fontFamily">@font/nanum_pen</item>
+        <item name="android:textSize">20.64sp</item>
+        <item name="android:fontStyle">normal</item>
     </style>
 
 </resources>

@@ -22,7 +22,7 @@
         <!--툴바-->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="43.67dp"
             android:background="@color/colorAccent"
             android:orientation="horizontal">
 
@@ -48,11 +48,11 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:fontFamily="@font/nanum_square_round_b"
+                android:fontFamily="@font/nanum_square_round_r"
                 android:gravity="center"
                 android:text="OOO 드림프로필"
                 android:textColor="@color/white"
-                android:textSize="20sp" />
+                android:textSize="15.87sp" />
 
             <ImageView
                 android:id="@+id/iv_search"
@@ -90,7 +90,7 @@
         <!--하단 Nav-->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="35dp"
             android:background="@color/bottom_nav_color"
             android:orientation="horizontal">
 
@@ -100,8 +100,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:scaleType="centerInside"
-                android:scaleX="0.5"
-                android:scaleY="0.5"
+                android:scaleX="0.6"
+                android:scaleY="0.6"
                 android:src="@drawable/house_black_silhouette_without_door" />
 
             <ImageView
@@ -110,8 +110,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:scaleType="centerInside"
-                android:scaleX="0.5"
-                android:scaleY="0.5"
+                android:scaleX="0.6"
+                android:scaleY="0.6"
                 android:src="@drawable/check_list" />
 
             <ImageView
@@ -120,8 +120,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:scaleType="centerInside"
-                android:scaleX="0.6"
-                android:scaleY="0.6"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
                 android:src="@drawable/edit" />
 
             <ImageView
@@ -130,8 +130,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:scaleType="centerInside"
-                android:scaleX="0.5"
-                android:scaleY="0.5"
+                android:scaleX="0.6"
+                android:scaleY="0.6"
                 android:src="@drawable/bell" />
 
             <ImageView
@@ -140,8 +140,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:scaleType="centerInside"
-                android:scaleX="0.5"
-                android:scaleY="0.5"
+                android:scaleX="0.6"
+                android:scaleY="0.63"
                 android:src="@drawable/user" />
 
         </LinearLayout>
