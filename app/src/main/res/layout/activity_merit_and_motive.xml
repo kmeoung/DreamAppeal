@@ -13,41 +13,16 @@
         android:layout_height="0dp" />
 
     <!--툴바-->
-    <LinearLayout
+    <com.truevalue.dreamappeal.base.BaseTitleBar
+        android:id="@+id/btb_bar"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@color/colorAccent"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/iv_back"
-            android:layout_width="48dp"
-            android:layout_height="match_parent"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_back" />
-
-
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:fontFamily="@font/nanum_square_round_b"
-            android:gravity="center"
-            android:text="이 꿈에 매력을 느낀 이유"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/tv_text_btn"
-            android:layout_width="48dp"
-            android:layout_height="match_parent"
-            android:fontFamily="@font/nanum_square_round_b"
-            android:gravity="center"
-            android:text="확인"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        app:is_back="true"
+        app:is_menu="false"
+        app:is_right_text="true"
+        app:is_search="false"
+        app:title="이 꿈에 매력을 느낀 이유를 등록해주세요"
+        app:right_text="등록"/>
     <!--툴바-->
 
     <!--수식어로 정의해보는 내꿈-->

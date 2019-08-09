@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="BaseTitleBar">
+        <attr name="title" format="reference|string" />
+        <attr name="is_menu" format="reference|boolean" />
+        <attr name="is_back" format="reference|boolean" />
+        <attr name="is_search" format="reference|boolean" />
+        <attr name="is_right_text" format="reference|boolean" />
+        <attr name="right_text" format="reference|string" />
+        <attr name="title_size" format="reference|float" />
+    </declare-styleable>
+
+</resources>
