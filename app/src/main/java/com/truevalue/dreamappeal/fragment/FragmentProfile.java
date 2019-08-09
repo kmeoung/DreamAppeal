@@ -83,11 +83,11 @@ public class FragmentProfile extends BaseFragment {
 
             switch (position) {
                 case 0: // 내 꿈 소개
-                    return new FragmentMyDreamInfo();
+                    return new FragmentDreamPresent();
                 case 1: // 실현 성과
                     return new FragmentPerformance();
                 case 2: // 발전 계획
-                    return new FragmentMyDreamInfo();
+                    return new FragmentDreamPresent();
             }
 
             return null;

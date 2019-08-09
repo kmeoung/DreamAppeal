@@ -99,7 +99,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/tv_performance"
+                        android:id="@+id/tv_achivement_post_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/bmjua"
@@ -131,7 +131,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/tv_certified"
+                        android:id="@+id/tv_action_post_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/bmjua"
@@ -186,7 +186,7 @@
 
                     <!--꿈 수식어 및 꿈 명-->
                     <LinearLayout
-                        android:id="@+id/ll_set_dream_name"
+                        android:id="@+id/ll_dream_title"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -194,7 +194,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/tv_dream_modifier"
+                            android:id="@+id/tv_value_style"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/nanum_pen"
@@ -203,7 +203,7 @@
                             android:textSize="22sp" />
 
                         <TextView
-                            android:id="@+id/tv_dream_title"
+                            android:id="@+id/tv_job"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
@@ -221,7 +221,7 @@
 
                 <!--꿈 소개-->
                 <TextView
-                    android:id="@+id/tv_dream_info"
+                    android:id="@+id/tv_dream_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
@@ -235,7 +235,7 @@
 
                 <!--내 꿈 설명-->
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_recycle"
+                    android:id="@+id/rv_dream_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="13dp"
@@ -244,7 +244,7 @@
                 <!--내 꿈 설명-->
 
                 <Button
-                    android:id="@+id/btn_dream_more_view"
+                    android:id="@+id/btn_dream_description_more"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_gravity="right"
@@ -275,13 +275,13 @@
 
                 <!--내 꿈 이유-->
                 <TextView
-                    android:id="@+id/tv_reason"
+                    android:id="@+id/tv_merit_and_motive"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/nanum_square_round_r"
-                    android:paddingRight="13dp"
                     android:maxLines="3"
+                    android:paddingRight="13dp"
                     android:text="다양한 영상을 편집하여 업로드 하고 구독자들과 함께 소통할 수 있다.
 또한 광고를 통해 소득을 높여 강남에 빌딩을 살 수 있다.
 다양한 영상을 편집하여 업로드 하고 구독자들과 함께 소통할 수 있다.
@@ -298,7 +298,7 @@
 
                 <!--내 꿈 이유 더보기 버튼-->
                 <Button
-                    android:id="@+id/btn_reason_more_view"
+                    android:id="@+id/btn_merit_and_motive_more"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_gravity="right"
@@ -313,7 +313,7 @@
             <!--내 꿈 이유-->
 
             <LinearLayout
-                android:id="@+id/ll_flame"
+                android:id="@+id/ll_cheering"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="@null"
@@ -338,7 +338,7 @@
                         android:src="@drawable/flame" />
 
                     <TextView
-                        android:id="@+id/tv_flame"
+                        android:id="@+id/tv_cheering"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"

@@ -109,7 +109,7 @@
                 android:textSize="18sp" />
 
             <EditText
-                android:id="@+id/et_modifier"
+                android:id="@+id/et_value_style"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"

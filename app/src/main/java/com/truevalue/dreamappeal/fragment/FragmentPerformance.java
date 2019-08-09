@@ -13,14 +13,8 @@ import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseViewHolder;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
 
-import java.util.zip.Inflater;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
@@ -33,7 +27,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
     private static final int TYPE_LIST_HEADER = 0;
     private static final int TYPE_LIST_OTHER = 1;
 
-    @BindView(R.id.rv_recycle)
+    @BindView(R.id.rv_dream_description)
     RecyclerView mRvRecycle;
 
     private BaseRecyclerViewAdapter mAdapter;
@@ -77,9 +71,9 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == TYPE_LIST_HEADER) {
-            return BaseViewHolder.newInstance(R.layout.listitem_header_performance, parent, false);
+            return BaseViewHolder.newInstance(R.layout.listitem_header_achivement, parent, false);
         } else {
-            return BaseViewHolder.newInstance(R.layout.listitem_recent_performance, parent, false);
+            return BaseViewHolder.newInstance(R.layout.listitem_achivement_post, parent, false);
         }
     }
 
@@ -155,7 +149,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
         @NonNull
         @Override
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
-            View view = mInflater.inflate(R.layout.layout_performance,container,false);
+            View view = mInflater.inflate(R.layout.layout_achivement,container,false);
             container.addView(view);
             return view;
         }

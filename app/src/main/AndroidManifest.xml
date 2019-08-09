@@ -28,10 +28,10 @@
         <activity android:name=".activity.ActivityMain"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".activity.ActivitySetMyDreamName"
+        <activity android:name=".activity.ActivityDreamTitle"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".activity.ActivityKeywordDreamInfo"
+        <activity android:name=".activity.ActivityDreamDescription"
             android:screenOrientation="portrait"/>
 
     </application>
