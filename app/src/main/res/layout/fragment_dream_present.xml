@@ -164,7 +164,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
-                android:background="@drawable/edit_text_round_bg"
+                android:background="@drawable/edit_text_round_bg_gray"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -263,10 +263,11 @@
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="9dp"
                 android:layout_marginRight="12dp"
-                android:background="@drawable/edit_text_round_bg"
+                android:background="@drawable/edit_text_round_bg_gray"
                 android:orientation="vertical"
                 android:paddingLeft="15dp"
-                android:paddingTop="15dp">
+                android:paddingTop="15dp"
+                android:id="@+id/ll_merit_and_motive">
 
                 <ImageView
                     android:layout_width="30dp"

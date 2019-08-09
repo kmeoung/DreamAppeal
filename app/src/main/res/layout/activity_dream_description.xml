@@ -21,80 +21,43 @@
         app:is_menu="false"
         app:is_right_text="true"
         app:is_search="false"
-        app:title="핵심 문장으로 내 꿈 설명하기"
-        app:right_text="등록"/>
+        app:right_text="등록"
+        app:title="핵심 문장으로 내 꿈 설명하기" />
     <!--툴바-->
 
     <!--핵심 문장으로 설명하는 내꿈-->
-    <LinearLayout
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/nanum_square_round_b"
-            android:text="핵심 문장으로 설명하는 "
-            android:textColor="@color/black"
-            android:textSize="23sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/nanum_square_round_b"
-            android:text="내꿈"
-            android:textColor="@color/colorAccent"
-            android:textSize="23sp" />
-
-    </LinearLayout>
+        android:layout_gravity="left"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="58dp"
+        android:fontFamily="@font/nanum_pen"
+        android:text="내 꿈을 한문장으로 표현하면?"
+        android:textColor="@color/black"
+        android:textSize="29sp" />
     <!--핵심 문장으로 설명하는 내꿈-->
 
-    <!--페이지 내용 설명-->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/nanum_square_round_r"
-        android:text="내꿈을 한문장으로 표현하고,"
-        android:textColor="@color/black"
-        android:textSize="14sp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/nanum_square_round_r"
-        android:text="어떤 일을 하는지 설명해주세요."
-        android:textColor="@color/black"
-        android:textSize="14sp" />
-    <!--페이지 내용 설명-->
-
     <!--내 꿈 한문장 표현-->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:fontFamily="@font/nanum_square_round_b"
-        android:text="내꿈을 한문장으로 표현하면?"
-        android:textColor="@color/colorAccent"
-        android:textSize="18sp" />
-
     <EditText
         android:id="@+id/et_dream_description"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:fontFamily="@font/nanum_square_round_b"
-        android:gravity="center"
-        android:hint="입력해주세요"
+        android:layout_width="250dp"
+        android:layout_height="30dp"
+        android:layout_gravity="left"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="7dp"
+        android:background="@drawable/edit_text_bg_gray"
+        android:fontFamily="@font/nanum_square_round_r"
+        android:gravity="left|center_vertical"
+        android:hint="어떤 사람인지 한 문장으로 표현해보세요"
         android:imeOptions="actionNext"
-        android:lines="1"
         android:inputType="text"
+        android:lines="1"
         android:maxLines="1"
         android:textColor="@color/black"
-        android:textSize="16sp" />
+        android:textColorHint="@color/color_hint"
+        android:textSize="14sp" />
     <!--내 꿈 한문장 표현-->
 
 
@@ -102,44 +65,49 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:gravity="left"
+        android:orientation="vertical"
+        android:paddingLeft="30dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:fontFamily="@font/nanum_square_round_b"
+            android:layout_marginTop="52dp"
+            android:fontFamily="@font/nanum_pen"
             android:text="구체적으로 어떤 일을 하는 사람인가요?"
-            android:textColor="@color/colorAccent"
-            android:textSize="18sp" />
+            android:textColor="@color/black"
+            android:textSize="29sp" />
 
         <!--상세 설명 1-->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             android:gravity="center"
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:src="@drawable/circle_gray" />
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_marginLeft="4dp"
+                android:src="@drawable/circle" />
 
             <EditText
                 android:id="@+id/et_dream_description_detail_1"
                 android:layout_width="230dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:fontFamily="@font/nanum_square_round_b"
-                android:hint="입력해주세요"
+                android:layout_height="25dp"
+                android:layout_marginLeft="18dp"
+                android:background="@drawable/edit_text_bg_gray"
+                android:fontFamily="@font/nanum_square_round_r"
+                android:hint="어떤 일을 하는지 적어주세요"
                 android:imeOptions="actionNext"
                 android:inputType="text"
                 android:lines="1"
                 android:maxLines="1"
                 android:paddingLeft="5dp"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textColorHint="@color/color_hint"
+                android:textSize="14sp" />
 
         </LinearLayout>
         <!--상세 설명 1-->
@@ -148,28 +116,32 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
             android:gravity="center"
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:src="@drawable/circle_gray" />
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_marginLeft="4dp"
+                android:src="@drawable/circle" />
 
             <EditText
                 android:id="@+id/et_dream_description_detail_2"
                 android:layout_width="230dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:fontFamily="@font/nanum_square_round_b"
-                android:hint="입력해주세요"
+                android:layout_height="25dp"
+                android:layout_marginLeft="18dp"
+                android:background="@drawable/edit_text_bg_gray"
+                android:fontFamily="@font/nanum_square_round_r"
+                android:hint="어떤 일을 하는지 적어주세요"
                 android:imeOptions="actionNext"
+                android:inputType="text"
                 android:lines="1"
                 android:maxLines="1"
                 android:paddingLeft="5dp"
-                android:inputType="text"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textColorHint="@color/color_hint"
+                android:textSize="14sp" />
 
         </LinearLayout>
         <!--상세 설명 2-->
@@ -178,28 +150,32 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
             android:gravity="center"
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:src="@drawable/circle_gray" />
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_marginLeft="4dp"
+                android:src="@drawable/circle" />
 
             <EditText
                 android:id="@+id/et_dream_description_detail_3"
                 android:layout_width="230dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:fontFamily="@font/nanum_square_round_b"
-                android:hint="입력해주세요"
-                android:imeOptions="actionDone"
+                android:layout_height="25dp"
+                android:layout_marginLeft="18dp"
+                android:background="@drawable/edit_text_bg_gray"
+                android:fontFamily="@font/nanum_square_round_r"
+                android:hint="어떤 일을 하는지 적어주세요"
+                android:imeOptions="actionNext"
+                android:inputType="text"
                 android:lines="1"
                 android:maxLines="1"
                 android:paddingLeft="5dp"
-                android:inputType="text"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textColorHint="@color/color_hint"
+                android:textSize="14sp" />
 
         </LinearLayout>
         <!--상세 설명 3-->
@@ -210,7 +186,8 @@
     <Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:minHeight="44dp"/>
     <!--Divider-->
     <ImageView
         android:layout_width="match_parent"

@@ -19,8 +19,9 @@ public class BaseItemDecoration extends RecyclerView.ItemDecoration {
         super.getItemOffsets(outRect, view, parent, state);
 
         // 마지막 뷰는 공백 추가 안함
-        if (parent.getChildAdapterPosition(view) != parent.getAdapter().getItemCount() - 1) {
-            outRect.bottom = divHeight;
-        }
+//        if (parent.getChildAdapterPosition(view) != parent.getAdapter().getItemCount() - 1) {
+//            outRect.top = divHeight;
+//        }
+        outRect.top = divHeight;
     }
 }

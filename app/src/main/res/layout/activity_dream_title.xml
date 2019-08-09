@@ -21,8 +21,8 @@
         app:is_menu="false"
         app:is_right_text="true"
         app:is_search="false"
-        app:title="내 꿈의 명칭 정하기"
-        app:right_text="등록"/>
+        app:right_text="등록"
+        app:title="내 꿈의 명칭 정하기" />
     <!--툴바-->
 
     <!--수식어로 정의해보는 내꿈-->
@@ -37,18 +37,18 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/nanum_square_round_b"
+            android:fontFamily="@font/nanum_pen"
             android:text="수식어로 정의해보는 "
             android:textColor="@color/black"
-            android:textSize="23sp" />
+            android:textSize="29sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/nanum_square_round_b"
-            android:text="내꿈"
+            android:fontFamily="@font/nanum_pen"
+            android:text="내 꿈"
             android:textColor="@color/colorAccent"
-            android:textSize="23sp" />
+            android:textSize="29sp" />
 
     </LinearLayout>
     <!--수식어로 정의해보는 내꿈-->
@@ -57,18 +57,22 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_gravity="left"
+        android:layout_marginLeft="17dp"
+        android:layout_marginTop="27dp"
         android:fontFamily="@font/nanum_square_round_r"
         android:text="직업명을 적고, 수식어로 꾸며보세요"
         android:textColor="@color/black"
-        android:textSize="14sp" />
+        android:textSize="16sp" />
     <!--페이지 내용 설명-->
 
     <!--수식어, 직업명 적는곳-->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_gravity="left"
+        android:layout_marginLeft="43dp"
+        android:layout_marginTop="62dp"
         android:orientation="vertical">
         <!--수식어-->
         <LinearLayout
@@ -78,27 +82,29 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="55dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/nanum_square_round_b"
+                android:fontFamily="@font/nanum_pen"
                 android:text="수식어"
                 android:textColor="@color/colorAccent"
-                android:textSize="18sp" />
+                android:textSize="25sp" />
 
             <EditText
                 android:id="@+id/et_value_style"
-                android:layout_width="150dp"
+                style="@style/edit_text_under_bar_color"
+                android:layout_width="161dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="18dp"
                 android:fontFamily="@font/nanum_square_round_b"
                 android:hint="입력해주세요"
                 android:imeOptions="actionNext"
                 android:inputType="text"
                 android:lines="1"
                 android:maxLines="1"
-                android:paddingLeft="5dp"
+                android:paddingLeft="10dp"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:theme="@style/edit_text_under_bar_color" />
 
 
         </LinearLayout>
@@ -113,27 +119,29 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="55dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/nanum_square_round_b"
+                android:fontFamily="@font/nanum_pen"
                 android:text="직업명"
                 android:textColor="@color/colorAccent"
-                android:textSize="18sp" />
+                android:textSize="25sp" />
 
             <EditText
                 android:id="@+id/et_job"
-                android:layout_width="150dp"
+                style="@style/edit_text_under_bar_color"
+                android:layout_width="161dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="18dp"
                 android:fontFamily="@font/nanum_square_round_b"
                 android:hint="입력해주세요"
                 android:imeOptions="actionDone"
                 android:inputType="text"
                 android:lines="1"
                 android:maxLines="1"
-                android:paddingLeft="5dp"
+                android:paddingLeft="10dp"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:theme="@style/edit_text_under_bar_color" />
 
         </LinearLayout>
         <!--직업명-->
@@ -143,7 +151,8 @@
     <Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:minHeight="107dp"/>
     <!--Divider-->
     <ImageView
         android:layout_width="match_parent"

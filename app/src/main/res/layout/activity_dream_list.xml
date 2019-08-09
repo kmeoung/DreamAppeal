@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/v_status"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" />
+
+    <!--툴바-->
+    <com.truevalue.dreamappeal.base.BaseTitleBar
+        android:id="@+id/btb_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:is_back="true"
+        app:is_menu="false"
+        app:is_right_text="true"
+        app:is_search="false"
+        app:right_text="확인"
+        app:title="보고싶은 꿈을 선택해주세요" />
+    <!--툴바-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="horizontal">
+
+        <!--새 꿈 추가하기-->
+        <ImageButton
+            android:layout_width="150dp"
+            android:layout_height="48dp"
+            android:src="@drawable/add_dream_list"
+            android:background="@null"
+            android:scaleType="centerInside"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/ibtn_add_dream_list"/>
+        <!--새 꿈 추가하기-->
+        
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="1dp" 
+            android:layout_weight="1"/>
+        
+        <Button
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/edit_text_round_bg_blue_15"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/colorAccent"
+            android:text="편집"
+            android:textSize="16sp"
+            android:fontFamily="@font/nanum_square_round_b"/>
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/rv_dream_list"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"/>
+
+
+</LinearLayout>

@@ -17,7 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityDreamDescription;
+import com.truevalue.dreamappeal.activity.ActivityDreamList;
 import com.truevalue.dreamappeal.activity.ActivityDreamTitle;
+import com.truevalue.dreamappeal.activity.ActivityMeritAndMotive;
 import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseViewHolder;
@@ -133,7 +135,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
 
     }
 
-    @OnClick({R.id.ll_dreams, R.id.ll_follower,
+    @OnClick({R.id.ll_dreams, R.id.ll_follower,R.id.ll_merit_and_motive,
             R.id.iv_dream_profile, R.id.btn_dream_description_more,
             R.id.btn_merit_and_motive_more, R.id.ll_comment,
             R.id.ll_cheering, R.id.ll_dream_title, R.id.tv_dream_description})
@@ -141,10 +143,13 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
         Intent intent = null;
         switch (view.getId()) {
             case R.id.ll_dreams: // 내 꿈 레벨 (꿈 선택)
+                intent = new Intent(getContext(), ActivityDreamList.class);
+                startActivity(intent);
                 break;
             case R.id.ll_follower: // 팔로워
                 break;
             case R.id.iv_dream_profile: // 내 꿈 프로필 이미지
+
                 break;
             case R.id.btn_dream_description_more: // 내 꿈 더보기
                 break;
@@ -160,6 +165,10 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
                 break;
             case R.id.tv_dream_description: // 핵심 문장으로 내 꿈 설명하기 페이지 이동
                 intent = new Intent(getContext(), ActivityDreamDescription.class);
+                startActivity(intent);
+                break;
+            case R.id.ll_merit_and_motive: // 이유 페이지 이동
+                intent = new Intent(getContext(), ActivityMeritAndMotive.class);
                 startActivity(intent);
                 break;
         }
