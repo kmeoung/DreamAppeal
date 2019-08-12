@@ -23,23 +23,20 @@
         app:is_right_text="true"
         app:is_search="false"
         app:right_text="등록"
-        app:title="이 꿈에 매력을 느낀 이유를 등록해주세요" />
+        app:title="어떤점에 매력을 느꼈나요?" />
     <!--툴바-->
 
     <!--내 꿈 이유 작성 영역-->
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="175dp"
-        android:layout_marginLeft="3dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="3dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/edit_text_round_bg_gray_15">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@null">
 
         <EditText
             android:id="@+id/et_merit_and_motive"
             android:layout_width="match_parent"
-            android:layout_height="175dp"
+            android:layout_height="match_parent"
             android:background="@null"
             android:fontFamily="@font/nanum_square_round_b"
             android:gravity="left|top"
@@ -48,7 +45,7 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="175dp"
+            android:layout_height="match_parent"
             android:background="@null"
             android:fontFamily="@font/nanum_square_round_b"
             android:gravity="center"
@@ -64,14 +61,13 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/gray" />
+        android:background="@color/black" />
     <!--Divider-->
 
     <!--예시 화면-->
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="242dp">
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/vp_pager"
@@ -99,12 +95,12 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/gray" />
+        android:background="@color/black" />
     <!--Divider-->
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="95dp"
+        android:layout_marginTop="7dp"
         android:background="@color/colorAccent"></LinearLayout>
 </LinearLayout>

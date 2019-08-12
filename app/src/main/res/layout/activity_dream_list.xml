@@ -32,46 +32,47 @@
 
         <!--새 꿈 추가하기-->
         <ImageButton
+            android:id="@+id/ibtn_add_dream_list"
             android:layout_width="150dp"
             android:layout_height="48dp"
-            android:src="@drawable/add_dream_list"
+            android:layout_marginLeft="10dp"
             android:background="@null"
             android:scaleType="centerInside"
-            android:layout_marginLeft="10dp"
-            android:id="@+id/ibtn_add_dream_list"/>
+            android:src="@drawable/add_dream_list" />
         <!--새 꿈 추가하기-->
-        
+
         <Space
             android:layout_width="0dp"
-            android:layout_height="1dp" 
-            android:layout_weight="1"/>
-        
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
         <Button
-            android:layout_width="80dp"
+            android:id="@+id/btn_edit"
+            android:layout_width="70dp"
             android:layout_height="match_parent"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/edit_text_round_bg_blue_15"
             android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
             android:layout_marginBottom="5dp"
-            android:textColor="@color/colorAccent"
+            android:background="@drawable/edit_text_round_bg_blue_15"
+            android:fontFamily="@font/nanum_square_round_b"
             android:text="편집"
-            android:textSize="16sp"
-            android:fontFamily="@font/nanum_square_round_b"/>
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp" />
 
     </LinearLayout>
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/gray"/>
+        android:background="@color/gray" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_dream_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:id="@+id/rv_dream_list"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp"/>
+        android:paddingRight="10dp" />
 
 
 </LinearLayout>

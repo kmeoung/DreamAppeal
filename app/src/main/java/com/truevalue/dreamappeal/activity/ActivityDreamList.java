@@ -3,7 +3,10 @@ package com.truevalue.dreamappeal.activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +24,7 @@ import com.truevalue.dreamappeal.base.IORecyclerViewListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarListener, IORecyclerViewListener {
 
@@ -32,8 +36,11 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
     ImageButton mIbtnAddDreamList;
     @BindView(R.id.rv_dream_list)
     RecyclerView mRvDreamList;
+    @BindView(R.id.btn_edit)
+    Button mBtnEdit;
 
     private BaseRecyclerViewAdapter mAdapter;
+    private boolean isEdit = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,18 +55,38 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
         bindTempData();
     }
 
-    private void initAdapter(){
-        mAdapter = new BaseRecyclerViewAdapter(ActivityDreamList.this,this);
+    private void initAdapter() {
+        mAdapter = new BaseRecyclerViewAdapter(ActivityDreamList.this, this);
         mRvDreamList.setAdapter(mAdapter);
         mRvDreamList.setLayoutManager(new LinearLayoutManager(ActivityDreamList.this));
         BaseItemDecoration item = new BaseItemDecoration(17);
         mRvDreamList.addItemDecoration(item);
     }
 
-    private void bindTempData(){
+    private void bindTempData() {
         for (int i = 0; i < 10; i++) {
             mAdapter.add("");
         }
+    }
+
+
+    /**
+     * 수정 모드에 따라 설정이 변경
+     *
+     * @param isEdit
+     */
+    private void isEditMode(boolean isEdit) {
+        this.isEdit = isEdit;
+        if (isEdit) { // 수정 모드일 경우
+            mIbtnAddDreamList.setColorFilter(R.color.gray);
+            mIbtnAddDreamList.setEnabled(false);
+            mBtnEdit.setText("확인");
+        } else { // 수정 모드가 아닐 경우
+            mIbtnAddDreamList.setColorFilter(null);
+            mIbtnAddDreamList.setEnabled(true);
+            mBtnEdit.setText("편집");
+        }
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -74,12 +101,27 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return BaseViewHolder.newInstance(R.layout.listitem_dream_list,parent,false);
+        return BaseViewHolder.newInstance(R.layout.listitem_dream_list, parent, false);
     }
 
     @Override
     public void onBindViewHolder(@NonNull BaseViewHolder h, int i) {
 
+        LinearLayout llItemView = h.getItemView(R.id.ll_dream_list_item);
+        ImageView ivDelete = h.getItemView(R.id.iv_delete);
+
+        if (isEdit) { // 수정 모드일 경우
+            llItemView.setBackground(getResources().getDrawable(R.drawable.dream_list_box_black));
+            ivDelete.setVisibility(View.VISIBLE);
+        } else { // 수정 모드가 아닐 경우
+            llItemView.setBackground(getResources().getDrawable(R.drawable.dream_list_box_gray));
+            ivDelete.setVisibility(View.GONE);
+        }
+
+        // 뷰를 클릭했을 경우
+        h.itemView.setOnClickListener(v -> {
+
+        });
     }
 
     @Override
@@ -90,5 +132,21 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
     @Override
     public int getItemViewType(int i) {
         return 0;
+    }
+
+    @OnClick({R.id.ibtn_add_dream_list, R.id.btn_edit})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.ibtn_add_dream_list:
+                // 버튼이 활성화 되어 있을 경우에만
+                if(mIbtnAddDreamList.isEnabled()){
+
+                }
+                break;
+            case R.id.btn_edit:
+                isEdit = !isEdit;
+                isEditMode(isEdit);
+                break;
+        }
     }
 }
