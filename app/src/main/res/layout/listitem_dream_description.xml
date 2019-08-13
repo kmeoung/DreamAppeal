@@ -9,7 +9,7 @@
         android:layout_height="5dp"
         android:src="@drawable/circle"
         android:layout_marginRight="7dp"
-        android:layout_marginLeft="5dp"/>
+        android:layout_marginLeft="5dp" />
     
     <TextView
         android:layout_width="match_parent"

@@ -40,6 +40,9 @@
         <activity android:name=".activity.ActivityDreamList"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".activity.ActivityDreamPresentComment"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>

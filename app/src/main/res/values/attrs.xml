@@ -3,10 +3,10 @@
 
     <declare-styleable name="BaseTitleBar">
         <attr name="title" format="reference|string" />
-        <attr name="is_menu" format="reference|boolean" />
-        <attr name="is_back" format="reference|boolean" />
-        <attr name="is_search" format="reference|boolean" />
-        <attr name="is_right_text" format="reference|boolean" />
+        <attr name="is_menu_visibility" format="reference|string" />
+        <attr name="is_back_visibility" format="reference|string" />
+        <attr name="is_search_visibility" format="reference|string" />
+        <attr name="is_right_text_visibility" format="reference|string" />
         <attr name="right_text" format="reference|string" />
         <attr name="title_size" format="reference|float" />
     </declare-styleable>

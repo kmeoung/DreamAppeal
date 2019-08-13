@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="18dp"
+    android:paddingRight="18dp">
+
+    <!--상단 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_comment"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/drawer_user" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_value_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="@font/nanum_pen"
+                android:lines="1"
+                android:maxLines="1"
+                android:text="몽환적인 세계로 이끄는"
+                android:textColor="@color/black"
+                android:textSize="19sp" />
+
+            <TextView
+                android:id="@+id/tv_job"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/nanum_square_round_r"
+                android:lines="1"
+                android:maxLines="1"
+                android:text="몽환적인 세계로 이끄는"
+                android:textColor="@color/black"
+                android:textSize="19sp" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <!--상단 -->
+
+    <!--댓글-->
+    <TextView
+        android:id="@+id/tv_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/comment_bg"
+        android:fontFamily="@font/nanum_square_round_r"
+        android:padding="10dp"
+        android:text="alksdjlkasjdlkjaksjdlkaklsjdlkajlksdjlkajslkdjklajlksdjlkajskdljalksdjlkajslkdjalksjdlkjaslkdjlkasjd"
+        android:textColor="@color/black"
+        android:textSize="13sp" />
+    <!--댓글-->
+
+    <!--하단-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom|left"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_comment_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10분전"
+            android:textColor="@color/gray"
+            android:textSize="9.5sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="답글달기"
+            android:textSize="13sp"
+            android:textColor="@color/gray"
+            android:id="@+id/tv_add_reply"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/ll_cheering"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/flame"
+                android:id="@+id/iv_cheering"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="10sp"
+                android:textColor="@color/gray"
+                android:id="@+id/tv_cheering"
+                android:layout_marginLeft="6dp"
+                android:text="0개"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <!--하단-->
+
+    <!--대댓글-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="15dp"
+        android:id="@+id/ll_reply"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="17dp"
+            android:layout_height="15dp"
+            android:src="@drawable/reply"
+            android:layout_marginLeft="12dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="11sp"
+            android:textColor="@color/gray"
+            android:id="@+id/tv_reply_size"
+            android:layout_marginLeft="8dp"
+            android:text="0개"/>
+
+
+    </LinearLayout>
+    <!--대댓글-->
+
+</LinearLayout>

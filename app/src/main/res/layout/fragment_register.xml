@@ -2,38 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@null"
     android:orientation="vertical">
 
 
     <!--툴바-->
-    <LinearLayout
+    <com.truevalue.dreamappeal.base.BaseTitleBar
+        android:id="@+id/btb_bar"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@color/colorAccent"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        app:is_back_visibility="visible"
+        app:is_menu_visibility="gone"
+        app:is_right_text_visibility="gone"
+        app:is_search_visibility="invisible"
+        app:title="회원가입" />
 
-        <ImageView
-            android:id="@+id/iv_back"
-            android:layout_width="48dp"
-            android:layout_height="match_parent"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_back" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:fontFamily="@font/nanum_square_round_b"
-            android:gravity="center"
-            android:text="회원가입"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
-
-        <Space
-            android:layout_width="48dp"
-            android:layout_height="match_parent" />
-    </LinearLayout>
     <!--툴바-->
 
     <ScrollView

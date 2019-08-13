@@ -7,22 +7,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityMain;
 import com.truevalue.dreamappeal.base.BaseFragment;
+import com.truevalue.dreamappeal.base.BaseTitleBar;
+import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class FragmentNormalLogin extends BaseFragment {
+public class FragmentNormalLogin extends BaseFragment implements IOBaseTitleBarListener {
 
-    @BindView(R.id.iv_back)
-    ImageView mIvBack;
+
+    @BindView(R.id.btb_bar)
+    BaseTitleBar mBtbBar;
     @BindView(R.id.et_id)
     EditText mEtId;
     @BindView(R.id.et_password)
@@ -41,20 +44,23 @@ public class FragmentNormalLogin extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mBtbBar.setIOBaseTitleBarListener(this);
     }
 
 
-    @OnClick({R.id.iv_back, R.id.btn_login})
+    @OnClick({R.id.btn_login})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.iv_back:
-                getActivity().onBackPressed();
-                break;
             case R.id.btn_login:
                 Intent intent = new Intent(getContext(), ActivityMain.class);
                 startActivity(intent);
                 getActivity().finish();
                 break;
         }
+    }
+
+    @Override
+    public void OnClickBack() {
+        getActivity().onBackPressed();
     }
 }

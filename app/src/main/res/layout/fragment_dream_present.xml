@@ -330,13 +330,22 @@
                     android:gravity="center"
                     android:orientation="horizontal">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/gray"
+                        android:text="응원\n합니다"
+                        android:gravity="center"
+                        android:textSize="12sp"/>
+
                     <ImageView
                         android:layout_width="40dp"
                         android:layout_height="match_parent"
                         android:layout_marginRight="10dp"
                         android:scaleX="0.7"
                         android:scaleY="0.7"
-                        android:src="@drawable/flame" />
+                        android:src="@drawable/flame"
+                        android:id="@+id/iv_cheering"/>
 
                     <TextView
                         android:id="@+id/tv_cheering"

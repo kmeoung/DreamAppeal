@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityDreamDescription;
 import com.truevalue.dreamappeal.activity.ActivityDreamList;
+import com.truevalue.dreamappeal.activity.ActivityDreamPresentComment;
 import com.truevalue.dreamappeal.activity.ActivityDreamTitle;
 import com.truevalue.dreamappeal.activity.ActivityMeritAndMotive;
 import com.truevalue.dreamappeal.base.BaseFragment;
@@ -156,6 +157,8 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
             case R.id.btn_merit_and_motive_more: // 내 꿈 이유 더보기
                 break;
             case R.id.ll_comment: // 댓글
+                intent = new Intent(getContext(), ActivityDreamPresentComment.class);
+                startActivity(intent);
                 break;
             case R.id.ll_cheering: // 불꽃(좋아요)
                 break;

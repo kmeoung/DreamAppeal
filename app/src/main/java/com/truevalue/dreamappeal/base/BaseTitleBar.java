@@ -18,6 +18,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class BaseTitleBar extends LinearLayout {
+    public static final String GONE = "gone";
+    public static final String VISIBLE = "visible";
+    public static final String INVISIBLE = "invisible";
+
+
     @BindView(R.id.iv_menu)
     ImageView mIvMenu;
     @BindView(R.id.iv_back)
@@ -101,30 +106,71 @@ public class BaseTitleBar extends LinearLayout {
 
 
     private void setTypeArray(TypedArray typedArray) {
-        boolean isMenu = typedArray.getBoolean(R.styleable.BaseTitleBar_is_menu, false);
-        boolean isSearch = typedArray.getBoolean(R.styleable.BaseTitleBar_is_search, false);
-        boolean isBack = typedArray.getBoolean(R.styleable.BaseTitleBar_is_back, false);
-        boolean isRightText = typedArray.getBoolean(R.styleable.BaseTitleBar_is_right_text, false);
+        String isMenu = typedArray.getString(R.styleable.BaseTitleBar_is_menu_visibility);
+        String isSearch = typedArray.getString(R.styleable.BaseTitleBar_is_search_visibility);
+        String isBack = typedArray.getString(R.styleable.BaseTitleBar_is_back_visibility);
+        String isRightText = typedArray.getString(R.styleable.BaseTitleBar_is_right_text_visibility);
         String title = typedArray.getString(R.styleable.BaseTitleBar_title);
         String rightText = typedArray.getString(R.styleable.BaseTitleBar_right_text);
         float titleSize = typedArray.getFloat(R.styleable.BaseTitleBar_title_size, 16);
 
         // 메뉴
-        if (isMenu)
-            mIvMenu.setVisibility(VISIBLE);
-        else mIvMenu.setVisibility(GONE);
+        switch (isMenu){
+            case VISIBLE:
+                mIvMenu.setVisibility(View.VISIBLE);
+                break;
+            case INVISIBLE:
+                mIvMenu.setVisibility(View.INVISIBLE);
+                break;
+            case GONE:
+                mIvMenu.setVisibility(View.GONE);
+                break;
+            default:
+                mIvMenu.setVisibility(View.GONE);
+        }
+
         // 검색
-        if (isSearch)
-            mIvSearch.setVisibility(VISIBLE);
-        else mIvSearch.setVisibility(GONE);
+        switch (isSearch){
+            case VISIBLE:
+                mIvSearch.setVisibility(View.VISIBLE);
+                break;
+            case INVISIBLE:
+                mIvSearch.setVisibility(View.INVISIBLE);
+                break;
+            case GONE:
+                mIvSearch.setVisibility(View.GONE);
+                break;
+            default:
+                mIvSearch.setVisibility(View.GONE);
+        }
         // 뒤로가기
-        if (isBack)
-            mIvBack.setVisibility(VISIBLE);
-        else mIvBack.setVisibility(GONE);
+        switch (isBack){
+            case VISIBLE:
+                mIvBack.setVisibility(View.VISIBLE);
+                break;
+            case INVISIBLE:
+                mIvBack.setVisibility(View.INVISIBLE);
+                break;
+            case GONE:
+                mIvBack.setVisibility(View.GONE);
+                break;
+            default:
+                mIvBack.setVisibility(View.GONE);
+        }
         // 오른쪽 버튼
-        if (isRightText)
-            mTvTextBtn.setVisibility(VISIBLE);
-        else mTvTextBtn.setVisibility(GONE);
+        switch (isRightText){
+            case VISIBLE:
+                mTvTextBtn.setVisibility(View.VISIBLE);
+                break;
+            case INVISIBLE:
+                mTvTextBtn.setVisibility(View.INVISIBLE);
+                break;
+            case GONE:
+                mTvTextBtn.setVisibility(View.GONE);
+                break;
+            default:
+                mTvTextBtn.setVisibility(View.GONE);
+        }
         // 타이틀
         mTvTitle.setText(title);
         // 오른쪽 버튼
@@ -152,5 +198,25 @@ public class BaseTitleBar extends LinearLayout {
                 if(mIOBaseTitleBarListener != null) mIOBaseTitleBarListener.OnClickRightTextBtn();
                 break;
         }
+    }
+
+    public ImageView getmIvMenu() {
+        return mIvMenu;
+    }
+
+    public ImageView getmIvBack() {
+        return mIvBack;
+    }
+
+    public TextView getmTvTitle() {
+        return mTvTitle;
+    }
+
+    public ImageView getmIvSearch() {
+        return mIvSearch;
+    }
+
+    public TextView getmTvTextBtn() {
+        return mTvTextBtn;
     }
 }

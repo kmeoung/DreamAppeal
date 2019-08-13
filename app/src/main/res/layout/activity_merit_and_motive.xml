@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@color/background"
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
@@ -18,10 +18,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        app:is_back="true"
-        app:is_menu="false"
-        app:is_right_text="true"
-        app:is_search="false"
+        app:is_back_visibility="visible"
+        app:is_menu_visibility="gone"
+        app:is_right_text_visibility="visible"
+        app:is_search_visibility="gone"
         app:right_text="등록"
         app:title="어떤점에 매력을 느꼈나요?" />
     <!--툴바-->

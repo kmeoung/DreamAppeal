@@ -61,6 +61,8 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
         mRvDreamList.setLayoutManager(new LinearLayoutManager(ActivityDreamList.this));
         BaseItemDecoration item = new BaseItemDecoration(17);
         mRvDreamList.addItemDecoration(item);
+
+        isEditMode(false);
     }
 
     private void bindTempData() {
@@ -82,7 +84,7 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
             mIbtnAddDreamList.setEnabled(false);
             mBtnEdit.setText("확인");
         } else { // 수정 모드가 아닐 경우
-            mIbtnAddDreamList.setColorFilter(null);
+            mIbtnAddDreamList.setColorFilter(R.color.colorAccent);
             mIbtnAddDreamList.setEnabled(true);
             mBtnEdit.setText("편집");
         }

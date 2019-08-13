@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background">
+
+    <View
+        android:id="@+id/v_status"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" />
+
+    <!--툴바-->
+    <com.truevalue.dreamappeal.base.BaseTitleBar
+        android:id="@+id/btb_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:is_back_visibility="visible"
+        app:is_menu_visibility="gone"
+        app:is_right_text_visibility="gone"
+        app:is_search_visibility="invisible"
+        app:right_text="등록"
+        app:title="응원 및 조언" />
+    <!--툴바-->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_comment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!--Divier-->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray" />
+    <!--Divier-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="11dp"
+        android:paddingRight="11dp">
+
+        <ImageView
+            android:id="@+id/iv_user"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/drawer_user" />
+
+        <EditText
+            android:id="@+id/et_input_comment"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="13dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="13dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/comment_input_bg"
+            android:hint="댓글 남기기"
+            android:textColorHint="@color/gray"
+            android:textSize="11sp"
+            android:textColor="@color/black"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"/>
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:textColor="@color/gray"
+            android:textSize="19dp"
+            android:text="게시"
+            android:fontFamily="@font/nanum_square_round_b"
+            android:id="@+id/btn_commit_comment"/>
+
+    </LinearLayout>
+
+</LinearLayout>

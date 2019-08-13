@@ -5,7 +5,7 @@
     android:id="@+id/dl_drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@color/background"
     android:orientation="vertical"
     tools:context=".activity.ActivityMain">
 
@@ -25,10 +25,10 @@
             android:id="@+id/btb_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:is_back="false"
-            app:is_menu="true"
-            app:is_right_text="false"
-            app:is_search="true"
+            app:is_back_visibility="gone"
+            app:is_menu_visibility="visible"
+            app:is_right_text_visibility="gone"
+            app:is_search_visibility="visible"
             app:title="OOO 드림프로필" />
         <!--툴바-->
 
@@ -107,7 +107,7 @@
 
     <LinearLayout
         android:id="@+id/drawer_container"
-        android:layout_width="250dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="left"
         android:background="@color/gray"

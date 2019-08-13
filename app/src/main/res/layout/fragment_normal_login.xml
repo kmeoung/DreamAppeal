@@ -3,37 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@null"
     android:orientation="vertical">
 
     <!--툴바-->
-    <LinearLayout
+    <com.truevalue.dreamappeal.base.BaseTitleBar
+        android:id="@+id/btb_bar"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@color/colorAccent"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/iv_back"
-            android:layout_width="48dp"
-            android:layout_height="match_parent"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_back" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:fontFamily="@font/nanum_square_round_b"
-            android:gravity="center"
-            android:text="로그인"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
-
-        <Space
-            android:layout_width="48dp"
-            android:layout_height="match_parent" />
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        app:is_back_visibility="visible"
+        app:is_menu_visibility="gone"
+        app:is_right_text_visibility="gone"
+        app:is_search_visibility="invisible"
+        app:title="로그인" />
     <!--툴바-->
 
     <EditText
@@ -50,6 +33,7 @@
         android:inputType="textEmailAddress"
         android:lines="1"
         android:maxLines="1"
+        android:textSize="13sp"
         android:paddingLeft="10dp"
         android:textColorHint="@color/gray" />
 
@@ -64,6 +48,7 @@
         android:fontFamily="@font/nanum_square_round_b"
         android:hint="비밀번호를 입력해주세요"
         android:imeOptions="actionDone"
+        android:textSize="13sp"
         android:inputType="textPassword"
         android:lines="1"
         android:maxLines="1"
@@ -81,7 +66,6 @@
         android:fontFamily="@font/nanum_square_round_b"
         android:text="로그인"
         android:textColor="@color/white"
-        android:textSize="17.5sp" />
-
+        android:textSize="16sp" />
 
 </LinearLayout>
