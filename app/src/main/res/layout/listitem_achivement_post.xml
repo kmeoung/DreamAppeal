@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
 
     <ImageView
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
         android:layout_height="50dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingLeft="15dp">
+        android:paddingLeft="8dp">
 
         <ImageView
             android:layout_width="40dp"
@@ -27,13 +27,13 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:ellipsize="end"
-            android:fontFamily="@font/nanum_square_round_r"
+            android:fontFamily="@font/nanum_square_round_b"
             android:gravity="center|left"
             android:lines="1"
-            android:paddingLeft="10dp"
-            android:text="OOO OO OOOO"
+            android:paddingLeft="16dp"
+            android:text="유튜브 컨텐츠 진행"
             android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:textSize="19sp" />
 
         <ImageButton
             android:id="@+id/ibtn_more"
@@ -49,26 +49,111 @@
     <ImageView
         android:id="@+id/iv_thumnail"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:background="@drawable/ex_achieve" />
+        android:layout_height="360dp"
+        android:background="@drawable/blue_box" />
 
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:text="OO OO OO OO OO OO OO OO OO OO OO OO OO OO OO"
+        android:ellipsize="end"
+        android:fontFamily="@font/nanum_square_round_r"
+        android:maxLines="3"
+        android:paddingLeft="17dp"
+        android:paddingTop="12dp"
+        android:paddingRight="17dp"
+        android:text="내용내용내내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용"
         android:textColor="@color/black"
-        android:textSize="18sp"
-        android:fontFamily="@font/nanum_square_round_r"/>
+        android:textSize="13sp" />
 
-    <ImageView
+    <Button
+        android:id="@+id/btn_more"
+        android:layout_width="48dp"
+        android:layout_height="40dp"
+        android:layout_gravity="right"
+        android:background="@null"
+        android:fontFamily="@font/nanum_square_round_r"
+        android:text="더보기"
+        android:textColor="#a6a6a6"
+        android:textSize="13sp" />
+
+    <LinearLayout
+        android:id="@+id/ll_cheering"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/gray" />
+        android:layout_height="40dp"
+        android:background="@null"
+        android:gravity="center|left"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <!--불꽃 (좋아요)-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="응원\n합니다"
+                android:textColor="@color/gray"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:id="@+id/iv_cheering"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:scaleX="0.7"
+                android:scaleY="0.7"
+                android:src="@drawable/flame" />
+
+            <TextView
+                android:id="@+id/tv_cheering"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/bmjua"
+                android:text="0개"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+        <!--불꽃 (좋아요)-->
+
+        <!--댓글-->
+        <LinearLayout
+            android:id="@+id/ll_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:scaleX="0.7"
+                android:scaleY="0.7"
+                android:src="@drawable/conversation" />
+
+            <TextView
+                android:id="@+id/tv_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/bmjua"
+                android:text="0개"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+        <!--댓글-->
+
+    </LinearLayout>
 
 
 </LinearLayout>

@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.base.BaseActivity;
-import com.truevalue.dreamappeal.base.BaseItemDecoration;
+import com.truevalue.dreamappeal.base.BaseItemDecorationVertical;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.BaseViewHolder;
@@ -59,7 +59,7 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
         mAdapter = new BaseRecyclerViewAdapter(ActivityDreamList.this, this);
         mRvDreamList.setAdapter(mAdapter);
         mRvDreamList.setLayoutManager(new LinearLayoutManager(ActivityDreamList.this));
-        BaseItemDecoration item = new BaseItemDecoration(17);
+        BaseItemDecorationVertical item = new BaseItemDecorationVertical(ActivityDreamList.this,17);
         mRvDreamList.addItemDecoration(item);
 
         isEditMode(false);

@@ -1,14 +1,17 @@
 package com.truevalue.dreamappeal.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.truevalue.dreamappeal.R;
+import com.truevalue.dreamappeal.activity.ActivityAchivementDetail;
+import com.truevalue.dreamappeal.activity.ActivityAddAchivement;
 import com.truevalue.dreamappeal.base.BaseFragment;
-import com.truevalue.dreamappeal.base.BaseItemDecoration;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseViewHolder;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
@@ -54,8 +57,6 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
         mAdapter = new BaseRecyclerViewAdapter(getContext(), this);
         mRvRecycle.setAdapter(mAdapter);
         mRvRecycle.setLayoutManager(new LinearLayoutManager(getContext()));
-        BaseItemDecoration item = new BaseItemDecoration(50);
-        mRvRecycle.addItemDecoration(item);
     }
 
     private void bindTempData() {
@@ -92,8 +93,16 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
      * @param i
      */
     private void onBindViewHeader(BaseViewHolder h, int i) {
-        ViewPager mPager = h.getItemView(R.id.vp_pager);
-        mPager.setAdapter(mPagerAdapter);
+        ViewPager pager = h.getItemView(R.id.vp_pager);
+        pager.setAdapter(mPagerAdapter);
+        ImageView ivAddAchivement = h.getItemView(R.id.iv_add_achivement);
+        ivAddAchivement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ActivityAddAchivement.class);
+                startActivity(intent);
+            }
+        });
     }
 
     /**
@@ -102,6 +111,13 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
      * @param i
      */
     private void onBindViewOther(BaseViewHolder h, int i) {
+        h.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ActivityAchivementDetail.class);
+                startActivity(intent);
+            }
+        });
 
     }
 

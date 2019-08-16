@@ -1,18 +1,23 @@
 package com.truevalue.dreamappeal.base;
 
+import android.content.Context;
 import android.graphics.Rect;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class BaseItemDecoration extends RecyclerView.ItemDecoration {
+import com.truevalue.dreamappeal.utils.Utils;
+
+public class BaseItemDecorationVertical extends RecyclerView.ItemDecoration {
 
     private final int divHeight;
 
-    public BaseItemDecoration(int div_height) {
-        this.divHeight = div_height;
+    public BaseItemDecorationVertical(Context context, int divDp) {
+        int pixel = Utils.DpToPixel(context,divDp);
+        this.divHeight = pixel;
     }
+
 
     @Override
     public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {

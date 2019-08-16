@@ -246,7 +246,7 @@
                 <Button
                     android:id="@+id/btn_dream_description_more"
                     android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_height="40dp"
                     android:layout_gravity="right"
                     android:background="@null"
                     android:fontFamily="@font/nanum_square_round_r"
@@ -301,7 +301,7 @@
                 <Button
                     android:id="@+id/btn_merit_and_motive_more"
                     android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_height="40dp"
                     android:layout_gravity="right"
                     android:background="@null"
                     android:fontFamily="@font/nanum_square_round_r"
