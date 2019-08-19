@@ -1,7 +1,13 @@
 package com.truevalue.dreamappeal.fragment;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,23 +18,37 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityDreamDescription;
 import com.truevalue.dreamappeal.activity.ActivityDreamList;
 import com.truevalue.dreamappeal.activity.ActivityDreamPresentComment;
 import com.truevalue.dreamappeal.activity.ActivityDreamTitle;
+import com.truevalue.dreamappeal.activity.ActivityIntro;
 import com.truevalue.dreamappeal.activity.ActivityMeritAndMotive;
 import com.truevalue.dreamappeal.base.BaseFragment;
+import com.truevalue.dreamappeal.base.BaseOkHttpClient;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseViewHolder;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
+import com.truevalue.dreamappeal.utils.Comm_Param;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class FragmentDreamPresent extends BaseFragment implements IORecyclerViewListener {
 
@@ -92,6 +112,61 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
         super.onViewCreated(view, savedInstanceState);
         initAdapter();
         bindTempData();
+        // todo : glide 테스트
+        Glide.with(getContext()).load("https://cdn.arstechnica.net/wp-content/uploads/2016/02/5718897981_10faa45ac3_b-640x624.jpg").placeholder(R.drawable.drawer_user).into(mIvDreamProfile);
+
+        // TODO : 임시 권한 설정
+        if (ContextCompat.checkSelfPermission(getContext(),
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.CAMERA)) {
+            } else {
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE},0);
+            }
+        }
+        getGallery();
+    }
+
+    private void getGallery(){
+        // which image properties are we querying
+        String[] projection = new String[] {
+                MediaStore.Images.Media._ID,
+                MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
+                MediaStore.Images.Media.DATE_TAKEN
+        };
+
+// content:// style URI for the "primary" external storage volume
+        Uri images = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+
+// Make the query.
+
+        Cursor cur = getContext().getContentResolver().query(images,projection,null,null,null);
+
+        Log.i("ListingImages"," query count=" + cur.getCount());
+
+        if (cur.moveToFirst()) {
+            String bucket;
+            String date;
+            int bucketColumn = cur.getColumnIndex(
+                    MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
+
+            int dateColumn = cur.getColumnIndex(
+                    MediaStore.Images.Media.DATE_TAKEN);
+
+            do {
+                // Get the field values
+                bucket = cur.getString(bucketColumn);
+                date = cur.getString(dateColumn);
+
+                // Do something with the values.
+                Log.i("ListingImages", " bucket=" + bucket
+                        + "  date_taken=" + date);
+            } while (cur.moveToNext());
+
+        }
     }
 
     private void initAdapter() {
@@ -122,7 +197,6 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
             }
         });
 
-
         mBtnMeritAndMotiveMore.setOnClickListener(v -> {
             if (isMyDreamReason) {
                 isMyDreamReason = false;
@@ -132,8 +206,6 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
                 mTvMeritAndMotive.setMaxLines(1000);
             }
         });
-
-
     }
 
     @OnClick({R.id.ll_dreams, R.id.ll_follower,R.id.ll_merit_and_motive,

@@ -59,7 +59,7 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
         mAdapter = new BaseRecyclerViewAdapter(ActivityDreamList.this, this);
         mRvDreamList.setAdapter(mAdapter);
         mRvDreamList.setLayoutManager(new LinearLayoutManager(ActivityDreamList.this));
-        BaseItemDecorationVertical item = new BaseItemDecorationVertical(ActivityDreamList.this,17);
+        BaseItemDecorationVertical item = new BaseItemDecorationVertical(ActivityDreamList.this,6);
         mRvDreamList.addItemDecoration(item);
 
         isEditMode(false);

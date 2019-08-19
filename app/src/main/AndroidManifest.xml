@@ -18,7 +18,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+
+        <!--android:usesCleartextTraffic="true" http url 강제 고정-->
 
         <!-- 화면 세로 고정 : android:screenOrientation="portrait"-->
 
@@ -54,6 +57,9 @@
             android:screenOrientation="portrait"/>
 
         <activity android:name=".activity.ActivityAchivementDetail"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".activity.ActivityGalleryCamera"
             android:screenOrientation="portrait"/>
 
 

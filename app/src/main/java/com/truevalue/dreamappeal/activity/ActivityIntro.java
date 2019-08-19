@@ -9,8 +9,10 @@ import android.widget.ImageView;
 
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.base.BaseActivity;
+import com.truevalue.dreamappeal.utils.Comm_Prefs;
 
 import androidx.annotation.Nullable;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -26,9 +28,17 @@ public class ActivityIntro extends BaseActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            Intent intent = new Intent(ActivityIntro.this, ActivityLogin.class);
-            startActivity(intent);
-            finish();
+            Comm_Prefs prefs = new Comm_Prefs(ActivityIntro.this);
+
+            if (prefs.isLogin()) { // 바로 메인
+                Intent intent = new Intent(ActivityIntro.this, ActivityMain.class);
+                startActivity(intent);
+                finish();
+            } else { // 로그인 페이지
+                Intent intent = new Intent(ActivityIntro.this, ActivityLogin.class);
+                startActivity(intent);
+                finish();
+            }
         }
     };
 

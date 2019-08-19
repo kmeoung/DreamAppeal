@@ -50,7 +50,7 @@ public class ActivityDreamPresentComment extends BaseActivity implements IOBaseT
         mAdapter = new BaseRecyclerViewAdapter(ActivityDreamPresentComment.this, this);
         mRvComment.setAdapter(mAdapter);
         mRvComment.setLayoutManager(new LinearLayoutManager(ActivityDreamPresentComment.this));
-        BaseItemDecorationVertical item = new BaseItemDecorationVertical(ActivityDreamPresentComment.this, 60);
+        BaseItemDecorationVertical item = new BaseItemDecorationVertical(ActivityDreamPresentComment.this, 20);
         mRvComment.addItemDecoration(item);
     }
 

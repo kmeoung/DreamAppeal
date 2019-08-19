@@ -1,5 +1,6 @@
 package com.truevalue.dreamappeal.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import com.truevalue.dreamappeal.base.IORecyclerViewListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBarListener, IORecyclerViewListener {
 
@@ -57,18 +59,16 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
         bindTempData();
     }
 
-
-
-    private void initAdapter(){
-        mAdapter = new BaseRecyclerViewAdapter(ActivityAddAchivement.this,this);
+    private void initAdapter() {
+        mAdapter = new BaseRecyclerViewAdapter(ActivityAddAchivement.this, this);
         mRvAchivementImg.setAdapter(mAdapter);
         LinearLayoutManager llm = new LinearLayoutManager(ActivityAddAchivement.this);
         llm.setOrientation(RecyclerView.HORIZONTAL);
         mRvAchivementImg.setLayoutManager(llm);
-        mRvAchivementImg.addItemDecoration(new BaseItemDecorationHorizontal(ActivityAddAchivement.this,30));
+        mRvAchivementImg.addItemDecoration(new BaseItemDecorationHorizontal(ActivityAddAchivement.this, 10));
     }
 
-    private void bindTempData(){
+    private void bindTempData() {
         for (int i = 0; i < 10; i++) {
             mAdapter.add("");
         }
@@ -86,7 +86,7 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return BaseViewHolder.newInstance(R.layout.listitem_achivement_list,parent,false);
+        return BaseViewHolder.newInstance(R.layout.listitem_achivement_list, parent, false);
     }
 
     @Override
@@ -102,5 +102,17 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
     @Override
     public int getItemViewType(int i) {
         return 0;
+    }
+
+    @OnClick({R.id.iv_add_img, R.id.btn_edit})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.iv_add_img:
+                Intent intent = new Intent(ActivityAddAchivement.this,ActivityGalleryCamera.class);
+                startActivity(intent);
+                break;
+            case R.id.btn_edit:
+                break;
+        }
     }
 }

@@ -7,13 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.truevalue.dreamappeal.R;
+import com.truevalue.dreamappeal.activity.ActivityLogin;
 import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.dialog.DialogProfile;
+import com.truevalue.dreamappeal.utils.Comm_Prefs;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,6 +49,14 @@ public class FragmentDrawer extends BaseFragment {
                 dialog.show();
                 break;
             case R.id.ll_logout:
+                Toast.makeText(getContext(),"성공적으로 로그아웃 되었습니다.",Toast.LENGTH_SHORT).show();
+
+                Comm_Prefs prefs = new Comm_Prefs(getContext());
+                prefs.setLogined(false);
+
+                Intent intent = new Intent(getContext(),ActivityLogin.class);
+                startActivity(intent);
+                getActivity().finish();
                 break;
         }
     }
