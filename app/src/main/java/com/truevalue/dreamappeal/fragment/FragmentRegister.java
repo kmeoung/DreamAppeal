@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.base.IOServerCallback;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
+import com.truevalue.dreamappeal.utils.Utils;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -150,22 +152,47 @@ public class FragmentRegister extends BaseFragment implements IOBaseTitleBarList
 
     /**
      * Post Register
-     * TODO : 예외처리 필요
      */
     private void httpRegister() {
         BaseOkHttpClient client = new BaseOkHttpClient();
         HashMap<String, String> body = new HashMap<>();
         String id = mEtId.getText().toString();
         String password = mEtPassword.getText().toString();
+        String rePassword = mEtRePassword.getText().toString();
+        String name = mEtName.getText().toString();
+
+        if(TextUtils.isEmpty(name)){
+            Toast.makeText(getContext(), "이름을 입력해주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(TextUtils.isEmpty(id)){
+            Toast.makeText(getContext(), "아이디를 입력해주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(!Utils.isEmailValid(id)){
+            Toast.makeText(getContext(), "아이디를 이메일형식으로 입력해주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(TextUtils.isEmpty(password)){
+            Toast.makeText(getContext(), "비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(!TextUtils.equals(password,rePassword)){
+            Toast.makeText(getContext(), "비밀번호가 서로 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         body.put("user_id", id);
         body.put("user_password", password);
-        body.put("user_name", mEtName.getText().toString());
+        body.put("user_name", name);
         String gender = (!isGender)? "male":"female";
         body.put("user_gender", gender);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String birth = sdf.format(mCal.getTime());
-        Log.d("BirthTEst",birth);
         body.put("user_birth", birth);
         body.put("user_type", "G"); // G : General
         body.put("privacy_agt", "1"); // 개인정보 동의 1

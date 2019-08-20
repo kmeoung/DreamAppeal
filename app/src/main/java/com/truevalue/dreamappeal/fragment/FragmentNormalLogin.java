@@ -3,6 +3,7 @@ package com.truevalue.dreamappeal.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.base.IOServerCallback;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
+import com.truevalue.dreamappeal.utils.Utils;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -73,13 +75,23 @@ public class FragmentNormalLogin extends BaseFragment implements IOBaseTitleBarL
 
     /**
      * Post Login
-     * TODO : 예외처리 필요
      */
     private void httpLogin() {
+
         BaseOkHttpClient client = new BaseOkHttpClient();
         HashMap<String, String> body = new HashMap<>();
         String id = mEtId.getText().toString();
         String password = mEtPassword.getText().toString();
+
+        if(TextUtils.isEmpty(id)){
+            Toast.makeText(getContext(), "아이디를 입력해주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(TextUtils.isEmpty(password)){
+            Toast.makeText(getContext(), "비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         body.put("login_id", id);
         body.put("login_password", password);
@@ -94,14 +106,13 @@ public class FragmentNormalLogin extends BaseFragment implements IOBaseTitleBarL
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String RtnKey, String RtnValue) throws IOException {
 
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getContext(), RtnValue, Toast.LENGTH_SHORT).show();
-                    }
-                });
-
                 if (RtnKey.equals(DAOK)) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getContext(), RtnValue, Toast.LENGTH_SHORT).show();
+                        }
+                    });
                     // 로그인 저장
                     Comm_Prefs prefs = new Comm_Prefs(getContext());
                     prefs.setLogined(true);
@@ -110,6 +121,13 @@ public class FragmentNormalLogin extends BaseFragment implements IOBaseTitleBarL
                     startActivity(intent);
                     getActivity().finish();
 
+                }else{
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getContext(), "아미디 / 비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
         });
