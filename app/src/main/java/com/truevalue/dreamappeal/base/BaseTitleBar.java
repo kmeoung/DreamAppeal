@@ -76,20 +76,87 @@ public class BaseTitleBar extends LinearLayout {
      * @param isBack
      * @param isMenu
      * @param isSearch
-     * @param isTextBtn
+     * @param isRightText
+     * @param title
+     * @param rightText
      */
-    public void showToolbarBtn(boolean isBack, boolean isMenu, boolean isSearch, boolean isTextBtn) {
-        if (isBack) mIvBack.setVisibility(View.VISIBLE);
-        else mIvBack.setVisibility(View.GONE);
+    public void showToolbarBtn(String isBack, String isMenu, String isSearch, String isRightText,String title,String rightText) {
+        // 메뉴
+        switch (isMenu){
+            case VISIBLE:
+                mIvMenu.setVisibility(View.VISIBLE);
+                break;
+            case INVISIBLE:
+                mIvMenu.setVisibility(View.INVISIBLE);
+                break;
+            case GONE:
+                mIvMenu.setVisibility(View.GONE);
+                break;
+            default:
+                mIvMenu.setVisibility(View.GONE);
+        }
 
-        if (isMenu) mIvMenu.setVisibility(View.VISIBLE);
-        else mIvMenu.setVisibility(View.GONE);
+        // 검색
+        switch (isSearch){
+            case VISIBLE:
+                mIvSearch.setVisibility(View.VISIBLE);
+                break;
+            case INVISIBLE:
+                mIvSearch.setVisibility(View.INVISIBLE);
+                break;
+            case GONE:
+                mIvSearch.setVisibility(View.GONE);
+                break;
+            default:
+                mIvSearch.setVisibility(View.GONE);
+        }
+        // 뒤로가기
+        switch (isBack){
+            case VISIBLE:
+                mIvBack.setVisibility(View.VISIBLE);
+                break;
+            case INVISIBLE:
+                mIvBack.setVisibility(View.INVISIBLE);
+                break;
+            case GONE:
+                mIvBack.setVisibility(View.GONE);
+                break;
+            default:
+                mIvBack.setVisibility(View.GONE);
+        }
+        // 오른쪽 버튼
+        switch (isRightText){
+            case VISIBLE:
+                mTvTextBtn.setVisibility(View.VISIBLE);
+                break;
+            case INVISIBLE:
+                mTvTextBtn.setVisibility(View.INVISIBLE);
+                break;
+            case GONE:
+                mTvTextBtn.setVisibility(View.GONE);
+                break;
+            default:
+                mTvTextBtn.setVisibility(View.GONE);
+        }
 
-        if (isSearch) mIvSearch.setVisibility(View.VISIBLE);
-        else mIvSearch.setVisibility(View.GONE);
+        // 타이틀
+        if(title != null)
+        mTvTitle.setText(title);
+        // 오른쪽 버튼
+        if(rightText != null)
+        mTvTextBtn.setText(rightText);
+    }
 
-        if (isTextBtn) mTvTextBtn.setVisibility(View.VISIBLE);
-        else mTvTextBtn.setVisibility(View.GONE);
+    /**
+     * 상단 바 버튼 보이는 여부 설정
+     *
+     * @param isBack
+     * @param isMenu
+     * @param isSearch
+     * @param isRightText
+     */
+    public void showToolbarBtn(String isBack, String isMenu, String isSearch, String isRightText) {
+        showToolbarBtn(isBack,isMenu,isSearch,isRightText,null,null);
     }
 
 

@@ -12,5 +12,7 @@
     <color name="drawer_gray">#dfdfdf</color>
     <color name="tab_none_select_gray">#818181</color>
     <color name="color_hint">#c1c1c1</color>
+    <color name="color_ability">#d29500</color>
+    <color name="color_opportunity">#be5108</color>
 
 </resources>

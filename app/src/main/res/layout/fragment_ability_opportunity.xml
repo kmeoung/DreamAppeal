@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!--갖출 능력-->
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/color_ability" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="34dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="13dp"
+            android:src="@drawable/ic_ability" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/nanum_pen"
+            android:gravity="center_vertical"
+            android:text="내 꿈에 맞게 갖출 능력"
+            android:textColor="@color/color_ability"
+            android:textSize="25sp" />
+
+        <ImageView
+            android:id="@+id/iv_add_ability"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginRight="26dp"
+            android:src="@drawable/ic_add_yellow" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_ability"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+    <!--갖출 능력-->
+
+    <!--만들고픈 기회-->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/color_opportunity" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="33dp"
+            android:layout_height="34dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="13dp"
+            android:src="@drawable/ic_opportunity" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/nanum_pen"
+            android:gravity="center_vertical"
+            android:text="내 꿈에 맞게 만들고픈 기회"
+            android:textColor="@color/color_opportunity"
+            android:textSize="25sp" />
+
+        <ImageView
+            android:id="@+id/iv_add_opportunity"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginRight="26dp"
+            android:src="@drawable/ic_add_red" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_opportunity"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+    <!--만들고픈 기회-->
+
+</LinearLayout>

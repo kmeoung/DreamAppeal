@@ -1,7 +1,10 @@
 package com.truevalue.dreamappeal.fragment;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,20 +12,32 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.truevalue.dreamappeal.R;
+import com.truevalue.dreamappeal.activity.ActivityMain;
 import com.truevalue.dreamappeal.base.BaseFragment;
+import com.truevalue.dreamappeal.base.BaseOkHttpClient;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
+import com.truevalue.dreamappeal.base.IOServerCallback;
+import com.truevalue.dreamappeal.utils.Comm_Param;
+import com.truevalue.dreamappeal.utils.Comm_Prefs;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
 
 public class FragmentRegister extends BaseFragment implements IOBaseTitleBarListener {
 
@@ -121,6 +136,7 @@ public class FragmentRegister extends BaseFragment implements IOBaseTitleBarList
                 mBtnGenderWoman.setSelected(true);
                 break;
             case R.id.btn_register:
+                httpRegister();
                 break;
             case R.id.tv_year: // 날짜 설정
             case R.id.tv_month:
@@ -129,6 +145,61 @@ public class FragmentRegister extends BaseFragment implements IOBaseTitleBarList
                 break;
         }
     }
+
+    Handler handler = new Handler();
+
+    /**
+     * Post Register
+     * TODO : 예외처리 필요
+     */
+    private void httpRegister() {
+        BaseOkHttpClient client = new BaseOkHttpClient();
+        HashMap<String, String> body = new HashMap<>();
+        String id = mEtId.getText().toString();
+        String password = mEtPassword.getText().toString();
+
+        body.put("user_id", id);
+        body.put("user_password", password);
+        body.put("user_name", mEtName.getText().toString());
+        String gender = (!isGender)? "male":"female";
+        body.put("user_gender", gender);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String birth = sdf.format(mCal.getTime());
+        Log.d("BirthTEst",birth);
+        body.put("user_birth", birth);
+        body.put("user_type", "G"); // G : General
+        body.put("privacy_agt", "1"); // 개인정보 동의 1
+
+
+        client.Post(Comm_Param.TEMP_URL_PROCESS_SIGNUP, body, new IOServerCallback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, int serverCode, String body, String RtnKey, String RtnValue) throws IOException {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getContext(), RtnValue, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                if (RtnKey.equals(DAOK)) {
+                    // 로그인 저장
+                    Comm_Prefs prefs = new Comm_Prefs(getContext());
+                    prefs.setLogined(true);
+
+                    Intent intent = new Intent(getContext(), ActivityMain.class);
+                    startActivity(intent);
+                    getActivity().finish();
+
+                }
+            }
+        });
+    }
+
 
     @Override
     public void OnClickBack() {

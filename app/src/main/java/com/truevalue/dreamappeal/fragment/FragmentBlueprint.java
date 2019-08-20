@@ -1,5 +1,6 @@
 package com.truevalue.dreamappeal.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.truevalue.dreamappeal.R;
+import com.truevalue.dreamappeal.activity.ActivityAbilityOpportunity;
 import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseViewHolder;
@@ -46,6 +49,8 @@ public class FragmentBlueprint extends BaseFragment {
     EditText mEtComment;
     @BindView(R.id.btn_commit_comment)
     Button mBtnCommitComment;
+    @BindView(R.id.ll_ability_opportunity)
+    LinearLayout mLlAbilityOpportunity;
 
     private BaseRecyclerViewAdapter mAbilityOpprotunityAdapter;
     private BaseRecyclerViewAdapter mObjectAdapter;
@@ -66,11 +71,11 @@ public class FragmentBlueprint extends BaseFragment {
         bindTempData();
     }
 
-    private void initAdapter(){
+    private void initAdapter() {
         mAbilityOpprotunityAdapter = new BaseRecyclerViewAdapter(getContext(), new IORecyclerViewListener() {
             @Override
             public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                return BaseViewHolder.newInstance(R.layout.listitem_dream_description,parent,false);
+                return BaseViewHolder.newInstance(R.layout.listitem_dream_description, parent, false);
             }
 
             @Override
@@ -80,7 +85,7 @@ public class FragmentBlueprint extends BaseFragment {
 
             @Override
             public int getItemCount() {
-                if(mAbilityOpprotunityAdapter != null)
+                if (mAbilityOpprotunityAdapter != null)
                     return mAbilityOpprotunityAdapter.size();
                 else return 0;
             }
@@ -94,7 +99,7 @@ public class FragmentBlueprint extends BaseFragment {
         mObjectAdapter = new BaseRecyclerViewAdapter(getContext(), new IORecyclerViewListener() {
             @Override
             public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                return BaseViewHolder.newInstance(R.layout.listitem_object,parent,false);
+                return BaseViewHolder.newInstance(R.layout.listitem_object, parent, false);
             }
 
             @Override
@@ -104,8 +109,8 @@ public class FragmentBlueprint extends BaseFragment {
 
             @Override
             public int getItemCount() {
-                if(mObjectAdapter != null)
-                return mObjectAdapter.size();
+                if (mObjectAdapter != null)
+                    return mObjectAdapter.size();
                 else return 0;
             }
 
@@ -122,7 +127,7 @@ public class FragmentBlueprint extends BaseFragment {
         mRvObject.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-    private void bindTempData(){
+    private void bindTempData() {
         for (int i = 0; i < 3; i++) {
             mAbilityOpprotunityAdapter.add("");
         }
@@ -132,12 +137,17 @@ public class FragmentBlueprint extends BaseFragment {
         }
     }
 
-    @OnClick({R.id.iv_add_object, R.id.btn_commit_comment})
+    @OnClick({R.id.iv_add_object, R.id.btn_commit_comment,R.id.ll_ability_opportunity})
     public void onViewClicked(View view) {
+        Intent intent;
         switch (view.getId()) {
             case R.id.iv_add_object:
                 break;
             case R.id.btn_commit_comment:
+                break;
+            case R.id.ll_ability_opportunity: // 갖출 능력 / 만들고픈 기회
+                intent = new Intent(getContext(), ActivityAbilityOpportunity.class);
+                startActivity(intent);
                 break;
         }
     }

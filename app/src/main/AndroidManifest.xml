@@ -63,6 +63,9 @@
         <activity android:name=".activity.ActivityGalleryCamera"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".activity.ActivityAbilityOpportunity"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>

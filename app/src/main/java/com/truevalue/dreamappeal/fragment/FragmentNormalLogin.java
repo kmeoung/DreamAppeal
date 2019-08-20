@@ -3,8 +3,6 @@ package com.truevalue.dreamappeal.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +19,11 @@ import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.base.BaseOkHttpClient;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
+import com.truevalue.dreamappeal.base.IOServerCallback;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
 
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -35,9 +32,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Response;
 
 public class FragmentNormalLogin extends BaseFragment implements IOBaseTitleBarListener {
 
@@ -77,48 +71,45 @@ public class FragmentNormalLogin extends BaseFragment implements IOBaseTitleBarL
 
     Handler handler = new Handler();
 
+    /**
+     * Post Login
+     * TODO : 예외처리 필요
+     */
     private void httpLogin() {
         BaseOkHttpClient client = new BaseOkHttpClient();
         HashMap<String, String> body = new HashMap<>();
         String id = mEtId.getText().toString();
         String password = mEtPassword.getText().toString();
 
-        body.put("id", id);
-        body.put("password", password);
+        body.put("login_id", id);
+        body.put("login_password", password);
 
-        client.Post(Comm_Param.tempUrl, body, new Callback() {
+
+        client.Post(Comm_Param.TEMP_URL_PROCESS_SIGNIN, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();
             }
 
             @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String strResponse = response.body().string();
+            public void onResponse(@NotNull Call call, int serverCode, String body, String RtnKey, String RtnValue) throws IOException {
 
-                try {
-                    JSONObject jsonObject = new JSONObject(strResponse);
-                    String status = jsonObject.getString("status");
-                    String value = jsonObject.getString("value");
-
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getContext(), value, Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-                    if (status.equals("DAOK")) {
-                        // 로그인 저장
-                        Comm_Prefs prefs = new Comm_Prefs(getContext());
-                        prefs.setLogined(true);
-
-                        Intent intent = new Intent(getContext(), ActivityMain.class);
-                        startActivity(intent);
-                        getActivity().finish();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getContext(), RtnValue, Toast.LENGTH_SHORT).show();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                });
+
+                if (RtnKey.equals(DAOK)) {
+                    // 로그인 저장
+                    Comm_Prefs prefs = new Comm_Prefs(getContext());
+                    prefs.setLogined(true);
+
+                    Intent intent = new Intent(getContext(), ActivityMain.class);
+                    startActivity(intent);
+                    getActivity().finish();
+
                 }
             }
         });

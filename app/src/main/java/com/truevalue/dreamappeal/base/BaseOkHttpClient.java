@@ -1,11 +1,18 @@
 package com.truevalue.dreamappeal.base;
 
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.HashMap;
 
+import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.Response;
 
 public class BaseOkHttpClient {
 
@@ -22,7 +29,7 @@ public class BaseOkHttpClient {
      * @param body
      * @param callback
      */
-    public void Post(String url, HashMap<String, String> body, Callback callback) {
+    public void Post(String url, HashMap<String, String> body, IOServerCallback callback) {
         FormBody.Builder builder = new FormBody.Builder();
 
         if (body != null && body.size() > 0) {
@@ -38,8 +45,28 @@ public class BaseOkHttpClient {
                 .post(builder.build())
                 .build();
 
-        mClient.newCall(request).enqueue(callback);
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                callback.onFailure(call, e);
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                int code = response.code();
+                String body = response.body().string();
+                try {
+                    JSONObject object = new JSONObject(body);
+                    String RtnKey = object.getString("RtnKey");
+                    String RtnValue = object.getString("RtnValue");
+                    callback.onResponse(call, code, body, RtnKey, RtnValue);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
+
 
     /**
      * Get Server 방식
@@ -48,7 +75,7 @@ public class BaseOkHttpClient {
      * @param body
      * @param callback
      */
-    public void Get(String url, HashMap<String, String> body, Callback callback) {
+    public void Get(String url, HashMap<String, String> body, IOServerCallback callback) {
         String urlBody = (body != null && body.size() > 0) ? url + "?" : url;
 
         int i = 0;
@@ -67,8 +94,25 @@ public class BaseOkHttpClient {
                 .get()
                 .build();
 
-        mClient.newCall(request).enqueue(callback);
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                callback.onFailure(call, e);
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                int code = response.code();
+                String body = response.body().string();
+                try {
+                    JSONObject object = new JSONObject(body);
+                    String RtnKey = object.getString("RtnKey");
+                    String RtnValue = object.getString("RtnValue");
+                    callback.onResponse(call, code, body, RtnKey, RtnValue);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
-
-
 }

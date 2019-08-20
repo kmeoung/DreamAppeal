@@ -9,6 +9,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityMain;
 import com.truevalue.dreamappeal.base.BaseFragment;
+import com.truevalue.dreamappeal.base.BaseTitleBar;
 
 import java.util.ArrayList;
 
@@ -44,7 +45,7 @@ public class FragmentProfile extends BaseFragment {
     public void onResume() {
         super.onResume();
         // 상단바 설정
-        ((ActivityMain)getActivity()).showToolbarBtn(false,true,true,false);
+        ((ActivityMain)getActivity()).showToolbarBtn(BaseTitleBar.GONE,BaseTitleBar.VISIBLE,BaseTitleBar.VISIBLE,BaseTitleBar.GONE);
     }
 
     /**

@@ -5,28 +5,34 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.TypedValue;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Utils {
 
-//    DpToPixel 코드
-
+    /**
+     * DpToPixel 코드
+     * @param context
+     * @param DP
+     * @return
+     */
     public static int DpToPixel(Context context, float DP) {
         float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DP, context.getResources()
                 .getDisplayMetrics());
         return (int) px;
     }
 
-    // 휴대전화 이미지 가져오기
+    /**
+     * 휴대전화 이미지 가져오기
+     * @param context
+     * @return
+     */
     public static JSONObject getImageFilePath(Context context) {
         JSONObject object = new JSONObject();
         try {
@@ -87,5 +93,15 @@ public class Utils {
         }
 
         return object;
+    }
+
+    /**
+     * 문자열이 Email 방식인지 인지 확인
+     */
+    public static boolean isEmailValid(String email) {
+        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 }

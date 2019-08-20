@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <!--내 꿈 이유 작성 영역-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@null">
+
+        <EditText
+            android:id="@+id/et_ability_opportunity"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:fontFamily="@font/nanum_square_round_b"
+            android:gravity="left|top"
+            android:padding="10dp"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_hint"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:fontFamily="@font/nanum_square_round_b"
+            android:gravity="center"
+            android:text="터치하여 내용을 입력해주세요"
+            android:textColor="#a0a0a0"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+    <!--내 꿈 이유 작성 영역-->
+
+    <!--Divider-->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black" />
+    <!--Divider-->
+
+    <!--예시 화면-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="242dp">
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/vp_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tl_tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            app:tabIndicator="@null">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="5dp"
+                android:layout_height="5dp"
+                android:icon="@drawable/circle_gray" />
+
+        </com.google.android.material.tabs.TabLayout>
+
+    </RelativeLayout>
+    <!--예시 화면-->
+
+    <!--Divider-->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black" />
+    <!--Divider-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="95dp"
+        android:layout_marginTop="7dp"
+        android:background="@color/colorAccent"></LinearLayout>
+</LinearLayout>
