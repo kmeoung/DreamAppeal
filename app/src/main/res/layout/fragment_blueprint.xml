@@ -208,6 +208,7 @@
             android:imeOptions="actionDone"
             android:lines="1"
             android:maxLines="1"
+            android:inputType="text"
             android:paddingLeft="10dp"
             android:textColor="@color/black"
             android:textColorHint="@color/gray"

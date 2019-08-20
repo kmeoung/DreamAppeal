@@ -75,6 +75,8 @@
             android:textColor="@color/gray"
             android:textSize="19dp"
             android:text="게시"
+            android:imeOptions="actionDone"
+            android:inputType="text"
             android:fontFamily="@font/nanum_square_round_b"
             android:id="@+id/btn_commit_comment"/>
 

@@ -168,7 +168,7 @@
                 android:background="@drawable/edit_text_bg_gray"
                 android:fontFamily="@font/nanum_square_round_r"
                 android:hint="어떤 일을 하는지 적어주세요"
-                android:imeOptions="actionNext"
+                android:imeOptions="actionDone"
                 android:inputType="text"
                 android:lines="1"
                 android:maxLines="1"
