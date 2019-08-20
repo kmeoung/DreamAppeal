@@ -87,7 +87,7 @@ public class FragmentProfile extends BaseFragment {
                 case 1: // 실현 성과
                     return new FragmentPerformance();
                 case 2: // 발전 계획
-                    return new FragmentDreamPresent();
+                    return new FragmentBlueprint();
             }
 
             return null;

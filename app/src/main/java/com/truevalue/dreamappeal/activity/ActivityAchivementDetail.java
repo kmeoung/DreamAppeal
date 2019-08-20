@@ -51,12 +51,12 @@ public class ActivityAchivementDetail extends BaseActivity {
     @OnClick({R.id.iv_back, R.id.ll_comment, R.id.ll_cheering})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.iv_back:
+            case R.id.iv_back: // 뒤로가기
                 finish();
                 break;
-            case R.id.ll_comment:
+            case R.id.ll_comment: // 댓글
                 break;
-            case R.id.ll_cheering:
+            case R.id.ll_cheering: // 응원하기
                 break;
         }
     }

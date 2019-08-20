@@ -42,10 +42,15 @@ public class ActivityDreamPresentComment extends BaseActivity implements IOBaseT
         updateStatusbarTranslate(mVStatus);
         // 상단바 연동
         mBtbBar.setIOBaseTitleBarListener(this);
+        // Init Adapter
         initAdapter();
+        // Bind Temp Data
         bindTempData();
     }
 
+    /**
+     * Init Adapter
+     */
     private void initAdapter() {
         mAdapter = new BaseRecyclerViewAdapter(ActivityDreamPresentComment.this, this);
         mRvComment.setAdapter(mAdapter);
@@ -54,17 +59,26 @@ public class ActivityDreamPresentComment extends BaseActivity implements IOBaseT
         mRvComment.addItemDecoration(item);
     }
 
+    /**
+     * Bind Temp Data
+     */
     private void bindTempData() {
         for (int i = 0; i < 10; i++) {
             mAdapter.add("");
         }
     }
 
+    /**
+     * Back Clicked
+     */
     @Override
     public void OnClickBack() {
         finish();
     }
 
+    /**
+     * Right Text Button Clicked
+     */
     @Override
     public void OnClickRightTextBtn() {
         onBackPressed();

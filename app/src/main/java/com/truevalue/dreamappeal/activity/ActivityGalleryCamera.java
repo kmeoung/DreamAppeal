@@ -4,10 +4,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
@@ -20,6 +22,7 @@ import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.base.BaseActivity;
+import com.truevalue.dreamappeal.bean.BeanGalleryInfo;
 import com.truevalue.dreamappeal.utils.Utils;
 
 import org.json.JSONArray;
@@ -45,34 +48,9 @@ public class ActivityGalleryCamera extends BaseActivity {
     @BindView(R.id.gv_gallery)
     GridView mGvGallery;
 
-    private ArrayList<String> mImagePath;
-
-    /**
-     * 갤러리의 이미지가 있는 폴더 명 가져오기
-     *
-     * @return
-     */
-    private ArrayList<String> getBucketNames() {
-        ArrayList<String> folderLists = new ArrayList<>();
-        String[] projection = new String[]{"DISTINCT " + MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME};
-        Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                projection,
-                null,
-                null,
-                null);
-
-        if (cursor.moveToFirst()) {
-            String bucket;
-            int bucketColumn = cursor.getColumnIndex(MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME);
-
-            do {
-                bucket = cursor.getString(bucketColumn);
-                Log.e("folderName", bucket);
-                folderLists.add(bucket);
-            } while (cursor.moveToNext());
-        }
-        return folderLists;
-    }
+    private ArrayList<BeanGalleryInfo> mOldPath;
+    private ArrayList<BeanGalleryInfo> mItemPath;
+    private ArrayList<BeanGalleryInfo> mBucked;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,29 +59,62 @@ public class ActivityGalleryCamera extends BaseActivity {
         ButterKnife.bind(this);
         // 상태 창 투명화
         updateStatusbarTranslate(mVStatus);
-        mImagePath = new ArrayList<>();
+        mOldPath = new ArrayList<>();
+        mBucked = new ArrayList<>();
+        mItemPath = new ArrayList<>();
+
+
 //        mImagePath = Utils.getImageFilePath(ActivityGalleryCamera.this);
         JSONObject object = Utils.getImageFilePath(ActivityGalleryCamera.this);
         try {
             JSONArray imageInfo = object.getJSONArray("image_info");
-            JSONArray buckedName = object.getJSONArray("bucket_name_list");
-            JSONArray bucketId = object.getJSONArray("bucket_id_list");
+            JSONArray bucketNameList = object.getJSONArray("bucket_name_list");
+            JSONArray bucketIdList = object.getJSONArray("bucket_id_list");
 
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,R.);
-
-            for (int i = 0; i < buckedName.length(); i++) {
-                String title = buckedName.getString(i);
+            ArrayList<String> strBucketNameList = new ArrayList<>();
+            for (int i = 0; i < bucketNameList.length(); i++) {
+                String title = bucketNameList.getString(i);
+                String id = bucketIdList.getString(i);
+                mBucked.add(new BeanGalleryInfo(title, id, null));
+                strBucketNameList.add(title);
             }
+
+            ArrayAdapter arrayAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, strBucketNameList);
+            mSpTitle.setAdapter(arrayAdapter);
 
             for (int i = 0; i < imageInfo.length(); i++) {
                 JSONObject imageObject = imageInfo.getJSONObject(i);
                 String imagePath = imageObject.getString("image_path");
-                mImagePath.add(imagePath);
+                String bucketId = imageObject.getString("image_bucket_id");
+                String bucketName = imageObject.getString("image_bucket_name");
+                mOldPath.add(new BeanGalleryInfo(bucketName, bucketId, imagePath));
+                mItemPath.add(new BeanGalleryInfo(bucketName, bucketId, imagePath));
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        mGvGallery.setAdapter(new GridAdapter(ActivityGalleryCamera.this, mImagePath));
+        GridAdapter mGridAdapter = new GridAdapter(ActivityGalleryCamera.this, mItemPath);
+        mGvGallery.setAdapter(mGridAdapter);
+
+        mSpTitle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                BeanGalleryInfo bean = mBucked.get(position);
+                mItemPath.clear();
+                for (int i = 0; i < mOldPath.size(); i++) {
+                    BeanGalleryInfo oldBean = mOldPath.get(i);
+                    if (TextUtils.equals(bean.getBucketId(), oldBean.getBucketId())) {
+                        mItemPath.add(oldBean);
+                    }
+                }
+                mGridAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     @OnClick({R.id.iv_back, R.id.tv_text_btn})
@@ -119,10 +130,10 @@ public class ActivityGalleryCamera extends BaseActivity {
 
     class GridAdapter extends BaseAdapter {
         private LayoutInflater inflater;
-        private ArrayList<String> pictureList;
+        private ArrayList<BeanGalleryInfo> pictureList;
         private Context mContext;
 
-        public GridAdapter(Context context, ArrayList<String> list) {
+        public GridAdapter(Context context, ArrayList<BeanGalleryInfo> list) {
             inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             pictureList = list;
             mContext = context;
@@ -151,7 +162,7 @@ public class ActivityGalleryCamera extends BaseActivity {
             ImageView imageView = convertView.findViewById(R.id.iv_achivement);
 
             //onCreate에서 정해준 크기로 이미지를 붙인다.
-            Glide.with(mContext).load(pictureList.get(position)).into(imageView);
+            Glide.with(mContext).load(pictureList.get(position).getImagePath()).into(imageView);
 
             return convertView;
         }

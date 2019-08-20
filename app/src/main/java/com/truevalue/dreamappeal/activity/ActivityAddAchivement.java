@@ -55,10 +55,15 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
         // 상단바 연동
         mBtbBar.setIOBaseTitleBarListener(this);
 
+        // Adapter 초기화
         initAdapter();
+        // 임시 데이터
         bindTempData();
     }
 
+    /**
+     * Init Adapter
+     */
     private void initAdapter() {
         mAdapter = new BaseRecyclerViewAdapter(ActivityAddAchivement.this, this);
         mRvAchivementImg.setAdapter(mAdapter);
@@ -68,17 +73,26 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
         mRvAchivementImg.addItemDecoration(new BaseItemDecorationHorizontal(ActivityAddAchivement.this, 10));
     }
 
+    /**
+     * Bind Temp Data
+     */
     private void bindTempData() {
         for (int i = 0; i < 10; i++) {
             mAdapter.add("");
         }
     }
 
+    /**
+     * Back Clicked
+     */
     @Override
     public void OnClickBack() {
         finish();
     }
 
+    /**
+     * Right Text Button Clicked
+     */
     @Override
     public void OnClickRightTextBtn() {
 
@@ -104,14 +118,15 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
         return 0;
     }
 
+
     @OnClick({R.id.iv_add_img, R.id.btn_edit})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.iv_add_img:
+            case R.id.iv_add_img: // 이미지 추가 버튼
                 Intent intent = new Intent(ActivityAddAchivement.this,ActivityGalleryCamera.class);
                 startActivity(intent);
                 break;
-            case R.id.btn_edit:
+            case R.id.btn_edit: // 수정 버튼
                 break;
         }
     }

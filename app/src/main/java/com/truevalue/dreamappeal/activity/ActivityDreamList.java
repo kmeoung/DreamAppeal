@@ -51,20 +51,29 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
         updateStatusbarTranslate(mVStatus);
         // 상단바 연동
         mBtbBar.setIOBaseTitleBarListener(this);
+        // Init Adapter
         initAdapter();
+
+        // Bind Temp Data
         bindTempData();
     }
 
+    /**
+     * Init Adapter
+     */
     private void initAdapter() {
         mAdapter = new BaseRecyclerViewAdapter(ActivityDreamList.this, this);
         mRvDreamList.setAdapter(mAdapter);
         mRvDreamList.setLayoutManager(new LinearLayoutManager(ActivityDreamList.this));
         BaseItemDecorationVertical item = new BaseItemDecorationVertical(ActivityDreamList.this,6);
         mRvDreamList.addItemDecoration(item);
-
+        // Set Edit Mode
         isEditMode(false);
     }
 
+    /**
+     * Bind Temp Data
+     */
     private void bindTempData() {
         for (int i = 0; i < 10; i++) {
             mAdapter.add("");
@@ -91,11 +100,17 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
         mAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * Back Clicked
+     */
     @Override
     public void OnClickBack() {
         finish();
     }
 
+    /**
+     * Right Text Button Clicked
+     */
     @Override
     public void OnClickRightTextBtn() {
         onBackPressed();
@@ -139,13 +154,13 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
     @OnClick({R.id.ibtn_add_dream_list, R.id.btn_edit})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.ibtn_add_dream_list:
+            case R.id.ibtn_add_dream_list: // 드림 리스트 추가 버튼
                 // 버튼이 활성화 되어 있을 경우에만
                 if(mIbtnAddDreamList.isEnabled()){
 
                 }
                 break;
-            case R.id.btn_edit:
+            case R.id.btn_edit: // 수정 버튼
                 isEdit = !isEdit;
                 isEditMode(isEdit);
                 break;

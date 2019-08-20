@@ -48,11 +48,17 @@ public class ActivityDreamDescription extends BaseActivity implements IOBaseTitl
         mBtbBar.setIOBaseTitleBarListener(this);
     }
 
+    /**
+     * Back Clicked
+     */
     @Override
     public void OnClickBack() {
         finish();
     }
 
+    /**
+     * Right Text Button Clicked
+     */
     @Override
     public void OnClickRightTextBtn() {
         onBackPressed();
