@@ -137,7 +137,7 @@ public class FragmentBlueprint extends BaseFragment {
         }
     }
 
-    @OnClick({R.id.iv_add_object, R.id.btn_commit_comment,R.id.ll_ability_opportunity})
+    @OnClick({R.id.iv_add_object, R.id.btn_commit_comment, R.id.ll_ability_opportunity})
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {

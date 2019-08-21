@@ -258,6 +258,7 @@
 
             <!--내 꿈 이유-->
             <LinearLayout
+                android:id="@+id/ll_merit_and_motive"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
@@ -266,8 +267,7 @@
                 android:background="@drawable/edit_text_round_bg_gray"
                 android:orientation="vertical"
                 android:paddingLeft="15dp"
-                android:paddingTop="15dp"
-                android:id="@+id/ll_merit_and_motive">
+                android:paddingTop="15dp">
 
                 <ImageView
                     android:layout_width="30dp"
@@ -333,19 +333,19 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/gray"
-                        android:text="응원\n합니다"
                         android:gravity="center"
-                        android:textSize="12sp"/>
+                        android:text="응원\n합니다"
+                        android:textColor="@color/gray"
+                        android:textSize="12sp" />
 
                     <ImageView
+                        android:id="@+id/iv_cheering"
                         android:layout_width="40dp"
                         android:layout_height="match_parent"
                         android:layout_marginRight="10dp"
                         android:scaleX="0.7"
                         android:scaleY="0.7"
-                        android:src="@drawable/flame"
-                        android:id="@+id/iv_cheering"/>
+                        android:src="@drawable/flame" />
 
                     <TextView
                         android:id="@+id/tv_cheering"

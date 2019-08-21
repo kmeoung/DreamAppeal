@@ -66,8 +66,8 @@ public class FragmentAbilityOpportunity extends BaseFragment {
                 h.getItemView(R.id.iv_more).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Spinner spinner = new Spinner(getContext(),Spinner.MODE_DROPDOWN);
-                        spinner.setAdapter(new ArrayAdapter<String>(getContext(),R.layout.support_simple_spinner_dropdown_item,new String[]{"수정","삭제"}));
+                        Spinner spinner = new Spinner(getContext(), Spinner.MODE_DROPDOWN);
+                        spinner.setAdapter(new ArrayAdapter<String>(getContext(), R.layout.support_simple_spinner_dropdown_item, new String[]{"수정", "삭제"}));
                     }
                 });
             }
@@ -97,8 +97,8 @@ public class FragmentAbilityOpportunity extends BaseFragment {
                 h.getItemView(R.id.iv_more).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Spinner spinner = new Spinner(getContext(),Spinner.MODE_DROPDOWN);
-                        spinner.setAdapter(new ArrayAdapter<String>(getContext(),R.layout.support_simple_spinner_dropdown_item,new String[]{"수정","삭제"}));
+                        Spinner spinner = new Spinner(getContext(), Spinner.MODE_DROPDOWN);
+                        spinner.setAdapter(new ArrayAdapter<String>(getContext(), R.layout.support_simple_spinner_dropdown_item, new String[]{"수정", "삭제"}));
                     }
                 });
             }
@@ -137,10 +137,10 @@ public class FragmentAbilityOpportunity extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_add_ability: // 갖출 능력
-                ((ActivityAbilityOpportunity)getActivity()).replaceFragment(new FragmentAddAbilityOpportunity(),true);
+                ((ActivityAbilityOpportunity) getActivity()).replaceFragment(new FragmentAddAbilityOpportunity(), true);
                 break;
             case R.id.iv_add_opportunity: // 만들고픈 기회
-                ((ActivityAbilityOpportunity)getActivity()).replaceFragment(new FragmentAddAbilityOpportunity(),true);
+                ((ActivityAbilityOpportunity) getActivity()).replaceFragment(new FragmentAddAbilityOpportunity(), true);
                 break;
         }
     }

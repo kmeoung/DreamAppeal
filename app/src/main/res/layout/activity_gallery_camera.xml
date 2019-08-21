@@ -24,12 +24,12 @@
             android:visibility="visible" />
 
         <Spinner
+            android:id="@+id/sp_title"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:id="@+id/sp_title"
             android:fontFamily="@font/nanum_square_round_r"
-            android:gravity="center"/>
+            android:gravity="center" />
 
         <TextView
             android:id="@+id/tv_text_btn"

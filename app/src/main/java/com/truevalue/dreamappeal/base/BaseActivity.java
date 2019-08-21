@@ -104,11 +104,12 @@ public class BaseActivity extends AppCompatActivity {
             getWindow().setNavigationBarColor(color);
         }
     }
-    public void replaceFragment(int container, Fragment fragment, boolean addToStack){
+
+    public void replaceFragment(int container, Fragment fragment, boolean addToStack) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(container, fragment);
-        if(addToStack){
+        if (addToStack) {
             ft.addToBackStack(null);
         }
         ft.commit();
@@ -116,16 +117,17 @@ public class BaseActivity extends AppCompatActivity {
 
     /**
      * with animation
+     *
      * @param container
      * @param fragment
      * @param addToStack
      */
-    public void replaceFragmentLeft(int container, Fragment fragment, boolean addToStack){
+    public void replaceFragmentLeft(int container, Fragment fragment, boolean addToStack) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right, R.anim.slide_in_right, R.anim.slide_out_left);
         ft.replace(container, fragment);
-        if(addToStack){
+        if (addToStack) {
             ft.addToBackStack(null);
         }
         ft.commit();
@@ -133,17 +135,18 @@ public class BaseActivity extends AppCompatActivity {
 
     /**
      * with animation
+     *
      * @param container
      * @param fragment
      * @param addToStack
      */
 
-    public void replaceFragmentRight(int container, Fragment fragment, boolean addToStack){
+    public void replaceFragmentRight(int container, Fragment fragment, boolean addToStack) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
         ft.replace(container, fragment);
-        if(addToStack){
+        if (addToStack) {
             ft.addToBackStack(null);
         }
         ft.commit();

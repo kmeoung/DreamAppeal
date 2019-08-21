@@ -83,12 +83,12 @@ public class FragmentNormalLogin extends BaseFragment implements IOBaseTitleBarL
         String id = mEtId.getText().toString();
         String password = mEtPassword.getText().toString();
 
-        if(TextUtils.isEmpty(id)){
+        if (TextUtils.isEmpty(id)) {
             Toast.makeText(getContext(), "아이디를 입력해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if(TextUtils.isEmpty(password)){
+        if (TextUtils.isEmpty(password)) {
             Toast.makeText(getContext(), "비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -121,7 +121,7 @@ public class FragmentNormalLogin extends BaseFragment implements IOBaseTitleBarL
                     startActivity(intent);
                     getActivity().finish();
 
-                }else{
+                } else {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {

@@ -82,10 +82,10 @@
             android:id="@+id/tv_comment_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
             android:text="10분전"
             android:textColor="@color/gray"
-            android:textSize="9.5sp"
-            android:layout_marginRight="10dp"/>
+            android:textSize="9.5sp" />
 
         <LinearLayout
             android:id="@+id/ll_cheering"

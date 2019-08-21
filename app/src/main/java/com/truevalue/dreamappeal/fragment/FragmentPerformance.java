@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -89,6 +90,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
 
     /**
      * Header ViewPager 대표성과
+     *
      * @param h
      * @param i
      */
@@ -107,6 +109,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
 
     /**
      * 최근 성과
+     *
      * @param h
      * @param i
      */
@@ -153,7 +156,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
 
         @Override
         public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-            container.removeView((View)object);
+            container.removeView((View) object);
         }
 
         @Override
@@ -165,7 +168,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
         @NonNull
         @Override
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
-            View view = mInflater.inflate(R.layout.layout_achivement,container,false);
+            View view = mInflater.inflate(R.layout.layout_achivement, container, false);
             container.addView(view);
             return view;
         }

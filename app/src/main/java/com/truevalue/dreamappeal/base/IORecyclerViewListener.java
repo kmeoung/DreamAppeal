@@ -2,6 +2,7 @@ package com.truevalue.dreamappeal.base;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.ViewGroup;
 
 public interface IORecyclerViewListener {

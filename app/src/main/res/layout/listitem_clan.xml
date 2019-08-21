@@ -1,42 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="left">
+    android:gravity="left"
+    android:orientation="horizontal">
 
     <ImageView
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:src="@drawable/ic_bag"
-        android:layout_marginRight="13dp"/>
+        android:layout_marginRight="13dp"
+        android:src="@drawable/ic_bag" />
 
     <TextView
+        android:id="@+id/tv_clan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/nanum_square_round_b"
-        android:textColor="@color/black"
         android:text="제주대학교"
-        android:textSize="16sp"
-        android:id="@+id/tv_clan"/>
+        android:textColor="@color/black"
+        android:textSize="16sp" />
 
     <!--space-->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/nanum_square_round_b"
-        android:textColor="@color/black"
         android:text=" "
+        android:textColor="@color/black"
         android:textSize="16sp" />
     <!--space-->
 
     <TextView
+        android:id="@+id/tv_rank"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/nanum_square_round_r"
-        android:textColor="@color/black"
         android:text="총장"
-        android:textSize="16sp"
-        android:id="@+id/tv_rank"/>
+        android:textColor="@color/black"
+        android:textSize="16sp" />
 
 
 </LinearLayout>

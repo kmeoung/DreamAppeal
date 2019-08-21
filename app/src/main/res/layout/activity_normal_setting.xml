@@ -7,9 +7,9 @@
     android:orientation="vertical">
 
     <View
+        android:id="@+id/v_status"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:id="@+id/v_status"/>
+        android:layout_height="0dp" />
 
     <!--툴바-->
     <com.truevalue.dreamappeal.base.BaseTitleBar
@@ -40,43 +40,43 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
                 android:fontFamily="@font/nanum_square_round_b"
-                android:textSize="27sp"
                 android:text="기본정보"
                 android:textColor="#305c84"
-                android:layout_marginTop="50dp"/>
+                android:textSize="27sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="13dp"
-                android:orientation="vertical"
-                android:background="@drawable/box_gray">
+                android:background="@drawable/box_gray"
+                android:orientation="vertical">
 
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:gravity="center_vertical">
+                    android:paddingRight="10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/nanum_square_round_r"
                         android:text="이름: "
                         android:textColor="#0055b5"
-                        android:textSize="22sp"
-                        android:fontFamily="@font/nanum_square_round_r"/>
+                        android:textSize="22sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/nanum_square_round_r"
                         android:text="이름"
                         android:textColor="@color/black"
-                        android:textSize="22sp"
-                        android:fontFamily="@font/nanum_square_round_r"/>
+                        android:textSize="22sp" />
                 </LinearLayout>
 
             </LinearLayout>

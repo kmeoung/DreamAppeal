@@ -46,7 +46,6 @@
         android:layout_gravity="left"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="10dp"
-        android:paddingLeft="7dp"
         android:background="@drawable/edit_text_bg_gray"
         android:fontFamily="@font/nanum_square_round_r"
         android:gravity="left|center_vertical"
@@ -55,6 +54,7 @@
         android:inputType="text"
         android:lines="1"
         android:maxLines="1"
+        android:paddingLeft="7dp"
         android:textColor="@color/black"
         android:textColorHint="@color/color_hint"
         android:textSize="14sp" />
@@ -187,7 +187,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:minHeight="44dp"/>
+        android:minHeight="44dp" />
     <!--Divider-->
     <ImageView
         android:layout_width="match_parent"

@@ -124,15 +124,15 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
                     Manifest.permission.CAMERA)) {
             } else {
                 ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE},0);
+                        new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
             }
         }
         getGallery();
     }
 
-    private void getGallery(){
+    private void getGallery() {
         // which image properties are we querying
-        String[] projection = new String[] {
+        String[] projection = new String[]{
                 MediaStore.Images.Media._ID,
                 MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
                 MediaStore.Images.Media.DATE_TAKEN
@@ -143,9 +143,9 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
 
 // Make the query.
 
-        Cursor cur = getContext().getContentResolver().query(images,projection,null,null,null);
+        Cursor cur = getContext().getContentResolver().query(images, projection, null, null, null);
 
-        Log.i("ListingImages"," query count=" + cur.getCount());
+        Log.i("ListingImages", " query count=" + cur.getCount());
 
         if (cur.moveToFirst()) {
             String bucket;
@@ -208,7 +208,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
         });
     }
 
-    @OnClick({R.id.ll_dreams, R.id.ll_follower,R.id.ll_merit_and_motive,
+    @OnClick({R.id.ll_dreams, R.id.ll_follower, R.id.ll_merit_and_motive,
             R.id.iv_dream_profile, R.id.btn_dream_description_more,
             R.id.btn_merit_and_motive_more, R.id.ll_comment,
             R.id.ll_cheering, R.id.ll_dream_title, R.id.tv_dream_description})

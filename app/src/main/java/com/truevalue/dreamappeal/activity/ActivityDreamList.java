@@ -65,7 +65,7 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
         mAdapter = new BaseRecyclerViewAdapter(ActivityDreamList.this, this);
         mRvDreamList.setAdapter(mAdapter);
         mRvDreamList.setLayoutManager(new LinearLayoutManager(ActivityDreamList.this));
-        BaseItemDecorationVertical item = new BaseItemDecorationVertical(ActivityDreamList.this,6);
+        BaseItemDecorationVertical item = new BaseItemDecorationVertical(ActivityDreamList.this, 6);
         mRvDreamList.addItemDecoration(item);
         // Set Edit Mode
         isEditMode(false);
@@ -156,7 +156,7 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
         switch (view.getId()) {
             case R.id.ibtn_add_dream_list: // 드림 리스트 추가 버튼
                 // 버튼이 활성화 되어 있을 경우에만
-                if(mIbtnAddDreamList.isEnabled()){
+                if (mIbtnAddDreamList.isEnabled()) {
 
                 }
                 break;

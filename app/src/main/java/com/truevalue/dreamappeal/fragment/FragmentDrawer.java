@@ -49,12 +49,12 @@ public class FragmentDrawer extends BaseFragment {
                 dialog.show();
                 break;
             case R.id.ll_logout:
-                Toast.makeText(getContext(),"성공적으로 로그아웃 되었습니다.",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "성공적으로 로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
 
                 Comm_Prefs prefs = new Comm_Prefs(getContext());
                 prefs.setLogined(false);
 
-                Intent intent = new Intent(getContext(),ActivityLogin.class);
+                Intent intent = new Intent(getContext(), ActivityLogin.class);
                 startActivity(intent);
                 getActivity().finish();
                 break;

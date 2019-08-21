@@ -14,7 +14,7 @@ public class BaseItemDecorationHorizontal extends RecyclerView.ItemDecoration {
     private final int divWidth;
 
     public BaseItemDecorationHorizontal(Context context, int divDp) {
-        int pixel = Utils.DpToPixel(context,divDp);
+        int pixel = Utils.DpToPixel(context, divDp);
         this.divWidth = pixel;
     }
 

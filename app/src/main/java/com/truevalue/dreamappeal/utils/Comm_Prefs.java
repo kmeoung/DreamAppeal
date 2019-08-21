@@ -17,12 +17,20 @@ public class Comm_Prefs {
         pref = mContext.getSharedPreferences(Comm_Param.APP_NAME, MODE_PRIVATE);
     }
 
-    public void setLogined(boolean isLogin){
-        pref.edit().putBoolean(Comm_Prefs_Param.PREFS_IS_LOGIN,isLogin).commit();
+    public void setLogined(boolean isLogin) {
+        pref.edit().putBoolean(Comm_Prefs_Param.PREFS_IS_LOGIN, isLogin).commit();
     }
 
-    public boolean isLogin(){
-        return pref.getBoolean(Comm_Prefs_Param.PREFS_IS_LOGIN,false);
+    public boolean isLogin() {
+        return pref.getBoolean(Comm_Prefs_Param.PREFS_IS_LOGIN, false);
+    }
+
+    public void setUserName(String name){
+        pref.edit().putString(Comm_Prefs_Param.PREFS_USER_NAME,name).commit();
+    }
+
+    public String getUserName(){
+        return pref.getString(Comm_Prefs_Param.PREFS_USER_NAME,null);
     }
 
 }

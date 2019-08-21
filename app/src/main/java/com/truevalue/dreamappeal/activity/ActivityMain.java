@@ -90,7 +90,7 @@ public class ActivityMain extends BaseActivity implements IOBaseTitleBarListener
      * @param isTextBtn
      */
     public void showToolbarBtn(String isBack, String isMenu, String isSearch, String isTextBtn) {
-        mBtbBar.showToolbarBtn(isBack,isMenu,isSearch,isTextBtn);
+        mBtbBar.showToolbarBtn(isBack, isMenu, isSearch, isTextBtn);
     }
 
     /**

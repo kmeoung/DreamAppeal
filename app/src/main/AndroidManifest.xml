@@ -66,6 +66,9 @@
         <activity android:name=".activity.ActivityAbilityOpportunity"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".activity.ActivityAchivementIng"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>

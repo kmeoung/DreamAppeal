@@ -30,15 +30,20 @@ public class ActivityIntro extends BaseActivity {
             super.handleMessage(msg);
             Comm_Prefs prefs = new Comm_Prefs(ActivityIntro.this);
 
-            if (prefs.isLogin()) { // 바로 메인
-                Intent intent = new Intent(ActivityIntro.this, ActivityMain.class);
-                startActivity(intent);
-                finish();
-            } else { // 로그인 페이지
-                Intent intent = new Intent(ActivityIntro.this, ActivityLogin.class);
-                startActivity(intent);
-                finish();
-            }
+//            if (prefs.isLogin()) { // 바로 메인
+//                Intent intent = new Intent(ActivityIntro.this, ActivityMain.class);
+//                startActivity(intent);
+//                finish();
+//            } else { // 로그인 페이지
+//                Intent intent = new Intent(ActivityIntro.this, ActivityLogin.class);
+//                startActivity(intent);
+//                finish();
+//            }
+
+            // TODO : 테스트용
+            Intent intent = new Intent(ActivityIntro.this, ActivityMain.class);
+            startActivity(intent);
+            finish();
         }
     };
 

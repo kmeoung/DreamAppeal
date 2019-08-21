@@ -53,10 +53,10 @@ public class FragmentLogin extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_login: // 로그인 버튼
-                replaceFragmentRight(R.id.login_container,new FragmentNormalLogin(),true);
+                replaceFragmentRight(R.id.login_container, new FragmentNormalLogin(), true);
                 break;
             case R.id.btn_register: // 회원가입 버튼
-                replaceFragmentRight(R.id.login_container,new FragmentRegister(),true);
+                replaceFragmentRight(R.id.login_container, new FragmentRegister(), true);
                 break;
         }
     }

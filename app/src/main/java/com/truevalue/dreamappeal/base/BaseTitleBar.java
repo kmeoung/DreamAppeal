@@ -80,9 +80,9 @@ public class BaseTitleBar extends LinearLayout {
      * @param title
      * @param rightText
      */
-    public void showToolbarBtn(String isBack, String isMenu, String isSearch, String isRightText,String title,String rightText) {
+    public void showToolbarBtn(String isBack, String isMenu, String isSearch, String isRightText, String title, String rightText) {
         // 메뉴
-        switch (isMenu){
+        switch (isMenu) {
             case VISIBLE:
                 mIvMenu.setVisibility(View.VISIBLE);
                 break;
@@ -97,7 +97,7 @@ public class BaseTitleBar extends LinearLayout {
         }
 
         // 검색
-        switch (isSearch){
+        switch (isSearch) {
             case VISIBLE:
                 mIvSearch.setVisibility(View.VISIBLE);
                 break;
@@ -111,7 +111,7 @@ public class BaseTitleBar extends LinearLayout {
                 mIvSearch.setVisibility(View.GONE);
         }
         // 뒤로가기
-        switch (isBack){
+        switch (isBack) {
             case VISIBLE:
                 mIvBack.setVisibility(View.VISIBLE);
                 break;
@@ -125,7 +125,7 @@ public class BaseTitleBar extends LinearLayout {
                 mIvBack.setVisibility(View.GONE);
         }
         // 오른쪽 버튼
-        switch (isRightText){
+        switch (isRightText) {
             case VISIBLE:
                 mTvTextBtn.setVisibility(View.VISIBLE);
                 break;
@@ -140,11 +140,11 @@ public class BaseTitleBar extends LinearLayout {
         }
 
         // 타이틀
-        if(title != null)
-        mTvTitle.setText(title);
+        if (title != null)
+            mTvTitle.setText(title);
         // 오른쪽 버튼
-        if(rightText != null)
-        mTvTextBtn.setText(rightText);
+        if (rightText != null)
+            mTvTextBtn.setText(rightText);
     }
 
     /**
@@ -156,7 +156,7 @@ public class BaseTitleBar extends LinearLayout {
      * @param isRightText
      */
     public void showToolbarBtn(String isBack, String isMenu, String isSearch, String isRightText) {
-        showToolbarBtn(isBack,isMenu,isSearch,isRightText,null,null);
+        showToolbarBtn(isBack, isMenu, isSearch, isRightText, null, null);
     }
 
 
@@ -182,7 +182,7 @@ public class BaseTitleBar extends LinearLayout {
         float titleSize = typedArray.getFloat(R.styleable.BaseTitleBar_title_size, 16);
 
         // 메뉴
-        switch (isMenu){
+        switch (isMenu) {
             case VISIBLE:
                 mIvMenu.setVisibility(View.VISIBLE);
                 break;
@@ -197,7 +197,7 @@ public class BaseTitleBar extends LinearLayout {
         }
 
         // 검색
-        switch (isSearch){
+        switch (isSearch) {
             case VISIBLE:
                 mIvSearch.setVisibility(View.VISIBLE);
                 break;
@@ -211,7 +211,7 @@ public class BaseTitleBar extends LinearLayout {
                 mIvSearch.setVisibility(View.GONE);
         }
         // 뒤로가기
-        switch (isBack){
+        switch (isBack) {
             case VISIBLE:
                 mIvBack.setVisibility(View.VISIBLE);
                 break;
@@ -225,7 +225,7 @@ public class BaseTitleBar extends LinearLayout {
                 mIvBack.setVisibility(View.GONE);
         }
         // 오른쪽 버튼
-        switch (isRightText){
+        switch (isRightText) {
             case VISIBLE:
                 mTvTextBtn.setVisibility(View.VISIBLE);
                 break;
@@ -253,16 +253,16 @@ public class BaseTitleBar extends LinearLayout {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_menu: // 메뉴
-                if(mIOBaseTitleBarListener != null) mIOBaseTitleBarListener.OnClickMenu();
+                if (mIOBaseTitleBarListener != null) mIOBaseTitleBarListener.OnClickMenu();
                 break;
             case R.id.iv_back: // 뒤로가기
-                if(mIOBaseTitleBarListener != null) mIOBaseTitleBarListener.OnClickBack();
+                if (mIOBaseTitleBarListener != null) mIOBaseTitleBarListener.OnClickBack();
                 break;
             case R.id.iv_search: // 검색
-                if(mIOBaseTitleBarListener != null) mIOBaseTitleBarListener.OnClickSearch();
+                if (mIOBaseTitleBarListener != null) mIOBaseTitleBarListener.OnClickSearch();
                 break;
             case R.id.tv_text_btn: // 오른쪽 글자 버튼
-                if(mIOBaseTitleBarListener != null) mIOBaseTitleBarListener.OnClickRightTextBtn();
+                if (mIOBaseTitleBarListener != null) mIOBaseTitleBarListener.OnClickRightTextBtn();
                 break;
         }
     }

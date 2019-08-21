@@ -9,6 +9,7 @@ import com.truevalue.dreamappeal.base.BaseActivity;
 import com.truevalue.dreamappeal.fragment.FragmentLogin;
 
 import androidx.annotation.Nullable;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

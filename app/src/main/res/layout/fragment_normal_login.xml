@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@null"
     android:orientation="vertical">
 
@@ -33,9 +33,9 @@
         android:inputType="textEmailAddress"
         android:lines="1"
         android:maxLines="1"
-        android:textSize="13sp"
         android:paddingLeft="10dp"
-        android:textColorHint="@color/gray" />
+        android:textColorHint="@color/gray"
+        android:textSize="13sp" />
 
     <EditText
         android:id="@+id/et_password"
@@ -48,12 +48,12 @@
         android:fontFamily="@font/nanum_square_round_b"
         android:hint="비밀번호를 입력해주세요"
         android:imeOptions="actionDone"
-        android:textSize="13sp"
         android:inputType="textPassword"
         android:lines="1"
         android:maxLines="1"
         android:paddingLeft="10dp"
-        android:textColorHint="@color/gray" />
+        android:textColorHint="@color/gray"
+        android:textSize="13sp" />
 
     <Button
         android:id="@+id/btn_login"

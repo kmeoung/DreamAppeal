@@ -18,6 +18,7 @@ public class Utils {
 
     /**
      * DpToPixel 코드
+     *
      * @param context
      * @param DP
      * @return
@@ -30,6 +31,7 @@ public class Utils {
 
     /**
      * 휴대전화 이미지 가져오기
+     *
      * @param context
      * @return
      */

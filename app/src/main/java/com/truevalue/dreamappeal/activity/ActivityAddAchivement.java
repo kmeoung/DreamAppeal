@@ -123,7 +123,7 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_add_img: // 이미지 추가 버튼
-                Intent intent = new Intent(ActivityAddAchivement.this,ActivityGalleryCamera.class);
+                Intent intent = new Intent(ActivityAddAchivement.this, ActivityGalleryCamera.class);
                 startActivity(intent);
                 break;
             case R.id.btn_edit: // 수정 버튼

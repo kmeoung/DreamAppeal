@@ -14,7 +14,7 @@ public class BaseItemDecorationVertical extends RecyclerView.ItemDecoration {
     private final int divHeight;
 
     public BaseItemDecorationVertical(Context context, int divDp) {
-        int pixel = Utils.DpToPixel(context,divDp);
+        int pixel = Utils.DpToPixel(context, divDp);
         this.divHeight = pixel;
     }
 

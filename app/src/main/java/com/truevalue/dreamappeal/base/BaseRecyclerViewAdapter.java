@@ -1,8 +1,10 @@
 package com.truevalue.dreamappeal.base;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -52,7 +54,7 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter {
 
     public void add(T t) {
         boolean ok = mList.add(t);
-        if(ok) notifyDataSetChanged();
+        if (ok) notifyDataSetChanged();
     }
 
     public T get(int i) {
@@ -73,8 +75,8 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
-    public T set(int index, T object){
-        T model = mList.set(index,object);
+    public T set(int index, T object) {
+        T model = mList.set(index, object);
         notifyDataSetChanged();
         return model;
     }

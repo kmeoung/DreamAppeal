@@ -57,7 +57,7 @@ public class ActivityMeritAndMotive extends BaseActivity implements IOBaseTitleB
             mEtMeritAndMotive.setFocusableInTouchMode(true);
             mEtMeritAndMotive.requestFocus();
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(mEtMeritAndMotive,0);
+            imm.showSoftInput(mEtMeritAndMotive, 0);
             mTvHint.setVisibility(View.GONE);
         });
     }

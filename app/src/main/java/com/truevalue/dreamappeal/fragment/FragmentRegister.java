@@ -161,27 +161,27 @@ public class FragmentRegister extends BaseFragment implements IOBaseTitleBarList
         String rePassword = mEtRePassword.getText().toString();
         String name = mEtName.getText().toString();
 
-        if(TextUtils.isEmpty(name)){
+        if (TextUtils.isEmpty(name)) {
             Toast.makeText(getContext(), "이름을 입력해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if(TextUtils.isEmpty(id)){
+        if (TextUtils.isEmpty(id)) {
             Toast.makeText(getContext(), "아이디를 입력해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if(!Utils.isEmailValid(id)){
+        if (!Utils.isEmailValid(id)) {
             Toast.makeText(getContext(), "아이디를 이메일형식으로 입력해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if(TextUtils.isEmpty(password)){
+        if (TextUtils.isEmpty(password)) {
             Toast.makeText(getContext(), "비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if(!TextUtils.equals(password,rePassword)){
+        if (!TextUtils.equals(password, rePassword)) {
             Toast.makeText(getContext(), "비밀번호가 서로 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -189,7 +189,7 @@ public class FragmentRegister extends BaseFragment implements IOBaseTitleBarList
         body.put("user_id", id);
         body.put("user_password", password);
         body.put("user_name", name);
-        String gender = (!isGender)? "male":"female";
+        String gender = (!isGender) ? "male" : "female";
         body.put("user_gender", gender);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String birth = sdf.format(mCal.getTime());

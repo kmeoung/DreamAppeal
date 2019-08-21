@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -45,7 +46,7 @@ public class FragmentProfile extends BaseFragment {
     public void onResume() {
         super.onResume();
         // 상단바 설정
-        ((ActivityMain)getActivity()).showToolbarBtn(BaseTitleBar.GONE,BaseTitleBar.VISIBLE,BaseTitleBar.VISIBLE,BaseTitleBar.GONE);
+        ((ActivityMain) getActivity()).showToolbarBtn(BaseTitleBar.GONE, BaseTitleBar.VISIBLE, BaseTitleBar.VISIBLE, BaseTitleBar.GONE);
     }
 
     /**
@@ -65,7 +66,7 @@ public class FragmentProfile extends BaseFragment {
         mTlTab.setupWithViewPager(mVpViewpager);
         mVpViewpager.setAdapter(new ViewPagerAdapter(getActivity().getSupportFragmentManager()));
 
-        for (int i = 0;i < mTabList.size();i++){
+        for (int i = 0; i < mTabList.size(); i++) {
             mTlTab.getTabAt(i).setText(mTabList.get(i));
         }
     }

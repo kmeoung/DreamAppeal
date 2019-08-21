@@ -88,36 +88,36 @@
             android:textSize="9.5sp" />
 
         <TextView
+            android:id="@+id/tv_add_reply"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="답글달기"
-            android:textSize="13sp"
-            android:textColor="@color/gray"
-            android:id="@+id/tv_add_reply"
             android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"/>
+            android:layout_marginRight="12dp"
+            android:text="답글달기"
+            android:textColor="@color/gray"
+            android:textSize="13sp" />
 
         <LinearLayout
+            android:id="@+id/ll_cheering"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:id="@+id/ll_cheering"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/iv_cheering"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@drawable/flame"
-                android:id="@+id/iv_cheering"/>
+                android:src="@drawable/flame" />
 
             <TextView
+                android:id="@+id/tv_cheering"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="10sp"
-                android:textColor="@color/gray"
-                android:id="@+id/tv_cheering"
                 android:layout_marginLeft="6dp"
-                android:text="0개"/>
+                android:text="0개"
+                android:textColor="@color/gray"
+                android:textSize="10sp" />
 
         </LinearLayout>
 
@@ -126,27 +126,27 @@
 
     <!--대댓글-->
     <LinearLayout
+        android:id="@+id/ll_reply"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginTop="15dp"
-        android:id="@+id/ll_reply"
+        android:orientation="horizontal"
         android:visibility="gone">
 
         <ImageView
             android:layout_width="17dp"
             android:layout_height="15dp"
-            android:src="@drawable/reply"
-            android:layout_marginLeft="12dp"/>
+            android:layout_marginLeft="12dp"
+            android:src="@drawable/reply" />
 
         <TextView
+            android:id="@+id/tv_reply_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="11sp"
-            android:textColor="@color/gray"
-            android:id="@+id/tv_reply_size"
             android:layout_marginLeft="8dp"
-            android:text="0개"/>
+            android:text="0개"
+            android:textColor="@color/gray"
+            android:textSize="11sp" />
 
 
     </LinearLayout>
