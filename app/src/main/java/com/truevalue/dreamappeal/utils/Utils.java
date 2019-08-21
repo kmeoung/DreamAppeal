@@ -31,6 +31,7 @@ public class Utils {
 
     /**
      * 휴대전화 이미지 가져오기
+     * TODO : JSON ARRAY 로 넘기는 것이 아닌 BEAN 형식으로 넘기는게 더 효율적
      *
      * @param context
      * @return

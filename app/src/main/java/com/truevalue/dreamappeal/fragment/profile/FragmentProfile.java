@@ -1,4 +1,4 @@
-package com.truevalue.dreamappeal.fragment;
+package com.truevalue.dreamappeal.fragment.profile;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

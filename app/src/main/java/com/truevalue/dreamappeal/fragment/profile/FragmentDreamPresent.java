@@ -1,4 +1,4 @@
-package com.truevalue.dreamappeal.fragment;
+package com.truevalue.dreamappeal.fragment.profile;
 
 import android.Manifest;
 import android.content.Intent;
@@ -25,30 +25,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.truevalue.dreamappeal.R;
-import com.truevalue.dreamappeal.activity.ActivityDreamDescription;
-import com.truevalue.dreamappeal.activity.ActivityDreamList;
-import com.truevalue.dreamappeal.activity.ActivityDreamPresentComment;
-import com.truevalue.dreamappeal.activity.ActivityDreamTitle;
-import com.truevalue.dreamappeal.activity.ActivityIntro;
-import com.truevalue.dreamappeal.activity.ActivityMeritAndMotive;
+import com.truevalue.dreamappeal.activity.profile.ActivityDreamDescription;
+import com.truevalue.dreamappeal.activity.profile.ActivityDreamList;
+import com.truevalue.dreamappeal.activity.profile.ActivityDreamPresentComment;
+import com.truevalue.dreamappeal.activity.profile.ActivityDreamTitle;
+import com.truevalue.dreamappeal.activity.profile.ActivityMeritAndMotive;
 import com.truevalue.dreamappeal.base.BaseFragment;
-import com.truevalue.dreamappeal.base.BaseOkHttpClient;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseViewHolder;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
-import com.truevalue.dreamappeal.utils.Comm_Param;
-
-import org.jetbrains.annotations.NotNull;
-
-import java.io.IOException;
-import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
 
 public class FragmentDreamPresent extends BaseFragment implements IORecyclerViewListener {
 

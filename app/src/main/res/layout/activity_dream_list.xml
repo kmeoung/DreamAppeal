@@ -31,14 +31,32 @@
         android:orientation="horizontal">
 
         <!--새 꿈 추가하기-->
-        <ImageButton
-            android:id="@+id/ibtn_add_dream_list"
-            android:layout_width="150dp"
-            android:layout_height="48dp"
-            android:layout_marginLeft="10dp"
-            android:background="@null"
-            android:scaleType="centerInside"
-            android:src="@drawable/add_dream_list" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:id="@+id/ll_add_dream"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_add_dream"
+                android:layout_marginRight="7dp"
+                android:layout_marginLeft="5dp"
+                android:id="@+id/iv_add_dream"
+                android:scaleType="centerCrop"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="새 꿈 추가하기"
+                android:textColor="@color/color_add_dream"
+                android:textSize="20sp"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:id="@+id/tv_add_dream"/>
+
+        </LinearLayout>
         <!--새 꿈 추가하기-->
 
         <Space

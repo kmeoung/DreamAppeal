@@ -1,4 +1,4 @@
-package com.truevalue.dreamappeal.fragment;
+package com.truevalue.dreamappeal.fragment.profile;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.truevalue.dreamappeal.R;
-import com.truevalue.dreamappeal.activity.ActivityAchivementDetail;
-import com.truevalue.dreamappeal.activity.ActivityAddAchivement;
+import com.truevalue.dreamappeal.activity.profile.ActivityAchivementDetail;
+import com.truevalue.dreamappeal.activity.profile.ActivityAddAchivement;
 import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseViewHolder;

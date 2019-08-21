@@ -1,4 +1,4 @@
-package com.truevalue.dreamappeal.fragment;
+package com.truevalue.dreamappeal.fragment.login;
 
 import android.content.Intent;
 import android.os.Bundle;

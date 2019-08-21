@@ -1,4 +1,4 @@
-package com.truevalue.dreamappeal.activity;
+package com.truevalue.dreamappeal.activity.profile;
 
 import android.os.Bundle;
 import android.view.View;

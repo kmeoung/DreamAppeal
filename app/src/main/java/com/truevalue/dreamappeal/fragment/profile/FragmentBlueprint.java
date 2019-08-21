@@ -1,4 +1,4 @@
-package com.truevalue.dreamappeal.fragment;
+package com.truevalue.dreamappeal.fragment.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.truevalue.dreamappeal.R;
-import com.truevalue.dreamappeal.activity.ActivityAbilityOpportunity;
+import com.truevalue.dreamappeal.activity.profile.ActivityAbilityOpportunity;
 import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseViewHolder;

@@ -1,12 +1,12 @@
-package com.truevalue.dreamappeal.activity;
+package com.truevalue.dreamappeal.activity.profile;
 
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,12 +32,16 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
     View mVStatus;
     @BindView(R.id.btb_bar)
     BaseTitleBar mBtbBar;
-    @BindView(R.id.ibtn_add_dream_list)
-    ImageButton mIbtnAddDreamList;
     @BindView(R.id.rv_dream_list)
     RecyclerView mRvDreamList;
     @BindView(R.id.btn_edit)
     Button mBtnEdit;
+    @BindView(R.id.iv_add_dream)
+    ImageView mIvAddDream;
+    @BindView(R.id.tv_add_dream)
+    TextView mTvAddDream;
+    @BindView(R.id.ll_add_dream)
+    LinearLayout mLlAddDream;
 
     private BaseRecyclerViewAdapter mAdapter;
     private boolean isEdit = false;
@@ -53,7 +57,6 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
         mBtbBar.setIOBaseTitleBarListener(this);
         // Init Adapter
         initAdapter();
-
         // Bind Temp Data
         bindTempData();
     }
@@ -89,12 +92,14 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
     private void isEditMode(boolean isEdit) {
         this.isEdit = isEdit;
         if (isEdit) { // 수정 모드일 경우
-            mIbtnAddDreamList.setColorFilter(R.color.gray);
-            mIbtnAddDreamList.setEnabled(false);
+            mLlAddDream.setEnabled(false);
+            mTvAddDream.setEnabled(false);
+            mIvAddDream.setEnabled(false);
             mBtnEdit.setText("확인");
         } else { // 수정 모드가 아닐 경우
-            mIbtnAddDreamList.setColorFilter(R.color.colorAccent);
-            mIbtnAddDreamList.setEnabled(true);
+            mLlAddDream.setEnabled(true);
+            mTvAddDream.setEnabled(true);
+            mIvAddDream.setEnabled(true);
             mBtnEdit.setText("편집");
         }
         mAdapter.notifyDataSetChanged();
@@ -151,12 +156,12 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
         return 0;
     }
 
-    @OnClick({R.id.ibtn_add_dream_list, R.id.btn_edit})
+    @OnClick({R.id.ll_add_dream, R.id.btn_edit})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.ibtn_add_dream_list: // 드림 리스트 추가 버튼
+            case R.id.ll_add_dream: // 드림 리스트 추가 버튼
                 // 버튼이 활성화 되어 있을 경우에만
-                if (mIbtnAddDreamList.isEnabled()) {
+                if (mLlAddDream.isEnabled()) {
 
                 }
                 break;

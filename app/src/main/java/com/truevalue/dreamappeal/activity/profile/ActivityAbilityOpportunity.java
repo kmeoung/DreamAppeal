@@ -1,4 +1,4 @@
-package com.truevalue.dreamappeal.activity;
+package com.truevalue.dreamappeal.activity.profile;
 
 import android.os.Bundle;
 import android.view.View;
@@ -11,7 +11,7 @@ import com.truevalue.dreamappeal.base.BaseActivity;
 import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
-import com.truevalue.dreamappeal.fragment.FragmentAbilityOpportunity;
+import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentAbilityOpportunity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

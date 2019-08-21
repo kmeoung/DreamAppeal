@@ -6,7 +6,7 @@ import android.widget.FrameLayout;
 
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.base.BaseActivity;
-import com.truevalue.dreamappeal.fragment.FragmentLogin;
+import com.truevalue.dreamappeal.fragment.login.FragmentLogin;
 
 import androidx.annotation.Nullable;
 
