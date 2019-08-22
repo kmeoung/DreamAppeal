@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -198,7 +197,7 @@ public class FragmentRegister extends BaseFragment implements IOBaseTitleBarList
         body.put("privacy_agt", "1"); // 개인정보 동의 1
 
 
-        client.Post(Comm_Param.TEMP_URL_PROCESS_SIGNUP, body, new IOServerCallback() {
+        client.Post(Comm_Param.URL_API_PROCESS_SIGNUP, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();

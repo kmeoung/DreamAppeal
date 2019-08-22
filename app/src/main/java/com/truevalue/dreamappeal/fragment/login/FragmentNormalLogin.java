@@ -23,7 +23,6 @@ import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.base.IOServerCallback;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
-import com.truevalue.dreamappeal.utils.Utils;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -97,7 +96,7 @@ public class FragmentNormalLogin extends BaseFragment implements IOBaseTitleBarL
         body.put("login_password", password);
 
 
-        client.Post(Comm_Param.TEMP_URL_PROCESS_SIGNIN, body, new IOServerCallback() {
+        client.Post(Comm_Param.URL_API_PROCESS_SIGNIN, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();

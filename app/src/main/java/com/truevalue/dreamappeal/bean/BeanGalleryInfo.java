@@ -7,6 +7,10 @@ public class BeanGalleryInfo {
     private String bucketId;
     private String imagePath;
 
+    public BeanGalleryInfo(){
+
+    }
+
     public BeanGalleryInfo(String bucketName, String bucketId, String imagePath) {
         this.bucketName = bucketName;
         this.bucketId = bucketId;

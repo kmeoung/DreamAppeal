@@ -13,6 +13,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -20,11 +21,8 @@ import com.bumptech.glide.Glide;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.base.BaseActivity;
 import com.truevalue.dreamappeal.bean.BeanGalleryInfo;
+import com.truevalue.dreamappeal.bean.BeanGalleryInfoList;
 import com.truevalue.dreamappeal.utils.Utils;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -44,6 +42,8 @@ public class ActivityGalleryCamera extends BaseActivity {
     TextView mTvTextBtn;
     @BindView(R.id.gv_gallery)
     GridView mGvGallery;
+    @BindView(R.id.iv_select_image)
+    ImageView mIvSelectImage;
 
     private ArrayList<BeanGalleryInfo> mOldPath;
     private ArrayList<BeanGalleryInfo> mItemPath;
@@ -60,50 +60,66 @@ public class ActivityGalleryCamera extends BaseActivity {
         mBucked = new ArrayList<>();
         mItemPath = new ArrayList<>();
 
+        boolean firstImage = false;
 
-//        mImagePath = Utils.getImageFilePath(ActivityGalleryCamera.this);
-        JSONObject object = Utils.getImageFilePath(ActivityGalleryCamera.this);
-        try {
-            JSONArray imageInfo = object.getJSONArray("image_info");
-            JSONArray bucketNameList = object.getJSONArray("bucket_name_list");
-            JSONArray bucketIdList = object.getJSONArray("bucket_id_list");
+        BeanGalleryInfoList beanGallery = Utils.getImageFilePath(ActivityGalleryCamera.this);
+        ArrayList<BeanGalleryInfo> beanImageInfoList = beanGallery.getImageInfoList();
+        ArrayList<String> bucketNameList = beanGallery.getBucketList();
+        ArrayList<String> bucketIdList = beanGallery.getBucketIdList();
 
-            ArrayList<String> strBucketNameList = new ArrayList<>();
-            for (int i = 0; i < bucketNameList.length(); i++) {
-                String title = bucketNameList.getString(i);
-                String id = bucketIdList.getString(i);
-                mBucked.add(new BeanGalleryInfo(title, id, null));
-                strBucketNameList.add(title);
+        ArrayList<String> strBucketNameList = new ArrayList<>();
+        for (int i = 0; i < bucketNameList.size(); i++) {
+            String title = bucketNameList.get(i);
+            String id = bucketIdList.get(i);
+            mBucked.add(new BeanGalleryInfo(title, id, null));
+            strBucketNameList.add(title);
+        }
+
+        ArrayAdapter arrayAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, strBucketNameList);
+        mSpTitle.setAdapter(arrayAdapter);
+
+        for (int i = 0; i < beanImageInfoList.size(); i++) {
+            BeanGalleryInfo imageObject = beanImageInfoList.get(i);
+            String imagePath = imageObject.getImagePath();
+            String bucketId = imageObject.getBucketId();
+            String bucketName = imageObject.getBucketName();
+            mOldPath.add(new BeanGalleryInfo(bucketName, bucketId, imagePath));
+            mItemPath.add(new BeanGalleryInfo(bucketName, bucketId, imagePath));
+
+            if(!firstImage) {
+                Glide.with(ActivityGalleryCamera.this).load(mItemPath.get(0).getImagePath()).into(mIvSelectImage);
+                firstImage = true;
             }
-
-            ArrayAdapter arrayAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, strBucketNameList);
-            mSpTitle.setAdapter(arrayAdapter);
-
-            for (int i = 0; i < imageInfo.length(); i++) {
-                JSONObject imageObject = imageInfo.getJSONObject(i);
-                String imagePath = imageObject.getString("image_path");
-                String bucketId = imageObject.getString("image_bucket_id");
-                String bucketName = imageObject.getString("image_bucket_name");
-                mOldPath.add(new BeanGalleryInfo(bucketName, bucketId, imagePath));
-                mItemPath.add(new BeanGalleryInfo(bucketName, bucketId, imagePath));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
         GridAdapter mGridAdapter = new GridAdapter(ActivityGalleryCamera.this, mItemPath);
         mGvGallery.setAdapter(mGridAdapter);
+
+        mGvGallery.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(ActivityGalleryCamera.this,mItemPath.get(i).getImagePath(),Toast.LENGTH_SHORT).show();
+                Glide.with(ActivityGalleryCamera.this).load(mItemPath.get(i).getImagePath()).into(mIvSelectImage);
+            }
+        });
 
         mSpTitle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 BeanGalleryInfo bean = mBucked.get(position);
                 mItemPath.clear();
-                for (int i = 0; i < mOldPath.size(); i++) {
-                    BeanGalleryInfo oldBean = mOldPath.get(i);
-                    if (TextUtils.equals(bean.getBucketId(), oldBean.getBucketId())) {
-                        mItemPath.add(oldBean);
+                if (TextUtils.equals(bean.getBucketId(), "All")) {
+                    mItemPath.addAll(mOldPath);
+                } else {
+                    for (int i = 0; i < mOldPath.size(); i++) {
+                        BeanGalleryInfo oldBean = mOldPath.get(i);
+                        if (TextUtils.equals(bean.getBucketId(), oldBean.getBucketId())) {
+                            mItemPath.add(oldBean);
+                        }
                     }
                 }
+                // 이미지뷰 초기화
+                Glide.with(ActivityGalleryCamera.this).load(mItemPath.get(0).getImagePath()).into(mIvSelectImage);
+
                 mGridAdapter.notifyDataSetChanged();
             }
 

@@ -54,7 +54,6 @@
                         android:textColor="@color/black"
                         android:textSize="19.36sp" />
 
-
                 </LinearLayout>
                 <!--나의 꿈-->
                 <!--팔로워-->
@@ -219,29 +218,37 @@
 
                 </LinearLayout>
 
-                <!--꿈 소개-->
-                <TextView
-                    android:id="@+id/tv_dream_description"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginRight="20dp"
-                    android:fontFamily="@font/nanum_square_round_b"
-                    android:text="시각적으로 자유롭고 여유로운 분위기를 연출하는 사람"
-                    android:textColor="@color/black"
-                    android:textSize="13sp" />
-                <!--꿈 소개-->
+                    android:id="@+id/ll_dream_description"
+                    android:orientation="vertical"
+                    android:layout_marginTop="20dp">
 
-                <!--내 꿈 설명-->
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_dream_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="13dp"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp" />
-                <!--내 꿈 설명-->
+                    <!--꿈 소개-->
+                    <TextView
+                        android:id="@+id/tv_dream_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:text="시각적으로 자유롭고 여유로운 분위기를 연출하는 사람"
+                        android:textColor="@color/black"
+                        android:textSize="13sp" />
+                    <!--꿈 소개-->
+
+                    <!--내 꿈 설명-->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_dream_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="13dp"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp" />
+                    <!--내 꿈 설명-->
+
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/btn_dream_description_more"
@@ -324,11 +331,11 @@
 
                 <!--불꽃 (좋아요)-->
                 <LinearLayout
+                    android:id="@+id/ll_cheering"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:orientation="horizontal"
-                    android:id="@+id/ll_cheering">
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"

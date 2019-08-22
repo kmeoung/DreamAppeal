@@ -1,5 +1,6 @@
 package com.truevalue.dreamappeal.activity.profile;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -162,7 +163,8 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
             case R.id.ll_add_dream: // 드림 리스트 추가 버튼
                 // 버튼이 활성화 되어 있을 경우에만
                 if (mLlAddDream.isEnabled()) {
-
+                    Intent intent = new Intent(ActivityDreamList.this,ActivityDreamTitle.class);
+                    startActivity(intent);
                 }
                 break;
             case R.id.btn_edit: // 수정 버튼

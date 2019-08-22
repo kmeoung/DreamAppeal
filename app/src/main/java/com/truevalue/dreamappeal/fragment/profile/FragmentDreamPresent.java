@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.truevalue.dreamappeal.R;
+import com.truevalue.dreamappeal.activity.ActivityGalleryCamera;
 import com.truevalue.dreamappeal.activity.profile.ActivityDreamDescription;
 import com.truevalue.dreamappeal.activity.profile.ActivityDreamList;
 import com.truevalue.dreamappeal.activity.profile.ActivityDreamPresentComment;
@@ -197,10 +198,10 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
         });
     }
 
-    @OnClick({R.id.ll_dreams, R.id.ll_follower, R.id.ll_merit_and_motive,
+    @OnClick({R.id.rv_dream_description, R.id.ll_dreams, R.id.ll_follower, R.id.ll_merit_and_motive,
             R.id.iv_dream_profile, R.id.btn_dream_description_more,
             R.id.btn_merit_and_motive_more, R.id.ll_comment,
-            R.id.ll_cheering, R.id.ll_dream_title, R.id.tv_dream_description})
+            R.id.ll_cheering, R.id.ll_dream_title, R.id.ll_dream_description})
     public void onViewClicked(View view) {
         Intent intent = null;
         switch (view.getId()) {
@@ -211,7 +212,8 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
             case R.id.ll_follower: // 팔로워
                 break;
             case R.id.iv_dream_profile: // 내 꿈 프로필 이미지
-
+                intent = new Intent(getContext(), ActivityGalleryCamera.class);
+                startActivity(intent);
                 break;
             case R.id.btn_dream_description_more: // 내 꿈 더보기
                 break;
@@ -227,7 +229,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
                 intent = new Intent(getContext(), ActivityDreamTitle.class);
                 startActivity(intent);
                 break;
-            case R.id.tv_dream_description: // 핵심 문장으로 내 꿈 설명하기 페이지 이동
+            case R.id.ll_dream_description: // 핵심 문장으로 내 꿈 설명하기 페이지 이동
                 intent = new Intent(getContext(), ActivityDreamDescription.class);
                 startActivity(intent);
                 break;
