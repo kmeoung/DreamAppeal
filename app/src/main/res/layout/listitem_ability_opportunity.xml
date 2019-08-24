@@ -23,7 +23,7 @@
             android:maxLines="1"
             android:text="프로그램 기획 능력"
             android:textColor="@color/black"
-            android:textSize="25sp" />
+            android:textSize="17.5sp" />
 
         <ImageView
             android:id="@+id/iv_more"

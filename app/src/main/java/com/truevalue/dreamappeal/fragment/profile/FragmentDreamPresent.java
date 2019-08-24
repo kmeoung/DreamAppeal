@@ -42,7 +42,6 @@ import butterknife.OnClick;
 
 public class FragmentDreamPresent extends BaseFragment implements IORecyclerViewListener {
 
-
     BaseRecyclerViewAdapter mAdapter;
     @BindView(R.id.tv_dream_name)
     TextView mTvDreamName;

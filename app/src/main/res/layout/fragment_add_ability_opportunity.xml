@@ -10,8 +10,7 @@
     <!--내 꿈 이유 작성 영역-->
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="100dp"
         android:background="@null">
 
         <EditText
@@ -19,8 +18,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@null"
+            android:ellipsize="end"
             android:fontFamily="@font/nanum_square_round_b"
             android:gravity="left|top"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLength="40"
             android:padding="10dp"
             android:textSize="16sp" />
 
@@ -29,8 +32,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@null"
+            android:ellipsize="end"
             android:fontFamily="@font/nanum_square_round_b"
             android:gravity="center"
+            android:inputType="text"
+            android:maxLength="40"
             android:text="터치하여 내용을 입력해주세요"
             android:textColor="#a0a0a0"
             android:textSize="16sp" />
@@ -48,7 +54,8 @@
     <!--예시 화면-->
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="242dp">
+        android:layout_height="242dp"
+        android:layout_weight="1">
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/vp_pager"

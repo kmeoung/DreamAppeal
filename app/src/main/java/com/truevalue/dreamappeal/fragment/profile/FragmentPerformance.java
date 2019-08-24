@@ -117,8 +117,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
         h.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), ActivityAchivementDetail.class);
-                startActivity(intent);
+
             }
         });
 
@@ -169,6 +168,13 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
         @Override
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
             View view = mInflater.inflate(R.layout.layout_achivement, container, false);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getContext(), ActivityAchivementDetail.class);
+                    startActivity(intent);
+                }
+            });
             container.addView(view);
             return view;
         }
