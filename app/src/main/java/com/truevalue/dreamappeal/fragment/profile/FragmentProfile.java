@@ -37,8 +37,6 @@ public class FragmentProfile extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         ButterKnife.bind(this, view);
-        initTab();
-        initAdapter();
         return view;
     }
 
@@ -47,6 +45,8 @@ public class FragmentProfile extends BaseFragment {
         super.onResume();
         // 상단바 설정
         ((ActivityMain) getActivity()).showToolbarBtn(BaseTitleBar.GONE, BaseTitleBar.VISIBLE, BaseTitleBar.VISIBLE, BaseTitleBar.GONE);
+        initTab();
+        initAdapter();
     }
 
     /**
