@@ -31,6 +31,7 @@ public class FragmentProfile extends BaseFragment {
     TabLayout mTlTab;
 
     private ArrayList<String> mTabList;
+    private ViewPagerAdapter mAdapter;
 
     @Nullable
     @Override
@@ -63,11 +64,15 @@ public class FragmentProfile extends BaseFragment {
      * 어댑터 초기화
      */
     private void initAdapter() {
-        mTlTab.setupWithViewPager(mVpViewpager);
-        mVpViewpager.setAdapter(new ViewPagerAdapter(getActivity().getSupportFragmentManager()));
+        if(mAdapter == null) {
+            mTlTab.setupWithViewPager(mVpViewpager);
+            mAdapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
+            mVpViewpager.setAdapter(mAdapter);
 
-        for (int i = 0; i < mTabList.size(); i++) {
-            mTlTab.getTabAt(i).setText(mTabList.get(i));
+            for (int i = 0; i < mTabList.size(); i++) {
+                mTlTab.getTabAt(i).setText(mTabList.get(i));
+            }
+
         }
     }
 

@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.truevalue.dreamappeal.base.BaseCameraSurfaceView
-        android:id="@+id/bcsv_camera"
+    <TextureView
+        android:id="@+id/ttv_texture"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="500dp" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:gravity="center"
-        android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimary">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/colorPrimary"
+        android:gravity="center">
 
         <ImageButton
+            android:id="@+id/ibtn_camera"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:background="@null"
-            android:src="@drawable/ic_camera_blue"
             android:scaleType="centerCrop"
-            android:id="@+id/ibtn_camera"/>
+            android:src="@drawable/ic_camera_blue" />
 
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

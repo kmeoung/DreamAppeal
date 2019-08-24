@@ -2,24 +2,35 @@ package com.truevalue.dreamappeal.activity;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.tabs.TabLayout;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.base.BaseActivity;
 import com.truevalue.dreamappeal.fragment.image.FragmentCamera;
 import com.truevalue.dreamappeal.fragment.image.FragmentGallery;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ActivityGalleryCamera extends BaseActivity {
+public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwner {
 
+    @BindView(R.id.tl_tab)
+    TabLayout mTlTab;
+    @BindView(R.id.vp_viewpager)
+    ViewPager mVpViewpager;
     @BindView(R.id.v_status)
     View mVStatus;
     @BindView(R.id.iv_back)
@@ -28,14 +39,8 @@ public class ActivityGalleryCamera extends BaseActivity {
     Spinner mSpTitle;
     @BindView(R.id.tv_text_btn)
     TextView mTvTextBtn;
-    @BindView(R.id.base_container)
-    FrameLayout mBaseContainer;
-    @BindView(R.id.tv_gallery)
-    TextView mTvGallery;
-    @BindView(R.id.tv_camera)
-    TextView mTvCamera;
 
-    public static boolean IsCamera = false;
+    private ArrayList<String> mTabList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,30 +50,17 @@ public class ActivityGalleryCamera extends BaseActivity {
         // 상태 창 투명화
         updateStatusbarTranslate(mVStatus);
 
-        initView();
+        initTab();
+        initAdapter();
     }
 
-    private void initView() {
-        replaceFragment(R.id.base_container, new FragmentGallery(), false);
-        setBottomBar();
-    }
-
-    private void setBottomBar(){
-        if(!IsCamera){ // 갤러리
-            mTvGallery.setSelected(true);
-            mTvCamera.setSelected(false);
-        }else{
-            mTvGallery.setSelected(false);
-            mTvCamera.setSelected(true);
-        }
-    }
 
     public Spinner getTitleSpinner() {
         return mSpTitle;
     }
 
 
-    @OnClick({R.id.iv_back, R.id.tv_text_btn,R.id.tv_gallery,R.id.tv_camera})
+    @OnClick({R.id.iv_back, R.id.tv_text_btn})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
@@ -76,16 +68,63 @@ public class ActivityGalleryCamera extends BaseActivity {
                 break;
             case R.id.tv_text_btn:
                 break;
-            case R.id.tv_gallery:
-                if(IsCamera) replaceFragmentLeft(R.id.base_container, new FragmentGallery(), false);
-                IsCamera = false;
-                setBottomBar();
-                break;
-            case R.id.tv_camera:
-                if(!IsCamera) replaceFragmentRight(R.id.base_container, new FragmentCamera(), false);
-                IsCamera = true;
-                setBottomBar();
-                break;
+        }
+    }
+
+    /**
+     * 어댑터 초기화
+     */
+    private void initAdapter() {
+        mTlTab.setupWithViewPager(mVpViewpager);
+        mVpViewpager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager()));
+
+        for (int i = 0; i < mTabList.size(); i++) {
+            mTlTab.getTabAt(i).setText(mTabList.get(i));
+        }
+        mVpViewpager.setOffscreenPageLimit(2);
+    }
+
+    /**
+     * 탭 초기화
+     */
+    private void initTab() {
+        mTabList = new ArrayList<>();
+        mTabList.add("갤러리");
+        mTabList.add("카메라");
+    }
+
+    /**
+     * ViewPager Adapter
+     * TODO : 사진 찍고 난 후 설정이 필요 , 사진찍고 난 후 갤러리 refresh도 해줘야 함
+     */
+    public class ViewPagerAdapter extends FragmentPagerAdapter {
+
+        public ViewPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+
+            switch (position) {
+                case 0: // 내 꿈 소개
+                    return new FragmentGallery();
+                case 1: // 실현 성과
+                    return new FragmentCamera();
+            }
+
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            return mTabList.size(); // 페이지 2개 고정
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mTabList.get(position);
         }
     }
 }

@@ -1,16 +1,20 @@
 package com.truevalue.dreamappeal.fragment.image;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
@@ -28,6 +32,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class FragmentGallery extends BaseFragment {
 
@@ -35,10 +40,16 @@ public class FragmentGallery extends BaseFragment {
     ImageView mIvSelectImage;
     @BindView(R.id.gv_gallery)
     GridView mGvGallery;
+    @BindView(R.id.btn_resize)
+    Button mBtnResize;
+    @BindView(R.id.rl_select_image)
+    RelativeLayout mRlSelectImage;
 
     private ArrayList<BeanGalleryInfo> mOldPath;
     private ArrayList<BeanGalleryInfo> mItemPath;
     private ArrayList<BeanGalleryInfo> mBucked;
+
+    boolean isImageResize = false;
 
     @Nullable
     @Override
@@ -52,13 +63,33 @@ public class FragmentGallery extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        initView();
         initAdapter();
+    }
+
+    private void initView() {
+        // 화면 사이즈 가져오기
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        int displayWidth = size.x;
+
+        int viewWidth = displayWidth;
+
+        int viewHeight = displayWidth;
+
+        // 화면 사이즈
+        ViewGroup.LayoutParams params = mRlSelectImage.getLayoutParams();
+        params.width = viewWidth;
+        params.height = viewHeight;
+        mRlSelectImage.setLayoutParams(params);
     }
 
     /**
      * Init Adapter
      */
-    private void initAdapter(){
+    private void initAdapter() {
         mOldPath = new ArrayList<>();
         mBucked = new ArrayList<>();
         mItemPath = new ArrayList<>();
@@ -91,7 +122,7 @@ public class FragmentGallery extends BaseFragment {
             mOldPath.add(new BeanGalleryInfo(bucketName, bucketId, imagePath));
             mItemPath.add(new BeanGalleryInfo(bucketName, bucketId, imagePath));
 
-            if(!firstImage) {
+            if (!firstImage) {
                 Glide.with(getContext())
                         .load(mItemPath.get(0).getImagePath())
                         .into(mIvSelectImage);
@@ -138,6 +169,19 @@ public class FragmentGallery extends BaseFragment {
 
             }
         });
+    }
+
+    // TODO : 수정 필요
+    @OnClick(R.id.btn_resize)
+    public void onViewClicked() {
+        if(!isImageResize) {
+            isImageResize = true;
+            mIvSelectImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        }else{
+            isImageResize = false;
+            mIvSelectImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        }
+        mIvSelectImage.invalidate();
     }
 
     /**

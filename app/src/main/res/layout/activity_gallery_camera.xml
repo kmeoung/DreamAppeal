@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <View
@@ -25,11 +26,15 @@
 
         <Spinner
             android:id="@+id/sp_title"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:fontFamily="@font/nanum_square_round_r"
             android:gravity="center" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
 
         <TextView
             android:id="@+id/tv_text_btn"
@@ -43,46 +48,28 @@
             android:visibility="visible" />
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/base_container"
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray" />
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/vp_viewpager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"></FrameLayout>
+        android:layout_weight="1" />
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/gray" />
 
-    <LinearLayout
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tl_tab"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="#EEEEEE"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/tv_gallery"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:fontFamily="@font/nanum_square_round_b"
-            android:gravity="center"
-            android:text="갤러리"
-            android:textColor="@color/color_gallery_camera"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/tv_camera"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:fontFamily="@font/nanum_square_round_b"
-            android:gravity="center"
-            android:text="카메라"
-            android:textColor="@color/color_gallery_camera"
-            android:textSize="20sp" />
-
-
-    </LinearLayout>
+        android:layout_height="38dp"
+        app:tabSelectedTextColor="@color/black"
+        app:tabTextAppearance="@style/profile_main_tab_font"
+        app:tabTextColor="@color/tab_none_select_gray"/>
 
 </LinearLayout>
