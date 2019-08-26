@@ -2,19 +2,24 @@ package com.truevalue.dreamappeal.fragment.profile;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.truevalue.dreamappeal.R;
-import com.truevalue.dreamappeal.activity.profile.ActivityAchivementDetail;
+import com.truevalue.dreamappeal.activity.profile.ActivityBestAchivementDetail;
 import com.truevalue.dreamappeal.activity.profile.ActivityAddAchivement;
+import com.truevalue.dreamappeal.activity.profile.ActivityCommentDetail;
+import com.truevalue.dreamappeal.activity.profile.ActivityRecentAchivementDetail;
 import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseViewHolder;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
+import com.truevalue.dreamappeal.utils.Utils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -98,6 +103,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
         ViewPager pager = h.getItemView(R.id.vp_pager);
         pager.setAdapter(mPagerAdapter);
         ImageView ivAddAchivement = h.getItemView(R.id.iv_add_achivement);
+
         ivAddAchivement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,10 +120,25 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
      * @param i
      */
     private void onBindViewOther(BaseViewHolder h, int i) {
+        ImageView ivThumbnail = h.getItemView(R.id.iv_thumbnail);
+        // View Resize (화면 크기에 맞춰 정사각형으로 맞춤)
+        Point size = Utils.getDisplaySize(getActivity());
+        Utils.setResizeView(ivThumbnail,size.x,size.x);
+
         h.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ActivityRecentAchivementDetail.class);
+                startActivity(intent);
+            }
+        });
 
+        LinearLayout llComment = h.getItemView(R.id.ll_comment);
+        llComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ActivityCommentDetail.class);
+                startActivity(intent);
             }
         });
 
@@ -171,7 +192,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getContext(), ActivityAchivementDetail.class);
+                    Intent intent = new Intent(getContext(), ActivityBestAchivementDetail.class);
                     startActivity(intent);
                 }
             });

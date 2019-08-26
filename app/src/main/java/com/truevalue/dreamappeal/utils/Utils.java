@@ -1,11 +1,16 @@
 package com.truevalue.dreamappeal.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Point;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.TypedValue;
+import android.view.Display;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.truevalue.dreamappeal.bean.BeanGalleryInfo;
 import com.truevalue.dreamappeal.bean.BeanGalleryInfoList;
@@ -106,5 +111,31 @@ public class Utils {
         Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
+    }
+
+    /**
+     * Display Size 가져오기
+     * @param activity
+     * @return
+     */
+    public static Point getDisplaySize(Activity activity){
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        return size;
+    }
+
+    /**
+     * Resize View
+     * @param view
+     * @param width
+     * @param height
+     */
+    public static void setResizeView(View view,int width,int height){
+        // 화면 사이즈
+        ViewGroup.LayoutParams params = view.getLayoutParams();
+        params.width = width;
+        params.height = height;
+        view.setLayoutParams(params);
     }
 }

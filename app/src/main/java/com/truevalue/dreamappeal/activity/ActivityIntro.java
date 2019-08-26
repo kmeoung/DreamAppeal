@@ -1,6 +1,8 @@
 package com.truevalue.dreamappeal.activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,6 +14,8 @@ import com.truevalue.dreamappeal.base.BaseActivity;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,9 +44,27 @@ public class ActivityIntro extends BaseActivity {
 //                finish();
 //            }
 
-            // TODO : 테스트용
-            Intent intent = new Intent(ActivityIntro.this, ActivityMain.class);
+            int cameraCheck = ContextCompat.checkSelfPermission(ActivityIntro.this, Manifest.permission.CAMERA);
+            int writeStorageCheck = ContextCompat.checkSelfPermission(ActivityIntro.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            int readStorageCheck = ContextCompat.checkSelfPermission(ActivityIntro.this, Manifest.permission.READ_EXTERNAL_STORAGE);
+            Intent intent;
+            if(cameraCheck == PackageManager.PERMISSION_GRANTED
+            && writeStorageCheck == PackageManager.PERMISSION_GRANTED
+            && readStorageCheck == PackageManager.PERMISSION_GRANTED){
+
+                // 권한 있음
+                // TODO : 테스트용
+                intent = new Intent(ActivityIntro.this, ActivityMain.class);
+
+            }else{
+                // 권한 없음
+                intent = new Intent(ActivityIntro.this, ActivityPermission.class);
+            }
+
             startActivity(intent);
+
+            // TODO : Activity 애니메이션 없애기
+//            overridePendingTransition(0, 0);
             finish();
         }
     };

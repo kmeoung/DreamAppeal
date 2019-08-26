@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/v_status"/>
+
+    <!--툴바-->
+    <com.truevalue.dreamappeal.base.BaseTitleBar
+        android:id="@+id/btb_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:is_back_visibility="visible"
+        app:is_menu_visibility="gone"
+        app:is_right_text_visibility="visible"
+        app:is_search_visibility="gone"
+        app:right_text="확인"
+        app:title="실현성과 등록" />
+    <!--툴바-->
+    <!--내 꿈 이유 작성 영역-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@null">
+
+        <EditText
+            android:id="@+id/et_ability_opportunity"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:ellipsize="end"
+            android:fontFamily="@font/nanum_square_round_b"
+            android:gravity="left|top"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLength="40"
+            android:padding="10dp"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_hint"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:ellipsize="end"
+            android:fontFamily="@font/nanum_square_round_b"
+            android:gravity="center"
+            android:inputType="text"
+            android:maxLength="40"
+            android:text="터치하여 내용을 입력해주세요"
+            android:textColor="#a0a0a0"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+    <!--내 꿈 이유 작성 영역-->
+
+    <!--Divider-->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black" />
+    <!--Divider-->
+
+    <!--예시 화면-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="242dp"
+        android:layout_weight="1">
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/vp_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tl_tab"
+            app:tabIndicator="@null"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="5dp"
+                android:layout_height="5dp"
+                android:icon="@drawable/circle_gray" />
+
+        </com.google.android.material.tabs.TabLayout>
+
+    </RelativeLayout>
+    <!--예시 화면-->
+
+    <!--Divider-->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black" />
+    <!--Divider-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="95dp"
+        android:layout_marginTop="7dp"
+        android:background="@color/colorAccent"></LinearLayout>
+</LinearLayout>

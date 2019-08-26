@@ -52,6 +52,10 @@ public class ActivityAbilityOpportunity extends BaseActivity implements IOBaseTi
         mBtbBar.showToolbarBtn(isBack, isMenu, isSearch, isTextBtn, title, rightText);
     }
 
+    public void setTitle(String title){
+        mBtbBar.setTitle(title);
+    }
+
     /**
      * Fragment 에서 변환하도록 설정
      *

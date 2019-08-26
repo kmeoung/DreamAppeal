@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:paddingLeft="24dp">
+
+    <ImageView
+        android:layout_width="5dp"
+        android:layout_height="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="7dp"
+        android:src="@drawable/circle" />
+
+    <TextView
+        android:id="@+id/tv_dream_contents"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nanum_square_round_r"
+        android:text="OOO OOOO OO OOOO OOOO"
+        android:textColor="@color/black"
+        android:textSize="13sp"
+        android:lines="1"
+        android:inputType="text"
+        android:maxLines="1"
+        android:ellipsize="end"/>
+
+</LinearLayout>

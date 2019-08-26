@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,27 +18,31 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.profile.ActivityAbilityOpportunity;
+import com.truevalue.dreamappeal.activity.profile.ActivityAddContents;
+import com.truevalue.dreamappeal.activity.profile.ActivityCommentDetail;
+import com.truevalue.dreamappeal.activity.profile.ActivityObjectStep;
 import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseViewHolder;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
+import com.truevalue.dreamappeal.bean.BeanAbilityOpportunityHeader;
+import com.truevalue.dreamappeal.bean.BeanBlueprintAbilityOpportunity;
+import com.truevalue.dreamappeal.bean.BeanBlueprintObject;
+import com.truevalue.dreamappeal.bean.BeanObjectHeader;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class FragmentBlueprint extends BaseFragment {
+public class FragmentBlueprint extends BaseFragment implements IORecyclerViewListener {
 
-    @BindView(R.id.iv_setting)
-    ImageView mIvSetting;
-    @BindView(R.id.rv_ability_opportunity)
-    RecyclerView mRvAbilityOpportunity;
-    @BindView(R.id.btn_abliity_opportunity)
-    Button mBtnAbliityOpportunity;
-    @BindView(R.id.iv_add_object)
-    ImageView mIvAddObject;
-    @BindView(R.id.rv_object)
-    RecyclerView mRvObject;
+    private final int LISTITEM_TYPE_ABILITY_OPPORTUNITY_HEADER = 0;
+    private final int LISTITEM_TYPE_ABILITY_OPPORTUNITY = 1;
+    private final int LISTITEM_TYPE_OBJECT_HEADER = 2;
+    private final int LISTITEM_TYPE_OBJECT = 3;
+
+    @BindView(R.id.rv_blueprint)
+    RecyclerView mRvBlueprint;
     @BindView(R.id.iv_comment)
     ImageView mIvComment;
     @BindView(R.id.tv_comment_size)
@@ -49,11 +53,9 @@ public class FragmentBlueprint extends BaseFragment {
     EditText mEtComment;
     @BindView(R.id.btn_commit_comment)
     Button mBtnCommitComment;
-    @BindView(R.id.ll_ability_opportunity)
-    LinearLayout mLlAbilityOpportunity;
 
-    private BaseRecyclerViewAdapter mAbilityOpprotunityAdapter;
-    private BaseRecyclerViewAdapter mObjectAdapter;
+
+    private BaseRecyclerViewAdapter mAdapter;
 
     @Nullable
     @Override
@@ -66,89 +68,109 @@ public class FragmentBlueprint extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         initAdapter();
 
         bindTempData();
     }
 
     private void initAdapter() {
-        mAbilityOpprotunityAdapter = new BaseRecyclerViewAdapter(getContext(), new IORecyclerViewListener() {
-            @Override
-            public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                return BaseViewHolder.newInstance(R.layout.listitem_dream_description, parent, false);
-            }
-
-            @Override
-            public void onBindViewHolder(@NonNull BaseViewHolder h, int i) {
-
-            }
-
-            @Override
-            public int getItemCount() {
-                if (mAbilityOpprotunityAdapter != null)
-                    return mAbilityOpprotunityAdapter.size();
-                else return 0;
-            }
-
-            @Override
-            public int getItemViewType(int i) {
-                return 0;
-            }
-        });
-
-        mObjectAdapter = new BaseRecyclerViewAdapter(getContext(), new IORecyclerViewListener() {
-            @Override
-            public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                return BaseViewHolder.newInstance(R.layout.listitem_object, parent, false);
-            }
-
-            @Override
-            public void onBindViewHolder(@NonNull BaseViewHolder h, int i) {
-
-            }
-
-            @Override
-            public int getItemCount() {
-                if (mObjectAdapter != null)
-                    return mObjectAdapter.size();
-                else return 0;
-            }
-
-            @Override
-            public int getItemViewType(int i) {
-                return 0;
-            }
-        });
-
-        mRvAbilityOpportunity.setAdapter(mAbilityOpprotunityAdapter);
-        mRvAbilityOpportunity.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        mRvObject.setAdapter(mObjectAdapter);
-        mRvObject.setLayoutManager(new LinearLayoutManager(getContext()));
+        mAdapter = new BaseRecyclerViewAdapter(getContext(), this);
+        mRvBlueprint.setAdapter(mAdapter);
+        mRvBlueprint.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     private void bindTempData() {
+        mAdapter.add(new BeanAbilityOpportunityHeader()); // 능력 / 기회 헤더
         for (int i = 0; i < 3; i++) {
-            mAbilityOpprotunityAdapter.add("");
+            mAdapter.add(new BeanBlueprintAbilityOpportunity());
         }
-
-        for (int i = 0; i < 10; i++) {
-            mObjectAdapter.add("");
+        mAdapter.add(new BeanObjectHeader()); // 실천목표 헤더
+        for (int i = 0; i < 20; i++) {
+            mAdapter.add(new BeanBlueprintObject());
         }
     }
 
-    @OnClick({R.id.iv_add_object, R.id.btn_commit_comment, R.id.ll_ability_opportunity})
+    @OnClick({R.id.iv_comment,R.id.btn_commit_comment})
     public void onViewClicked(View view) {
-        Intent intent;
         switch (view.getId()) {
-            case R.id.iv_add_object:
-                break;
-            case R.id.btn_commit_comment:
-                break;
-            case R.id.ll_ability_opportunity: // 갖출 능력 / 만들고픈 기회
-                intent = new Intent(getContext(), ActivityAbilityOpportunity.class);
+            case R.id.iv_comment:
+                Intent intent = new Intent(getContext(), ActivityCommentDetail.class);
                 startActivity(intent);
                 break;
+            case R.id.btn_commit_comment:
+                mEtComment.setText("");
+                Toast.makeText(getContext(),"댓글이 입력되었습니다.",Toast.LENGTH_SHORT).show();
+                break;
         }
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (viewType == LISTITEM_TYPE_ABILITY_OPPORTUNITY_HEADER)
+            return BaseViewHolder.newInstance(R.layout.listitem_blueprint_ability_opportunity_header, parent, false);
+        else if (viewType == LISTITEM_TYPE_ABILITY_OPPORTUNITY)
+            return BaseViewHolder.newInstance(R.layout.listitem_blueprint_ability_opportunity, parent, false);
+        else if (viewType == LISTITEM_TYPE_OBJECT_HEADER)
+            return BaseViewHolder.newInstance(R.layout.listitem_blueprint_object_header, parent, false);
+        else if (viewType == LISTITEM_TYPE_OBJECT)
+            return BaseViewHolder.newInstance(R.layout.listitem_object, parent, false);
+        return null;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull BaseViewHolder h, int i) {
+        if(getItemViewType(i) == LISTITEM_TYPE_ABILITY_OPPORTUNITY_HEADER){
+            h.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getContext(), ActivityAbilityOpportunity.class);
+                    startActivity(intent);
+                }
+            });
+        }
+
+        if(getItemViewType(i) == LISTITEM_TYPE_OBJECT_HEADER){
+            ImageView ivAddObject = h.getItemView(R.id.iv_add_object);
+
+            ivAddObject.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getContext(), ActivityAddContents.class);
+                    intent.putExtra(ActivityAddContents.STR_TITLE, "꿈에 맞는 실천 목표를 세워보세요");
+                    startActivity(intent);
+                    // TODO : Activity 애니메이션 없애기
+//                    getActivity().overridePendingTransition(0, 0);
+                }
+            });
+        }
+
+       else if(getItemViewType(i) == LISTITEM_TYPE_OBJECT){
+            h.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getContext(), ActivityObjectStep.class);
+                    startActivity(intent);
+                }
+            });
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        return mAdapter.size();
+    }
+
+    @Override
+    public int getItemViewType(int i) {
+        if (mAdapter.get(i) instanceof BeanAbilityOpportunityHeader)
+            return LISTITEM_TYPE_ABILITY_OPPORTUNITY_HEADER;
+        else if (mAdapter.get(i) instanceof BeanObjectHeader)
+            return LISTITEM_TYPE_OBJECT_HEADER;
+        else if (mAdapter.get(i) instanceof BeanBlueprintAbilityOpportunity)
+            return LISTITEM_TYPE_ABILITY_OPPORTUNITY;
+        else if (mAdapter.get(i) instanceof BeanBlueprintObject)
+            return LISTITEM_TYPE_OBJECT;
+        return 0;
     }
 }

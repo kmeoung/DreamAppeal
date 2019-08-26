@@ -66,7 +66,7 @@ public class FragmentProfile extends BaseFragment {
     private void initAdapter() {
         if(mAdapter == null) {
             mTlTab.setupWithViewPager(mVpViewpager);
-            mAdapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
+            mAdapter = new ViewPagerAdapter(getChildFragmentManager());
             mVpViewpager.setAdapter(mAdapter);
 
             for (int i = 0; i < mTabList.size(); i++) {

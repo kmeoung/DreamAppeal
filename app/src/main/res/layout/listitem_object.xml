@@ -29,29 +29,12 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:fontFamily="@font/nanum_square_round_b"
-                android:lines="1"
-                android:maxLines="1"
-                android:text="내 주변 이슈에 관련된 시사 뉴스 인데 뭔 "
+                android:lines="2"
+                android:maxLines="2"
+                android:text="내 주변 이슈에 관련된 시사 뉴스 내 주변 이슈에 관련된 시사 뉴스 내 주변 이슈에 관련된 시사 뉴스"
                 android:textColor="@color/black"
                 android:textSize="21sp" />
 
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="bottom"
-                android:orientation="horizontal"
-                android:paddingTop="10dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/nanum_square_round_r"
-                    android:text="세부단계 "
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
-
-            </LinearLayout>
 
 
         </LinearLayout>

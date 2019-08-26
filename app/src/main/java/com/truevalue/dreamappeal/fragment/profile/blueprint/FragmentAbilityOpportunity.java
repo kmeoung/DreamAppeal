@@ -17,6 +17,7 @@ import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.profile.ActivityAbilityOpportunity;
 import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
+import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.BaseViewHolder;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
 
@@ -52,6 +53,12 @@ public class FragmentAbilityOpportunity extends BaseFragment {
         initAdapter();
         // 임시 데이터
         bindTempData();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((ActivityAbilityOpportunity) getActivity()).showToolbarBtn(BaseTitleBar.VISIBLE,BaseTitleBar.GONE,BaseTitleBar.GONE,BaseTitleBar.INVISIBLE,"갖출 능력 / 만들고픈 기회","");
     }
 
     private void initAdapter() {
@@ -137,9 +144,11 @@ public class FragmentAbilityOpportunity extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_add_ability: // 갖출 능력
+                ((ActivityAbilityOpportunity) getActivity()).showToolbarBtn(BaseTitleBar.VISIBLE,BaseTitleBar.GONE,BaseTitleBar.GONE,BaseTitleBar.VISIBLE,"어떤 능력을 갖춰야 할까?","확인");
                 ((ActivityAbilityOpportunity) getActivity()).replaceFragment(new FragmentAddAbilityOpportunity(), true);
                 break;
             case R.id.iv_add_opportunity: // 만들고픈 기회
+                ((ActivityAbilityOpportunity) getActivity()).showToolbarBtn(BaseTitleBar.VISIBLE,BaseTitleBar.GONE,BaseTitleBar.GONE,BaseTitleBar.VISIBLE,"어떤 기회를 만들어 볼까?","확인");
                 ((ActivityAbilityOpportunity) getActivity()).replaceFragment(new FragmentAddAbilityOpportunity(), true);
                 break;
         }

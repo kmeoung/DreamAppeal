@@ -21,7 +21,7 @@ import com.truevalue.dreamappeal.base.IORecyclerViewListener;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ActivityDreamPresentComment extends BaseActivity implements IOBaseTitleBarListener, IORecyclerViewListener {
+public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBarListener, IORecyclerViewListener {
 
 
     @BindView(R.id.v_status)
@@ -52,10 +52,10 @@ public class ActivityDreamPresentComment extends BaseActivity implements IOBaseT
      * Init Adapter
      */
     private void initAdapter() {
-        mAdapter = new BaseRecyclerViewAdapter(ActivityDreamPresentComment.this, this);
+        mAdapter = new BaseRecyclerViewAdapter(ActivityCommentDetail.this, this);
         mRvComment.setAdapter(mAdapter);
-        mRvComment.setLayoutManager(new LinearLayoutManager(ActivityDreamPresentComment.this));
-        BaseItemDecorationVertical item = new BaseItemDecorationVertical(ActivityDreamPresentComment.this, 20);
+        mRvComment.setLayoutManager(new LinearLayoutManager(ActivityCommentDetail.this));
+        BaseItemDecorationVertical item = new BaseItemDecorationVertical(ActivityCommentDetail.this, 20);
         mRvComment.addItemDecoration(item);
     }
 

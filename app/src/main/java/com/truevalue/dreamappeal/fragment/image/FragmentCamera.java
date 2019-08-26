@@ -27,6 +27,7 @@ import androidx.lifecycle.LifecycleOwner;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityGalleryCamera;
 import com.truevalue.dreamappeal.base.BaseFragment;
+import com.truevalue.dreamappeal.utils.Utils;
 
 import java.io.File;
 
@@ -66,9 +67,7 @@ public class FragmentCamera extends BaseFragment implements LifecycleOwner{
         PreviewConfig.Builder builder = new PreviewConfig.Builder();
         builder.setTargetAspectRatio(new Rational(1, 1));
         // 화면 사이즈 가져오기
-        Display display = getActivity().getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
+        Point size = Utils.getDisplaySize(getActivity());
 
         int displayWidth = size.x;
 
@@ -76,11 +75,8 @@ public class FragmentCamera extends BaseFragment implements LifecycleOwner{
 
         int viewHeight = displayWidth;
 
-        // 화면 사이즈
-        ViewGroup.LayoutParams params = mTtvTexture.getLayoutParams();
-        params.width = viewWidth;
-        params.height = viewHeight;
-        mTtvTexture.setLayoutParams(params);
+        // View 사이즈 재설정
+        Utils.setResizeView(mTtvTexture,viewWidth,viewHeight);
         builder.setTargetResolution(new Size(viewWidth, viewHeight));
 
         // 미리보기 객체를 만듦

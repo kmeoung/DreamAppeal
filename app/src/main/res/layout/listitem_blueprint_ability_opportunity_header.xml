@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <!--갖출 능력 / 만들고픈 기회-->
+    <LinearLayout
+        android:id="@+id/ll_ability_opportunity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginBottom="15dp">
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="27dp"
+            android:src="@drawable/ic_ability" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:fontFamily="@font/nanum_pen"
+            android:text="갖출 능력 / "
+            android:textColor="@color/black"
+            android:textSize="19sp" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="27dp"
+            android:src="@drawable/ic_opportunity" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="7dp"
+            android:fontFamily="@font/nanum_pen"
+            android:text="만들고픈 기회"
+            android:textColor="@color/black"
+            android:textSize="19sp" />
+
+        <ImageView
+            android:id="@+id/iv_setting"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_setting" />
+
+    </LinearLayout>
+    <!--갖출 능력 / 만들고픈 기회-->
+</LinearLayout>

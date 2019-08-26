@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_action_post_img"
+        android:layout_width="match_parent"
+        android:layout_height="185dp" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray" />
+
+    <EditText
+        android:id="@+id/et_input_comment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fontFamily="@font/nanum_square_round_r"
+        android:gravity="left|top"
+        android:hint="코멘트 입력.."
+        android:padding="12dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/color_hint"
+        android:textSize="16sp" />
+
+</LinearLayout>

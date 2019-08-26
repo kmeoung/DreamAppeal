@@ -1,5 +1,6 @@
 package com.truevalue.dreamappeal.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -111,6 +112,9 @@ public class ActivityMain extends BaseActivity implements IOBaseTitleBarListener
             case R.id.iv_timeline: // 타임라인
                 break;
             case R.id.iv_add_board: // 게시글 추가
+                Intent intent = new Intent(ActivityMain.this,ActivityGalleryCamera.class);
+                intent.putExtra(ActivityGalleryCamera.VIEW_TYPE_ADD_ACTION_POST,"VIEW_TYPE_ADD_ACTION_POST");
+                startActivity(intent);
                 break;
             case R.id.iv_notification: // 알림
                 break;

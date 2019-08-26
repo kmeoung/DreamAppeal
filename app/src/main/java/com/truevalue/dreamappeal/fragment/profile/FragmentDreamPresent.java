@@ -28,7 +28,7 @@ import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityGalleryCamera;
 import com.truevalue.dreamappeal.activity.profile.ActivityDreamDescription;
 import com.truevalue.dreamappeal.activity.profile.ActivityDreamList;
-import com.truevalue.dreamappeal.activity.profile.ActivityDreamPresentComment;
+import com.truevalue.dreamappeal.activity.profile.ActivityCommentDetail;
 import com.truevalue.dreamappeal.activity.profile.ActivityDreamTitle;
 import com.truevalue.dreamappeal.activity.profile.ActivityMeritAndMotive;
 import com.truevalue.dreamappeal.base.BaseFragment;
@@ -116,46 +116,6 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
                         new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
             }
         }
-        getGallery();
-    }
-
-    private void getGallery() {
-        // which image properties are we querying
-        String[] projection = new String[]{
-                MediaStore.Images.Media._ID,
-                MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
-                MediaStore.Images.Media.DATE_TAKEN
-        };
-
-// content:// style URI for the "primary" external storage volume
-        Uri images = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-
-// Make the query.
-
-        Cursor cur = getContext().getContentResolver().query(images, projection, null, null, null);
-
-        Log.i("ListingImages", " query count=" + cur.getCount());
-
-        if (cur.moveToFirst()) {
-            String bucket;
-            String date;
-            int bucketColumn = cur.getColumnIndex(
-                    MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
-
-            int dateColumn = cur.getColumnIndex(
-                    MediaStore.Images.Media.DATE_TAKEN);
-
-            do {
-                // Get the field values
-                bucket = cur.getString(bucketColumn);
-                date = cur.getString(dateColumn);
-
-                // Do something with the values.
-                Log.i("ListingImages", " bucket=" + bucket
-                        + "  date_taken=" + date);
-            } while (cur.moveToNext());
-
-        }
     }
 
     private void initAdapter() {
@@ -219,7 +179,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
             case R.id.btn_merit_and_motive_more: // 내 꿈 이유 더보기
                 break;
             case R.id.ll_comment: // 댓글
-                intent = new Intent(getContext(), ActivityDreamPresentComment.class);
+                intent = new Intent(getContext(), ActivityCommentDetail.class);
                 startActivity(intent);
                 break;
             case R.id.ll_cheering: // 불꽃(좋아요)

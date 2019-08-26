@@ -1,5 +1,6 @@
 package com.truevalue.dreamappeal.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,6 +28,8 @@ import butterknife.OnClick;
 
 public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwner {
 
+    public static final String VIEW_TYPE_ADD_ACTION_POST = "VIEW_TYPE_ADD_ACTION_POST";
+
     @BindView(R.id.tl_tab)
     TabLayout mTlTab;
     @BindView(R.id.vp_viewpager)
@@ -50,8 +53,25 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
         // 상태 창 투명화
         updateStatusbarTranslate(mVStatus);
 
+
+        initView();
         initTab();
         initAdapter();
+    }
+
+    private void initView(){
+        if(getIntent().getStringExtra(VIEW_TYPE_ADD_ACTION_POST) != null){
+            mTvTextBtn.setText("다음");
+
+            mTvTextBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(ActivityGalleryCamera.this,ActivityAddActionPost.class);
+                    startActivity(intent);
+                    overridePendingTransition(0, 0);
+                }
+            });
+        }
     }
 
 

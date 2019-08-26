@@ -1,5 +1,7 @@
 package com.truevalue.dreamappeal.activity.profile;
 
+import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,21 +12,20 @@ import androidx.annotation.Nullable;
 
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.base.BaseActivity;
+import com.truevalue.dreamappeal.base.BaseTitleBar;
+import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
+import com.truevalue.dreamappeal.utils.Utils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ActivityAchivementDetail extends BaseActivity {
+public class ActivityRecentAchivementDetail extends BaseActivity implements IOBaseTitleBarListener {
 
     @BindView(R.id.v_status)
     View mVStatus;
-    @BindView(R.id.iv_back)
-    ImageView mIvBack;
-    @BindView(R.id.tv_achivement_title)
-    TextView mTvAchivementTitle;
-    @BindView(R.id.tv_title)
-    TextView mTvTitle;
+    @BindView(R.id.btb_bar)
+    BaseTitleBar mBtbBar;
     @BindView(R.id.iv_img)
     ImageView mIvImg;
     @BindView(R.id.iv_cheering)
@@ -41,11 +42,18 @@ public class ActivityAchivementDetail extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_achivement_detail);
+        setContentView(R.layout.activity_recent_achivement_post_detail);
         ButterKnife.bind(this);
         // 상태 창 투명화
         updateStatusbarTranslate(mVStatus);
+        initView();
+        // 상단바 연동
+        mBtbBar.setIOBaseTitleBarListener(this);
+    }
 
+    private void initView() {
+        Point size = Utils.getDisplaySize(this);
+        Utils.setResizeView(mIvImg, size.x, size.x);
     }
 
     @OnClick({R.id.iv_back, R.id.ll_comment, R.id.ll_cheering})
@@ -55,9 +63,16 @@ public class ActivityAchivementDetail extends BaseActivity {
                 finish();
                 break;
             case R.id.ll_comment: // 댓글
+                Intent intent = new Intent(ActivityRecentAchivementDetail.this,ActivityCommentDetail.class);
+                startActivity(intent);
                 break;
             case R.id.ll_cheering: // 응원하기
                 break;
         }
+    }
+
+    @Override
+    public void OnClickBack() {
+        finish();
     }
 }

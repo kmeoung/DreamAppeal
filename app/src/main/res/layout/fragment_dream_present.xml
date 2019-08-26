@@ -212,10 +212,8 @@
                             android:textColor="@color/black"
                             android:textSize="22sp" />
 
-
                     </LinearLayout>
                     <!--꿈 수식어 및 꿈 명-->
-
                 </LinearLayout>
 
                 <LinearLayout

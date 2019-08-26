@@ -69,9 +69,7 @@ public class FragmentGallery extends BaseFragment {
 
     private void initView() {
         // 화면 사이즈 가져오기
-        Display display = getActivity().getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
+        Point size = Utils.getDisplaySize(getActivity());
 
         int displayWidth = size.x;
 
@@ -80,10 +78,7 @@ public class FragmentGallery extends BaseFragment {
         int viewHeight = displayWidth;
 
         // 화면 사이즈
-        ViewGroup.LayoutParams params = mRlSelectImage.getLayoutParams();
-        params.width = viewWidth;
-        params.height = viewHeight;
-        mRlSelectImage.setLayoutParams(params);
+        Utils.setResizeView(mRlSelectImage,viewWidth,viewHeight);
     }
 
     /**

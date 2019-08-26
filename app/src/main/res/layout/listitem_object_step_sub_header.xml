@@ -29,8 +29,8 @@
         android:textSize="14sp" />
 
     <ImageView
-        android:layout_width="30dp"
-        android:layout_height="20dp"
+        android:layout_width="13dp"
+        android:layout_height="3dp"
         android:src="@drawable/more_btn" />
 
 </LinearLayout>
