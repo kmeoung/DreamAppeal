@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.base.BaseActivity;
+import com.truevalue.dreamappeal.base.BaseMainTitleBar;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.fragment.profile.FragmentDrawer;
@@ -33,7 +34,7 @@ public class ActivityMain extends BaseActivity implements IOBaseTitleBarListener
     @BindView(R.id.v_status)
     View mVStatus;
     @BindView(R.id.btb_bar)
-    BaseTitleBar mBtbBar;
+    BaseMainTitleBar mBtbBar;
     @BindView(R.id.base_container)
     FrameLayout mBaseContainer;
     @BindView(R.id.iv_home)
@@ -57,7 +58,7 @@ public class ActivityMain extends BaseActivity implements IOBaseTitleBarListener
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         // 상태 창 투명화
-        updateStatusbarTranslate(mVStatus);
+        updateStatusbarTranslate(mBtbBar);
         replaceFragment(R.id.base_container, new FragmentProfile(), false);
         replaceFragment(R.id.drawer_container, new FragmentDrawer(), false);
         mBtbBar.setIOBaseTitleBarListener(this);

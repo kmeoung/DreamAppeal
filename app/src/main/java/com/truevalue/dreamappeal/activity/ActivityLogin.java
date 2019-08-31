@@ -26,7 +26,7 @@ public class ActivityLogin extends BaseActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         // 상태 창 투명화
-        updateStatusbarTranslate(mVStatus);
+        updateStatusbarTranslate();
         replaceFragment(R.id.login_container, new FragmentLogin(), false);
     }
 }

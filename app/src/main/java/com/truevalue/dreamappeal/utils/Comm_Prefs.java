@@ -8,13 +8,18 @@ import com.truevalue.dreamappeal.R;
 import static android.content.Context.MODE_PRIVATE;
 
 public class Comm_Prefs {
-    SharedPreferences pref;
+    private static SharedPreferences pref;
 
     private Context mContext;
 
     public Comm_Prefs(Context context) {
         this.mContext = context;
         pref = mContext.getSharedPreferences(Comm_Param.APP_NAME, MODE_PRIVATE);
+    }
+
+
+    public static Comm_Prefs getInstance(Context context){
+        return new Comm_Prefs(context);
     }
 
     public void setLogined(boolean isLogin) {
@@ -31,6 +36,22 @@ public class Comm_Prefs {
 
     public String getUserName(){
         return pref.getString(Comm_Prefs_Param.PREFS_USER_NAME,null);
+    }
+
+    public void setToken(String token){
+        pref.edit().putString(Comm_Prefs_Param.PREFS_USER_TOKEN,token).commit();
+    }
+
+    public String getToken(){
+        return pref.getString(Comm_Prefs_Param.PREFS_USER_TOKEN,null);
+    }
+
+    public void setProfileIndex(int profileIndex){
+        pref.edit().putInt(Comm_Prefs_Param.PREFS_PROFILE_INDEX,profileIndex).commit();
+    }
+
+    public int getProfileIndex(){
+        return pref.getInt(Comm_Prefs_Param.PREFS_PROFILE_INDEX,-1);
     }
 
 

@@ -30,7 +30,6 @@ public class FragmentLevelChoice extends BaseFragment implements IORecyclerViewL
     @BindView(R.id.rv_recycle)
     RecyclerView mRvRecycle;
 
-
     private BaseRecyclerViewAdapter mAdapter;
 
     @Nullable

@@ -17,9 +17,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.truevalue.dreamappeal.BuildConfig;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityMain;
 import com.truevalue.dreamappeal.base.BaseFragment;
+import com.truevalue.dreamappeal.base.BaseMainTitleBar;
 import com.truevalue.dreamappeal.base.BaseOkHttpClient;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
@@ -29,6 +31,7 @@ import com.truevalue.dreamappeal.utils.Comm_Prefs;
 import com.truevalue.dreamappeal.utils.Utils;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -83,6 +86,7 @@ public class FragmentRegister extends BaseFragment implements IOBaseTitleBarList
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mBtbBar.setIOBaseTitleBarListener(this);
+        mBtbBar.setPadding(0, Utils.getStatusBarHeight(getContext()),0,0);
         initView();
     }
 
@@ -99,6 +103,14 @@ public class FragmentRegister extends BaseFragment implements IOBaseTitleBarList
         mTvYear.setText(String.format("%04d", year));
         mTvMonth.setText(String.format("%02d", month));
         mTvDate.setText(String.format("%02d", date));
+
+        // TODO : 테스트용
+        if(BuildConfig.DEBUG){
+            mEtId.setText("debug@gmail.com");
+            mEtName.setText("debug");
+            mEtPassword.setText("debug");
+            mEtRePassword.setText("debug");
+        }
     }
 
     /**
@@ -137,7 +149,7 @@ public class FragmentRegister extends BaseFragment implements IOBaseTitleBarList
                 mBtnGenderWoman.setSelected(true);
                 break;
             case R.id.btn_register:
-                httpRegister();
+                httpGetCheckEmail();
                 break;
             case R.id.tv_year: // 날짜 설정
             case R.id.tv_month:
@@ -150,11 +162,12 @@ public class FragmentRegister extends BaseFragment implements IOBaseTitleBarList
     Handler handler = new Handler();
 
     /**
-     * Post Register
+     * Get Check Email
      */
-    private void httpRegister() {
+    private void httpGetCheckEmail() {
         BaseOkHttpClient client = new BaseOkHttpClient();
         HashMap<String, String> body = new HashMap<>();
+
         String id = mEtId.getText().toString();
         String password = mEtPassword.getText().toString();
         String rePassword = mEtRePassword.getText().toString();
@@ -185,34 +198,63 @@ public class FragmentRegister extends BaseFragment implements IOBaseTitleBarList
             return;
         }
 
-        body.put("user_id", id);
-        body.put("user_password", password);
-        body.put("user_name", name);
-        String gender = (!isGender) ? "male" : "female";
-        body.put("user_gender", gender);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String birth = sdf.format(mCal.getTime());
-        body.put("user_birth", birth);
-        body.put("user_type", "G"); // G : General
-        body.put("privacy_agt", "1"); // 개인정보 동의 1
-
-
-        client.Post(Comm_Param.URL_API_PROCESS_SIGNUP, body, new IOServerCallback() {
+        body.put("email", id);
+        client.Get(Comm_Param.URL_API_CHECK_EMAIL, null, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();
             }
 
             @Override
-            public void onResponse(@NotNull Call call, int serverCode, String body, String RtnKey, String RtnValue) throws IOException {
+            public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
+                if (TextUtils.equals(code, VALIDATE_EMAIL)) httpPostRegister(id, password, name);
+                else {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        });
+
+
+    }
+
+    /**
+     * Post Register
+     */
+    private void httpPostRegister(String id, String password, String name) {
+        BaseOkHttpClient client = new BaseOkHttpClient();
+        HashMap<String, String> body = new HashMap<>();
+
+        body.put("email", id);
+        body.put("password", password);
+        body.put("name", name);
+        int gender = (!isGender) ? 1 : 0;
+        body.put("gender", gender + "");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String birth = sdf.format(mCal.getTime());
+        body.put("birth", birth);
+        body.put("privacy", "1"); // 개인정보 동의 1
+
+        client.Post(Comm_Param.URL_API_USERS_SIGNUP, null, body, new IOServerCallback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getContext(), RtnValue, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
                     }
                 });
 
-                if (RtnKey.equals(DAOK)) {
+                if (code.equals(SUCCESS)) {
                     // 로그인 저장
                     Comm_Prefs prefs = new Comm_Prefs(getContext());
                     prefs.setLogined(true);
@@ -220,7 +262,6 @@ public class FragmentRegister extends BaseFragment implements IOBaseTitleBarList
                     Intent intent = new Intent(getContext(), ActivityMain.class);
                     startActivity(intent);
                     getActivity().finish();
-
                 }
             }
         });

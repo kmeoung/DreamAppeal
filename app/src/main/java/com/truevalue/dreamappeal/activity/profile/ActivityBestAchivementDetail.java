@@ -40,6 +40,8 @@ public class ActivityBestAchivementDetail extends BaseActivity {
     LinearLayout mLlComment;
     @BindView(R.id.ll_cheering)
     LinearLayout mLlCheering;
+    @BindView(R.id.ll_title)
+    LinearLayout mLlTitle;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,7 +49,7 @@ public class ActivityBestAchivementDetail extends BaseActivity {
         setContentView(R.layout.activity_best_achivement_post_detail);
         ButterKnife.bind(this);
         // 상태 창 투명화
-        updateStatusbarTranslate(mVStatus);
+        updateStatusbarTranslate(mLlTitle);
         initView();
     }
 
@@ -63,7 +65,7 @@ public class ActivityBestAchivementDetail extends BaseActivity {
                 finish();
                 break;
             case R.id.ll_comment: // 댓글
-                Intent intent = new Intent(ActivityBestAchivementDetail.this,ActivityCommentDetail.class);
+                Intent intent = new Intent(ActivityBestAchivementDetail.this, ActivityCommentDetail.class);
                 startActivity(intent);
                 break;
             case R.id.ll_cheering: // 응원하기

@@ -6,15 +6,14 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.base.BaseActivity;
+import com.truevalue.dreamappeal.utils.Comm_Prefs;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,7 +42,6 @@ public class ActivityPermission extends BaseActivity {
                 REQUEST_CODE_PERMISSION);
     }
 
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -53,7 +51,15 @@ public class ActivityPermission extends BaseActivity {
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // 권한 허가
 // 해당 권한을 사용해서 작업을 진행할 수 있습니다
-                Intent intent = new Intent(ActivityPermission.this, ActivityMain.class);
+
+                Intent intent;
+                Comm_Prefs prefs = new Comm_Prefs(ActivityPermission.this);
+
+                if (prefs.isLogin()) { // 바로 메인
+                    intent = new Intent(ActivityPermission.this, ActivityMain.class);
+                } else { // 로그인 페이지
+                    intent = new Intent(ActivityPermission.this, ActivityLogin.class);
+                }
                 startActivity(intent);
                 finish();
             } else {

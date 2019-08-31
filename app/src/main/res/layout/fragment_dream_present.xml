@@ -197,7 +197,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/nanum_pen"
-                            android:text="천만 구독자"
+                            android:text=""
                             android:textColor="@color/black"
                             android:textSize="22sp" />
 
@@ -208,7 +208,7 @@
                             android:ellipsize="end"
                             android:fontFamily="@font/bmjua"
                             android:maxLength="30"
-                            android:text="크리에이터"
+                            android:text=""
                             android:textColor="@color/black"
                             android:textSize="22sp" />
 
@@ -231,7 +231,7 @@
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
                         android:fontFamily="@font/nanum_square_round_b"
-                        android:text="시각적으로 자유롭고 여유로운 분위기를 연출하는 사람"
+                        android:text=""
                         android:textColor="@color/black"
                         android:textSize="13sp" />
                     <!--꿈 소개-->
@@ -288,16 +288,7 @@
                     android:fontFamily="@font/nanum_square_round_r"
                     android:maxLines="3"
                     android:paddingRight="13dp"
-                    android:text="다양한 영상을 편집하여 업로드 하고 구독자들과 함께 소통할 수 있다.
-또한 광고를 통해 소득을 높여 강남에 빌딩을 살 수 있다.
-다양한 영상을 편집하여 업로드 하고 구독자들과 함께 소통할 수 있다.
-또한 광고를 통해 소득을 높여 강남에 빌딩을 살 수 있다.
-다양한 영상을 편집하여 업로드 하고 구독자들과 함께 소통할 수 있다.
-또한 광고를 통해 소득을 높여 강남에 빌딩을 살 수 있다.
-다양한 영상을 편집하여 업로드 하고 구독자들과 함께 소통할 수 있다.
-또한 광고를 통해 소득을 높여 강남에 빌딩을 살 수 있다.
-다양한 영상을 편집하여 업로드 하고 구독자들과 함께 소통할 수 있다.
-또한 광고를 통해 소득을 높여 강남에 빌딩을 살 수 있다."
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="13sp" />
                 <!--내 꿈 이유-->

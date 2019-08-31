@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -42,6 +43,8 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
     Spinner mSpTitle;
     @BindView(R.id.tv_text_btn)
     TextView mTvTextBtn;
+    @BindView(R.id.ll_title)
+    LinearLayout mLlTitle;
 
     private ArrayList<String> mTabList;
 
@@ -51,7 +54,7 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
         setContentView(R.layout.activity_gallery_camera);
         ButterKnife.bind(this);
         // 상태 창 투명화
-        updateStatusbarTranslate(mVStatus);
+        updateStatusbarTranslate(mLlTitle);
 
 
         initView();
@@ -59,14 +62,14 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
         initAdapter();
     }
 
-    private void initView(){
-        if(getIntent().getStringExtra(VIEW_TYPE_ADD_ACTION_POST) != null){
+    private void initView() {
+        if (getIntent().getStringExtra(VIEW_TYPE_ADD_ACTION_POST) != null) {
             mTvTextBtn.setText("다음");
 
             mTvTextBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(ActivityGalleryCamera.this,ActivityAddActionPost.class);
+                    Intent intent = new Intent(ActivityGalleryCamera.this, ActivityAddActionPost.class);
                     startActivity(intent);
                     overridePendingTransition(0, 0);
                 }

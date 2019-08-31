@@ -17,7 +17,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class BaseTitleBar extends LinearLayout {
+public class BaseMainTitleBar extends LinearLayout {
     public static final String GONE = "gone";
     public static final String VISIBLE = "visible";
     public static final String INVISIBLE = "invisible";
@@ -38,18 +38,18 @@ public class BaseTitleBar extends LinearLayout {
 
     private IOBaseTitleBarListener mIOBaseTitleBarListener;
 
-    public BaseTitleBar(Context context) {
+    public BaseMainTitleBar(Context context) {
         super(context);
         initView();
     }
 
-    public BaseTitleBar(Context context, @Nullable AttributeSet attrs) {
+    public BaseMainTitleBar(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         initView();
         getAttrs(attrs);
     }
 
-    public BaseTitleBar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public BaseMainTitleBar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView();
         getAttrs(attrs, defStyleAttr);
@@ -59,14 +59,9 @@ public class BaseTitleBar extends LinearLayout {
 
         String infService = Context.LAYOUT_INFLATER_SERVICE;
         LayoutInflater li = (LayoutInflater) getContext().getSystemService(infService);
-        View v = li.inflate(R.layout.layout_title_bar, this, false);
+        View v = li.inflate(R.layout.layout_main_title_bar, this, false);
         addView(v);
         ButterKnife.bind(this, v);
-    }
-
-    @Override
-    public void setPadding(int left, int top, int right, int bottom) {
-        mLlHeader.setPadding(left, top, right, bottom);
     }
 
     public void setIOBaseTitleBarListener(IOBaseTitleBarListener listener) {
@@ -75,6 +70,11 @@ public class BaseTitleBar extends LinearLayout {
 
     public void setTitle(String title) {
         mTvTitle.setText(title);
+    }
+
+    @Override
+    public void setPadding(int left, int top, int right, int bottom) {
+        mLlHeader.setPadding(left,top,right,bottom);
     }
 
     /**

@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,13 +34,26 @@ import com.truevalue.dreamappeal.activity.profile.ActivityCommentDetail;
 import com.truevalue.dreamappeal.activity.profile.ActivityDreamTitle;
 import com.truevalue.dreamappeal.activity.profile.ActivityMeritAndMotive;
 import com.truevalue.dreamappeal.base.BaseFragment;
+import com.truevalue.dreamappeal.base.BaseOkHttpClient;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseViewHolder;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
+import com.truevalue.dreamappeal.base.IOServerCallback;
+import com.truevalue.dreamappeal.utils.Comm_Param;
+import com.truevalue.dreamappeal.utils.Comm_Prefs;
+import com.truevalue.dreamappeal.utils.Comm_Prefs_Param;
+
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
 
 public class FragmentDreamPresent extends BaseFragment implements IORecyclerViewListener {
 
@@ -87,6 +102,8 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
     private boolean isMyDreamMore = false;
     private boolean isMyDreamReason = false;
 
+    Handler handler = new Handler();
+
 
     @Nullable
     @Override
@@ -101,21 +118,48 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
         super.onViewCreated(view, savedInstanceState);
         initAdapter();
         bindTempData();
-        // todo : glide 테스트
-        Glide.with(getContext()).load("https://cdn.arstechnica.net/wp-content/uploads/2016/02/5718897981_10faa45ac3_b-640x624.jpg").placeholder(R.drawable.drawer_user).into(mIvDreamProfile);
+        initView();
 
-        // TODO : 임시 권한 설정
-        if (ContextCompat.checkSelfPermission(getContext(),
-                Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
+    }
 
-            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                    Manifest.permission.CAMERA)) {
-            } else {
-                ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
-            }
+    private void initView() {
+        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+        if (prefs.getProfileIndex() < 0) {
+            httpPostProfiles(prefs.getToken());
         }
+    }
+
+    private void httpPostProfiles(String token) {
+        BaseOkHttpClient client = new BaseOkHttpClient();
+
+        HashMap<String, String> header = new HashMap<>();
+        header.put("Authorization", "Bearer " + token);
+
+        HashMap<String, String> body = new HashMap<>();
+        body.put("image", "");
+        body.put("value_style", "");
+        body.put("job", "");
+        body.put("description", "");
+        body.put("description_spec", new JSONObject().toString());
+        body.put("meritNmotive", "");
+
+        client.Post(Comm_Param.URL_API_PROFILES, header, body, new IOServerCallback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                        // todo : D/SERVER POST RESPONSE: {"code":"SUCCESS","message":"프로필 등록 성공","result":{"fieldCount":0,"affectedRows":1,"insertId":1,"info":"","serverStatus":2,"warningStatus":1}} 형식 설정 필요
+                    }
+                });
+            }
+        });
     }
 
     private void initAdapter() {

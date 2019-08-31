@@ -33,7 +33,6 @@
             android:paddingTop="30dp"
             android:paddingRight="30dp">
 
-
             <!--이름-->
             <TextView
                 android:layout_width="wrap_content"
@@ -46,7 +45,7 @@
             <EditText
                 android:id="@+id/et_name"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="40dp"
                 android:layout_marginTop="3dp"
                 android:background="@drawable/edit_text_round_bg_gray"
                 android:fontFamily="@font/nanum_square_round_b"
@@ -72,7 +71,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="40dp"
                 android:layout_marginTop="3dp"
                 android:orientation="horizontal">
 
@@ -109,7 +108,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="40dp"
                 android:layout_marginTop="3dp"
                 android:orientation="horizontal">
 
@@ -168,7 +167,7 @@
             <EditText
                 android:id="@+id/et_id"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="40dp"
                 android:layout_marginTop="3dp"
                 android:background="@drawable/edit_text_round_bg_gray"
                 android:fontFamily="@font/nanum_square_round_b"
@@ -195,7 +194,7 @@
             <EditText
                 android:id="@+id/et_password"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="40dp"
                 android:layout_marginTop="3dp"
                 android:background="@drawable/edit_text_round_bg_gray"
                 android:fontFamily="@font/nanum_square_round_b"
@@ -211,7 +210,7 @@
             <EditText
                 android:id="@+id/et_re_password"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="40dp"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/edit_text_round_bg_gray"
                 android:fontFamily="@font/nanum_square_round_b"
@@ -227,14 +226,13 @@
 
         </LinearLayout>
 
-
     </ScrollView>
 
     <!--회원가입 버튼-->
     <Button
         android:id="@+id/btn_register"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"

@@ -44,7 +44,7 @@ public class ActivityMeritAndMotive extends BaseActivity implements IOBaseTitleB
         setContentView(R.layout.activity_merit_and_motive);
         ButterKnife.bind(this);
         // 상태 창 투명화
-        updateStatusbarTranslate(mVStatus);
+        updateStatusbarTranslate(mBtbBar);
         // 상단바 연동
         mBtbBar.setIOBaseTitleBarListener(this);
 

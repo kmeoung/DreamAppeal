@@ -13,10 +13,12 @@
     <!--타이틀 바-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="78dp"
+        android:layout_height="wrap_content"
         android:background="#006fc0"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:id="@+id/ll_title"
+        android:minHeight="78dp">
 
         <ImageView
             android:id="@+id/iv_back"
@@ -24,14 +26,16 @@
             android:layout_height="match_parent"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_back"
-            android:visibility="visible" />
+            android:visibility="visible"
+            android:minHeight="78dp"/>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:minHeight="78dp">
 
             <TextView
                 android:id="@+id/tv_achivement_title"

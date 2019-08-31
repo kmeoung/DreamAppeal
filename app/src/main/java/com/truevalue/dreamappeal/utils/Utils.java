@@ -138,4 +138,10 @@ public class Utils {
         params.height = height;
         view.setLayoutParams(params);
     }
+
+    public static int getStatusBarHeight(Context context){
+        int id = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        int statusHeight = context.getResources().getDimensionPixelSize(id);
+        return statusHeight;
+    }
 }

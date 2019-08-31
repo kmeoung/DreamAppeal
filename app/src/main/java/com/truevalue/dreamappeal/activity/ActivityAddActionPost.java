@@ -31,7 +31,7 @@ public class ActivityAddActionPost extends BaseActivity implements IOBaseTitleBa
         setContentView(R.layout.activity_add_action_post);
         ButterKnife.bind(this);
         // 상태 창 투명화
-        updateStatusbarTranslate(mVStatus);
+        updateStatusbarTranslate(mBtbBar);
         mBtbBar.setIOBaseTitleBarListener(this);
 
         replaceFragment(R.id.base_container, new FragmentAddActionPost(), false);

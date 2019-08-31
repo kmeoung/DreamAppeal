@@ -1,10 +1,13 @@
 package com.truevalue.dreamappeal.base;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 
 import com.truevalue.dreamappeal.R;
 
@@ -29,24 +32,20 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+
+
     /***
      * 4.4 이상 킷캣부터 지원
      * 상태바 투명화 & 투명 배경 추가
      */
-    public void updateStatusbarTranslate(View vStatusBar) {
+    public void updateStatusbarTranslate(View titleBar) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            ViewGroup.LayoutParams params = vStatusBar.getLayoutParams();
-
             int id = getResources().getIdentifier("status_bar_height", "dimen", "android");
             int statusHeight = getResources().getDimensionPixelSize(id);
-
-            params.height = statusHeight;
-            vStatusBar.setLayoutParams(params);
-
-            getWindow().setFlags(
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
-            );
+            Log.d("status Height",statusHeight + "");
+//            params.height = statusHeight;
+            titleBar.setPadding(0,statusHeight,0,0);
+            Log.d("padding top ",titleBar.getPaddingTop() + "");
         }
     }
 

@@ -43,7 +43,7 @@ public class ActivityDreamDescription extends BaseActivity implements IOBaseTitl
         setContentView(R.layout.activity_dream_description);
         ButterKnife.bind(this);
         // 상태 창 투명화
-        updateStatusbarTranslate(mVStatus);
+        updateStatusbarTranslate(mBtbBar);
         // 상단바 연동
         mBtbBar.setIOBaseTitleBarListener(this);
     }

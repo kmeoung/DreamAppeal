@@ -14,7 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="@color/colorAccent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:id="@+id/ll_title">
 
         <ImageView
             android:id="@+id/iv_back"
@@ -22,19 +23,22 @@
             android:layout_height="match_parent"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_back"
-            android:visibility="visible" />
+            android:visibility="visible"
+            android:minHeight="45dp"/>
 
         <Spinner
             android:id="@+id/sp_title"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:fontFamily="@font/nanum_square_round_r"
-            android:gravity="center" />
+            android:gravity="center"
+            android:minHeight="45dp"/>
 
         <Space
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:minHeight="45dp"/>
 
         <TextView
             android:id="@+id/tv_text_btn"
@@ -45,7 +49,8 @@
             android:text="확인"
             android:textColor="@color/white"
             android:textSize="18sp"
-            android:visibility="visible" />
+            android:visibility="visible"
+            android:minHeight="45dp"/>
     </LinearLayout>
 
     <ImageView

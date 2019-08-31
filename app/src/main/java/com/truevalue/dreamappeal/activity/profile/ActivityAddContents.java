@@ -40,7 +40,7 @@ public class ActivityAddContents extends BaseActivity implements IOBaseTitleBarL
         setContentView(R.layout.activity_add_contents);
         ButterKnife.bind(this);
         // 상태 창 투명화
-        updateStatusbarTranslate(mVStatus);
+        updateStatusbarTranslate(mBtbBar);
         // 상단바 연동
         mBtbBar.setIOBaseTitleBarListener(this);
 
