@@ -18,11 +18,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/nanum_square_round_r"
-        android:text="OOO OOOO OO OOOO OOOO"
+        android:text=""
         android:textColor="@color/black"
         android:textSize="13sp"
         android:lines="1"
-        android:inputType="text"
         android:maxLines="1"
         android:ellipsize="end"/>
 

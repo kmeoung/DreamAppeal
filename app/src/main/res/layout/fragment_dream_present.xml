@@ -184,69 +184,104 @@
                     <!--꿈 프로필 이미지-->
 
                     <!--꿈 수식어 및 꿈 명-->
-                    <LinearLayout
-                        android:id="@+id/ll_dream_title"
+                    <RelativeLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center|left"
-                        android:orientation="vertical">
+                        android:layout_weight="1">
+
+                        <LinearLayout
+                            android:id="@+id/ll_dream_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center|left"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_value_style"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/nanum_pen"
+                                android:text=""
+                                android:textColor="@color/black"
+                                android:textSize="22sp" />
+
+                            <TextView
+                                android:id="@+id/tv_job"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:fontFamily="@font/bmjua"
+                                android:maxLength="30"
+                                android:text=""
+                                android:textColor="@color/black"
+                                android:textSize="22sp" />
+
+                        </LinearLayout>
 
                         <TextView
-                            android:id="@+id/tv_value_style"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/nanum_pen"
-                            android:text=""
+                            android:id="@+id/tv_init_dream_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:background="@drawable/blue_box"
+                            android:fontFamily="@font/nanum_square_round_b"
+                            android:gravity="center"
+                            android:text="내 꿈의 명칭을 정해주세요"
                             android:textColor="@color/black"
-                            android:textSize="22sp" />
+                            android:textSize="13sp" />
 
-                        <TextView
-                            android:id="@+id/tv_job"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="end"
-                            android:fontFamily="@font/bmjua"
-                            android:maxLength="30"
-                            android:text=""
-                            android:textColor="@color/black"
-                            android:textSize="22sp" />
-
-                    </LinearLayout>
+                    </RelativeLayout>
                     <!--꿈 수식어 및 꿈 명-->
                 </LinearLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/ll_dream_description"
-                    android:orientation="vertical"
-                    android:layout_marginTop="20dp">
+                    android:layout_height="wrap_content">
 
-                    <!--꿈 소개-->
-                    <TextView
-                        android:id="@+id/tv_dream_description"
+                    <LinearLayout
+                        android:id="@+id/ll_dream_description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="20dp"
+                        android:orientation="vertical">
+
+                        <!--꿈 소개-->
+                        <TextView
+                            android:id="@+id/tv_dream_description"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            android:fontFamily="@font/nanum_square_round_b"
+                            android:text=""
+                            android:textColor="@color/black"
+                            android:textSize="13sp" />
+                        <!--꿈 소개-->
+
+                        <!--내 꿈 설명-->
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_dream_description"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="13dp"
+                            android:paddingLeft="20dp"
+                            android:paddingRight="20dp" />
+                        <!--내 꿈 설명-->
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_init_dream_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:background="@drawable/blue_box"
                         android:fontFamily="@font/nanum_square_round_b"
-                        android:text=""
+                        android:gravity="center"
+                        android:text="꿈에 대한 설명을 적어주세요"
                         android:textColor="@color/black"
                         android:textSize="13sp" />
-                    <!--꿈 소개-->
 
-                    <!--내 꿈 설명-->
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_dream_description"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="13dp"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="20dp" />
-                    <!--내 꿈 설명-->
 
-                </LinearLayout>
+                </RelativeLayout>
 
                 <Button
                     android:id="@+id/btn_dream_description_more"
@@ -279,19 +314,36 @@
                     android:layout_height="20dp"
                     android:src="@drawable/reason" />
 
-                <!--내 꿈 이유-->
-                <TextView
-                    android:id="@+id/tv_merit_and_motive"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:fontFamily="@font/nanum_square_round_r"
-                    android:maxLines="3"
-                    android:paddingRight="13dp"
-                    android:text=""
-                    android:textColor="@color/black"
-                    android:textSize="13sp" />
-                <!--내 꿈 이유-->
+                    android:layout_height="wrap_content">
+                    <!--내 꿈 이유-->
+                    <TextView
+                        android:id="@+id/tv_merit_and_motive"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:maxLines="3"
+                        android:paddingRight="13dp"
+                        android:text=""
+                        android:textColor="@color/black"
+                        android:textSize="13sp" />
+                    <!--내 꿈 이유-->
+
+                    <TextView
+                        android:id="@+id/tv_init_merit_and_motive"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:background="@drawable/blue_box"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:gravity="center"
+                        android:text="매력을 느낀 이유를 적어주세요"
+                        android:textColor="@color/black"
+                        android:textSize="13sp" />
+
+
+                </RelativeLayout>
 
                 <!--내 꿈 이유 더보기 버튼-->
                 <Button

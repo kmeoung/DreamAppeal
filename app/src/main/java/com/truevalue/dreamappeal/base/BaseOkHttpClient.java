@@ -1,5 +1,6 @@
 package com.truevalue.dreamappeal.base;
 
+import android.os.Handler;
 import android.util.Log;
 
 import com.bumptech.glide.BuildConfig;
@@ -31,6 +32,8 @@ public class BaseOkHttpClient {
         mClient = new OkHttpClient();
     }
 
+    private android.os.Handler handler = new Handler();
+
     /**
      * Post Server 방식
      *
@@ -40,20 +43,20 @@ public class BaseOkHttpClient {
      * @param callback
      */
     public void Post(String url, HashMap<String, String> header, HashMap<String, String> responseBody, IOServerCallback callback) {
-        RequestBody body = RequestBody.create(new JSONObject().toString(),JSON);
-        if(BuildConfig.DEBUG) Log.d("SERVER POST URL",url);
+        RequestBody body = RequestBody.create(new JSONObject().toString(), JSON);
+        if (BuildConfig.DEBUG) Log.d("SERVER POST URL", url);
         if (responseBody != null && responseBody.size() > 0) {
             JSONObject object = new JSONObject();
             for (String key : responseBody.keySet()) {
                 String value = responseBody.get(key);
                 try {
-                    object.put(key,value);
+                    object.put(key, value);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
-            if(BuildConfig.DEBUG) Log.d("SERVER POST BODY",object.toString());
-            body = RequestBody.create(object.toString(),JSON);
+            if (BuildConfig.DEBUG) Log.d("SERVER POST BODY", object.toString());
+            body = RequestBody.create(object.toString(), JSON);
         }
 
         Request request;
@@ -67,12 +70,12 @@ public class BaseOkHttpClient {
             for (String key : header.keySet()) {
                 requestBuilder = requestBuilder.addHeader(key, header.get(key));
                 try {
-                    object.put(key,header.get(key));
+                    object.put(key, header.get(key));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
-            if(BuildConfig.DEBUG) Log.d("SERVER POST HEADER",object.toString());
+            if (BuildConfig.DEBUG) Log.d("SERVER POST HEADER", object.toString());
 
             request = requestBuilder.build();
         } else {
@@ -82,7 +85,7 @@ public class BaseOkHttpClient {
                     .build();
         }
         Call call = mClient.newCall(request);
-        if(BuildConfig.DEBUG) Log.d("SERVER REQUEST",call.request().toString());
+        if (BuildConfig.DEBUG) Log.d("SERVER REQUEST", call.request().toString());
 
         call.enqueue(new Callback() {
             @Override
@@ -94,20 +97,25 @@ public class BaseOkHttpClient {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 int serverCode = response.code();
                 String body = response.body().string();
-                if(BuildConfig.DEBUG) Log.d("SERVER POST CODE",serverCode + "");
-                if(BuildConfig.DEBUG) Log.d("SERVER POST RESPONSE",body);
+                if (BuildConfig.DEBUG) Log.d("SERVER POST CODE", serverCode + "");
+                if (BuildConfig.DEBUG) Log.d("SERVER POST RESPONSE", body);
                 try {
                     JSONObject object = new JSONObject(body);
                     String code = object.getString("code");
                     String message = object.getString("message");
 
-                    try {
-                        callback.onResponse(call, serverCode, body, code, message);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                callback.onResponse(call, serverCode, body, code, message);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -138,7 +146,7 @@ public class BaseOkHttpClient {
                 } else urlBody = urlBody + "&" + key + "=" + value;
             }
         }
-        if(BuildConfig.DEBUG) Log.d("SERVER GET URL",urlBody);
+        if (BuildConfig.DEBUG) Log.d("SERVER GET URL", urlBody);
         Request request;
         if (header != null && header.size() > 0) {
             JSONObject object = new JSONObject();
@@ -149,13 +157,13 @@ public class BaseOkHttpClient {
             for (String key : header.keySet()) {
                 builder = builder.addHeader(key, header.get(key));
                 try {
-                    object.put(key,header.get(key));
+                    object.put(key, header.get(key));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
 
-            if(BuildConfig.DEBUG) Log.d("SERVER GET HEADER",object.toString());
+            if (BuildConfig.DEBUG) Log.d("SERVER GET HEADER", object.toString());
             request = builder.build();
         } else {
             request = new Request.Builder()
@@ -164,7 +172,7 @@ public class BaseOkHttpClient {
                     .build();
         }
         Call call = mClient.newCall(request);
-        if(BuildConfig.DEBUG) Log.d("SERVER REQUEST",call.request().toString());
+        if (BuildConfig.DEBUG) Log.d("SERVER REQUEST", call.request().toString());
         call.enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -175,19 +183,206 @@ public class BaseOkHttpClient {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 int serverCode = response.code();
                 String body = response.body().string();
-                if(BuildConfig.DEBUG) Log.d("SERVER GET CODE",serverCode + "");
-                if(BuildConfig.DEBUG) Log.d("SERVER GET RESPONSE",body);
+                if (BuildConfig.DEBUG) Log.d("SERVER GET CODE", serverCode + "");
+                if (BuildConfig.DEBUG) Log.d("SERVER GET RESPONSE", body);
                 try {
                     JSONObject object = new JSONObject(body);
                     String code = object.getString("code");
                     String message = object.getString("message");
-                    try {
-                        callback.onResponse(call, serverCode, body, code, message);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                callback.onResponse(call, serverCode, body, code, message);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+
+    /**
+     * Patch Server 방식
+     *
+     * @param url
+     * @param header
+     * @param responseBody
+     * @param callback
+     */
+    public void Patch(String url, HashMap<String, String> header, HashMap<String, String> responseBody, IOServerCallback callback) {
+        RequestBody body = RequestBody.create(new JSONObject().toString(), JSON);
+        if (BuildConfig.DEBUG) Log.d("SERVER PATCH URL", url);
+        if (responseBody != null && responseBody.size() > 0) {
+            JSONObject object = new JSONObject();
+            for (String key : responseBody.keySet()) {
+                String value = responseBody.get(key);
+                try {
+                    object.put(key, value);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (BuildConfig.DEBUG) Log.d("SERVER PATCH BODY", object.toString());
+            body = RequestBody.create(object.toString(), JSON);
+        }
+
+        Request request;
+        if (header != null && header.size() > 0) {
+            JSONObject object = new JSONObject();
+
+            Request.Builder requestBuilder = new Request.Builder();
+            requestBuilder = requestBuilder.url(url);
+            requestBuilder = requestBuilder.patch(body);
+
+            for (String key : header.keySet()) {
+                requestBuilder = requestBuilder.addHeader(key, header.get(key));
+                try {
+                    object.put(key, header.get(key));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (BuildConfig.DEBUG) Log.d("SERVER PATCH HEADER", object.toString());
+
+            request = requestBuilder.build();
+        } else {
+            request = new Request.Builder()
+                    .url(url)
+                    .patch(body)
+                    .build();
+        }
+        Call call = mClient.newCall(request);
+        if (BuildConfig.DEBUG) Log.d("SERVER REQUEST", call.request().toString());
+
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                callback.onFailure(call, e);
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                int serverCode = response.code();
+                String body = response.body().string();
+                if (BuildConfig.DEBUG) Log.d("SERVER PATCH CODE", serverCode + "");
+                if (BuildConfig.DEBUG) Log.d("SERVER PATCH RESPONSE", body);
+                try {
+                    JSONObject object = new JSONObject(body);
+                    String code = object.getString("code");
+                    String message = object.getString("message");
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                callback.onResponse(call, serverCode, body, code, message);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
+     * Delete Server 방식
+     *
+     * @param url
+     * @param header
+     * @param responseBody
+     * @param callback
+     */
+    public void Delete(String url, HashMap<String, String> header, HashMap<String, String> responseBody, IOServerCallback callback) {
+        RequestBody body = RequestBody.create(new JSONObject().toString(), JSON);
+        if (BuildConfig.DEBUG) Log.d("SERVER DELETE URL", url);
+        if (responseBody != null && responseBody.size() > 0) {
+            JSONObject object = new JSONObject();
+            for (String key : responseBody.keySet()) {
+                String value = responseBody.get(key);
+                try {
+                    object.put(key, value);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (BuildConfig.DEBUG) Log.d("SERVER DELETE BODY", object.toString());
+            body = RequestBody.create(object.toString(), JSON);
+        }
+
+        Request request;
+        if (header != null && header.size() > 0) {
+            JSONObject object = new JSONObject();
+
+            Request.Builder requestBuilder = new Request.Builder();
+            requestBuilder = requestBuilder.url(url);
+            requestBuilder = requestBuilder.delete(body);
+
+            for (String key : header.keySet()) {
+                requestBuilder = requestBuilder.addHeader(key, header.get(key));
+                try {
+                    object.put(key, header.get(key));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (BuildConfig.DEBUG) Log.d("SERVER DELETE HEADER", object.toString());
+
+            request = requestBuilder.build();
+        } else {
+            request = new Request.Builder()
+                    .url(url)
+                    .delete(body)
+                    .build();
+        }
+        Call call = mClient.newCall(request);
+        if (BuildConfig.DEBUG) Log.d("SERVER REQUEST", call.request().toString());
+
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                callback.onFailure(call, e);
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                int serverCode = response.code();
+                String body = response.body().string();
+                if (BuildConfig.DEBUG) Log.d("SERVER DELETE CODE", serverCode + "");
+                if (BuildConfig.DEBUG) Log.d("SERVER DELETE RESPONSE", body);
+                try {
+                    JSONObject object = new JSONObject(body);
+                    String code = object.getString("code");
+                    String message = object.getString("message");
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                callback.onResponse(call, serverCode, body, code, message);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

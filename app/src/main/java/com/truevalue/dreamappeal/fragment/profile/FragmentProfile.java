@@ -78,6 +78,7 @@ public class FragmentProfile extends BaseFragment {
 
     /**
      * ViewPager Adapter
+     * TODO : 페이지 넘어갈 때 마다 서버 호출 필요
      */
     public class ViewPagerAdapter extends FragmentPagerAdapter {
 

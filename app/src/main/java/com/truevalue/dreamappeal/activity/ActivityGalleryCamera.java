@@ -56,7 +56,6 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
         // 상태 창 투명화
         updateStatusbarTranslate(mLlTitle);
 
-
         initView();
         initTab();
         initAdapter();

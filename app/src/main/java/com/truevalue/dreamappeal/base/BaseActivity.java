@@ -42,10 +42,8 @@ public class BaseActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             int id = getResources().getIdentifier("status_bar_height", "dimen", "android");
             int statusHeight = getResources().getDimensionPixelSize(id);
-            Log.d("status Height",statusHeight + "");
 //            params.height = statusHeight;
             titleBar.setPadding(0,statusHeight,0,0);
-            Log.d("padding top ",titleBar.getPaddingTop() + "");
         }
     }
 

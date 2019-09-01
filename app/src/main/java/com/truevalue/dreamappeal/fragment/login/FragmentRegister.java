@@ -86,7 +86,7 @@ public class FragmentRegister extends BaseFragment implements IOBaseTitleBarList
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mBtbBar.setIOBaseTitleBarListener(this);
-        mBtbBar.setPadding(0, Utils.getStatusBarHeight(getContext()),0,0);
+        mBtbBar.setPadding(0, Utils.getStatusBarHeight(getContext()), 0, 0);
         initView();
     }
 
@@ -105,7 +105,7 @@ public class FragmentRegister extends BaseFragment implements IOBaseTitleBarList
         mTvDate.setText(String.format("%02d", date));
 
         // TODO : 테스트용
-        if(BuildConfig.DEBUG){
+        if (BuildConfig.DEBUG) {
             mEtId.setText("debug@gmail.com");
             mEtName.setText("debug");
             mEtPassword.setText("debug");
@@ -159,8 +159,6 @@ public class FragmentRegister extends BaseFragment implements IOBaseTitleBarList
         }
     }
 
-    Handler handler = new Handler();
-
     /**
      * Get Check Email
      */
@@ -209,12 +207,7 @@ public class FragmentRegister extends BaseFragment implements IOBaseTitleBarList
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
                 if (TextUtils.equals(code, VALIDATE_EMAIL)) httpPostRegister(id, password, name);
                 else {
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -247,12 +240,7 @@ public class FragmentRegister extends BaseFragment implements IOBaseTitleBarList
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-                    }
-                });
+                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
 
                 if (code.equals(SUCCESS)) {
                     // 로그인 저장

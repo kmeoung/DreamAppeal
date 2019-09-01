@@ -16,6 +16,7 @@ import com.truevalue.dreamappeal.bean.BeanGalleryInfo;
 import com.truevalue.dreamappeal.bean.BeanGalleryInfoList;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -143,5 +144,11 @@ public class Utils {
         int id = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
         int statusHeight = context.getResources().getDimensionPixelSize(id);
         return statusHeight;
+    }
+
+    public static HashMap<String,String> getHttpHeader(String token){
+        HashMap<String, String> header = new HashMap<>();
+        header.put("Authorization", "Bearer " + token);
+        return header;
     }
 }

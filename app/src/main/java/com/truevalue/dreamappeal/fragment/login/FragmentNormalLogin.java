@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.gson.Gson;
 import com.truevalue.dreamappeal.BuildConfig;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityMain;
@@ -81,13 +82,10 @@ public class FragmentNormalLogin extends BaseFragment implements IOBaseTitleBarL
         }
     }
 
-    Handler handler = new Handler();
-
     /**
      * Post Login
      */
     private void httpPostLogin() {
-
 
         BaseOkHttpClient client = new BaseOkHttpClient();
         HashMap<String, String> body = new HashMap<>();
@@ -116,16 +114,10 @@ public class FragmentNormalLogin extends BaseFragment implements IOBaseTitleBarL
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
                 if (TextUtils.equals(SUCCESS, code)) {
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getContext(), "로그인에 성공했습니다.", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
+                    Toast.makeText(getContext(), "로그인에 성공했습니다.", Toast.LENGTH_SHORT).show();
                     JSONObject object = new JSONObject(body);
                     String token = object.getString("token");
-                    int profile_idx = object.getInt("profile_idx");
+                    int profile_idx = object.getInt("profile_idx"); // 프로필이 없을 시 -1이 넘어 옴
                     Comm_Prefs prefs = new Comm_Prefs(getContext());
                     prefs.setProfileIndex(profile_idx);
                     prefs.setLogined(true);
@@ -137,12 +129,7 @@ public class FragmentNormalLogin extends BaseFragment implements IOBaseTitleBarL
                     // 로그인 저장
 
                 } else {
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getContext(), "아이디 / 비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    Toast.makeText(getContext(), "아이디 / 비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
