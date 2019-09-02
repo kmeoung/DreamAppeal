@@ -17,11 +17,29 @@ public class Comm_Param {
     public static final String PROFILES_INDEX = "PROFILES_INDEX";
     // user Index
     public static final String USER_INDEX = "USER_INDEX";
+    // post Index
+    public static final String POST_INDEX = "POST_INDEX";
+    // Best Post Index
+    public static final String BEST_POST_INDEX = "BEST_POST_INDEX";
 
     // 내 꿈 소개 조회 / 내 꿈 소개 업데이트 / 프로필 삭제
     public static final String URL_API_PROFILES_INDEX = URL_API_PROFILES + "/" + PROFILES_INDEX;
     // 내 꿈 목록 조회
     public static final String URL_API_PROFILES_INDEX_LIST = URL_API_PROFILES + "/" + USER_INDEX + "/list";
+    // 실현성과 등록
+    public static final String URL_API_PROFILES_INDEX_ACHIVEMENT_POSTS = URL_API_PROFILES_INDEX + "/achievement_posts";
+    // 실현성과 조회
+    public static final String URL_API_PROFILES_INDEX_ACHIVEMENT_POSTS_MAIN = URL_API_PROFILES_INDEX_ACHIVEMENT_POSTS + "/main";
+    public static final String URL_API_PROFILES_INDEX_ACHIVEMENT_POSTS_MAIN_INDEX = URL_API_PROFILES_INDEX_ACHIVEMENT_POSTS_MAIN + "/" + POST_INDEX;
+    // 실현성과 상세 조회
+    public static final String URL_API_PROFILES_INDEX_ACHIVEMENT_POSTS_INDEX = URL_API_PROFILES_INDEX_ACHIVEMENT_POSTS + "/" + POST_INDEX;
+    // 대표 성과 상세 조회
+    public static final String URL_API_PROFILES_INDEX_ACHIVEMENT_BEST_POST = URL_API_PROFILES_INDEX_ACHIVEMENT_POSTS + "/best_post";
+    public static final String URL_API_PROFILES_INDEX_ACHIVEMENT_BEST_POST_INDEX = URL_API_PROFILES_INDEX_ACHIVEMENT_BEST_POST + "/" + BEST_POST_INDEX;
+    // 대표 성과 등록
+    public static final String URL_API_PROFILES_INDEX_ACHIVEMENT_BEST_POST_INDEX_POST_INDEX = URL_API_PROFILES_INDEX_ACHIVEMENT_BEST_POST_INDEX + "/" + POST_INDEX;
+    // 발전 계획 조회
+    public static final String URL_API_PROFILES_INDEX_BLUEPRINT = URL_API_PROFILES_INDEX + "/blueprint";
 
     /**
      * POST : 회원 가입

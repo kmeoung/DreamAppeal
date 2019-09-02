@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -136,9 +137,16 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
         initAdapter();
         // 임시 데이터 bind
 //        bindTempData();
-        // 초기화
         initView();
+    }
 
+    @Override
+    public void onViewPaged(boolean isView) {
+        if(isView){
+            // 초기화
+//            initView();
+        }
+        Log.d("ONVIEWPAGED",0 + " " +isView);
     }
 
     private void initView() {

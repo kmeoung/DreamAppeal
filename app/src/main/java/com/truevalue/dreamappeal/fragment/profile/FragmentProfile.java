@@ -50,6 +50,11 @@ public class FragmentProfile extends BaseFragment {
         initAdapter();
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+    }
+
     /**
      * 탭 초기화
      */
@@ -72,7 +77,29 @@ public class FragmentProfile extends BaseFragment {
             for (int i = 0; i < mTabList.size(); i++) {
                 mTlTab.getTabAt(i).setText(mTabList.get(i));
             }
+            mVpViewpager.setOffscreenPageLimit(3);
+            // init
+            ((BaseFragment)mAdapter.getItem(0)).onViewPaged(true);
+            mVpViewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    for (int i = 0; i < 3; i++) {
+                        if(i == position) ((BaseFragment)mAdapter.getItem(position)).onViewPaged(true);
+                        ((BaseFragment)mAdapter.getItem(position)).onViewPaged(false);
+                    }
+
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
         }
     }
 
@@ -88,7 +115,6 @@ public class FragmentProfile extends BaseFragment {
 
         @Override
         public Fragment getItem(int position) {
-
             switch (position) {
                 case 0: // 내 꿈 소개
                     return new FragmentDreamPresent();

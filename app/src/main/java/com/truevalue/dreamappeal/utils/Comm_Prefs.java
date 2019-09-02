@@ -8,7 +8,7 @@ import com.truevalue.dreamappeal.R;
 import static android.content.Context.MODE_PRIVATE;
 
 public class Comm_Prefs {
-    private static SharedPreferences pref;
+    private SharedPreferences pref;
 
     private Context mContext;
 

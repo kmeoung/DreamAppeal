@@ -53,6 +53,9 @@ public class FragmentDrawer extends BaseFragment {
 
                 Comm_Prefs prefs = new Comm_Prefs(getContext());
                 prefs.setLogined(false);
+                prefs.setProfileIndex(-1);
+                prefs.setToken(null);
+                prefs.setUserName(null);
 
                 Intent intent = new Intent(getContext(), ActivityLogin.class);
                 startActivity(intent);

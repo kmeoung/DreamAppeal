@@ -22,17 +22,29 @@ import com.truevalue.dreamappeal.activity.profile.ActivityAddContents;
 import com.truevalue.dreamappeal.activity.profile.ActivityCommentDetail;
 import com.truevalue.dreamappeal.activity.profile.ActivityObjectStep;
 import com.truevalue.dreamappeal.base.BaseFragment;
+import com.truevalue.dreamappeal.base.BaseOkHttpClient;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseViewHolder;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
+import com.truevalue.dreamappeal.base.IOServerCallback;
 import com.truevalue.dreamappeal.bean.BeanAbilityOpportunityHeader;
 import com.truevalue.dreamappeal.bean.BeanBlueprintAbilityOpportunity;
 import com.truevalue.dreamappeal.bean.BeanBlueprintObject;
 import com.truevalue.dreamappeal.bean.BeanObjectHeader;
+import com.truevalue.dreamappeal.utils.Comm_Param;
+import com.truevalue.dreamappeal.utils.Comm_Prefs;
+import com.truevalue.dreamappeal.utils.Utils;
+
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
 
 public class FragmentBlueprint extends BaseFragment implements IORecyclerViewListener {
 
@@ -72,6 +84,8 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
         initAdapter();
 
         bindTempData();
+
+        httpGetBluePrint();
     }
 
     private void initAdapter() {
@@ -89,6 +103,25 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
         for (int i = 0; i < 20; i++) {
             mAdapter.add(new BeanBlueprintObject());
         }
+    }
+
+    private void httpGetBluePrint(){
+        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+        String url = Comm_Param.URL_API_PROFILES_INDEX_BLUEPRINT;
+        url = url.replaceAll(Comm_Param.PROFILES_INDEX,String.valueOf(prefs.getProfileIndex()));
+        HashMap header = Utils.getHttpHeader(prefs.getToken());
+        BaseOkHttpClient client = new BaseOkHttpClient();
+        client.Get(url, header, null, new IOServerCallback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
+                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @OnClick({R.id.iv_comment,R.id.btn_commit_comment})

@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.view.View;
 
 import com.truevalue.dreamappeal.R;
@@ -59,5 +60,10 @@ public class BaseFragment extends Fragment {
 
     public View findViewById(int resid) {
         return getActivity().findViewById(resid);
+    }
+
+
+    public void onViewPaged(boolean isView){
+
     }
 }

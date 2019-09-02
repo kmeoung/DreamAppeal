@@ -247,9 +247,7 @@ public class FragmentRegister extends BaseFragment implements IOBaseTitleBarList
                     Comm_Prefs prefs = new Comm_Prefs(getContext());
                     prefs.setLogined(true);
 
-                    Intent intent = new Intent(getContext(), ActivityMain.class);
-                    startActivity(intent);
-                    getActivity().finish();
+                    getActivity().onBackPressed();
                 }
             }
         });

@@ -18,11 +18,13 @@
         android:paddingLeft="8dp">
 
         <ImageView
+            android:id="@+id/iv_profile"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/drawer_user" />
 
         <TextView
+            android:id="@+id/tv_title"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -54,6 +56,7 @@
 
 
     <TextView
+        android:id="@+id/tv_contents"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ellipsize="end"
