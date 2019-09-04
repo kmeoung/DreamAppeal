@@ -17,6 +17,7 @@ import com.truevalue.dreamappeal.activity.ActivityLogin;
 import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.dialog.DialogProfile;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
+import com.truevalue.dreamappeal.utils.Utils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,6 +33,8 @@ public class FragmentDrawer extends BaseFragment {
     TextView mTvDreamPoint;
     @BindView(R.id.ll_logout)
     LinearLayout mLlLogout;
+    @BindView(R.id.ll_drawer)
+    LinearLayout mLlDrawer;
 
     @Nullable
     @Override
@@ -41,7 +44,7 @@ public class FragmentDrawer extends BaseFragment {
         return view;
     }
 
-    @OnClick({R.id.ll_profile, R.id.ll_logout})
+    @OnClick({R.id.ll_profile, R.id.ll_logout,R.id.ll_drawer})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_profile:
@@ -60,6 +63,8 @@ public class FragmentDrawer extends BaseFragment {
                 Intent intent = new Intent(getContext(), ActivityLogin.class);
                 startActivity(intent);
                 getActivity().finish();
+                break;
+            case R.id.ll_drawer:
                 break;
         }
     }

@@ -3,9 +3,7 @@ package com.truevalue.dreamappeal.fragment.profile;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -121,12 +119,14 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
 
     private int mUserIndex = -1;
 
+    private boolean isViewCreated = false;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dream_present, container, false);
         ButterKnife.bind(this, view);
+        isViewCreated = true;
         return view;
     }
 
@@ -134,19 +134,18 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        initAdapter();
-        // 임시 데이터 bind
-//        bindTempData();
+        if (mAdapter == null) initAdapter();
         initView();
     }
 
     @Override
     public void onViewPaged(boolean isView) {
-        if(isView){
-            // 초기화
-//            initView();
+        if (isViewCreated) {
+            if (isView) {
+                // 초기화
+                initView();
+            }
         }
-        Log.d("ONVIEWPAGED",0 + " " +isView);
     }
 
     private void initView() {
@@ -245,7 +244,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
                             String strContent = content.getString("content");
                             mAdapter.add(strContent);
                         }
-                    }catch (JSONException e){
+                    } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
@@ -444,7 +443,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
     @Override
     public void onBindViewHolder(@NonNull BaseViewHolder h, int i) {
         String strContents = (String) mAdapter.get(i);
-        TextView tvDreamContents = h.getItemView(R.id.tv_dream_contents);
+        TextView tvDreamContents = h.getItemView(R.id.tv_contents);
         tvDreamContents.setText(strContents);
         if (isMyDreamMore) {
             tvDreamContents.setMaxLines(1000);

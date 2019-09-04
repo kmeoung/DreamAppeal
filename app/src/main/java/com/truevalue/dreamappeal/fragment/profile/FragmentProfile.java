@@ -30,8 +30,9 @@ public class FragmentProfile extends BaseFragment {
     @BindView(R.id.tl_tab)
     TabLayout mTlTab;
 
-    private ArrayList<String> mTabList;
+    private ArrayList<String> mTabList = new ArrayList<>();
     private ViewPagerAdapter mAdapter;
+    private ArrayList<BaseFragment> mFragmentList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -42,34 +43,41 @@ public class FragmentProfile extends BaseFragment {
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        if(mAdapter == null) {
+            initTab();
+            initAdapter();
+        }
+
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         // 상단바 설정
         ((ActivityMain) getActivity()).showToolbarBtn(BaseTitleBar.GONE, BaseTitleBar.VISIBLE, BaseTitleBar.VISIBLE, BaseTitleBar.GONE);
-        initTab();
-        initAdapter();
-    }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
     }
 
     /**
      * 탭 초기화
      */
     private void initTab() {
-        mTabList = new ArrayList<>();
         mTabList.add("내 꿈 소개");
         mTabList.add("실현 성과");
         mTabList.add("발전 계획");
+
+        mFragmentList.add(new FragmentDreamPresent());
+        mFragmentList.add(new FragmentPerformance());
+        mFragmentList.add(new FragmentBlueprint());
     }
 
     /**
      * 어댑터 초기화
      */
     private void initAdapter() {
-        if(mAdapter == null) {
+        if (mAdapter == null) {
             mTlTab.setupWithViewPager(mVpViewpager);
             mAdapter = new ViewPagerAdapter(getChildFragmentManager());
             mVpViewpager.setAdapter(mAdapter);
@@ -77,9 +85,7 @@ public class FragmentProfile extends BaseFragment {
             for (int i = 0; i < mTabList.size(); i++) {
                 mTlTab.getTabAt(i).setText(mTabList.get(i));
             }
-            mVpViewpager.setOffscreenPageLimit(3);
-            // init
-            ((BaseFragment)mAdapter.getItem(0)).onViewPaged(true);
+            mVpViewpager.setOffscreenPageLimit(5);
             mVpViewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -88,9 +94,11 @@ public class FragmentProfile extends BaseFragment {
 
                 @Override
                 public void onPageSelected(int position) {
-                    for (int i = 0; i < 3; i++) {
-                        if(i == position) ((BaseFragment)mAdapter.getItem(position)).onViewPaged(true);
-                        ((BaseFragment)mAdapter.getItem(position)).onViewPaged(false);
+                    for (int i = 0; i < mFragmentList.size(); i++) {
+                        if (i == position)
+                            mFragmentList.get(position).onViewPaged(true);
+                        else
+                            mFragmentList.get(position).onViewPaged(false);
                     }
 
                 }
@@ -100,6 +108,7 @@ public class FragmentProfile extends BaseFragment {
 
                 }
             });
+
         }
     }
 
@@ -115,21 +124,12 @@ public class FragmentProfile extends BaseFragment {
 
         @Override
         public Fragment getItem(int position) {
-            switch (position) {
-                case 0: // 내 꿈 소개
-                    return new FragmentDreamPresent();
-                case 1: // 실현 성과
-                    return new FragmentPerformance();
-                case 2: // 발전 계획
-                    return new FragmentBlueprint();
-            }
-
-            return null;
+            return mFragmentList.get(position);
         }
 
         @Override
         public int getCount() {
-            return mTabList.size(); // 페이지 3개 고정
+            return mFragmentList.size(); // 페이지 3개 고정
         }
 
         @Nullable

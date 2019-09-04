@@ -152,6 +152,10 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
                 Toast.makeText(ActivityAddAchivement.this, message, Toast.LENGTH_SHORT).show();
+                if(TextUtils.equals(code,SUCCESS)){
+                    setResult(RESULT_OK);
+                    finish();
+                }
             }
         });
     }

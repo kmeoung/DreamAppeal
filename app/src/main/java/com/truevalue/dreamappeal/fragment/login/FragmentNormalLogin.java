@@ -66,7 +66,7 @@ public class FragmentNormalLogin extends BaseFragment implements IOBaseTitleBarL
         mBtbBar.setIOBaseTitleBarListener(this);
         mBtbBar.setPadding(0, Utils.getStatusBarHeight(getContext()), 0, 0);
         // TODO : 테스트용
-        if (BuildConfig.DEBUG) {
+        if (Comm_Param.IS_TEST) {
             mEtId.setText("debug@gmail.com");
             mEtPassword.setText("debug");
         }

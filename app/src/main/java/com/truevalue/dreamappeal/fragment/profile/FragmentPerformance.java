@@ -1,6 +1,8 @@
 package com.truevalue.dreamappeal.fragment.profile;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -20,6 +22,7 @@ import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.profile.ActivityBestAchivementDetail;
 import com.truevalue.dreamappeal.activity.profile.ActivityAddAchivement;
 import com.truevalue.dreamappeal.activity.profile.ActivityCommentDetail;
+import com.truevalue.dreamappeal.activity.profile.ActivityDreamList;
 import com.truevalue.dreamappeal.activity.profile.ActivityRecentAchivementDetail;
 import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.base.BaseOkHttpClient;
@@ -28,6 +31,8 @@ import com.truevalue.dreamappeal.base.BaseViewHolder;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
 import com.truevalue.dreamappeal.base.IOServerCallback;
 import com.truevalue.dreamappeal.bean.BeanAchivementPostMain;
+import com.truevalue.dreamappeal.bean.BeanBestPost;
+import com.truevalue.dreamappeal.bean.BeanPostDetail;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
 import com.truevalue.dreamappeal.utils.Utils;
@@ -45,16 +50,21 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.Call;
 
+import static android.app.Activity.RESULT_OK;
+
 public class FragmentPerformance extends BaseFragment implements IORecyclerViewListener {
 
     private static final int TYPE_LIST_HEADER = 0;
     private static final int TYPE_LIST_OTHER = 1;
+
+    private static final int REQUEST_ADD_RECENT_ACHIVEMENT = 1100;
 
     @BindView(R.id.rv_dream_description)
     RecyclerView mRvRecycle;
@@ -66,22 +76,34 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
     private int mCurrentIndex = 0;
     private int mTotalPage = 0;
     private String mProfileImage = null;
-
+    private boolean isViewCreated = false;
+    private ViewPager mBestPostPager = null;
+    private ArrayList<BeanBestPost> mBestPostList = new ArrayList<>();
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_performance, container, false);
         ButterKnife.bind(this, view);
+        isViewCreated = true;
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initAdapter();
-//        bindTempData();
-        httpGetAchivementPostMain();
+
+        if(mAdapter == null) initAdapter();
+    }
+
+    @Override
+    public void onViewPaged(boolean isView) {
+        if(isViewCreated) {
+            if (isView) {
+                httpGetAchivementPostMain();
+            }
+        }
+        super.onViewPaged(isView);
     }
 
     /**
@@ -96,6 +118,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
 
         BaseOkHttpClient client = new BaseOkHttpClient();
         mAdapter.clear();
+        mBestPostList.clear();
         mAdapter.add("실현성과 테스트");
         client.Get(url, header, null, new IOServerCallback() {
             @Override
@@ -120,13 +143,41 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
 //                    best_post_3: REFERENCE best_post_1,
 //                }
 
-                JSONObject bestPost = object.getJSONObject("best_posts");
                 JSONArray array = object.getJSONArray("achievement_posts");
                 Gson gson = new Gson();
                 for (int i = 0; i < array.length(); i++) {
                     BeanAchivementPostMain bean = gson.fromJson(array.getJSONObject(i).toString(), BeanAchivementPostMain.class);
                     mAdapter.add(bean);
                 }
+
+                JSONObject bestPosts = object.getJSONObject("best_posts");
+                try{
+                    JSONObject bestPost = bestPosts.getJSONObject("best_post_1");
+                    BeanBestPost bean = gson.fromJson(bestPost.toString(), BeanBestPost.class);
+                    mBestPostList.add(bean);
+                }catch (JSONException e){
+                    e.printStackTrace();
+                    mBestPostList.add(null);
+                }
+
+                try{
+                    JSONObject bestPost = bestPosts.getJSONObject("best_post_2");
+                    BeanBestPost bean = gson.fromJson(bestPost.toString(), BeanBestPost.class);
+                    mBestPostList.add(bean);
+                }catch (JSONException e){
+                    e.printStackTrace();
+                    mBestPostList.add(null);
+                }
+
+                try{
+                    JSONObject bestPost = bestPosts.getJSONObject("best_post_3");
+                    BeanBestPost bean = gson.fromJson(bestPost.toString(), BeanBestPost.class);
+                    mBestPostList.add(bean);
+                }catch (JSONException e){
+                    e.printStackTrace();
+                    mBestPostList.add(null);
+                }
+                mPagerAdapter.notifyDataSetChanged();
             }
         });
 
@@ -176,17 +227,27 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
      * @param i
      */
     private void onBindViewHeader(BaseViewHolder h, int i) {
-        ViewPager pager = h.getItemView(R.id.vp_pager);
-        pager.setAdapter(mPagerAdapter);
+        mBestPostPager = h.getItemView(R.id.vp_pager);
+        mBestPostPager.setAdapter(mPagerAdapter);
         ImageView ivAddAchivement = h.getItemView(R.id.iv_add_achivement);
 
         ivAddAchivement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ActivityAddAchivement.class);
-                startActivity(intent);
+                startActivityForResult(intent,REQUEST_ADD_RECENT_ACHIVEMENT);
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            if(requestCode == REQUEST_ADD_RECENT_ACHIVEMENT){
+                httpGetAchivementPostMain();
+            }
+        }
     }
 
     /**
@@ -211,8 +272,8 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
         tvTitle.setText(bean.getTitle());
         tvContents.setText(bean.getContent());
 
-        if(TextUtils.isEmpty(bean.getThumbnail_image())) Glide.with(getContext()).load(R.drawable.blue_box).into(ivThumbnail);
-        else Glide.with(getContext()).load(bean.getThumbnail_image()).thumbnail(R.drawable.blue_box).into(ivThumbnail);
+        if(TextUtils.isEmpty(bean.getThumbnail_image())) Glide.with(getContext()).load(R.drawable.user).into(ivThumbnail);
+        else Glide.with(getContext()).load(bean.getThumbnail_image()).thumbnail(R.drawable.user).into(ivThumbnail);
 
         if(TextUtils.isEmpty(mProfileImage)) Glide.with(getContext()).load(R.drawable.drawer_user).into(ivProfile);
         else Glide.with(getContext()).load(bean.getThumbnail_image()).thumbnail(R.drawable.drawer_user).into(ivProfile);
@@ -221,7 +282,26 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
             @Override
             public void onClick(View v) {
                 // todo : 임시로 대표성과 등록 (팝업 띄워서 수정 삭제 띄워야 함)
-                httpPostAddBestAchivement(1,bean);
+//                httpPostAddBestAchivement(1,bean);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
+                        .setTitle("서버 테스트 : 프로필 삭제")
+                        .setMessage("서버 테스트 : \n프로필을 삭제하시겠습니까?")
+                        .setPositiveButton("네", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                httpDeletePostAchivement(bean.getIdx());
+                                dialog.dismiss();
+                            }
+                        })
+                        .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
             }
         });
 
@@ -229,6 +309,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ActivityRecentAchivementDetail.class);
+                intent.putExtra(ActivityRecentAchivementDetail.EXTRA_RECENT_ACHIVEMENT_INDEX,bean.getIdx());
                 startActivity(intent);
             }
         });
@@ -245,22 +326,21 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
     }
 
     /**
-     * 대표성과 등록
-     * @param best_achivement_idx
-     * @param bean
+     * 최근 성과 삭제
+     *
+     * @param index
      */
-    private void httpPostAddBestAchivement(int best_achivement_idx,BeanAchivementPostMain bean){
-
+    private void httpDeletePostAchivement(int index) {
+        // todo : 제대로 된 설정 필요
+        if (index == -1) return;
         Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
-
-        String url = Comm_Param.URL_API_PROFILES_INDEX_ACHIVEMENT_BEST_POST_INDEX_POST_INDEX;
-        url = url.replaceAll(Comm_Param.BEST_POST_INDEX,String.valueOf(best_achivement_idx));
-        url = url.replaceAll(Comm_Param.POST_INDEX,String.valueOf(bean.getIdx()));
-        url = url.replaceAll(Comm_Param.PROFILES_INDEX,String.valueOf(prefs.getProfileIndex()));
+        String url = Comm_Param.URL_API_PROFILES_INDEX_ACHIVEMENT_POSTS_INDEX;
+        url = url.replaceAll(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
+        url = url.replaceAll(Comm_Param.POST_INDEX, String.valueOf(index));
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
         BaseOkHttpClient client = new BaseOkHttpClient();
-        client.Post(url, header, null, new IOServerCallback() {
+        client.Delete(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();
@@ -269,6 +349,9 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
                 Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                if (TextUtils.equals(code, SUCCESS)) {
+                    httpGetAchivementPostMain();
+                }
             }
         });
     }
@@ -318,17 +401,23 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
         @Override
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
             View view = mInflater.inflate(R.layout.layout_achivement, container, false);
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getContext(), ActivityBestAchivementDetail.class);
-                    startActivity(intent);
-                }
-            });
+            TextView tvTitle = view.findViewById(R.id.tv_title);
+            tvTitle.setText("대표 성과 " + (position + 1));
+            if(mBestPostList.size() > 0 && mBestPostList.get(position) != null) {
+                BeanBestPost bean = mBestPostList.get(position);
+                TextView tvBestPostAchivement = view.findViewById(R.id.tv_best_achivement);
+                tvBestPostAchivement.setText(bean.getTitle());
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getContext(), ActivityBestAchivementDetail.class);
+                        intent.putExtra(ActivityBestAchivementDetail.EXTRA_BEST_ACHIVEMENT_INDEX,bean.getIdx());
+                        startActivity(intent);
+                    }
+                });
+            }
             container.addView(view);
             return view;
         }
-
-
     }
 }

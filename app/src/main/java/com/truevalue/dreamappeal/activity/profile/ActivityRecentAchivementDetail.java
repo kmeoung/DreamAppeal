@@ -3,6 +3,7 @@ package com.truevalue.dreamappeal.activity.profile;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -11,18 +12,22 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.base.BaseActivity;
 import com.truevalue.dreamappeal.base.BaseOkHttpClient;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.base.IOServerCallback;
+import com.truevalue.dreamappeal.bean.BeanPostDetail;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
 import com.truevalue.dreamappeal.utils.Utils;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -52,6 +57,8 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
     LinearLayout mLlComment;
     @BindView(R.id.ll_cheering)
     LinearLayout mLlCheering;
+    @BindView(R.id.tv_contents)
+    TextView mTvContents;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,6 +107,17 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
                 Toast.makeText(ActivityRecentAchivementDetail.this, message, Toast.LENGTH_SHORT).show();
+                if (TextUtils.equals(code, SUCCESS)) {
+                    Gson gson = new Gson();
+                    JSONObject object = new JSONObject(body);
+                    JSONObject post = object.getJSONObject("achievement_post");
+                    BeanPostDetail bean = gson.fromJson(post.toString(), BeanPostDetail.class);
+
+                    mBtbBar.setTitle(bean.getTitle());
+                    mTvContents.setText(bean.getContent());
+                    if(TextUtils.isEmpty(bean.getThumbnail_image())) Glide.with(ActivityRecentAchivementDetail.this).load(R.drawable.user).into(mIvImg);
+                    else Glide.with(ActivityRecentAchivementDetail.this).load(bean.getThumbnail_image()).thumbnail(R.drawable.user).into(mIvImg);
+                }
             }
         });
     }

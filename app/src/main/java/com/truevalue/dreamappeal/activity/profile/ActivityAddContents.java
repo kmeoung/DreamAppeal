@@ -1,7 +1,9 @@
 package com.truevalue.dreamappeal.activity.profile;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -50,6 +52,15 @@ public class ActivityAddContents extends BaseActivity implements IOBaseTitleBarL
     private void initVIew(){
         String title = getIntent().getStringExtra(STR_TITLE);
         mBtbBar.setTitle(title);
+
+        // 처음 Hint 글자 안보이게 하고 Focus잡기
+        mTvHint.setOnClickListener(v -> {
+            mEtAbilityOpportunity.setFocusableInTouchMode(true);
+            mEtAbilityOpportunity.requestFocus();
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(mEtAbilityOpportunity, 0);
+            mTvHint.setVisibility(View.GONE);
+        });
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.truevalue.dreamappeal.utils;
 
 public class Comm_Param {
+    public static final boolean IS_TEST = false;
+
     public static final String APP_NAME = "DreamAppal";
     public static final String URL_API = "http://ec2-15-164-168-185.ap-northeast-2.compute.amazonaws.com:8080";
     public static final String URL_API_USERS = URL_API + "/users";
@@ -31,12 +33,11 @@ public class Comm_Param {
     // 실현성과 조회
     public static final String URL_API_PROFILES_INDEX_ACHIVEMENT_POSTS_MAIN = URL_API_PROFILES_INDEX_ACHIVEMENT_POSTS + "/main";
     public static final String URL_API_PROFILES_INDEX_ACHIVEMENT_POSTS_MAIN_INDEX = URL_API_PROFILES_INDEX_ACHIVEMENT_POSTS_MAIN + "/" + POST_INDEX;
-    // 실현성과 상세 조회
+    // 실현성과 / 대표성과 상세 조회 / 수정 / 삭제
     public static final String URL_API_PROFILES_INDEX_ACHIVEMENT_POSTS_INDEX = URL_API_PROFILES_INDEX_ACHIVEMENT_POSTS + "/" + POST_INDEX;
-    // 대표 성과 상세 조회
+    // 대표 성과 등록
     public static final String URL_API_PROFILES_INDEX_ACHIVEMENT_BEST_POST = URL_API_PROFILES_INDEX_ACHIVEMENT_POSTS + "/best_post";
     public static final String URL_API_PROFILES_INDEX_ACHIVEMENT_BEST_POST_INDEX = URL_API_PROFILES_INDEX_ACHIVEMENT_BEST_POST + "/" + BEST_POST_INDEX;
-    // 대표 성과 등록
     public static final String URL_API_PROFILES_INDEX_ACHIVEMENT_BEST_POST_INDEX_POST_INDEX = URL_API_PROFILES_INDEX_ACHIVEMENT_BEST_POST_INDEX + "/" + POST_INDEX;
     // 발전 계획 조회
     public static final String URL_API_PROFILES_INDEX_BLUEPRINT = URL_API_PROFILES_INDEX + "/blueprint";

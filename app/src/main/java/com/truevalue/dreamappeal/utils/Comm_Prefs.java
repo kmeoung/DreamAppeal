@@ -8,6 +8,7 @@ import com.truevalue.dreamappeal.R;
 import static android.content.Context.MODE_PRIVATE;
 
 public class Comm_Prefs {
+    private static Comm_Prefs mInstance;
     private SharedPreferences pref;
 
     private Context mContext;
@@ -17,9 +18,11 @@ public class Comm_Prefs {
         pref = mContext.getSharedPreferences(Comm_Param.APP_NAME, MODE_PRIVATE);
     }
 
-
     public static Comm_Prefs getInstance(Context context){
-        return new Comm_Prefs(context);
+        if(mInstance == null){
+            mInstance = new Comm_Prefs(context);
+        }
+        return mInstance;
     }
 
     public void setLogined(boolean isLogin) {

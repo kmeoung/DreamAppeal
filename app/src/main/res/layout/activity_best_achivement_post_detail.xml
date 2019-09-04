@@ -75,8 +75,7 @@
         <ImageView
             android:id="@+id/iv_img"
             android:layout_width="match_parent"
-            android:layout_height="360dp"
-            android:background="@drawable/blue_box" />
+            android:layout_height="360dp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -88,7 +87,8 @@
             android:paddingRight="17dp"
             android:text="내용내용내내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용"
             android:textColor="@color/black"
-            android:textSize="13sp" />
+            android:textSize="13sp"
+            android:id="@+id/tv_contents"/>
 
         <LinearLayout
             android:id="@+id/ll_cheering"

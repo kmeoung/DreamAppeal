@@ -15,7 +15,7 @@
         android:layout_marginTop="4dp"/>
 
     <TextView
-        android:id="@+id/tv_dream_contents"
+        android:id="@+id/tv_contents"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/nanum_square_round_r"
