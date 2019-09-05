@@ -1,7 +1,7 @@
 package com.truevalue.dreamappeal.utils;
 
 public class Comm_Param {
-    public static final boolean IS_TEST = false;
+    public static final boolean IS_TEST = true;
 
     public static final String APP_NAME = "DreamAppal";
     public static final String URL_API = "http://ec2-15-164-168-185.ap-northeast-2.compute.amazonaws.com:8080";

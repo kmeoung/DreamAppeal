@@ -6,23 +6,34 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
-import com.truevalue.dreamappeal.activity.profile.ActivityBestAchivementDetail;
 import com.truevalue.dreamappeal.activity.profile.ActivityAddAchivement;
+import com.truevalue.dreamappeal.activity.profile.ActivityBestAchivementDetail;
 import com.truevalue.dreamappeal.activity.profile.ActivityCommentDetail;
-import com.truevalue.dreamappeal.activity.profile.ActivityDreamList;
 import com.truevalue.dreamappeal.activity.profile.ActivityRecentAchivementDetail;
 import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.base.BaseOkHttpClient;
@@ -32,17 +43,9 @@ import com.truevalue.dreamappeal.base.IORecyclerViewListener;
 import com.truevalue.dreamappeal.base.IOServerCallback;
 import com.truevalue.dreamappeal.bean.BeanAchivementPostMain;
 import com.truevalue.dreamappeal.bean.BeanBestPost;
-import com.truevalue.dreamappeal.bean.BeanPostDetail;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
 import com.truevalue.dreamappeal.utils.Utils;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -55,29 +58,31 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import okhttp3.Call;
 
 import static android.app.Activity.RESULT_OK;
 
 public class FragmentPerformance extends BaseFragment implements IORecyclerViewListener {
 
-    private static final int TYPE_LIST_HEADER = 0;
-    private static final int TYPE_LIST_OTHER = 1;
+    private static final int TYPE_LIST_OTHER = 0;
 
     private static final int REQUEST_ADD_RECENT_ACHIVEMENT = 1100;
+    private static final int TOP_BANNER_DELAY = 1000 * 4;
 
     @BindView(R.id.rv_dream_description)
     RecyclerView mRvRecycle;
+    @BindView(R.id.vp_pager)
+    ViewPager mVpPager;
+    @BindView(R.id.iv_add_achivement)
+    ImageView mIvAddAchivement;
 
     private BaseRecyclerViewAdapter mAdapter;
     private ViewPagerAdapter mPagerAdapter;
 
-    private int mCurrentPage = 0;
     private int mCurrentIndex = 0;
-    private int mTotalPage = 0;
     private String mProfileImage = null;
     private boolean isViewCreated = false;
-    private ViewPager mBestPostPager = null;
     private ArrayList<BeanBestPost> mBestPostList = new ArrayList<>();
 
     @Nullable
@@ -92,13 +97,12 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        if(mAdapter == null) initAdapter();
+        if (mAdapter == null) initAdapter();
     }
 
     @Override
     public void onViewPaged(boolean isView) {
-        if(isViewCreated) {
+        if (isViewCreated) {
             if (isView) {
                 httpGetAchivementPostMain();
             }
@@ -109,17 +113,16 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
     /**
      * 실현 성과 조회
      */
-    private void httpGetAchivementPostMain(){
+    private void httpGetAchivementPostMain() {
         Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
         String url = Comm_Param.URL_API_PROFILES_INDEX_ACHIVEMENT_POSTS_MAIN_INDEX;
-        url = url.replaceAll(Comm_Param.PROFILES_INDEX,String.valueOf(prefs.getProfileIndex()));
-        url = url.replaceAll(Comm_Param.POST_INDEX,String.valueOf(mCurrentIndex));
+        url = url.replaceAll(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
+        url = url.replaceAll(Comm_Param.POST_INDEX, String.valueOf(mCurrentIndex));
         HashMap header = Utils.getHttpHeader(prefs.getToken());
 
         BaseOkHttpClient client = new BaseOkHttpClient();
         mAdapter.clear();
         mBestPostList.clear();
-        mAdapter.add("실현성과 테스트");
         client.Get(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -151,29 +154,29 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
                 }
 
                 JSONObject bestPosts = object.getJSONObject("best_posts");
-                try{
+                try {
                     JSONObject bestPost = bestPosts.getJSONObject("best_post_1");
                     BeanBestPost bean = gson.fromJson(bestPost.toString(), BeanBestPost.class);
                     mBestPostList.add(bean);
-                }catch (JSONException e){
+                } catch (JSONException e) {
                     e.printStackTrace();
                     mBestPostList.add(null);
                 }
 
-                try{
+                try {
                     JSONObject bestPost = bestPosts.getJSONObject("best_post_2");
                     BeanBestPost bean = gson.fromJson(bestPost.toString(), BeanBestPost.class);
                     mBestPostList.add(bean);
-                }catch (JSONException e){
+                } catch (JSONException e) {
                     e.printStackTrace();
                     mBestPostList.add(null);
                 }
 
-                try{
+                try {
                     JSONObject bestPost = bestPosts.getJSONObject("best_post_3");
                     BeanBestPost bean = gson.fromJson(bestPost.toString(), BeanBestPost.class);
                     mBestPostList.add(bean);
-                }catch (JSONException e){
+                } catch (JSONException e) {
                     e.printStackTrace();
                     mBestPostList.add(null);
                 }
@@ -184,67 +187,90 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
     }
 
     private void initAdapter() {
-        mPagerAdapter = new ViewPagerAdapter(getContext());
 
+        mPagerAdapter = new ViewPagerAdapter(getContext());
         mAdapter = new BaseRecyclerViewAdapter(getContext(), this);
         mRvRecycle.setAdapter(mAdapter);
         mRvRecycle.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        mVpPager.setAdapter(mPagerAdapter);
+        mVpPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                if (mVpPager.getAdapter().getCount() > 1) {
+                    switch (state) {
+                        case ViewPager.SCROLL_STATE_DRAGGING:
+                            stopPageRolling();
+                            break;
+                        case ViewPager.SCROLL_STATE_SETTLING:
+                            startPageRolling();
+                            break;
+                    }
+                }
+            }
+        });
     }
 
-    private void bindTempData() {
-        mAdapter.add("대표성과");
-        for (int i = 0; i < 10; i++) {
-            mAdapter.add("");
+
+    /**
+     * Pager Cnotroll Handler
+     */
+    private Handler handlerPager = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            if (mVpPager != null) {
+                int position = mVpPager.getCurrentItem();
+                if (mPagerAdapter != null) {
+                    if (position >= (mPagerAdapter.getCount() - 1)) {
+                        mVpPager.setCurrentItem(0);
+                    } else {
+                        mVpPager.setCurrentItem(position + 1);
+                    }
+                }
+            }
+            return false;
+        }
+    });
+
+    private void startPageRolling() {
+        if (!handlerPager.hasMessages(0)) {
+            handlerPager.sendEmptyMessageDelayed(0, TOP_BANNER_DELAY);
         }
     }
+
+    private void stopPageRolling() {
+        handlerPager.removeMessages(0);
+    }
+
 
     /**
      * BaseRecyclerView Interface
      */
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (viewType == TYPE_LIST_HEADER) {
-            return BaseViewHolder.newInstance(R.layout.listitem_header_achivement, parent, false);
-        } else {
-            return BaseViewHolder.newInstance(R.layout.listitem_achivement_post, parent, false);
-        }
+        return BaseViewHolder.newInstance(R.layout.listitem_achivement_post, parent, false);
     }
 
     @Override
     public void onBindViewHolder(@NonNull BaseViewHolder h, int i) {
-        if (getItemViewType(i) == TYPE_LIST_HEADER) {
-            onBindViewHeader(h, i);
-        } else if (getItemViewType(i) == TYPE_LIST_OTHER) {
-            onBindViewOther(h, i);
-        }
-    }
-
-    /**
-     * Header ViewPager 대표성과
-     *
-     * @param h
-     * @param i
-     */
-    private void onBindViewHeader(BaseViewHolder h, int i) {
-        mBestPostPager = h.getItemView(R.id.vp_pager);
-        mBestPostPager.setAdapter(mPagerAdapter);
-        ImageView ivAddAchivement = h.getItemView(R.id.iv_add_achivement);
-
-        ivAddAchivement.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), ActivityAddAchivement.class);
-                startActivityForResult(intent,REQUEST_ADD_RECENT_ACHIVEMENT);
-            }
-        });
+        onBindViewOther(h, i);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK){
-            if(requestCode == REQUEST_ADD_RECENT_ACHIVEMENT){
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_ADD_RECENT_ACHIVEMENT) {
                 httpGetAchivementPostMain();
             }
         }
@@ -263,44 +289,78 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
         TextView tvTitle = h.getItemView(R.id.tv_title);
         TextView tvContents = h.getItemView(R.id.tv_contents);
         ImageView ivProfile = h.getItemView(R.id.iv_profile);
-        ImageButton ibtnMore = h.getItemView(R.id.ibtn_more);
+        Spinner spMore = h.getItemView(R.id.sp_more);
 
         // View Resize (화면 크기에 맞춰 정사각형으로 맞춤)
         Point size = Utils.getDisplaySize(getActivity());
-        Utils.setResizeView(ivThumbnail,size.x,size.x);
+        Utils.setResizeView(ivThumbnail, size.x, size.x);
 
         tvTitle.setText(bean.getTitle());
         tvContents.setText(bean.getContent());
 
-        if(TextUtils.isEmpty(bean.getThumbnail_image())) Glide.with(getContext()).load(R.drawable.user).into(ivThumbnail);
-        else Glide.with(getContext()).load(bean.getThumbnail_image()).thumbnail(R.drawable.user).into(ivThumbnail);
+        if (TextUtils.isEmpty(bean.getThumbnail_image()))
+            Glide.with(getContext()).load(R.drawable.user).into(ivThumbnail);
+        else
+            Glide.with(getContext()).load(bean.getThumbnail_image()).thumbnail(R.drawable.user).into(ivThumbnail);
 
-        if(TextUtils.isEmpty(mProfileImage)) Glide.with(getContext()).load(R.drawable.drawer_user).into(ivProfile);
-        else Glide.with(getContext()).load(bean.getThumbnail_image()).thumbnail(R.drawable.drawer_user).into(ivProfile);
-
-        ibtnMore.setOnClickListener(new View.OnClickListener() {
+        if (TextUtils.isEmpty(mProfileImage))
+            Glide.with(getContext()).load(R.drawable.drawer_user).into(ivProfile);
+        else
+            Glide.with(getContext()).load(bean.getThumbnail_image()).thumbnail(R.drawable.drawer_user).into(ivProfile);
+        ArrayAdapter<String> mMoreAdapter = new ArrayAdapter<String>(getContext(), R.layout.support_simple_spinner_dropdown_item, new String[]{"수정", "삭제"});
+        spMore.setAdapter(mMoreAdapter);
+        spMore.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                // todo : 임시로 대표성과 등록 (팝업 띄워서 수정 삭제 띄워야 함)
-//                httpPostAddBestAchivement(1,bean);
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
-                        .setTitle("서버 테스트 : 프로필 삭제")
-                        .setMessage("서버 테스트 : \n프로필을 삭제하시겠습니까?")
-                        .setPositiveButton("네", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                httpDeletePostAchivement(bean.getIdx());
-                                dialog.dismiss();
-                            }
-                        })
-                        .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                AlertDialog dialog = builder.create();
-                dialog.show();
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String title = mMoreAdapter.getItem(i);
+                AlertDialog.Builder builder;
+                AlertDialog dialog;
+                switch (title) {
+                    case "수정":
+                        builder = new AlertDialog.Builder(getContext())
+                                .setTitle("프로필 삭제")
+                                .setMessage("프로필을 삭제하시겠습니까?")
+                                .setPositiveButton("네", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        httpDeletePostAchivement(bean.getIdx());
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        dialog = builder.create();
+                        dialog.show();
+                        break;
+                    case "삭제":
+                        builder = new AlertDialog.Builder(getContext())
+                                .setTitle("프로필 삭제")
+                                .setMessage("프로필을 삭제하시겠습니까?")
+                                .setPositiveButton("네", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        httpDeletePostAchivement(bean.getIdx());
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        dialog = builder.create();
+                        dialog.show();
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
         });
@@ -309,7 +369,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ActivityRecentAchivementDetail.class);
-                intent.putExtra(ActivityRecentAchivementDetail.EXTRA_RECENT_ACHIVEMENT_INDEX,bean.getIdx());
+                intent.putExtra(ActivityRecentAchivementDetail.EXTRA_RECENT_ACHIVEMENT_INDEX, bean.getIdx());
                 startActivity(intent);
             }
         });
@@ -322,7 +382,6 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
                 startActivity(intent);
             }
         });
-
     }
 
     /**
@@ -363,9 +422,13 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
 
     @Override
     public int getItemViewType(int i) {
-        if (mAdapter.get(i) instanceof String) {
-            return TYPE_LIST_HEADER;
-        } else return TYPE_LIST_OTHER;
+        return TYPE_LIST_OTHER;
+    }
+
+    @OnClick(R.id.iv_add_achivement)
+    public void onViewClicked() {
+        Intent intent = new Intent(getContext(), ActivityAddAchivement.class);
+        startActivityForResult(intent, REQUEST_ADD_RECENT_ACHIVEMENT);
     }
 
     /**
@@ -403,7 +466,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
             View view = mInflater.inflate(R.layout.layout_achivement, container, false);
             TextView tvTitle = view.findViewById(R.id.tv_title);
             tvTitle.setText("대표 성과 " + (position + 1));
-            if(mBestPostList.size() > 0 && mBestPostList.get(position) != null) {
+            if (mBestPostList.size() > 0 && mBestPostList.get(position) != null) {
                 BeanBestPost bean = mBestPostList.get(position);
                 TextView tvBestPostAchivement = view.findViewById(R.id.tv_best_achivement);
                 tvBestPostAchivement.setText(bean.getTitle());
@@ -411,7 +474,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(getContext(), ActivityBestAchivementDetail.class);
-                        intent.putExtra(ActivityBestAchivementDetail.EXTRA_BEST_ACHIVEMENT_INDEX,bean.getIdx());
+                        intent.putExtra(ActivityBestAchivementDetail.EXTRA_BEST_ACHIVEMENT_INDEX, bean.getIdx());
                         startActivity(intent);
                     }
                 });
