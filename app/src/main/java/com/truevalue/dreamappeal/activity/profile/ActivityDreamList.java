@@ -93,7 +93,7 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
         // Bind Temp Data
 //        bindTempData();
     }
-
+    // todo : 첫번째 꿈 두번쨰 꿈 설정 ㅐㅎ야 함
     private void initData() {
         mUserIndex = getIntent().getIntExtra(EXTRA_USER_INDEX, -1);
         httpGetDreamList();

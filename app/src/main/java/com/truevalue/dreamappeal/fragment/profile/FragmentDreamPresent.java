@@ -60,6 +60,9 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
     public static final int REQUEST_ACTIVITY_DREAM_LIST = 1003;
 
 
+    public static final String EXTRA_ACTIVITY_DREAM_LIST = "EXTRA_ACTIVITY_DREAM_LIST";
+
+
     BaseRecyclerViewAdapter mAdapter;
     @BindView(R.id.tv_dream_name)
     TextView mTvDreamName;
@@ -415,14 +418,25 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
 
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
+                case REQUEST_ACTIVITY_DREAM_LIST: // 내 꿈 목록
+                    int dreamIndex = data.getIntExtra(EXTRA_ACTIVITY_DREAM_LIST,-1);
+                    switch (dreamIndex){
+                        case 0:
+                            mTvDreamName.setText("첫번째 꿈");
+                            break;
+                        case 1:
+                            mTvDreamName.setText("두번째 꿈");
+                            break;
+                        case 2:
+                            mTvDreamName.setText("세번째 꿈");
+                            break;
+                    }
                 case REQUEST_ACTIVITY_DREAM_TITLE: // 내 꿈 명칭
                 case REQUEST_ACTIVITY_DESCRIPTION: // 내 꿈 설명
                 case REQUEST_ACTIVITY_MERIT_AND_MOTIVE: // 내 꿈 매력
-                case REQUEST_ACTIVITY_DREAM_LIST: // 내 꿈 목록
                     Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
                     // 페이지 리로드
                     httpGetProfilesIndex(prefs.getProfileIndex(), prefs.getToken());
-
                     isMyDreamMore = false;
                     isMyDreamReason = false;
                     break;

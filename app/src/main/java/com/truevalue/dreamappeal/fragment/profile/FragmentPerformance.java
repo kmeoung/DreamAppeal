@@ -141,16 +141,6 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
                 JSONObject object = new JSONObject(body);
                 mProfileImage = object.getString("profile_image");
 
-//                best_posts: {
-//                    best_post_1: {
-//                        profile_idx: number,
-//                                idx: number,
-//                                title: string
-//                    },
-//                    best_post_2: REFERENCE best_post_1,
-//                    best_post_3: REFERENCE best_post_1,
-//                }
-
                 JSONArray array = object.getJSONArray("achievement_posts");
                 Gson gson = new Gson();
                 for (int i = 0; i < array.length(); i++) {
@@ -334,7 +324,6 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
                     case R.id.menu_delete:
                         builder = new AlertDialog.Builder(getContext())
                                 .setTitle("프로필 삭제")
-
                                 .setMessage("프로필을 삭제하시겠습니까?")
                                 .setPositiveButton("네", new DialogInterface.OnClickListener() {
                                     @Override
