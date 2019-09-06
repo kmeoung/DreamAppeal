@@ -26,6 +26,7 @@ import com.truevalue.dreamappeal.base.BaseViewHolder;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
 import com.truevalue.dreamappeal.base.IOServerCallback;
+import com.truevalue.dreamappeal.bean.BeanAchivementPostMain;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
 import com.truevalue.dreamappeal.utils.Utils;
@@ -45,6 +46,9 @@ import okhttp3.Call;
 
 public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBarListener, IORecyclerViewListener {
 
+    public static final String EXTRA_EDIT_ACHIVEMENT_POST = "EXTRA_EDIT_ACHIVEMENT_POST";
+
+
     @BindView(R.id.v_status)
     View mVStatus;
     @BindView(R.id.btb_bar)
@@ -61,6 +65,7 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
     EditText mEtInputComment;
 
     private BaseRecyclerViewAdapter mAdapter;
+    private BeanAchivementPostMain mBean = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,8 +79,19 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
 
         // Adapter 초기화
         initAdapter();
-        // 임시 데이터
-        bindTempData();
+
+        initData();
+
+
+    }
+
+    private void initData() {
+        if (getIntent().getSerializableExtra(EXTRA_EDIT_ACHIVEMENT_POST) != null) {
+            mBean = (BeanAchivementPostMain) getIntent().getSerializableExtra(EXTRA_EDIT_ACHIVEMENT_POST);
+            mEtTitle.setText(mBean.getTitle());
+            mEtInputComment.setText(mBean.getContent());
+            // todo : 사진이 추가될 시 여기에도 추가 바람
+        }
     }
 
     /**
@@ -88,15 +104,6 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
         llm.setOrientation(RecyclerView.HORIZONTAL);
         mRvAchivementImg.setLayoutManager(llm);
         mRvAchivementImg.addItemDecoration(new BaseItemDecorationHorizontal(ActivityAddAchivement.this, 10));
-    }
-
-    /**
-     * Bind Temp Data
-     */
-    private void bindTempData() {
-        for (int i = 0; i < 10; i++) {
-            mAdapter.add("");
-        }
     }
 
     /**
@@ -113,34 +120,79 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
     @Override
     public void OnClickRightTextBtn() {
         // TODO : 완료하면 상세 페이지 띄워줘야함
-        httpPostAchivementPost();
+        if (mBean != null) { // 수정
+            httpPatchAchivementPost();
+        } else { // 추가
+            httpPostAchivementPost();
+        }
     }
 
     /**
-     * 실현 성과 등록
+     * 실현 성과 수정
      */
-    private void httpPostAchivementPost(){
+    private void httpPatchAchivementPost() {
         Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityAddAchivement.this);
-        String url = Comm_Param.URL_API_PROFILES_INDEX_ACHIVEMENT_POSTS;
-        url = url.replace(Comm_Param.PROFILES_INDEX,String.valueOf(prefs.getProfileIndex()));
+        String url = Comm_Param.URL_API_PROFILES_INDEX_ACHIVEMENT_POSTS_INDEX;
+        url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
+        url = url.replace(Comm_Param.POST_INDEX,String.valueOf(mBean.getIdx()));
 
-        if(TextUtils.isEmpty(mEtTitle.getText().toString()) || TextUtils.isEmpty(mEtInputComment.getText().toString())){
+        if (TextUtils.isEmpty(mEtTitle.getText().toString()) || TextUtils.isEmpty(mEtInputComment.getText().toString())) {
             Toast.makeText(this, "모든 항목을 입력해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
 
         String token = prefs.getToken();
         HashMap header = Utils.getHttpHeader(token);
-        HashMap<String,String> body = new HashMap();
+        HashMap<String, String> body = new HashMap();
 
-        body.put("title",mEtTitle.getText().toString());
-        body.put("content",mEtInputComment.getText().toString());
+        body.put("title", mEtTitle.getText().toString());
+        body.put("content", mEtInputComment.getText().toString());
+        body.put("thumbnail_image", "");
+        body.put("tags", "");
+
+        BaseOkHttpClient client = new BaseOkHttpClient();
+        client.Patch(url, header, body, new IOServerCallback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
+                Toast.makeText(ActivityAddAchivement.this, message, Toast.LENGTH_SHORT).show();
+                if (TextUtils.equals(code, SUCCESS)) {
+                    setResult(RESULT_OK);
+                    finish();
+                }
+            }
+        });
+    }
+
+    /**
+     * 실현 성과 등록
+     */
+    private void httpPostAchivementPost() {
+        Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityAddAchivement.this);
+        String url = Comm_Param.URL_API_PROFILES_INDEX_ACHIVEMENT_POSTS;
+        url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
+
+        if (TextUtils.isEmpty(mEtTitle.getText().toString()) || TextUtils.isEmpty(mEtInputComment.getText().toString())) {
+            Toast.makeText(this, "모든 항목을 입력해주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String token = prefs.getToken();
+        HashMap header = Utils.getHttpHeader(token);
+        HashMap<String, String> body = new HashMap();
+
+        body.put("title", mEtTitle.getText().toString());
+        body.put("content", mEtInputComment.getText().toString());
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String strDate = sdf.format(date);
-        body.put("thumbnail_image","");
-        body.put("register_date",strDate);
-        body.put("tags","");
+        body.put("thumbnail_image", "");
+        body.put("register_date", strDate);
+        body.put("tags", "");
 
         BaseOkHttpClient client = new BaseOkHttpClient();
         client.Post(url, header, body, new IOServerCallback() {
@@ -152,7 +204,7 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
                 Toast.makeText(ActivityAddAchivement.this, message, Toast.LENGTH_SHORT).show();
-                if(TextUtils.equals(code,SUCCESS)){
+                if (TextUtils.equals(code, SUCCESS)) {
                     setResult(RESULT_OK);
                     finish();
                 }

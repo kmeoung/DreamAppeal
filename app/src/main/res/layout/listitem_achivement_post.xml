@@ -37,13 +37,14 @@
             android:textColor="@color/black"
             android:textSize="19sp" />
 
-        <Spinner
-            android:id="@+id/sp_more"
+        <ImageButton
+            android:id="@+id/ibtn_more"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:scaleX="0.5"
-            android:scaleY="0.15"
-            android:background="@drawable/more_btn" />
+            android:scaleY="0.5"
+            android:background="@null"
+            android:src="@drawable/more_btn" />
 
     </LinearLayout>
 

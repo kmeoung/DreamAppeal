@@ -10,6 +10,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -23,6 +25,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
@@ -68,6 +72,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
     private static final int TYPE_LIST_OTHER = 0;
 
     private static final int REQUEST_ADD_RECENT_ACHIVEMENT = 1100;
+    private static final int REQUEST_EDIT_RECENT_ACHIVEMENT = 1101;
     private static final int TOP_BANNER_DELAY = 1000 * 4;
 
     @BindView(R.id.rv_dream_description)
@@ -270,8 +275,11 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            if (requestCode == REQUEST_ADD_RECENT_ACHIVEMENT) {
-                httpGetAchivementPostMain();
+            switch (requestCode){
+                case REQUEST_ADD_RECENT_ACHIVEMENT:
+                case REQUEST_EDIT_RECENT_ACHIVEMENT:
+                    httpGetAchivementPostMain();
+                    break;
             }
         }
     }
@@ -289,7 +297,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
         TextView tvTitle = h.getItemView(R.id.tv_title);
         TextView tvContents = h.getItemView(R.id.tv_contents);
         ImageView ivProfile = h.getItemView(R.id.iv_profile);
-        Spinner spMore = h.getItemView(R.id.sp_more);
+        ImageButton ibtnMore = h.getItemView(R.id.ibtn_more);
 
         // View Resize (화면 크기에 맞춰 정사각형으로 맞춤)
         Point size = Utils.getDisplaySize(getActivity());
@@ -307,38 +315,26 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
             Glide.with(getContext()).load(R.drawable.drawer_user).into(ivProfile);
         else
             Glide.with(getContext()).load(bean.getThumbnail_image()).thumbnail(R.drawable.drawer_user).into(ivProfile);
-        ArrayAdapter<String> mMoreAdapter = new ArrayAdapter<String>(getContext(), R.layout.support_simple_spinner_dropdown_item, new String[]{"수정", "삭제"});
-        spMore.setAdapter(mMoreAdapter);
-        spMore.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+        PopupMenu popupMenu = new PopupMenu(getContext(),ibtnMore);
+        popupMenu.getMenuInflater().inflate(R.menu.menu_achivement_post,popupMenu.getMenu());
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String title = mMoreAdapter.getItem(i);
+            public boolean onMenuItemClick(MenuItem item) {
+                int id = item.getItemId();
                 AlertDialog.Builder builder;
                 AlertDialog dialog;
-                switch (title) {
-                    case "수정":
-                        builder = new AlertDialog.Builder(getContext())
-                                .setTitle("프로필 삭제")
-                                .setMessage("프로필을 삭제하시겠습니까?")
-                                .setPositiveButton("네", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        httpDeletePostAchivement(bean.getIdx());
-                                        dialog.dismiss();
-                                    }
-                                })
-                                .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
-                        dialog = builder.create();
-                        dialog.show();
+                switch (id){
+                    case R.id.menu_edit:
+                        Intent intent = new Intent(getContext(),ActivityAddAchivement.class);
+                        intent.putExtra(ActivityAddAchivement.EXTRA_EDIT_ACHIVEMENT_POST,bean);
+                        startActivityForResult(intent,REQUEST_EDIT_RECENT_ACHIVEMENT);
                         break;
-                    case "삭제":
+                    case R.id.menu_delete:
                         builder = new AlertDialog.Builder(getContext())
                                 .setTitle("프로필 삭제")
+
                                 .setMessage("프로필을 삭제하시겠습니까?")
                                 .setPositiveButton("네", new DialogInterface.OnClickListener() {
                                     @Override
@@ -357,13 +353,17 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
                         dialog.show();
                         break;
                 }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
+                return false;
             }
         });
+
+        ibtnMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupMenu.show();
+            }
+        });
+
 
         h.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
