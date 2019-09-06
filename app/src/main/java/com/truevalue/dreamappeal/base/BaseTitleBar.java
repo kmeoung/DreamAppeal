@@ -35,6 +35,8 @@ public class BaseTitleBar extends LinearLayout {
     TextView mTvTextBtn;
     @BindView(R.id.ll_header)
     LinearLayout mLlHeader;
+    @BindView(R.id.iv_more)
+    ImageView mIvMore;
 
     private IOBaseTitleBarListener mIOBaseTitleBarListener;
 
@@ -256,7 +258,7 @@ public class BaseTitleBar extends LinearLayout {
 
     }
 
-    @OnClick({R.id.iv_menu, R.id.iv_back, R.id.iv_search, R.id.tv_text_btn})
+    @OnClick({R.id.iv_menu, R.id.iv_back, R.id.iv_search, R.id.tv_text_btn,R.id.iv_more})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_menu: // 메뉴
@@ -270,6 +272,9 @@ public class BaseTitleBar extends LinearLayout {
                 break;
             case R.id.tv_text_btn: // 오른쪽 글자 버튼
                 if (mIOBaseTitleBarListener != null) mIOBaseTitleBarListener.OnClickRightTextBtn();
+                break;
+            case R.id.iv_more:
+                if (mIOBaseTitleBarListener != null) mIOBaseTitleBarListener.OnClickMoreBtn();
                 break;
         }
     }
@@ -292,5 +297,9 @@ public class BaseTitleBar extends LinearLayout {
 
     public TextView getmTvTextBtn() {
         return mTvTextBtn;
+    }
+
+    public ImageView getmIvMore() {
+        return mIvMore;
     }
 }

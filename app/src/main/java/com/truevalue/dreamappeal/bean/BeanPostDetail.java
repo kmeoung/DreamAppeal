@@ -1,6 +1,8 @@
 package com.truevalue.dreamappeal.bean;
 
-public class BeanPostDetail {
+import java.io.Serializable;
+
+public class BeanPostDetail implements Serializable {
     private int profile_idx;
     private int idx;
     private String title;

@@ -73,6 +73,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
 
     private static final int REQUEST_ADD_RECENT_ACHIVEMENT = 1100;
     private static final int REQUEST_EDIT_RECENT_ACHIVEMENT = 1101;
+    private static final int REQUEST_RECENT_ACHIVEMENT = 1102;
     private static final int TOP_BANNER_DELAY = 1000 * 4;
 
     @BindView(R.id.rv_dream_description)
@@ -102,7 +103,9 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (mAdapter == null) initAdapter();
+        if (mAdapter == null) {
+            initAdapter();
+        }
     }
 
     @Override
@@ -110,6 +113,9 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
         if (isViewCreated) {
             if (isView) {
                 httpGetAchivementPostMain();
+                startPageRolling();
+            } else {
+                stopPageRolling();
             }
         }
         super.onViewPaged(isView);
@@ -265,9 +271,10 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            switch (requestCode){
+            switch (requestCode) {
                 case REQUEST_ADD_RECENT_ACHIVEMENT:
                 case REQUEST_EDIT_RECENT_ACHIVEMENT:
+                case REQUEST_RECENT_ACHIVEMENT:
                     httpGetAchivementPostMain();
                     break;
             }
@@ -306,8 +313,8 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
         else
             Glide.with(getContext()).load(bean.getThumbnail_image()).thumbnail(R.drawable.drawer_user).into(ivProfile);
 
-        PopupMenu popupMenu = new PopupMenu(getContext(),ibtnMore);
-        popupMenu.getMenuInflater().inflate(R.menu.menu_achivement_post,popupMenu.getMenu());
+        PopupMenu popupMenu = new PopupMenu(getContext(), ibtnMore);
+        popupMenu.getMenuInflater().inflate(R.menu.menu_achivement_post, popupMenu.getMenu());
 
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
@@ -315,11 +322,11 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
                 int id = item.getItemId();
                 AlertDialog.Builder builder;
                 AlertDialog dialog;
-                switch (id){
+                switch (id) {
                     case R.id.menu_edit:
-                        Intent intent = new Intent(getContext(),ActivityAddAchivement.class);
-                        intent.putExtra(ActivityAddAchivement.EXTRA_EDIT_ACHIVEMENT_POST,bean);
-                        startActivityForResult(intent,REQUEST_EDIT_RECENT_ACHIVEMENT);
+                        Intent intent = new Intent(getContext(), ActivityAddAchivement.class);
+                        intent.putExtra(ActivityAddAchivement.EXTRA_EDIT_ACHIVEMENT_POST, bean);
+                        startActivityForResult(intent, REQUEST_EDIT_RECENT_ACHIVEMENT);
                         break;
                     case R.id.menu_delete:
                         builder = new AlertDialog.Builder(getContext())
@@ -359,7 +366,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ActivityRecentAchivementDetail.class);
                 intent.putExtra(ActivityRecentAchivementDetail.EXTRA_RECENT_ACHIVEMENT_INDEX, bean.getIdx());
-                startActivity(intent);
+                startActivityForResult(intent,REQUEST_RECENT_ACHIVEMENT);
             }
         });
 
@@ -449,6 +456,12 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
             return view == object;
         }
 
+        @Override
+        public int getItemPosition(@NonNull Object object) {
+            // todo : 추후 제거 바람
+            return POSITION_NONE;
+        }
+
         @NonNull
         @Override
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
@@ -471,5 +484,11 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
             container.addView(view);
             return view;
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (handlerPager != null) stopPageRolling();
+        super.onDestroy();
     }
 }

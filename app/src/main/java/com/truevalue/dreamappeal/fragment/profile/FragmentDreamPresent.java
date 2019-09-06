@@ -296,39 +296,6 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
         mRvDreamDescription.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-    private void bindTempData() {
-        for (int i = 0; i < 3; i++) {
-            mAdapter.add("");
-        }
-        mTvMeritAndMotive.setMaxLines(3);
-
-        mBtnDreamDescriptionMore.setOnClickListener(v -> {
-            if (isMyDreamMore) {
-                isMyDreamMore = false;
-                mAdapter.clear();
-                for (int i = 0; i < 3; i++) {
-                    mAdapter.add("");
-                }
-            } else {
-                isMyDreamMore = true;
-                mAdapter.clear();
-                for (int i = 0; i < 10; i++) {
-                    mAdapter.add("");
-                }
-            }
-        });
-
-        mBtnMeritAndMotiveMore.setOnClickListener(v -> {
-            if (isMyDreamReason) {
-                isMyDreamReason = false;
-                mTvMeritAndMotive.setMaxLines(3);
-            } else {
-                isMyDreamReason = true;
-                mTvMeritAndMotive.setMaxLines(1000);
-            }
-        });
-    }
-
     @OnClick({R.id.rv_dream_description, R.id.ll_dreams, R.id.ll_follower, R.id.ll_merit_and_motive,
             R.id.iv_dream_profile, R.id.btn_dream_description_more,
             R.id.btn_merit_and_motive_more, R.id.ll_comment,
@@ -338,7 +305,6 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
         Intent intent = null;
         switch (view.getId()) {
             case R.id.ll_dreams: // 내 꿈 레벨 (꿈 선택)
-                // todo : 서버가 연동이 되어 있을 시에만
                 // todo : 서버가 연동이 되어 있을 시에만
                 if (mUserIndex != -1) {
                     intent = new Intent(getContext(), ActivityDreamList.class);

@@ -48,6 +48,17 @@
             android:scaleY="0.65"
             android:src="@drawable/ic_search_black_24dp" />
 
+        <ImageView
+            android:id="@+id/iv_more"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
+            android:src="@drawable/more_btn"
+            android:visibility="gone"/>
+
+
         <TextView
             android:id="@+id/tv_text_btn"
             android:layout_width="48dp"

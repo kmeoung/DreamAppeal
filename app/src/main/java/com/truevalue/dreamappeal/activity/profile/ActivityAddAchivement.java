@@ -27,6 +27,7 @@ import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
 import com.truevalue.dreamappeal.base.IOServerCallback;
 import com.truevalue.dreamappeal.bean.BeanAchivementPostMain;
+import com.truevalue.dreamappeal.bean.BeanPostDetail;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
 import com.truevalue.dreamappeal.utils.Utils;
@@ -66,6 +67,7 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
 
     private BaseRecyclerViewAdapter mAdapter;
     private BeanAchivementPostMain mBean = null;
+    private BeanPostDetail mBeanDetail = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,10 +89,16 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
 
     private void initData() {
         if (getIntent().getSerializableExtra(EXTRA_EDIT_ACHIVEMENT_POST) != null) {
-            mBean = (BeanAchivementPostMain) getIntent().getSerializableExtra(EXTRA_EDIT_ACHIVEMENT_POST);
-            mEtTitle.setText(mBean.getTitle());
-            mEtInputComment.setText(mBean.getContent());
-            // todo : 사진이 추가될 시 여기에도 추가 바람
+            if (getIntent().getSerializableExtra(EXTRA_EDIT_ACHIVEMENT_POST) instanceof BeanPostDetail) {
+                mBeanDetail = (BeanPostDetail) getIntent().getSerializableExtra(EXTRA_EDIT_ACHIVEMENT_POST);
+                mEtTitle.setText(mBeanDetail.getTitle());
+                mEtInputComment.setText(mBeanDetail.getContent());
+            } else {
+                mBean = (BeanAchivementPostMain) getIntent().getSerializableExtra(EXTRA_EDIT_ACHIVEMENT_POST);
+                mEtTitle.setText(mBean.getTitle());
+                mEtInputComment.setText(mBean.getContent());
+                // todo : 사진이 추가될 시 여기에도 추가 바람
+            }
         }
     }
 
@@ -120,7 +128,7 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
     @Override
     public void OnClickRightTextBtn() {
         // TODO : 완료하면 상세 페이지 띄워줘야함
-        if (mBean != null) { // 수정
+        if (mBean != null || mBeanDetail != null) { // 수정
             httpPatchAchivementPost();
         } else { // 추가
             httpPostAchivementPost();
@@ -134,7 +142,9 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
         Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityAddAchivement.this);
         String url = Comm_Param.URL_API_PROFILES_INDEX_ACHIVEMENT_POSTS_INDEX;
         url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
-        url = url.replace(Comm_Param.POST_INDEX,String.valueOf(mBean.getIdx()));
+        if (mBean != null)
+            url = url.replace(Comm_Param.POST_INDEX, String.valueOf(mBean.getIdx()));
+        else url = url.replace(Comm_Param.POST_INDEX, String.valueOf(mBeanDetail.getIdx()));
 
         if (TextUtils.isEmpty(mEtTitle.getText().toString()) || TextUtils.isEmpty(mEtInputComment.getText().toString())) {
             Toast.makeText(this, "모든 항목을 입력해주세요.", Toast.LENGTH_SHORT).show();

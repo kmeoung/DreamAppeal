@@ -93,7 +93,7 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
         // Bind Temp Data
 //        bindTempData();
     }
-    // todo : 첫번째 꿈 두번쨰 꿈 설정 ㅐㅎ야 함
+    // todo : 첫번째 꿈 두번쨰 꿈 설정해야 함
     private void initData() {
         mUserIndex = getIntent().getIntExtra(EXTRA_USER_INDEX, -1);
         httpGetDreamList();
@@ -101,6 +101,7 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
 
     /**
      * 내 꿈 목록 조회
+     * TODO : 첫번째 꿈 / 두번째 꿈 등은 서버에서 적용이 되어야 테스트 및 적용을 할 수 있음
      */
     private void httpGetDreamList() {
         String url = Comm_Param.URL_API_PROFILES_INDEX_LIST;

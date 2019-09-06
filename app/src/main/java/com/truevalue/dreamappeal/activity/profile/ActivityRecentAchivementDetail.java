@@ -1,5 +1,7 @@
 package com.truevalue.dreamappeal.activity.profile;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -40,6 +42,7 @@ import okhttp3.Call;
 public class ActivityRecentAchivementDetail extends BaseActivity implements IOBaseTitleBarListener {
 
     public static final String EXTRA_RECENT_ACHIVEMENT_INDEX = "EXTRA_RECENT_ACHIVEMENT_INDEX";
+    public static final int REQUEST_EDIT_RECENT_ACHIVEMENT = 2001;
 
     @BindView(R.id.v_status)
     View mVStatus;
@@ -60,6 +63,8 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
     @BindView(R.id.tv_contents)
     TextView mTvContents;
 
+    private BeanPostDetail mBean = null;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +74,7 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
         updateStatusbarTranslate(mBtbBar);
         // 상단바 연동
         mBtbBar.setIOBaseTitleBarListener(this);
+        mBtbBar.getmIvMore().setVisibility(View.VISIBLE);
         initView();
         initData();
     }
@@ -111,12 +117,14 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
                     Gson gson = new Gson();
                     JSONObject object = new JSONObject(body);
                     JSONObject post = object.getJSONObject("achievement_post");
-                    BeanPostDetail bean = gson.fromJson(post.toString(), BeanPostDetail.class);
+                    mBean = gson.fromJson(post.toString(), BeanPostDetail.class);
 
-                    mBtbBar.setTitle(bean.getTitle());
-                    mTvContents.setText(bean.getContent());
-                    if(TextUtils.isEmpty(bean.getThumbnail_image())) Glide.with(ActivityRecentAchivementDetail.this).load(R.drawable.user).into(mIvImg);
-                    else Glide.with(ActivityRecentAchivementDetail.this).load(bean.getThumbnail_image()).thumbnail(R.drawable.user).into(mIvImg);
+                    mBtbBar.setTitle(mBean.getTitle());
+                    mTvContents.setText(mBean.getContent());
+                    if (TextUtils.isEmpty(mBean.getThumbnail_image()))
+                        Glide.with(ActivityRecentAchivementDetail.this).load(R.drawable.user).into(mIvImg);
+                    else
+                        Glide.with(ActivityRecentAchivementDetail.this).load(mBean.getThumbnail_image()).thumbnail(R.drawable.user).into(mIvImg);
                 }
             }
         });
@@ -140,5 +148,138 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
     @Override
     public void OnClickBack() {
         finish();
+    }
+
+    @Override
+    public void OnClickMoreBtn() {
+        showMoreDialog();
+    }
+
+    /**
+     * 더보기 Dialog 띄우기
+     */
+    private void showMoreDialog() {
+        String[] list = {"대표 성과1 지정","대표 성과2 지정","대표 성과3 지정","수정","삭제"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(ActivityRecentAchivementDetail.this);
+        builder.setItems(list, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                switch (list[i]) {
+                    case "대표 성과1 지정":
+                        httpPostBestAchivement(1);
+                        break;
+                    case "대표 성과2 지정":
+                        httpPostBestAchivement(2);
+                        break;
+                    case "대표 성과3 지정":
+                        httpPostBestAchivement(3);
+                        break;
+                    case "수정":
+                        if (mBean != null) {
+                            Intent intent = new Intent(ActivityRecentAchivementDetail.this, ActivityAddAchivement.class);
+                            intent.putExtra(ActivityAddAchivement.EXTRA_EDIT_ACHIVEMENT_POST, mBean);
+                            startActivityForResult(intent, REQUEST_EDIT_RECENT_ACHIVEMENT);
+                        }
+                        break;
+                    case "삭제":
+                        AlertDialog.Builder builder = new AlertDialog.Builder(ActivityRecentAchivementDetail.this)
+                                .setTitle("프로필 삭제")
+                                .setMessage("프로필을 삭제하시겠습니까?")
+                                .setPositiveButton("네", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        if (mBean != null)
+                                            httpDeletePostAchivement(mBean.getIdx());
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                        break;
+                }
+            }
+        });
+        builder.create().show();
+    }
+
+    /**
+     * 대표 성과 등록
+     */
+    private void httpPostBestAchivement(int best_index){
+       Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityRecentAchivementDetail.this);
+       String url = Comm_Param.URL_API_PROFILES_INDEX_ACHIVEMENT_BEST_POST_INDEX_POST_INDEX;
+       url = url.replace(Comm_Param.PROFILES_INDEX,String.valueOf(prefs.getProfileIndex()));
+       url = url.replace(Comm_Param.BEST_POST_INDEX,String.valueOf(best_index));
+       url = url.replace(Comm_Param.POST_INDEX,String.valueOf(mBean.getIdx()));
+
+       HashMap header = Utils.getHttpHeader(prefs.getToken());
+       BaseOkHttpClient client = new BaseOkHttpClient();
+       client.Post(url, header, null, new IOServerCallback() {
+           @Override
+           public void onFailure(@NotNull Call call, @NotNull IOException e) {
+               e.printStackTrace();
+           }
+
+           @Override
+           public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
+               Toast.makeText(ActivityRecentAchivementDetail.this, message, Toast.LENGTH_SHORT).show();
+
+               if(TextUtils.equals(code,SUCCESS)){
+                   setResult(RESULT_OK);
+                   finish();
+               }
+           }
+       });
+    }
+
+    /**
+     * 최근 성과 삭제
+     *
+     * @param index
+     */
+    private void httpDeletePostAchivement(int index) {
+        // todo : 제대로 된 설정 필요
+        if (index == -1) return;
+        Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityRecentAchivementDetail.this);
+        String url = Comm_Param.URL_API_PROFILES_INDEX_ACHIVEMENT_POSTS_INDEX;
+        url = url.replaceAll(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
+        url = url.replaceAll(Comm_Param.POST_INDEX, String.valueOf(index));
+
+        HashMap header = Utils.getHttpHeader(prefs.getToken());
+        BaseOkHttpClient client = new BaseOkHttpClient();
+        client.Delete(url, header, null, new IOServerCallback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
+                Toast.makeText(ActivityRecentAchivementDetail.this, message, Toast.LENGTH_SHORT).show();
+                if (TextUtils.equals(code, SUCCESS)) {
+                    if (mBean != null) {
+                        setResult(RESULT_OK);
+                        finish();
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_EDIT_RECENT_ACHIVEMENT) {
+                setResult(RESULT_OK);
+                finish();
+            }
+        }
     }
 }

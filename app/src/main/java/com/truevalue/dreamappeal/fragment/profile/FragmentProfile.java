@@ -96,9 +96,9 @@ public class FragmentProfile extends BaseFragment {
                 public void onPageSelected(int position) {
                     for (int i = 0; i < mFragmentList.size(); i++) {
                         if (i == position)
-                            mFragmentList.get(position).onViewPaged(true);
+                            mFragmentList.get(i).onViewPaged(true);
                         else
-                            mFragmentList.get(position).onViewPaged(false);
+                            mFragmentList.get(i).onViewPaged(false);
                     }
 
                 }

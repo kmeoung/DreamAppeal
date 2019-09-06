@@ -35,7 +35,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class FragmentCamera extends BaseFragment implements LifecycleOwner{
+public class FragmentCamera extends BaseFragment implements LifecycleOwner {
 
     @BindView(R.id.ibtn_camera)
     ImageButton mIbtnCamera;
@@ -77,7 +77,7 @@ public class FragmentCamera extends BaseFragment implements LifecycleOwner{
         int viewHeight = displayWidth;
 
         // View 사이즈 재설정
-        Utils.setResizeView(mTtvTexture,viewWidth,viewHeight);
+        Utils.setResizeView(mTtvTexture, viewWidth, viewHeight);
         builder.setTargetResolution(new Size(viewWidth, viewHeight));
 
         // 미리보기 객체를 만듦
@@ -94,7 +94,7 @@ public class FragmentCamera extends BaseFragment implements LifecycleOwner{
         mIbtnCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                File file = new File(getActivity().getExternalMediaDirs().toString(),"${System.currentTimeMillis()}.jpg");
+                File file = new File(getActivity().getExternalMediaDirs().toString(), "${System.currentTimeMillis()}.jpg");
                 imageCapture.takePicture(file, new ImageCapture.OnImageSavedListener() {
                     @Override
                     public void onImageSaved(@NonNull File file) {
@@ -106,7 +106,7 @@ public class FragmentCamera extends BaseFragment implements LifecycleOwner{
                     public void onError(@NonNull ImageCapture.UseCaseError useCaseError, @NonNull String message, @Nullable Throwable cause) {
                         String msg = "Photo capture failed: $message";
                         Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-                        Log.e("imageCaptureError : ",message);
+                        Log.e("imageCaptureError : ", message);
                     }
                 });
             }
@@ -123,7 +123,7 @@ public class FragmentCamera extends BaseFragment implements LifecycleOwner{
             }
         });
         // 생명주기에 카메라 바인딩
-        CameraX.bindToLifecycle(this,preview,imageCapture);
+        CameraX.bindToLifecycle(this, preview, imageCapture);
     }
 
     private void updateTransform() {

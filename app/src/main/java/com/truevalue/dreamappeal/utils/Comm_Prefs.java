@@ -57,6 +57,14 @@ public class Comm_Prefs {
         return pref.getInt(Comm_Prefs_Param.PREFS_PROFILE_INDEX,-1);
     }
 
+    public void setDreamListIndex(int dream_list_index){
+        pref.edit().putInt(Comm_Prefs_Param.PREFS_DREAM_LIST_INDEX,dream_list_index).commit();
+    }
+
+    public int getDreamListIndex(){
+        return pref.getInt(Comm_Prefs_Param.PREFS_DREAM_LIST_INDEX,-1);
+    }
+
 
 
 }

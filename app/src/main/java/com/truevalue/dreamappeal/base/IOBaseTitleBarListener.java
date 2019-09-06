@@ -13,4 +13,8 @@ public interface IOBaseTitleBarListener {
 
     default void OnClickRightTextBtn() {
     }
+
+    default void OnClickMoreBtn(){
+
+    }
 }
