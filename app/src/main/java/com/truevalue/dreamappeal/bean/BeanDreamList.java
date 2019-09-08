@@ -2,6 +2,7 @@ package com.truevalue.dreamappeal.bean;
 
 public class BeanDreamList {
 
+    private int profile_order;
     private int idx;
     private int level;
     private int point;
@@ -11,7 +12,8 @@ public class BeanDreamList {
     private int achievement_post_count;
     private int action_post_count;
 
-    public BeanDreamList(int idx, int level, int point, String image, String value_style, String job, int achievement_post_count, int action_post_count) {
+    public BeanDreamList(int profile_order, int idx, int level, int point, String image, String value_style, String job, int achievement_post_count, int action_post_count) {
+        this.profile_order = profile_order;
         this.idx = idx;
         this.level = level;
         this.point = point;
@@ -20,6 +22,14 @@ public class BeanDreamList {
         this.job = job;
         this.achievement_post_count = achievement_post_count;
         this.action_post_count = action_post_count;
+    }
+
+    public int getProfile_order() {
+        return profile_order;
+    }
+
+    public void setProfile_order(int profile_order) {
+        this.profile_order = profile_order;
     }
 
     public int getIdx() {

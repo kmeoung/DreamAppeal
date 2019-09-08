@@ -183,8 +183,8 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
                         break;
                     case "삭제":
                         AlertDialog.Builder builder = new AlertDialog.Builder(ActivityRecentAchivementDetail.this)
-                                .setTitle("프로필 삭제")
-                                .setMessage("프로필을 삭제하시겠습니까?")
+                                .setTitle("게시글 삭제")
+                                .setMessage("게시글을 삭제하시겠습니까?")
                                 .setPositiveButton("네", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {

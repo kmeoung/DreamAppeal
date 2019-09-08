@@ -16,7 +16,7 @@ import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentAbilityOppor
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ActivityAbilityOpportunity extends BaseActivity implements IOBaseTitleBarListener {
+public class ActivityAbilityOpportunity extends BaseActivity {
 
     @BindView(R.id.v_status)
     View mVStatus;
@@ -33,9 +33,11 @@ public class ActivityAbilityOpportunity extends BaseActivity implements IOBaseTi
         // 상태 창 투명화
         updateStatusbarTranslate(mBtbBar);
         // 상단바 연동
-        mBtbBar.setIOBaseTitleBarListener(this);
-
         replaceFragment(R.id.base_container, new FragmentAbilityOpportunity(), false);
+    }
+
+    public void setListener(IOBaseTitleBarListener listener){
+        mBtbBar.setIOBaseTitleBarListener(listener);
     }
 
     /**
@@ -64,10 +66,5 @@ public class ActivityAbilityOpportunity extends BaseActivity implements IOBaseTi
      */
     public void replaceFragment(BaseFragment fragment, boolean addToStack) {
         replaceFragmentRight(R.id.base_container, fragment, addToStack);
-    }
-
-    @Override
-    public void OnClickBack() {
-        onBackPressed();
     }
 }

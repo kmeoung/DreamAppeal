@@ -62,7 +62,6 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
 
     public static final String EXTRA_ACTIVITY_DREAM_LIST = "EXTRA_ACTIVITY_DREAM_LIST";
 
-
     BaseRecyclerViewAdapter mAdapter;
     @BindView(R.id.tv_dream_name)
     TextView mTvDreamName;

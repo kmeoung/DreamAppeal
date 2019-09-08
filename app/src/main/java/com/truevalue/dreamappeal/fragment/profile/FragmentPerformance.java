@@ -74,6 +74,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
     private static final int REQUEST_ADD_RECENT_ACHIVEMENT = 1100;
     private static final int REQUEST_EDIT_RECENT_ACHIVEMENT = 1101;
     private static final int REQUEST_RECENT_ACHIVEMENT = 1102;
+    private static final int REQUEST_BEST_ACHIVEMENT = 1103;
     private static final int TOP_BANNER_DELAY = 1000 * 4;
 
     @BindView(R.id.rv_dream_description)
@@ -275,6 +276,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
                 case REQUEST_ADD_RECENT_ACHIVEMENT:
                 case REQUEST_EDIT_RECENT_ACHIVEMENT:
                 case REQUEST_RECENT_ACHIVEMENT:
+                case REQUEST_BEST_ACHIVEMENT:
                     httpGetAchivementPostMain();
                     break;
             }
@@ -477,7 +479,8 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
                     public void onClick(View v) {
                         Intent intent = new Intent(getContext(), ActivityBestAchivementDetail.class);
                         intent.putExtra(ActivityBestAchivementDetail.EXTRA_BEST_ACHIVEMENT_INDEX, bean.getIdx());
-                        startActivity(intent);
+                        intent.putExtra(ActivityBestAchivementDetail.EXTRA_BEST_ACHIVEMENT_BEST_INDEX,position + 1);
+                        startActivityForResult(intent,REQUEST_BEST_ACHIVEMENT);
                     }
                 });
             }

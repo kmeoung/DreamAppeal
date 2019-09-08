@@ -1,31 +1,58 @@
 package com.truevalue.dreamappeal.fragment.profile.blueprint;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.profile.ActivityAbilityOpportunity;
+import com.truevalue.dreamappeal.activity.profile.ActivityAddAchivement;
 import com.truevalue.dreamappeal.base.BaseFragment;
+import com.truevalue.dreamappeal.base.BaseOkHttpClient;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.BaseViewHolder;
+import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
+import com.truevalue.dreamappeal.base.IOServerCallback;
+import com.truevalue.dreamappeal.bean.BeanAbilityOpportunityHeader;
+import com.truevalue.dreamappeal.bean.BeanBlueprintAbilityOpportunity;
+import com.truevalue.dreamappeal.utils.Comm_Param;
+import com.truevalue.dreamappeal.utils.Comm_Prefs;
+import com.truevalue.dreamappeal.utils.Utils;
+
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
 
-public class FragmentAbilityOpportunity extends BaseFragment {
+public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTitleBarListener {
     @BindView(R.id.rv_ability)
     RecyclerView mRvAbility;
     @BindView(R.id.rv_opportunity)
@@ -37,6 +64,7 @@ public class FragmentAbilityOpportunity extends BaseFragment {
 
     private BaseRecyclerViewAdapter mAbilityAdapter;
     private BaseRecyclerViewAdapter mOpportunityAdapter;
+
 
     @Nullable
     @Override
@@ -51,14 +79,19 @@ public class FragmentAbilityOpportunity extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         // Adapter 초기화
         initAdapter();
-        // 임시 데이터
-        bindTempData();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        ((ActivityAbilityOpportunity) getActivity()).showToolbarBtn(BaseTitleBar.VISIBLE,BaseTitleBar.GONE,BaseTitleBar.GONE,BaseTitleBar.INVISIBLE,"갖출 능력 / 만들고픈 기회","");
+        ((ActivityAbilityOpportunity) getActivity()).showToolbarBtn(BaseTitleBar.VISIBLE, BaseTitleBar.GONE, BaseTitleBar.GONE, BaseTitleBar.INVISIBLE, "갖출 능력 / 만들고픈 기회", "");
+        ((ActivityAbilityOpportunity) getActivity()).setListener(this);
+        httpGetAbilities(true);
+    }
+
+    @Override
+    public void OnClickBack() {
+        getActivity().onBackPressed();
     }
 
     private void initAdapter() {
@@ -70,11 +103,52 @@ public class FragmentAbilityOpportunity extends BaseFragment {
 
             @Override
             public void onBindViewHolder(@NonNull BaseViewHolder h, int i) {
-                h.getItemView(R.id.iv_more).setOnClickListener(new View.OnClickListener() {
+                BeanBlueprintAbilityOpportunity bean = (BeanBlueprintAbilityOpportunity) mAbilityAdapter.get(i);
+                ImageView ivMore = h.getItemView(R.id.iv_more);
+                TextView tvTitle = h.getItemView(R.id.tv_ability_opportunity);
+                tvTitle.setText(bean.getContents());
+                PopupMenu popupMenu = new PopupMenu(getContext(), ivMore);
+                popupMenu.getMenuInflater().inflate(R.menu.menu_achivement_post, popupMenu.getMenu());
+
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        int id = item.getItemId();
+                        AlertDialog.Builder builder;
+                        AlertDialog dialog;
+                        switch (id) {
+                            case R.id.menu_edit:
+                                ((ActivityAbilityOpportunity) getActivity()).showToolbarBtn(BaseTitleBar.VISIBLE, BaseTitleBar.GONE, BaseTitleBar.GONE, BaseTitleBar.VISIBLE, "갖출 능력 수정", "확인");
+                                FragmentAddAbilityOpportunity.newInstance(FragmentAddAbilityOpportunity.TYPE_ABILITY, bean);
+                                break;
+                            case R.id.menu_delete:
+                                builder = new AlertDialog.Builder(getContext())
+                                        .setTitle("갖출 능력 삭제")
+                                        .setMessage("능력을 삭제하시겠습니까?")
+                                        .setPositiveButton("네", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                httpDeleteAbility(bean.getIdx());
+                                                dialog.dismiss();
+                                            }
+                                        })
+                                        .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                dialog = builder.create();
+                                dialog.show();
+                                break;
+                        }
+                        return false;
+                    }
+                });
+                ivMore.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Spinner spinner = new Spinner(getContext(), Spinner.MODE_DROPDOWN);
-                        spinner.setAdapter(new ArrayAdapter<String>(getContext(), R.layout.support_simple_spinner_dropdown_item, new String[]{"수정", "삭제"}));
+                        popupMenu.show();
                     }
                 });
             }
@@ -101,11 +175,54 @@ public class FragmentAbilityOpportunity extends BaseFragment {
 
             @Override
             public void onBindViewHolder(@NonNull BaseViewHolder h, int i) {
-                h.getItemView(R.id.iv_more).setOnClickListener(new View.OnClickListener() {
+                BeanBlueprintAbilityOpportunity bean = (BeanBlueprintAbilityOpportunity) mOpportunityAdapter.get(i);
+                ImageView ivMore = h.getItemView(R.id.iv_more);
+                TextView tvTitle = h.getItemView(R.id.tv_ability_opportunity);
+                tvTitle.setText(bean.getContents());
+                PopupMenu popupMenu = new PopupMenu(getContext(), ivMore);
+                popupMenu.getMenuInflater().inflate(R.menu.menu_achivement_post, popupMenu.getMenu());
+
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        int id = item.getItemId();
+                        AlertDialog.Builder builder;
+                        AlertDialog dialog;
+                        switch (id) {
+                            case R.id.menu_edit:
+                                ((ActivityAbilityOpportunity) getActivity()).showToolbarBtn(BaseTitleBar.VISIBLE, BaseTitleBar.GONE, BaseTitleBar.GONE, BaseTitleBar.VISIBLE, "만들고픈 기회 수정", "확인");
+                                FragmentAddAbilityOpportunity.newInstance(FragmentAddAbilityOpportunity.TYPE_OPPORTUNITY, bean);
+                                break;
+                            case R.id.menu_delete:
+                                builder = new AlertDialog.Builder(getContext())
+                                        .setTitle("만들고픈 기회 삭제")
+                                        .setMessage("기회를 삭제하시겠습니까?")
+                                        .setPositiveButton("네", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                httpDeleteOpportunity(bean.getIdx());
+                                                dialog.dismiss();
+                                            }
+                                        })
+                                        .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                dialog = builder.create();
+                                dialog.show();
+                                break;
+                        }
+                        return false;
+                    }
+                });
+
+
+                ivMore.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Spinner spinner = new Spinner(getContext(), Spinner.MODE_DROPDOWN);
-                        spinner.setAdapter(new ArrayAdapter<String>(getContext(), R.layout.support_simple_spinner_dropdown_item, new String[]{"수정", "삭제"}));
+                        popupMenu.show();
                     }
                 });
             }
@@ -130,26 +247,170 @@ public class FragmentAbilityOpportunity extends BaseFragment {
         mRvOpportunity.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-    private void bindTempData() {
-        for (int i = 0; i < 10; i++) {
-            mAbilityAdapter.add("");
-        }
+    /**
+     * http Get
+     * 갖출 능력 조회
+     *
+     * @param isAll 전부 조회시
+     */
+    private void httpGetAbilities(boolean isAll) {
+        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+        String url = Comm_Param.URL_API_PROFILES_INDEX_BLUEPRINT_ABILITIES;
+        url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
 
-        for (int i = 0; i < 10; i++) {
-            mOpportunityAdapter.add("");
-        }
+        HashMap header = Utils.getHttpHeader(prefs.getToken());
+
+        BaseOkHttpClient client = new BaseOkHttpClient();
+        client.Get(url, header, null, new IOServerCallback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
+                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+
+                if (TextUtils.equals(code, SUCCESS)) {
+                    JSONObject object = new JSONObject(body);
+                    mAbilityAdapter.clear();
+                    try {
+                        JSONArray array = object.getJSONArray("abilities");
+                        for (int i = 0; i < array.length(); i++) {
+                            JSONObject ability = array.getJSONObject(i);
+                            int profile_idx = ability.getInt("profile_idx");
+                            int idx = ability.getInt("idx");
+                            String contents = ability.getString("ability");
+                            BeanBlueprintAbilityOpportunity bean = new BeanBlueprintAbilityOpportunity(profile_idx, idx, contents);
+                            mAbilityAdapter.add(bean);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (isAll) httpGetOpportunities();
+                }
+            }
+        });
+    }
+
+    /**
+     * http Get
+     * 만들고픈 기회 조회
+     */
+    private void httpGetOpportunities() {
+        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+        String url = Comm_Param.URL_API_PROFILES_INDEX_BLUEPRINT_OPPORTUNITIES;
+        url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
+
+        HashMap header = Utils.getHttpHeader(prefs.getToken());
+
+        BaseOkHttpClient client = new BaseOkHttpClient();
+        client.Get(url, header, null, new IOServerCallback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
+                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+
+                if (TextUtils.equals(code, SUCCESS)) {
+                    JSONObject object = new JSONObject(body);
+                    mOpportunityAdapter.clear();
+                    try {
+                        JSONArray array = object.getJSONArray("opportunities");
+                        for (int i = 0; i < array.length(); i++) {
+                            JSONObject ability = array.getJSONObject(i);
+                            int profile_idx = ability.getInt("profile_idx");
+                            int idx = ability.getInt("idx");
+                            String contents = ability.getString("opportunity");
+                            BeanBlueprintAbilityOpportunity bean = new BeanBlueprintAbilityOpportunity(profile_idx, idx, contents);
+                            mOpportunityAdapter.add(bean);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * http Delete
+     * 만들고픈 기회 삭제
+     *
+     * @param ability_index
+     */
+    private void httpDeleteAbility(int ability_index) {
+        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+        String url = Comm_Param.URL_API_PROFILES_INDEX_BLUEPRINT_ABILITIES_INDEX;
+        url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
+        url = url.replace(Comm_Param.ABILITY_INDEX, String.valueOf(ability_index));
+
+        HashMap header = Utils.getHttpHeader(prefs.getToken());
+
+        BaseOkHttpClient client = new BaseOkHttpClient();
+        client.Delete(url, header, null, new IOServerCallback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
+                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+
+                if (TextUtils.equals(code, SUCCESS)) {
+                    httpGetAbilities(false);
+                }
+            }
+        });
+    }
+
+    /**
+     * http Delete
+     * 만들고픈 기회 삭제
+     *
+     * @param opportunity_index
+     */
+    private void httpDeleteOpportunity(int opportunity_index) {
+        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+        String url = Comm_Param.URL_API_PROFILES_INDEX_BLUEPRINT_OPPORTUNITIES_INDEX;
+        url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
+        url = url.replace(Comm_Param.OPPORTUNITY_INDEX, String.valueOf(opportunity_index));
+
+        HashMap header = Utils.getHttpHeader(prefs.getToken());
+
+        BaseOkHttpClient client = new BaseOkHttpClient();
+        client.Delete(url, header, null, new IOServerCallback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
+                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+
+                if (TextUtils.equals(code, SUCCESS)) {
+                    httpGetOpportunities();
+                }
+            }
+        });
     }
 
     @OnClick({R.id.iv_add_ability, R.id.iv_add_opportunity})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_add_ability: // 갖출 능력
-                ((ActivityAbilityOpportunity) getActivity()).showToolbarBtn(BaseTitleBar.VISIBLE,BaseTitleBar.GONE,BaseTitleBar.GONE,BaseTitleBar.VISIBLE,"어떤 능력을 갖춰야 할까?","확인");
-                ((ActivityAbilityOpportunity) getActivity()).replaceFragment(new FragmentAddAbilityOpportunity(), true);
+                ((ActivityAbilityOpportunity) getActivity()).showToolbarBtn(BaseTitleBar.VISIBLE, BaseTitleBar.GONE, BaseTitleBar.GONE, BaseTitleBar.VISIBLE, "어떤 능력을 갖춰야 할까?", "확인");
+                ((ActivityAbilityOpportunity) getActivity()).replaceFragment(FragmentAddAbilityOpportunity.newInstance(FragmentAddAbilityOpportunity.TYPE_ABILITY), true);
                 break;
             case R.id.iv_add_opportunity: // 만들고픈 기회
-                ((ActivityAbilityOpportunity) getActivity()).showToolbarBtn(BaseTitleBar.VISIBLE,BaseTitleBar.GONE,BaseTitleBar.GONE,BaseTitleBar.VISIBLE,"어떤 기회를 만들어 볼까?","확인");
-                ((ActivityAbilityOpportunity) getActivity()).replaceFragment(new FragmentAddAbilityOpportunity(), true);
+                ((ActivityAbilityOpportunity) getActivity()).showToolbarBtn(BaseTitleBar.VISIBLE, BaseTitleBar.GONE, BaseTitleBar.GONE, BaseTitleBar.VISIBLE, "어떤 기회를 만들어 볼까?", "확인");
+                ((ActivityAbilityOpportunity) getActivity()).replaceFragment(FragmentAddAbilityOpportunity.newInstance(FragmentAddAbilityOpportunity.TYPE_OPPORTUNITY), true);
                 break;
         }
     }

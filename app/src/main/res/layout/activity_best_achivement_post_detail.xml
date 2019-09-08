@@ -62,6 +62,17 @@
 
         </LinearLayout>
 
+        <ImageView
+            android:id="@+id/iv_more"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/more_btn"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
+            android:visibility="visible"
+            android:minHeight="78dp"/>
+
     </LinearLayout>
     <!--타이틀 바-->
 
