@@ -33,6 +33,7 @@ import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
 import com.truevalue.dreamappeal.base.IOServerCallback;
 import com.truevalue.dreamappeal.bean.BeanDreamList;
+import com.truevalue.dreamappeal.fragment.profile.FragmentDreamPresent;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
 import com.truevalue.dreamappeal.utils.Utils;
@@ -170,7 +171,6 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
         });
     }
 
-
     /**
      * Init Adapter
      */
@@ -183,16 +183,6 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
         // Set Edit Mode
         isEditMode(false);
     }
-
-    /**
-     * Bind Temp Data
-     */
-    private void bindTempData() {
-        for (int i = 0; i < 10; i++) {
-            mAdapter.add("");
-        }
-    }
-
 
     /**
      * 수정 모드에 따라 설정이 변경

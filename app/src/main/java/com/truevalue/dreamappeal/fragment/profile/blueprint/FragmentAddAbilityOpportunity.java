@@ -28,9 +28,7 @@ import com.truevalue.dreamappeal.utils.Comm_Prefs;
 import com.truevalue.dreamappeal.utils.Utils;
 
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -103,7 +101,7 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
             Toast.makeText(getContext(), "모든 항목을 입력해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (isEdit) {
+        if (!isEdit) {
             if (mType == TYPE_ABILITY) httpPostAbilities();
             else if (mType == TYPE_OPPORTUNITY) httpPostOpportunities();
         } else {
@@ -114,14 +112,19 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
     }
 
     private void initView() {
-        // 처음 Hint 글자 안보이게 하고 Focus잡기
-        mTvHint.setOnClickListener(v -> {
-            mEtAbilityOpportunity.setFocusableInTouchMode(true);
-            mEtAbilityOpportunity.requestFocus();
-            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(mEtAbilityOpportunity, 0);
+        if(isEdit){
             mTvHint.setVisibility(View.GONE);
-        });
+            mEtAbilityOpportunity.setText(mBean.getContents());
+        }else{
+            // 처음 Hint 글자 안보이게 하고 Focus잡기
+            mTvHint.setOnClickListener(v -> {
+                mEtAbilityOpportunity.setFocusableInTouchMode(true);
+                mEtAbilityOpportunity.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(mEtAbilityOpportunity, 0);
+                mTvHint.setVisibility(View.GONE);
+            });
+        }
     }
 
     /**
@@ -130,7 +133,7 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
      */
     private void httpPostAbilities() {
         Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
-        String url = Comm_Param.URL_API_PROFILES_INDEX_BLUEPRINT_ABILITIES;
+        String url = Comm_Param.URL_API_BLUEPRINT_ABILITIES;
         url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
@@ -161,7 +164,7 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
      */
     private void httpPostOpportunities() {
         Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
-        String url = Comm_Param.URL_API_PROFILES_INDEX_BLUEPRINT_OPPORTUNITIES;
+        String url = Comm_Param.URL_API_BLUEPRINT_OPPORTUNITIES;
         url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
@@ -194,7 +197,7 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
      */
     private void httpPatchAbility(int ability_index) {
         Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
-        String url = Comm_Param.URL_API_PROFILES_INDEX_BLUEPRINT_ABILITIES_INDEX;
+        String url = Comm_Param.URL_API_BLUEPRINT_ABILITIES_INDEX;
         url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
         url = url.replace(Comm_Param.ABILITY_INDEX, String.valueOf(ability_index));
 
@@ -228,7 +231,7 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
      */
     private void httpPatchOpportunity(int opportunity_index) {
         Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
-        String url = Comm_Param.URL_API_PROFILES_INDEX_BLUEPRINT_OPPORTUNITIES_INDEX;
+        String url = Comm_Param.URL_API_BLUEPRINT_OPPORTUNITIES_INDEX;
         url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
         url = url.replace(Comm_Param.OPPORTUNITY_INDEX, String.valueOf(opportunity_index));
 

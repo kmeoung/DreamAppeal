@@ -52,12 +52,16 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Call;
 
+import static android.app.Activity.RESULT_OK;
+
 public class FragmentBlueprint extends BaseFragment implements IORecyclerViewListener {
 
     private final int LISTITEM_TYPE_ABILITY_OPPORTUNITY_HEADER = 0;
     private final int LISTITEM_TYPE_ABILITY_OPPORTUNITY = 1;
     private final int LISTITEM_TYPE_OBJECT_HEADER = 2;
     private final int LISTITEM_TYPE_OBJECT = 3;
+
+    public static final int REQUEST_ADD_OBJECTS = 1200;
 
     @BindView(R.id.rv_blueprint)
     RecyclerView mRvBlueprint;
@@ -108,29 +112,15 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
         mRvBlueprint.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-    private void bindTempData() {
-        mAdapter.add(new BeanAbilityOpportunityHeader()); // 능력 / 기회 헤더
-        for (int i = 0; i < 3; i++) {
-//            mAdapter.add(new BeanBlueprintAbilityOpportunity());
-        }
-        mAdapter.add(new BeanObjectHeader()); // 실천목표 헤더
-        for (int i = 0; i < 20; i++) {
-//            mAdapter.add(new BeanBlueprintObject());
-        }
-    }
-
     /**
      * 발전 계획 가져오기
      */
     private void httpGetBluePrint() {
         Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
-        String url = Comm_Param.URL_API_PROFILES_INDEX_BLUEPRINT;
+        String url = Comm_Param.URL_API_BLUEPRINT;
         url = url.replaceAll(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
         HashMap header = Utils.getHttpHeader(prefs.getToken());
         BaseOkHttpClient client = new BaseOkHttpClient();
-
-        mAdapter.clear();
-
         client.Get(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -141,7 +131,7 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
                 Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
                 if (TextUtils.equals(code, SUCCESS)) {
-
+                    mAdapter.clear();
                     Gson gson = new Gson();
                     JSONObject json = new JSONObject(body);
                     ArrayList<BeanBlueprintAbilityOpportunity> abilityList = new ArrayList<>();
@@ -286,12 +276,14 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getContext(), ActivityAddContents.class);
-                    intent.putExtra(ActivityAddContents.STR_TITLE, "꿈에 맞는 실천 목표를 세워보세요");
-                    startActivity(intent);
+                    intent.putExtra(ActivityAddContents.EXTRA_STR_TITLE, "꿈에 맞는 실천 목표를 세워보세요");
+                    intent.putExtra(ActivityAddContents.EXTRA_VIEW_TYPE,ActivityAddContents.EXTRA_TYPE_OBJECTS);
+                    startActivityForResult(intent,REQUEST_ADD_OBJECTS);
                     // TODO : Activity 애니메이션 없애기
 //                    getActivity().overridePendingTransition(0, 0);
                 }
             });
+
         } else if(getItemViewType(i) == LISTITEM_TYPE_ABILITY_OPPORTUNITY){
             BeanBlueprintAbilityOpportunity bean = (BeanBlueprintAbilityOpportunity) mAdapter.get(i);
             TextView tvContents = h.getItemView(R.id.tv_contents);
@@ -339,5 +331,17 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
         else if (mAdapter.get(i) instanceof BeanBlueprintObject)
             return LISTITEM_TYPE_OBJECT;
         return 0;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            switch (requestCode){
+                case REQUEST_ADD_OBJECTS:
+                    httpGetBluePrint();
+                    break;
+            }
+        }
     }
 }

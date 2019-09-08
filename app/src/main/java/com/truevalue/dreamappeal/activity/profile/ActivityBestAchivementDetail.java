@@ -105,7 +105,7 @@ public class ActivityBestAchivementDetail extends BaseActivity {
         // todo : 제대로 된 설정 필요
         if (index == -1) return;
         Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityBestAchivementDetail.this);
-        String url = Comm_Param.URL_API_PROFILES_INDEX_ACHIVEMENT_POSTS_INDEX;
+        String url = Comm_Param.URL_API_ACHIVEMENT_POSTS_INDEX;
         url = url.replaceAll(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
         url = url.replaceAll(Comm_Param.POST_INDEX, String.valueOf(index));
 
@@ -206,7 +206,7 @@ public class ActivityBestAchivementDetail extends BaseActivity {
      */
     private void httpPatchBestAchivement(int best_index){
         Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityBestAchivementDetail.this);
-        String url = Comm_Param.URL_API_PROFILES_INDEX_ACHIVEMENT_BEST_POST_INDEX;
+        String url = Comm_Param.URL_API_ACHIVEMENT_BEST_POST_INDEX;
         url = url.replace(Comm_Param.PROFILES_INDEX,String.valueOf(prefs.getProfileIndex()));
         url = url.replace(Comm_Param.BEST_POST_INDEX,String.valueOf(best_index));
 
@@ -239,7 +239,7 @@ public class ActivityBestAchivementDetail extends BaseActivity {
         // todo : 제대로 된 설정 필요
         if (index == -1) return;
         Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityBestAchivementDetail.this);
-        String url = Comm_Param.URL_API_PROFILES_INDEX_ACHIVEMENT_POSTS_INDEX;
+        String url = Comm_Param.URL_API_ACHIVEMENT_POSTS_INDEX;
         url = url.replaceAll(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
         url = url.replaceAll(Comm_Param.POST_INDEX, String.valueOf(index));
 

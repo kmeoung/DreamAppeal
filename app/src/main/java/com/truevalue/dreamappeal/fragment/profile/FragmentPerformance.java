@@ -10,22 +10,17 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -127,7 +122,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
      */
     private void httpGetAchivementPostMain() {
         Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
-        String url = Comm_Param.URL_API_PROFILES_INDEX_ACHIVEMENT_POSTS_MAIN_INDEX;
+        String url = Comm_Param.URL_API_ACHIVEMENT_POSTS_MAIN_INDEX;
         url = url.replaceAll(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
         url = url.replaceAll(Comm_Param.POST_INDEX, String.valueOf(mCurrentIndex));
         HashMap header = Utils.getHttpHeader(prefs.getToken());
@@ -391,7 +386,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
         // todo : 제대로 된 설정 필요
         if (index == -1) return;
         Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
-        String url = Comm_Param.URL_API_PROFILES_INDEX_ACHIVEMENT_POSTS_INDEX;
+        String url = Comm_Param.URL_API_ACHIVEMENT_POSTS_INDEX;
         url = url.replaceAll(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
         url = url.replaceAll(Comm_Param.POST_INDEX, String.valueOf(index));
 

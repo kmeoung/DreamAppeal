@@ -2,16 +2,13 @@ package com.truevalue.dreamappeal.fragment.profile.blueprint;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,10 +18,8 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.profile.ActivityAbilityOpportunity;
-import com.truevalue.dreamappeal.activity.profile.ActivityAddAchivement;
 import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.base.BaseOkHttpClient;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
@@ -33,7 +28,6 @@ import com.truevalue.dreamappeal.base.BaseViewHolder;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
 import com.truevalue.dreamappeal.base.IOServerCallback;
-import com.truevalue.dreamappeal.bean.BeanAbilityOpportunityHeader;
 import com.truevalue.dreamappeal.bean.BeanBlueprintAbilityOpportunity;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
@@ -119,7 +113,7 @@ public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTi
                         switch (id) {
                             case R.id.menu_edit:
                                 ((ActivityAbilityOpportunity) getActivity()).showToolbarBtn(BaseTitleBar.VISIBLE, BaseTitleBar.GONE, BaseTitleBar.GONE, BaseTitleBar.VISIBLE, "갖출 능력 수정", "확인");
-                                FragmentAddAbilityOpportunity.newInstance(FragmentAddAbilityOpportunity.TYPE_ABILITY, bean);
+                                ((ActivityAbilityOpportunity) getActivity()).replaceFragment(FragmentAddAbilityOpportunity.newInstance(FragmentAddAbilityOpportunity.TYPE_ABILITY, bean), true);
                                 break;
                             case R.id.menu_delete:
                                 builder = new AlertDialog.Builder(getContext())
@@ -191,7 +185,7 @@ public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTi
                         switch (id) {
                             case R.id.menu_edit:
                                 ((ActivityAbilityOpportunity) getActivity()).showToolbarBtn(BaseTitleBar.VISIBLE, BaseTitleBar.GONE, BaseTitleBar.GONE, BaseTitleBar.VISIBLE, "만들고픈 기회 수정", "확인");
-                                FragmentAddAbilityOpportunity.newInstance(FragmentAddAbilityOpportunity.TYPE_OPPORTUNITY, bean);
+                                ((ActivityAbilityOpportunity) getActivity()).replaceFragment(FragmentAddAbilityOpportunity.newInstance(FragmentAddAbilityOpportunity.TYPE_OPPORTUNITY, bean), true);
                                 break;
                             case R.id.menu_delete:
                                 builder = new AlertDialog.Builder(getContext())
@@ -255,7 +249,7 @@ public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTi
      */
     private void httpGetAbilities(boolean isAll) {
         Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
-        String url = Comm_Param.URL_API_PROFILES_INDEX_BLUEPRINT_ABILITIES;
+        String url = Comm_Param.URL_API_BLUEPRINT_ABILITIES;
         url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
@@ -300,7 +294,7 @@ public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTi
      */
     private void httpGetOpportunities() {
         Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
-        String url = Comm_Param.URL_API_PROFILES_INDEX_BLUEPRINT_OPPORTUNITIES;
+        String url = Comm_Param.URL_API_BLUEPRINT_OPPORTUNITIES;
         url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
@@ -345,7 +339,7 @@ public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTi
      */
     private void httpDeleteAbility(int ability_index) {
         Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
-        String url = Comm_Param.URL_API_PROFILES_INDEX_BLUEPRINT_ABILITIES_INDEX;
+        String url = Comm_Param.URL_API_BLUEPRINT_ABILITIES_INDEX;
         url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
         url = url.replace(Comm_Param.ABILITY_INDEX, String.valueOf(ability_index));
 
@@ -377,7 +371,7 @@ public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTi
      */
     private void httpDeleteOpportunity(int opportunity_index) {
         Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
-        String url = Comm_Param.URL_API_PROFILES_INDEX_BLUEPRINT_OPPORTUNITIES_INDEX;
+        String url = Comm_Param.URL_API_BLUEPRINT_OPPORTUNITIES_INDEX;
         url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
         url = url.replace(Comm_Param.OPPORTUNITY_INDEX, String.valueOf(opportunity_index));
 

@@ -138,7 +138,8 @@ public class ActivityObjectStep extends BaseActivity implements IOBaseTitleBarLi
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(ActivityObjectStep.this, ActivityAddContents.class);
-                    intent.putExtra(ActivityAddContents.STR_TITLE, "목표 달성을 위해 세부단계를 만들어주세요");
+                    intent.putExtra(ActivityAddContents.EXTRA_STR_TITLE, "목표 달성을 위해 세부단계를 만들어주세요");
+                    intent.putExtra(ActivityAddContents.EXTRA_VIEW_TYPE,ActivityAddContents.EXTRA_TYPE_OBJECT_STEP);
                     startActivity(intent);
                     // TODO : Activity 애니메이션 없애기
 //                    overridePendingTransition(0, 0);

@@ -55,7 +55,7 @@
             android:scaleType="fitCenter"
             android:scaleX="0.5"
             android:scaleY="0.5"
-            android:src="@drawable/more_btn"
+            android:src="@drawable/btn_more_black"
             android:visibility="gone"/>
 
 

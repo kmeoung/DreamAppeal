@@ -27,36 +27,43 @@ public class Comm_Param {
     public static final String ABILITY_INDEX = "ABILITY_INDEX";
     // Opprotunity Index
     public static final String OPPORTUNITY_INDEX = "OPPORTUNITY_INDEX";
+    // Objects Index
+    public static final String OBJECT_INDEX = "OBJECT_INDEX";
 
 
     // 내 꿈 소개 조회 / 내 꿈 소개 업데이트 / 프로필 삭제
     public static final String URL_API_PROFILES_INDEX = URL_API_PROFILES + "/" + PROFILES_INDEX;
     // 내 꿈 목록 조회
     public static final String URL_API_PROFILES_INDEX_LIST = URL_API_PROFILES + "/" + USER_INDEX + "/list";
+
     // 실현성과 등록
-    public static final String URL_API_PROFILES_INDEX_ACHIVEMENT_POSTS = URL_API_PROFILES_INDEX + "/achievement_posts";
+    public static final String URL_API_ACHIVEMENT_POSTS = URL_API_PROFILES_INDEX + "/achievement_posts";
     // 실현성과 조회
-    public static final String URL_API_PROFILES_INDEX_ACHIVEMENT_POSTS_MAIN = URL_API_PROFILES_INDEX_ACHIVEMENT_POSTS + "/main";
-    public static final String URL_API_PROFILES_INDEX_ACHIVEMENT_POSTS_MAIN_INDEX = URL_API_PROFILES_INDEX_ACHIVEMENT_POSTS_MAIN + "/" + POST_INDEX;
+    public static final String URL_API_ACHIVEMENT_POSTS_MAIN = URL_API_ACHIVEMENT_POSTS + "/main";
+    public static final String URL_API_ACHIVEMENT_POSTS_MAIN_INDEX = URL_API_ACHIVEMENT_POSTS_MAIN + "/" + POST_INDEX;
     // 실현성과 / 대표성과 상세 조회 / 수정 / 삭제
-    public static final String URL_API_PROFILES_INDEX_ACHIVEMENT_POSTS_INDEX = URL_API_PROFILES_INDEX_ACHIVEMENT_POSTS + "/" + POST_INDEX;
+    public static final String URL_API_ACHIVEMENT_POSTS_INDEX = URL_API_ACHIVEMENT_POSTS + "/" + POST_INDEX;
 
-    public static final String URL_API_PROFILES_INDEX_ACHIVEMENT_BEST_POST = URL_API_PROFILES_INDEX_ACHIVEMENT_POSTS + "/best_post";
+    public static final String URL_API_ACHIVEMENT_BEST_POST = URL_API_ACHIVEMENT_POSTS + "/best_post";
     // 대표 성과 내리기
-    public static final String URL_API_PROFILES_INDEX_ACHIVEMENT_BEST_POST_INDEX = URL_API_PROFILES_INDEX_ACHIVEMENT_BEST_POST + "/" + BEST_POST_INDEX;
+    public static final String URL_API_ACHIVEMENT_BEST_POST_INDEX = URL_API_ACHIVEMENT_BEST_POST + "/" + BEST_POST_INDEX;
     // 대표 성과 등록
-    public static final String URL_API_PROFILES_INDEX_ACHIVEMENT_BEST_POST_INDEX_POST_INDEX = URL_API_PROFILES_INDEX_ACHIVEMENT_BEST_POST_INDEX + "/" + POST_INDEX;
-    // 발전 계획 조회
-    public static final String URL_API_PROFILES_INDEX_BLUEPRINT = URL_API_PROFILES_INDEX + "/blueprint";
-    // 갖출 능력 조회 / 등록
-    public static final String URL_API_PROFILES_INDEX_BLUEPRINT_ABILITIES = URL_API_PROFILES_INDEX_BLUEPRINT + "/abilities";
-    // 갖출 능력 수정 / 삭제
-    public static final String URL_API_PROFILES_INDEX_BLUEPRINT_ABILITIES_INDEX = URL_API_PROFILES_INDEX_BLUEPRINT_ABILITIES + "/" + ABILITY_INDEX;
+    public static final String URL_API_ACHIVEMENT_BEST_POST_INDEX_POST_INDEX = URL_API_ACHIVEMENT_BEST_POST_INDEX + "/" + POST_INDEX;
 
+    // 발전 계획
+    public static final String URL_API_BLUEPRINT = URL_API_PROFILES_INDEX + "/blueprint";
+    // 갖출 능력 조회 / 등록
+    public static final String URL_API_BLUEPRINT_ABILITIES = URL_API_BLUEPRINT + "/abilities";
+    // 갖출 능력 수정 / 삭제
+    public static final String URL_API_BLUEPRINT_ABILITIES_INDEX = URL_API_BLUEPRINT_ABILITIES + "/" + ABILITY_INDEX;
     // 만들고픈 기회 조회 / 등록
-    public static final String URL_API_PROFILES_INDEX_BLUEPRINT_OPPORTUNITIES = URL_API_PROFILES_INDEX_BLUEPRINT + "/opportunities";
+    public static final String URL_API_BLUEPRINT_OPPORTUNITIES = URL_API_BLUEPRINT + "/opportunities";
     // 만들고픈 기회 수정 / 삭제
-    public static final String URL_API_PROFILES_INDEX_BLUEPRINT_OPPORTUNITIES_INDEX = URL_API_PROFILES_INDEX_BLUEPRINT_OPPORTUNITIES + "/" + OPPORTUNITY_INDEX;
+    public static final String URL_API_BLUEPRINT_OPPORTUNITIES_INDEX = URL_API_BLUEPRINT_OPPORTUNITIES + "/" + OPPORTUNITY_INDEX;
+    // 실천 목표 추가
+    public static final String URL_API_BLUEPRINT_OBJECTS = URL_API_BLUEPRINT + "/objects";
+    // 실천 목표 조회 / 수정 / 삭제
+    public static final String URL_API_BLUEPRINT_OBJECTS_INDEX = URL_API_BLUEPRINT_OBJECTS + "/" + OBJECT_INDEX;
 
 
     /**

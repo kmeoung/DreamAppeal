@@ -140,7 +140,7 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
      */
     private void httpPatchAchivementPost() {
         Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityAddAchivement.this);
-        String url = Comm_Param.URL_API_PROFILES_INDEX_ACHIVEMENT_POSTS_INDEX;
+        String url = Comm_Param.URL_API_ACHIVEMENT_POSTS_INDEX;
         url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
         if (mBean != null)
             url = url.replace(Comm_Param.POST_INDEX, String.valueOf(mBean.getIdx()));
@@ -183,7 +183,7 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
      */
     private void httpPostAchivementPost() {
         Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityAddAchivement.this);
-        String url = Comm_Param.URL_API_PROFILES_INDEX_ACHIVEMENT_POSTS;
+        String url = Comm_Param.URL_API_ACHIVEMENT_POSTS;
         url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
 
         if (TextUtils.isEmpty(mEtTitle.getText().toString()) || TextUtils.isEmpty(mEtInputComment.getText().toString())) {
