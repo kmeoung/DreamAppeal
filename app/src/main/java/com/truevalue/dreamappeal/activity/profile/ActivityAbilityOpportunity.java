@@ -67,4 +67,14 @@ public class ActivityAbilityOpportunity extends BaseActivity {
     public void replaceFragment(BaseFragment fragment, boolean addToStack) {
         replaceFragmentRight(R.id.base_container, fragment, addToStack);
     }
+
+    @Override
+    public void onBackPressed() {
+        if(getSupportFragmentManager().findFragmentById(R.id.base_container) instanceof FragmentAbilityOpportunity) {
+            setResult(RESULT_OK);
+            finish();
+        }else {
+            super.onBackPressed();
+        }
+    }
 }

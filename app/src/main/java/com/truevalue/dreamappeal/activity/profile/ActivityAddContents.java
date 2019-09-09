@@ -38,8 +38,9 @@ public class ActivityAddContents extends BaseActivity implements IOBaseTitleBarL
     public static final String EXTRA_STR_TITLE = "EXTRA_STR_TITLE";
     public static final String EXTRA_VIEW_TYPE = "EXTRA_VIEW_TYPE";
 
-    public static final int EXTRA_TYPE_OBJECTS = 0; // 실천 목표
-    public static final int EXTRA_TYPE_OBJECT_STEP = 1; // 실천 목표 세부단계
+    public static final int EXTRA_TYPE_OBJECTS = 0; // 실천 목표 추가
+    public static final int EXTRA_TYPE_OBJECT_STEP = 1; // 실천 목표 세부단계 추가
+    public static final int EXTRA_TYPE_EDIT_OBJECTS = 2; // 실천 목표 수정
 
     @BindView(R.id.btb_bar)
     BaseTitleBar mBtbBar;
@@ -66,13 +67,20 @@ public class ActivityAddContents extends BaseActivity implements IOBaseTitleBarL
         // 상단바 연동
         mBtbBar.setIOBaseTitleBarListener(this);
 
+        initData();
         initVIew();
     }
 
-    private void initVIew(){
+    private void initData(){
         String title = getIntent().getStringExtra(EXTRA_STR_TITLE);
         mViewType = getIntent().getIntExtra(EXTRA_VIEW_TYPE,-1);
+        if(mViewType == EXTRA_TYPE_EDIT_OBJECTS){
+
+        }
         mBtbBar.setTitle(title);
+    }
+
+    private void initVIew(){
 
         // 처음 Hint 글자 안보이게 하고 Focus잡기
         mTvHint.setOnClickListener(v -> {

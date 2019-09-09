@@ -61,7 +61,9 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
     private final int LISTITEM_TYPE_OBJECT_HEADER = 2;
     private final int LISTITEM_TYPE_OBJECT = 3;
 
-    public static final int REQUEST_ADD_OBJECTS = 1200;
+    public static final int REQUEST_ABILITY_OPPORTUNUTY = 1200;
+    public static final int REQUEST_ADD_OBJECTS = 1201;
+    public static final int REQUEST_OBJECT_STEP = 1202;
 
     @BindView(R.id.rv_blueprint)
     RecyclerView mRvBlueprint;
@@ -264,7 +266,7 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getContext(), ActivityAbilityOpportunity.class);
-                    startActivity(intent);
+                    startActivityForResult(intent,REQUEST_ABILITY_OPPORTUNUTY);
                 }
             });
         }
@@ -309,7 +311,8 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getContext(), ActivityObjectStep.class);
-                    startActivity(intent);
+                    intent.putExtra(ActivityObjectStep.EXTRA_OBJECT_INDEX,bean.getIdx());
+                    startActivityForResult(intent,REQUEST_OBJECT_STEP);
                 }
             });
         }
@@ -338,7 +341,9 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK){
             switch (requestCode){
+                case REQUEST_ABILITY_OPPORTUNUTY:
                 case REQUEST_ADD_OBJECTS:
+                case REQUEST_OBJECT_STEP:
                     httpGetBluePrint();
                     break;
             }

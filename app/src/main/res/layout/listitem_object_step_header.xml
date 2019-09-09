@@ -29,9 +29,13 @@
             android:textSize="24sp" />
 
         <ImageView
-            android:layout_width="13dp"
-            android:layout_height="3dp"
-            android:src="@drawable/more_btn" />
+            android:id="@+id/iv_more"
+            android:layout_width="45dp"
+            android:layout_height="37dp"
+            android:layout_gravity="top"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
+            android:src="@drawable/btn_more_white" />
 
     </LinearLayout>
 
@@ -58,6 +62,7 @@
             android:layout_weight="1" />
 
         <TextView
+            android:id="@+id/tv_total_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/nanum_square_round_b"

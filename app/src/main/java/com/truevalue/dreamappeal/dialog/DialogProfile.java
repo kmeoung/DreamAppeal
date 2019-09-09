@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -38,6 +39,8 @@ public class DialogProfile extends Dialog {
     TextView mTvPhone;
     @BindView(R.id.rv_clan)
     RecyclerView mRvClan;
+    @BindView(R.id.iv_normal_profile_set)
+    ImageView mIvNormalProfileSet;
 
     public DialogProfile(@NonNull Context context) {
         super(context);
@@ -71,8 +74,16 @@ public class DialogProfile extends Dialog {
 
     }
 
-    @OnClick(R.id.iv_close)
-    public void onViewClicked() {
-        dismiss();
+
+    @OnClick({R.id.iv_normal_profile_set, R.id.iv_close})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.iv_normal_profile_set:
+
+                break;
+            case R.id.iv_close:
+                dismiss();
+                break;
+        }
     }
 }
