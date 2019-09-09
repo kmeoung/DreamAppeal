@@ -40,9 +40,6 @@ public class ActivityIntro extends BaseActivity {
                     && writeStorageCheck == PackageManager.PERMISSION_GRANTED
                     && readStorageCheck == PackageManager.PERMISSION_GRANTED) {
                 // 권한 있음
-                // TODO : 테스트용
-//                intent = new Intent(ActivityIntro.this, ActivityMain.class);
-
                 Comm_Prefs prefs = new Comm_Prefs(ActivityIntro.this);
 
                 if (prefs.isLogin()) { // 바로 메인

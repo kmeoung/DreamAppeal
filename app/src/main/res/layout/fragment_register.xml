@@ -236,7 +236,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
-        android:background="@drawable/color_btn"
+        android:background="@drawable/color_btn_blue"
         android:fontFamily="@font/nanum_square_round_b"
         android:text="개인정보처리방침 동의하고 회원가입하기"
         android:textColor="@color/white"

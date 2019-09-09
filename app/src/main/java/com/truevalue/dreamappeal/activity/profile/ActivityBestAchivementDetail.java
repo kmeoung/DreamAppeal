@@ -102,7 +102,6 @@ public class ActivityBestAchivementDetail extends BaseActivity {
      * @param index
      */
     private void httpGetBestPostAchivement(int index) {
-        // todo : 제대로 된 설정 필요
         if (index == -1) return;
         Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityBestAchivementDetail.this);
         String url = Comm_Param.URL_API_ACHIVEMENT_POSTS_INDEX;
@@ -127,11 +126,12 @@ public class ActivityBestAchivementDetail extends BaseActivity {
                     mBean = gson.fromJson(post.toString(), BeanPostDetail.class);
 
                     mTvTitle.setText(mBean.getTitle());
-                    mTvContents.setText(mBean.getContent());
+                    // todo : 아직 검증이 필요함
+                    Utils.setReadMore(mTvContents,mBean.getContent(),3);
                     if (TextUtils.isEmpty(mBean.getThumbnail_image()))
                         Glide.with(ActivityBestAchivementDetail.this).load(R.drawable.user).into(mIvImg);
                     else
-                        Glide.with(ActivityBestAchivementDetail.this).load(mBean.getThumbnail_image()).thumbnail(R.drawable.user).into(mIvImg);
+                        Glide.with(ActivityBestAchivementDetail.this).load(mBean.getThumbnail_image()).placeholder(R.drawable.user).into(mIvImg);
                 }
             }
         });
@@ -236,7 +236,6 @@ public class ActivityBestAchivementDetail extends BaseActivity {
      * @param index
      */
     private void httpDeletePostAchivement(int index) {
-        // todo : 제대로 된 설정 필요
         if (index == -1) return;
         Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityBestAchivementDetail.this);
         String url = Comm_Param.URL_API_ACHIVEMENT_POSTS_INDEX;

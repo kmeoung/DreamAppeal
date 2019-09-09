@@ -239,7 +239,6 @@ public class ActivityObjectStep extends BaseActivity implements IOBaseTitleBarLi
             TextView tvTotalCount = h.getItemView(R.id.tv_total_count);
 
             tvTitle.setText(bean.getObject_name());
-            // todo : 총 인증 추가 필요
             tvTotalCount.setText(String.format("총 인증 %d회", bean.getTotal_action_post_count()));
 
             tvDetailStep.setOnClickListener(new View.OnClickListener() {
@@ -249,8 +248,7 @@ public class ActivityObjectStep extends BaseActivity implements IOBaseTitleBarLi
                     intent.putExtra(ActivityAddContents.EXTRA_STR_TITLE, "목표 달성을 위해 세부단계를 만들어주세요");
                     intent.putExtra(ActivityAddContents.EXTRA_VIEW_TYPE, ActivityAddContents.EXTRA_TYPE_OBJECT_STEP);
                     startActivity(intent);
-                    // TODO : Activity 애니메이션 없애기
-//                    overridePendingTransition(0, 0);
+
                 }
             });
 
@@ -315,7 +313,7 @@ public class ActivityObjectStep extends BaseActivity implements IOBaseTitleBarLi
             if (TextUtils.isEmpty(bean.getThumbnail_image()))
                 Glide.with(this).load(R.drawable.ic_image_black_24dp).into(iv);
             else
-                Glide.with(this).load(bean.getThumbnail_image()).thumbnail(R.drawable.ic_image_black_24dp).into(iv);
+                Glide.with(this).load(bean.getThumbnail_image()).placeholder(R.drawable.ic_image_black_24dp).into(iv);
             Point point = Utils.getDisplaySize(this);
             Utils.setResizeView(iv, point.x / 3, point.x / 3);
 

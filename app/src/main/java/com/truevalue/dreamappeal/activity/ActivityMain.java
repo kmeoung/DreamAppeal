@@ -136,7 +136,8 @@ public class ActivityMain extends BaseActivity implements IOBaseTitleBarListener
 
     @Override
     public void OnClickSearch() {
-
+        Intent intent = new Intent(ActivityMain.this,ActivitySearch.class);
+        startActivity(intent);
     }
 
     @Override

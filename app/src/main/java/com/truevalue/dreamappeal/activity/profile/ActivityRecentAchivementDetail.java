@@ -95,7 +95,6 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
      * @param index
      */
     private void httpGetPostAchivement(int index) {
-        // todo : 제대로 된 설정 필요
         if (index == -1) return;
         Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityRecentAchivementDetail.this);
         String url = Comm_Param.URL_API_ACHIVEMENT_POSTS_INDEX;
@@ -120,11 +119,12 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
                     mBean = gson.fromJson(post.toString(), BeanPostDetail.class);
 
                     mBtbBar.setTitle(mBean.getTitle());
-                    mTvContents.setText(mBean.getContent());
+                    // todo : 아직 검증이 필요함
+                    Utils.setReadMore(mTvContents,mBean.getContent(),3);
                     if (TextUtils.isEmpty(mBean.getThumbnail_image()))
                         Glide.with(ActivityRecentAchivementDetail.this).load(R.drawable.user).into(mIvImg);
                     else
-                        Glide.with(ActivityRecentAchivementDetail.this).load(mBean.getThumbnail_image()).thumbnail(R.drawable.user).into(mIvImg);
+                        Glide.with(ActivityRecentAchivementDetail.this).load(mBean.getThumbnail_image()).placeholder(R.drawable.user).into(mIvImg);
                 }
             }
         });
@@ -244,7 +244,6 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
      * @param index
      */
     private void httpDeletePostAchivement(int index) {
-        // todo : 제대로 된 설정 필요
         if (index == -1) return;
         Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityRecentAchivementDetail.this);
         String url = Comm_Param.URL_API_ACHIVEMENT_POSTS_INDEX;

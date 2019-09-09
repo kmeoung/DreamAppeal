@@ -115,7 +115,7 @@ public class FragmentRegister extends BaseFragment implements IOBaseTitleBarList
 
     /**
      * DatePickerDialog
-     * todo : 사용자에게 보여줄 시 혹은 데이터를 저장할시에는 Month에 + 1 을 해야합니다
+     * 사용자에게 보여줄 시 혹은 데이터를 저장할시에는 Month에 + 1 을 해야합니다
      */
     private void showDatePickerDialog() {
         DatePickerDialog dialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {

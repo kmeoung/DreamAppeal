@@ -298,17 +298,19 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
         Utils.setResizeView(ivThumbnail, size.x, size.x);
 
         tvTitle.setText(bean.getTitle());
-        tvContents.setText(bean.getContent());
+        // todo : 아직 검증이 더 필요함
+        Utils.setReadMore(tvContents,bean.getContent(),3);
+        // todo : 시간은 서버쪽과 협의가 필요
 
         if (TextUtils.isEmpty(bean.getThumbnail_image()))
             Glide.with(getContext()).load(R.drawable.user).into(ivThumbnail);
         else
-            Glide.with(getContext()).load(bean.getThumbnail_image()).thumbnail(R.drawable.user).into(ivThumbnail);
+            Glide.with(getContext()).load(bean.getThumbnail_image()).placeholder(R.drawable.user).into(ivThumbnail);
 
         if (TextUtils.isEmpty(mProfileImage))
             Glide.with(getContext()).load(R.drawable.drawer_user).into(ivProfile);
         else
-            Glide.with(getContext()).load(bean.getThumbnail_image()).thumbnail(R.drawable.drawer_user).into(ivProfile);
+            Glide.with(getContext()).load(bean.getThumbnail_image()).placeholder(R.drawable.drawer_user).into(ivProfile);
 
         PopupMenu popupMenu = new PopupMenu(getContext(), ibtnMore);
         popupMenu.getMenuInflater().inflate(R.menu.menu_achivement_post, popupMenu.getMenu());
@@ -383,7 +385,6 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
      * @param index
      */
     private void httpDeletePostAchivement(int index) {
-        // todo : 제대로 된 설정 필요
         if (index == -1) return;
         Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
         String url = Comm_Param.URL_API_ACHIVEMENT_POSTS_INDEX;

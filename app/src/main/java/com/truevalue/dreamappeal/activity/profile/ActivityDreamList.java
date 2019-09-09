@@ -1,11 +1,9 @@
 package com.truevalue.dreamappeal.activity.profile;
 
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +31,6 @@ import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
 import com.truevalue.dreamappeal.base.IOServerCallback;
 import com.truevalue.dreamappeal.bean.BeanDreamList;
-import com.truevalue.dreamappeal.fragment.profile.FragmentDreamPresent;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
 import com.truevalue.dreamappeal.utils.Utils;
@@ -44,7 +41,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -71,6 +67,8 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
     TextView mTvAddDream;
     @BindView(R.id.ll_add_dream)
     LinearLayout mLlAddDream;
+    @BindView(R.id.tv_level_info)
+    TextView mTvLevelInfo;
 
     private BaseRecyclerViewAdapter mAdapter;
     private boolean isEdit = false;
@@ -94,10 +92,12 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
         // Bind Temp Data
 //        bindTempData();
     }
+
     // todo : 첫번째 꿈 두번쨰 꿈 설정해야 함
     private void initData() {
         mUserIndex = getIntent().getIntExtra(EXTRA_USER_INDEX, -1);
         httpGetDreamList();
+        mTvLevelInfo.setText("< 경험치 획득 > 실천등록 + 10 / 성과 등록 + 30");
     }
 
     /**
@@ -242,7 +242,7 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
         if (TextUtils.isEmpty(bean.getImage()))
             Glide.with(this).load(R.drawable.drawer_user).into(ivDreamProfile);
         else
-            Glide.with(this).load(bean.getImage()).thumbnail(R.drawable.drawer_user).into(ivDreamProfile);
+            Glide.with(this).load(bean.getImage()).placeholder(R.drawable.drawer_user).into(ivDreamProfile);
 
         tvValueStyle.setText(bean.getValue_style());
         tvJob.setText(bean.getJob());
@@ -339,8 +339,8 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
                 if (mAdapter.size() < 3) {
                     if (mLlAddDream.isEnabled()) {
                         Intent intent = new Intent(ActivityDreamList.this, ActivityDreamTitle.class);
-                        intent.putExtra(ActivityDreamTitle.EXTRA_ADD_PROFILES,true);
-                        startActivityForResult(intent,REQUEST_ADD_PROFILES);
+                        intent.putExtra(ActivityDreamTitle.EXTRA_ADD_PROFILES, true);
+                        startActivityForResult(intent, REQUEST_ADD_PROFILES);
                     }
                 } else {
                     Toast.makeText(this, "프로필은 최대 3개까지만 추가할 수 있습니다.", Toast.LENGTH_SHORT).show();
@@ -356,8 +356,8 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK){
-            if(requestCode == REQUEST_ADD_PROFILES){
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_ADD_PROFILES) {
                 setResult(RESULT_OK);
                 finish();
             }

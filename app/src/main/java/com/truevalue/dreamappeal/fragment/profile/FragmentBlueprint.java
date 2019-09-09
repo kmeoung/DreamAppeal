@@ -281,8 +281,6 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
                     intent.putExtra(ActivityAddContents.EXTRA_STR_TITLE, "꿈에 맞는 실천 목표를 세워보세요");
                     intent.putExtra(ActivityAddContents.EXTRA_VIEW_TYPE,ActivityAddContents.EXTRA_TYPE_OBJECTS);
                     startActivityForResult(intent,REQUEST_ADD_OBJECTS);
-                    // TODO : Activity 애니메이션 없애기
-//                    getActivity().overridePendingTransition(0, 0);
                 }
             });
 

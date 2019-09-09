@@ -76,7 +76,7 @@
         android:layout_marginTop="18dp"
         android:layout_marginRight="30dp"
         android:layout_marginBottom="110dp"
-        android:background="@drawable/color_btn"
+        android:background="@drawable/color_btn_blue"
         android:fontFamily="@font/nanum_square_round_b"
         android:text="로그인"
         android:textColor="@color/white"

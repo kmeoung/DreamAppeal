@@ -106,8 +106,8 @@
                 android:layout_marginRight="8dp"
                 android:src="@drawable/circle_blue" />
 
-            <!--TODO : 실천 목표 아이디 정해야 함-->
             <TextView
+                android:id="@+id/tv_target"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -136,6 +136,7 @@
                 android:src="@drawable/ic_chevron_right_blue" />
 
             <TextView
+                android:id="@+id/tv_target_detail"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -207,7 +208,7 @@
                     android:layout_marginRight="10dp"
                     android:scaleX="0.7"
                     android:scaleY="0.7"
-                    android:src="@drawable/flame" />
+                    android:src="@drawable/ic_flame" />
 
                 <TextView
                     android:id="@+id/tv_cheering"

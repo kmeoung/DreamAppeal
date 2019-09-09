@@ -50,7 +50,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="13dp"
-                android:background="@drawable/box_gray"
+                android:background="@drawable/bg_box_gray"
                 android:orientation="vertical">
 
 

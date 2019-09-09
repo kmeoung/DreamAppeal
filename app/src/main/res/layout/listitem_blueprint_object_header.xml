@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <!--todo : 이쪽 더보기는 어떻게 합칠 지 고민 해야 합니다-->
     <Button
         android:id="@+id/btn_abliity_opportunity"
         android:layout_width="48dp"

@@ -23,7 +23,7 @@
         app:is_right_text_visibility="visible"
         app:is_search_visibility="gone"
         app:right_text="등록"
-        app:title="어떤점에 매력을 느꼈나요?" />
+        app:title="꿈에 매력과 계기 표현하기" />
     <!--툴바-->
 
     <!--내 꿈 이유 작성 영역-->
@@ -50,7 +50,7 @@
             android:background="@null"
             android:fontFamily="@font/nanum_square_round_b"
             android:gravity="center"
-            android:text="터치하여 내용을 입력해주세요"
+            android:text="이 꿈의 매력과 계기를 적어주세요"
             android:textColor="#a0a0a0"
             android:textSize="16sp" />
 

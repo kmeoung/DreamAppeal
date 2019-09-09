@@ -115,6 +115,10 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
     TextView mTvInitDreamDescription;
     @BindView(R.id.tv_init_merit_and_motive)
     TextView mTvInitMeritAndMotive;
+    @BindView(R.id.btn_follow)
+    Button mBtnFollow;
+    @BindView(R.id.ll_share)
+    LinearLayout mLlShare;
 
     private boolean isMyDreamMore = false;
     private boolean isMyDreamReason = false;
@@ -265,23 +269,33 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
                     else
                         Glide.with(getContext()).
                                 load(bean.getImage()).
-                                thumbnail(R.drawable.drawer_user).
+                                placeholder(R.drawable.drawer_user).
                                 into(mIvDreamProfile);
 
                     // 꿈에 대한 설명이 비어있을 경우
-                    if (TextUtils.isEmpty(bean.getDescription()))
+                    if (TextUtils.isEmpty(bean.getDescription())) {
                         mTvInitDreamDescription.setVisibility(View.VISIBLE);
-                    else mTvInitDreamDescription.setVisibility(View.GONE);
+                        mBtnDreamDescriptionMore.setVisibility(View.GONE);
+                    } else {
+                        mTvInitDreamDescription.setVisibility(View.GONE);
+                        mBtnDreamDescriptionMore.setVisibility(View.VISIBLE);
+                    }
 
                     // 꿈 명칭이 비어있을 경우
-                    if (TextUtils.isEmpty(bean.getValue_style()) && TextUtils.isEmpty(bean.getJob()))
+                    if (TextUtils.isEmpty(bean.getValue_style()) && TextUtils.isEmpty(bean.getJob())) {
                         mTvInitDreamTitle.setVisibility(View.VISIBLE);
-                    else mTvInitDreamTitle.setVisibility(View.GONE);
+                    } else {
+                        mTvInitDreamTitle.setVisibility(View.GONE);
+                    }
 
                     // 꿈 이유가 비어있을 경우
-                    if (TextUtils.isEmpty(bean.getMeritNmotive()))
+                    if (TextUtils.isEmpty(bean.getMeritNmotive())) {
                         mTvInitMeritAndMotive.setVisibility(View.VISIBLE);
-                    else mTvInitMeritAndMotive.setVisibility(View.GONE);
+                        mBtnMeritAndMotiveMore.setVisibility(View.GONE);
+                    } else {
+                        mTvInitMeritAndMotive.setVisibility(View.GONE);
+                        mBtnMeritAndMotiveMore.setVisibility(View.VISIBLE);
+                    }
 
                 }
             }
@@ -299,12 +313,13 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
             R.id.iv_dream_profile, R.id.btn_dream_description_more,
             R.id.btn_merit_and_motive_more, R.id.ll_comment,
             R.id.ll_cheering, R.id.ll_dream_title, R.id.ll_dream_description, R.id.tv_init_dream_title,
-            R.id.tv_init_dream_description, R.id.tv_init_merit_and_motive})
+            R.id.tv_init_dream_description, R.id.tv_init_merit_and_motive,
+            R.id.btn_follow, R.id.ll_share})
     public void onViewClicked(View view) {
         Intent intent = null;
         switch (view.getId()) {
             case R.id.ll_dreams: // 내 꿈 레벨 (꿈 선택)
-                // todo : 서버가 연동이 되어 있을 시에만
+                // 서버가 연동이 되어 있을 시에만
                 if (mUserIndex != -1) {
                     intent = new Intent(getContext(), ActivityDreamList.class);
                     intent.putExtra(ActivityDreamList.EXTRA_USER_INDEX, mUserIndex);
@@ -320,8 +335,10 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
             case R.id.btn_dream_description_more: // 내 꿈 더보기
                 if (isMyDreamMore) {
                     isMyDreamMore = false;
+                    mBtnDreamDescriptionMore.setText("더보기");
                 } else {
                     isMyDreamMore = true;
+                    mBtnDreamDescriptionMore.setText("접기");
                 }
                 mAdapter.notifyDataSetChanged();
                 break;
@@ -329,9 +346,11 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
                 if (isMyDreamReason) {
                     isMyDreamReason = false;
                     mTvMeritAndMotive.setMaxLines(3);
+                    mBtnMeritAndMotiveMore.setText("더보기");
                 } else {
                     isMyDreamReason = true;
                     mTvMeritAndMotive.setMaxLines(1000);
+                    mBtnMeritAndMotiveMore.setText("접기");
                 }
                 break;
             case R.id.ll_comment: // 댓글
@@ -373,6 +392,12 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
                 if (!TextUtils.isEmpty(meritAndMotive))
                     intent.putExtra(ActivityMeritAndMotive.EXTRA_MERIT_AND_MOTIVE, meritAndMotive);
                 startActivityForResult(intent, REQUEST_ACTIVITY_MERIT_AND_MOTIVE);
+                break;
+            case R.id.btn_follow: // 팔로우
+
+                break;
+            case R.id.ll_share: // 퍼가기
+
                 break;
         }
     }

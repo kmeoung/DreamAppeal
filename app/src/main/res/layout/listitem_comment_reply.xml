@@ -98,7 +98,7 @@
                 android:id="@+id/iv_cheering"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@drawable/flame" />
+                android:src="@drawable/ic_flame" />
 
             <TextView
                 android:id="@+id/tv_cheering"

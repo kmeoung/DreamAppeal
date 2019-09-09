@@ -64,9 +64,9 @@ public class FragmentProfile extends BaseFragment {
      * 탭 초기화
      */
     private void initTab() {
-        mTabList.add("내 꿈 소개");
-        mTabList.add("실현 성과");
-        mTabList.add("발전 계획");
+        mTabList.add("꿈 소개");
+        mTabList.add("주요성과");
+        mTabList.add("발전계획");
 
         mFragmentList.add(new FragmentDreamPresent());
         mFragmentList.add(new FragmentPerformance());
@@ -114,7 +114,7 @@ public class FragmentProfile extends BaseFragment {
 
     /**
      * ViewPager Adapter
-     * TODO : 페이지 넘어갈 때 마다 서버 호출 필요
+     * 페이지 넘어갈 때 마다 서버 호출 필요
      */
     public class ViewPagerAdapter extends FragmentPagerAdapter {
 

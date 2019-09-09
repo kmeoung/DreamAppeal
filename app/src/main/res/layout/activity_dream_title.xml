@@ -22,7 +22,7 @@
         app:is_right_text_visibility="visible"
         app:is_search_visibility="gone"
         app:right_text="등록"
-        app:title="내 꿈의 명칭 정하기" />
+        app:title="꿈에 명칭 달아주기" />
     <!--툴바-->
 
     <!--수식어로 정의해보는 내꿈-->
@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/nanum_pen"
-            android:text="수식어로 정의해보는 "
+            android:text="내 꿈에 "
             android:textColor="@color/black"
             android:textSize="29sp" />
 
@@ -46,9 +46,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/nanum_pen"
-            android:text="내 꿈"
+            android:text="특색 있는 "
             android:textColor="@color/colorAccent"
             android:textSize="29sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nanum_pen"
+            android:text="명칭을 달아주세요"
+            android:textColor="@color/black"
+            android:textSize="29sp" />
+
 
     </LinearLayout>
     <!--수식어로 정의해보는 내꿈-->
