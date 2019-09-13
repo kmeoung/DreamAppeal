@@ -34,7 +34,8 @@
             android:orientation="vertical"
             android:paddingLeft="20dp"
             android:paddingTop="50dp"
-            android:paddingRight="20dp">
+            android:paddingRight="20dp"
+            android:paddingBottom="30dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -42,31 +43,319 @@
                 android:fontFamily="@font/nanum_square_round_b"
                 android:text="기본정보"
                 android:textColor="#305c84"
-                android:textSize="27sp" />
+                android:textSize="19sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_marginTop="13dp"
                 android:background="@drawable/normal_profile_box"
-                android:layout_marginTop="13dp">
-                
+                android:orientation="vertical">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingLeft="10dp"
-                    android:gravity="center_vertical">
+                    android:paddingLeft="10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="22sp"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:text="이름:"
                         android:textColor="#0055b5"
-                        android:text="이름:" />
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/et_name"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:gravity="center_vertical"
+                        android:hint="이름을 입력해주세요"
+                        android:imeOptions="actionNext"
+                        android:lines="1"
+                        android:maxLines="1"
+                        android:paddingLeft="5dp"
+                        android:textColorHint="@color/gray"
+                        android:textSize="16sp" />
 
                 </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:text="별명:"
+                        android:textColor="#0055b5"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/et_nickname"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:gravity="center_vertical"
+                        android:hint="별명을 입력해주세요"
+                        android:imeOptions="actionNext"
+                        android:lines="1"
+                        android:maxLines="1"
+                        android:paddingLeft="5dp"
+                        android:textColorHint="@color/gray"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:text="나이:"
+                        android:textColor="#0055b5"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/et_age"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:gravity="center_vertical"
+                        android:hint="나이를 입력해주세요"
+                        android:imeOptions="actionNext"
+                        android:lines="1"
+                        android:maxLines="1"
+                        android:paddingLeft="5dp"
+                        android:textColorHint="@color/gray"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:text="성별 "
+                        android:textColor="#0055b5"
+                        android:textSize="16sp" />
+
+                    <Button
+                        android:id="@+id/btn_male"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_profile_select_box"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:text="남"
+                        android:textColor="@color/color_profile_select"
+                        android:textSize="16sp" />
+
+                    <Button
+                        android:id="@+id/btn_female"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_profile_select_box"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:text="여"
+                        android:textColor="@color/color_profile_select"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:text="거주지:"
+                        android:textColor="#0055b5"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/et_address"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:gravity="center_vertical"
+                        android:hint="거주지를 입력해주세요"
+                        android:imeOptions="actionNext"
+                        android:lines="1"
+                        android:maxLines="1"
+                        android:paddingLeft="5dp"
+                        android:textColorHint="@color/gray"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:text="이메일:"
+                        android:textColor="#0055b5"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/et_email"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:gravity="center_vertical"
+                        android:hint="이메일을 입력해주세요"
+                        android:imeOptions="actionNext"
+                        android:lines="1"
+                        android:maxLines="1"
+                        android:paddingLeft="5dp"
+                        android:textColorHint="@color/gray"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:text="휴대폰:"
+                        android:textColor="#0055b5"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/et_phone"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:gravity="center_vertical"
+                        android:hint="휴대폰을 입력해주세요"
+                        android:imeOptions="actionNext"
+                        android:lines="1"
+                        android:maxLines="1"
+                        android:paddingLeft="5dp"
+                        android:textColorHint="@color/gray"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
             </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="57dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:text="현재 소속"
+                    android:textColor="#305c84"
+                    android:textSize="19sp" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/iv_add_affiliation"
+                    android:layout_width="21dp"
+                    android:layout_height="21dp"
+                    android:src="@drawable/add_blue_btn" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_affiliation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:background="@drawable/normal_profile_box" />
 
         </LinearLayout>
 

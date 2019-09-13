@@ -2,7 +2,6 @@ package com.truevalue.dreamappeal.fragment.login;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,16 +13,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.gson.Gson;
-import com.truevalue.dreamappeal.BuildConfig;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityMain;
 import com.truevalue.dreamappeal.base.BaseFragment;
-import com.truevalue.dreamappeal.base.BaseMainTitleBar;
-import com.truevalue.dreamappeal.base.BaseOkHttpClient;
+import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
-import com.truevalue.dreamappeal.base.IOServerCallback;
+import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
 import com.truevalue.dreamappeal.utils.Utils;
@@ -87,7 +83,7 @@ public class FragmentNormalLogin extends BaseFragment implements IOBaseTitleBarL
      */
     private void httpPostLogin() {
 
-        BaseOkHttpClient client = new BaseOkHttpClient();
+        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
         HashMap<String, String> body = new HashMap<>();
         String id = mEtId.getText().toString();
         String password = mEtPassword.getText().toString();

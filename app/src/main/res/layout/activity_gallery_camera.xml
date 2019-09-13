@@ -62,19 +62,62 @@
         android:id="@+id/vp_viewpager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:visibility="gone"/>
+    <!--todo : 임시 비활성화-->
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/base_container"/>
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/gray" />
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tl_tab"
+    <!--todo : 임시 비활성화-->
+    <!--<com.google.android.material.tabs.TabLayout-->
+        <!--android:id="@+id/tl_tab"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="38dp"-->
+        <!--app:tabSelectedTextColor="@color/black"-->
+        <!--app:tabTextAppearance="@style/profile_main_tab_font"-->
+        <!--app:tabTextColor="@color/tab_none_select_gray"/>-->
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="38dp"
-        app:tabSelectedTextColor="@color/black"
-        app:tabTextAppearance="@style/profile_main_tab_font"
-        app:tabTextColor="@color/tab_none_select_gray"/>
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/nanum_pen"
+            android:textSize="21dp"
+            android:textColor="@color/black"
+            android:text="갤러리"
+            android:gravity="center"
+            android:id="@+id/tv_gallery"/>
+
+        <ImageView
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/gray"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/nanum_pen"
+            android:textSize="21dp"
+            android:textColor="@color/black"
+            android:text="카메라"
+            android:gravity="center"
+            android:id="@+id/tv_camera"/>
+
+    </LinearLayout>
 
 </LinearLayout>

@@ -1,4 +1,4 @@
-package com.truevalue.dreamappeal.base;
+package com.truevalue.dreamappeal.http;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;

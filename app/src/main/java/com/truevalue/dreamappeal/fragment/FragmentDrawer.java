@@ -1,4 +1,4 @@
-package com.truevalue.dreamappeal.fragment.profile;
+package com.truevalue.dreamappeal.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;

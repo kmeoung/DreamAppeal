@@ -1,38 +1,118 @@
-package com.truevalue.dreamappeal.base;
+package com.truevalue.dreamappeal.http;
 
+import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
 import com.bumptech.glide.BuildConfig;
-import com.bumptech.glide.RequestBuilder;
+import com.truevalue.dreamappeal.http.IOServerCallback;
+import com.truevalue.dreamappeal.utils.Comm_Prefs;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class BaseOkHttpClient {
+public class DreamAppealHttpClient {
 
     private OkHttpClient mClient;
+    private Context mContext;
     public static final MediaType JSON
             = MediaType.parse("application/json; charset=utf-8");
 
-    public BaseOkHttpClient() {
+    private static DreamAppealHttpClient instance;
+
+    public static DreamAppealHttpClient newInstance(Context context){
+        instance = new DreamAppealHttpClient(context);
+        return instance;
+    }
+
+    public static DreamAppealHttpClient getInstance(){
+        return instance;
+    }
+
+    public DreamAppealHttpClient(Context context) {
+        mContext = context;
         mClient = new OkHttpClient();
     }
 
     private android.os.Handler handler = new Handler();
+
+    /**
+     * 파일 전송 테스트
+     * @param context
+     * @param url
+     * @param header
+     * @param mapBody
+     * @param fileBody
+     * @param callback
+     */
+    public void post(Context context, String url, HashMap<String, String> header
+            , HashMap<String, Object> mapBody, HashMap<String, File> fileBody, Callback callback) {
+
+//        LinkedHashMap<String,Object> mapBody
+
+//        JSONObject json = new JSONObject(mapBody);
+//        RequestBody body = RequestBody.create(JSON, bowlingJson(json));
+
+        RequestBody requestBody = null;
+        // jpg 파일
+
+        MultipartBody.Builder bodyBuilder = new MultipartBody
+                .Builder()
+                .setType(MultipartBody.FORM);
+
+        for (String key : mapBody.keySet()) {
+            Object object = mapBody.get(key);
+            if (object instanceof String) {
+                bodyBuilder.addFormDataPart(key, (String) object);
+                Log.d("DreamAppealClient", key + " : " + object);
+            } else if (object instanceof Boolean) {
+                bodyBuilder.addFormDataPart(key, (String) object);
+                Log.d("DreamAppealClient", key + " : " + object);
+            }
+        }
+
+        for (String key : fileBody.keySet()) {
+            File value = fileBody.get(key);
+            if (value != null) {
+                if (value.getName().contains("jpeg") || value.getName().contains("jpg")) {
+                    bodyBuilder.addFormDataPart(key, value.getName()
+                            , RequestBody.create(MediaType.parse("image/jpeg"), value));
+                    Log.d("DreamAppealClient", key + " : " + value);
+                }
+            }
+        }
+
+        requestBody = bodyBuilder.build();
+
+        Request.Builder builder = new Request.Builder().
+                url(url).
+                post(requestBody);
+
+        if (header != null) {
+            for (String key : header.keySet()) {
+                String value = header.get(key);
+                builder.addHeader(key, value);
+            }
+        }
+
+        Request request = builder.build();
+
+        mClient.newCall(request).enqueue(callback);
+    }
 
     /**
      * Post Server 방식

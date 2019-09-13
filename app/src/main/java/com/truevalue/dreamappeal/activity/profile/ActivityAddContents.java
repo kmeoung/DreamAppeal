@@ -15,10 +15,10 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.base.BaseActivity;
-import com.truevalue.dreamappeal.base.BaseOkHttpClient;
+import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
-import com.truevalue.dreamappeal.base.IOServerCallback;
+import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
 import com.truevalue.dreamappeal.utils.Utils;
@@ -81,7 +81,11 @@ public class ActivityAddContents extends BaseActivity implements IOBaseTitleBarL
     }
 
     private void initVIew(){
-
+        if(mViewType == EXTRA_TYPE_OBJECTS) {
+            mTvHint.setText("갖출 능력과 만들어갈 기회를 위해\n어떤 실천을 해볼까?");
+        }else if(mViewType == EXTRA_TYPE_OBJECT_STEP){
+            mTvHint.setText("꾸준히 노력하기 쉽도록\n" + "어떤 단계로 나눠서 실천해볼까?");
+        }
         // 처음 Hint 글자 안보이게 하고 Focus잡기
         mTvHint.setOnClickListener(v -> {
             mEtAbilityOpportunity.setFocusableInTouchMode(true);
@@ -122,7 +126,7 @@ public class ActivityAddContents extends BaseActivity implements IOBaseTitleBarL
         HashMap header = Utils.getHttpHeader(prefs.getToken());
         HashMap<String,String> body = new HashMap();
         body.put("object_name",mEtAbilityOpportunity.getText().toString());
-        BaseOkHttpClient client = new BaseOkHttpClient();
+        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
         client.Post(url, header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {

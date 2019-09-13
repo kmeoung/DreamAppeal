@@ -38,7 +38,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="7dp"
             android:fontFamily="@font/nanum_pen"
-            android:text="만들고픈 기회"
+            android:text="만들어갈 기회"
             android:textColor="@color/black"
             android:textSize="19sp" />
 

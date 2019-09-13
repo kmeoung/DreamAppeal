@@ -2,6 +2,7 @@ package com.truevalue.dreamappeal.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.truevalue.dreamappeal.R;
+import com.truevalue.dreamappeal.activity.ActivityNormalProfile;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -79,7 +81,9 @@ public class DialogProfile extends Dialog {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_normal_profile_set:
-
+                Intent intent = new Intent(getContext(), ActivityNormalProfile.class);
+                getContext().startActivity(intent);
+                dismiss();
                 break;
             case R.id.iv_close:
                 dismiss();

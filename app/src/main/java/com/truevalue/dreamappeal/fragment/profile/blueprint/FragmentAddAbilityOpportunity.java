@@ -19,9 +19,9 @@ import com.google.android.material.tabs.TabLayout;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.profile.ActivityAbilityOpportunity;
 import com.truevalue.dreamappeal.base.BaseFragment;
-import com.truevalue.dreamappeal.base.BaseOkHttpClient;
+import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
-import com.truevalue.dreamappeal.base.IOServerCallback;
+import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.bean.BeanBlueprintAbilityOpportunity;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
@@ -112,10 +112,18 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
     }
 
     private void initView() {
+
         if(isEdit){
             mTvHint.setVisibility(View.GONE);
             mEtAbilityOpportunity.setText(mBean.getContents());
         }else{
+            if(mType == TYPE_ABILITY){
+                mTvHint.setText("수식어나 직업명에 어울리기 위해\n" + "어떤 능력이 있어야 할까?");
+            }else if(mType == TYPE_OPPORTUNITY){
+                mTvHint.setText("능동적으로 실력/경험을 쌓으려면\n" + "어떤 기회를 만들어야 할까?");
+            }
+
+
             // 처음 Hint 글자 안보이게 하고 Focus잡기
             mTvHint.setOnClickListener(v -> {
                 mEtAbilityOpportunity.setFocusableInTouchMode(true);
@@ -140,7 +148,7 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
         HashMap<String,String> body = new HashMap<>();
         body.put("ability",mEtAbilityOpportunity.getText().toString());
 
-        BaseOkHttpClient client = new BaseOkHttpClient();
+        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
         client.Post(url, header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -171,7 +179,7 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
         HashMap<String,String> body = new HashMap<>();
         body.put("opportunity",mEtAbilityOpportunity.getText().toString());
 
-        BaseOkHttpClient client = new BaseOkHttpClient();
+        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
         client.Post(url, header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -205,7 +213,7 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
         HashMap<String,String> body = new HashMap<>();
         body.put("ability",mEtAbilityOpportunity.getText().toString());
 
-        BaseOkHttpClient client = new BaseOkHttpClient();
+        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
         client.Patch(url, header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -239,7 +247,7 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
         HashMap<String,String> body = new HashMap<>();
         body.put("opportunity",mEtAbilityOpportunity.getText().toString());
 
-        BaseOkHttpClient client = new BaseOkHttpClient();
+        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
         client.Patch(url, header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {

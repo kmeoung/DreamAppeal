@@ -90,6 +90,9 @@
         <activity android:name=".activity.ActivitySearch"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".activity.ActivityNormalProfile"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>

@@ -2,12 +2,8 @@ package com.truevalue.dreamappeal.activity.profile;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.View;
-import android.view.inputmethod.InputMethod;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -19,10 +15,10 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.base.BaseActivity;
-import com.truevalue.dreamappeal.base.BaseOkHttpClient;
+import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
-import com.truevalue.dreamappeal.base.IOServerCallback;
+import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
 import com.truevalue.dreamappeal.utils.Utils;
@@ -119,7 +115,7 @@ public class ActivityMeritAndMotive extends BaseActivity implements IOBaseTitleB
         }
 
         body.put("meritNmotive", mEtMeritAndMotive.getText().toString());
-        BaseOkHttpClient client = new BaseOkHttpClient();
+        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
 
         client.Patch(url, header, body, new IOServerCallback() {
             @Override

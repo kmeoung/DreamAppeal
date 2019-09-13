@@ -23,13 +23,13 @@ import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.base.BaseActivity;
 import com.truevalue.dreamappeal.base.BaseItemDecorationVertical;
-import com.truevalue.dreamappeal.base.BaseOkHttpClient;
+import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.BaseViewHolder;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
-import com.truevalue.dreamappeal.base.IOServerCallback;
+import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.bean.BeanDreamList;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
@@ -109,7 +109,7 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
         url = url.replace(Comm_Param.USER_INDEX, mUserIndex + "");
         Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityDreamList.this);
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        BaseOkHttpClient client = new BaseOkHttpClient();
+        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
         mAdapter.clear();
         client.Get(url, header, null, new IOServerCallback() {
             @Override
@@ -152,7 +152,7 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
 
         HashMap header = Utils.getHttpHeader(token);
 
-        BaseOkHttpClient client = new BaseOkHttpClient();
+        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
 
         client.Delete(url, header, null, new IOServerCallback() {
             @Override

@@ -477,7 +477,7 @@
                         android:layout_gravity="center"
                         android:background="@drawable/color_btn_blue"
                         android:fontFamily="@font/nanum_square_round_r"
-                        android:text="팔로우"
+                        android:text="+팔로우"
                         android:textColor="@color/white"
                         android:textSize="13sp" />
 

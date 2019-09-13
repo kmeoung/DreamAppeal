@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
-import android.media.Image;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -26,15 +25,14 @@ import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.base.BaseActivity;
-import com.truevalue.dreamappeal.base.BaseOkHttpClient;
+import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.BaseViewHolder;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
-import com.truevalue.dreamappeal.base.IOServerCallback;
+import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.bean.BeanActionPost;
-import com.truevalue.dreamappeal.bean.BeanObjectHeader;
 import com.truevalue.dreamappeal.bean.BeanObjectStepHeader;
 import com.truevalue.dreamappeal.bean.BeanObjectStepSubHeader;
 import com.truevalue.dreamappeal.utils.Comm_Param;
@@ -135,7 +133,7 @@ public class ActivityObjectStep extends BaseActivity implements IOBaseTitleBarLi
         url = url.replace(Comm_Param.OBJECT_INDEX, String.valueOf(mObjectIndex));
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        BaseOkHttpClient client = new BaseOkHttpClient();
+        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
         client.Get(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -199,7 +197,7 @@ public class ActivityObjectStep extends BaseActivity implements IOBaseTitleBarLi
         url = url.replace(Comm_Param.OBJECT_INDEX, String.valueOf(mObjectIndex));
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        BaseOkHttpClient client = new BaseOkHttpClient();
+        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
         client.Delete(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -245,7 +243,7 @@ public class ActivityObjectStep extends BaseActivity implements IOBaseTitleBarLi
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(ActivityObjectStep.this, ActivityAddContents.class);
-                    intent.putExtra(ActivityAddContents.EXTRA_STR_TITLE, "목표 달성을 위해 세부단계를 만들어주세요");
+                    intent.putExtra(ActivityAddContents.EXTRA_STR_TITLE, "실천목표에 세부단계 등록하기");
                     intent.putExtra(ActivityAddContents.EXTRA_VIEW_TYPE, ActivityAddContents.EXTRA_TYPE_OBJECT_STEP);
                     startActivity(intent);
 
@@ -253,7 +251,7 @@ public class ActivityObjectStep extends BaseActivity implements IOBaseTitleBarLi
             });
 
             PopupMenu popupMenu = new PopupMenu(ActivityObjectStep.this, ivMore);
-            popupMenu.getMenuInflater().inflate(R.menu.menu_achivement_post, popupMenu.getMenu());
+            popupMenu.getMenuInflater().inflate(R.menu.menu_object_step, popupMenu.getMenu());
 
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
@@ -262,6 +260,9 @@ public class ActivityObjectStep extends BaseActivity implements IOBaseTitleBarLi
                     AlertDialog.Builder builder;
                     AlertDialog dialog;
                     switch (id) {
+                        case R.id.menu_complete:
+
+                            break;
                         case R.id.menu_edit:
                             Intent intent = new Intent(ActivityObjectStep.this, ActivityAddContents.class);
                             intent.putExtra(ActivityAddContents.EXTRA_STR_TITLE, "꿈에 맞는 실천 목표를 세워보세요");

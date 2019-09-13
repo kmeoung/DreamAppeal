@@ -1,9 +1,7 @@
 package com.truevalue.dreamappeal.fragment.login;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,15 +15,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.truevalue.dreamappeal.BuildConfig;
 import com.truevalue.dreamappeal.R;
-import com.truevalue.dreamappeal.activity.ActivityMain;
 import com.truevalue.dreamappeal.base.BaseFragment;
-import com.truevalue.dreamappeal.base.BaseMainTitleBar;
-import com.truevalue.dreamappeal.base.BaseOkHttpClient;
+import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
-import com.truevalue.dreamappeal.base.IOServerCallback;
+import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
 import com.truevalue.dreamappeal.utils.Utils;
@@ -163,7 +158,7 @@ public class FragmentRegister extends BaseFragment implements IOBaseTitleBarList
      * Get Check Email
      */
     private void httpGetCheckEmail() {
-        BaseOkHttpClient client = new BaseOkHttpClient();
+        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
         HashMap<String, String> body = new HashMap<>();
 
         String id = mEtId.getText().toString();
@@ -219,7 +214,7 @@ public class FragmentRegister extends BaseFragment implements IOBaseTitleBarList
      * Post Register
      */
     private void httpPostRegister(String id, String password, String name) {
-        BaseOkHttpClient client = new BaseOkHttpClient();
+        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
         HashMap<String, String> body = new HashMap<>();
 
         body.put("email", id);

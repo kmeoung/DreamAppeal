@@ -25,11 +25,11 @@ import com.truevalue.dreamappeal.activity.profile.ActivityAddContents;
 import com.truevalue.dreamappeal.activity.profile.ActivityCommentDetail;
 import com.truevalue.dreamappeal.activity.profile.ActivityObjectStep;
 import com.truevalue.dreamappeal.base.BaseFragment;
-import com.truevalue.dreamappeal.base.BaseOkHttpClient;
+import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseViewHolder;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
-import com.truevalue.dreamappeal.base.IOServerCallback;
+import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.bean.BeanAbilityOpportunityHeader;
 import com.truevalue.dreamappeal.bean.BeanBlueprintAbilityOpportunity;
 import com.truevalue.dreamappeal.bean.BeanBlueprintObject;
@@ -122,7 +122,7 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
         String url = Comm_Param.URL_API_BLUEPRINT;
         url = url.replaceAll(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        BaseOkHttpClient client = new BaseOkHttpClient();
+        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
         client.Get(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -278,7 +278,7 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getContext(), ActivityAddContents.class);
-                    intent.putExtra(ActivityAddContents.EXTRA_STR_TITLE, "꿈에 맞는 실천 목표를 세워보세요");
+                    intent.putExtra(ActivityAddContents.EXTRA_STR_TITLE, "실천목표 등록하기");
                     intent.putExtra(ActivityAddContents.EXTRA_VIEW_TYPE,ActivityAddContents.EXTRA_TYPE_OBJECTS);
                     startActivityForResult(intent,REQUEST_ADD_OBJECTS);
                 }

@@ -28,11 +28,11 @@ import com.truevalue.dreamappeal.activity.profile.ActivityDreamList;
 import com.truevalue.dreamappeal.activity.profile.ActivityDreamTitle;
 import com.truevalue.dreamappeal.activity.profile.ActivityMeritAndMotive;
 import com.truevalue.dreamappeal.base.BaseFragment;
-import com.truevalue.dreamappeal.base.BaseOkHttpClient;
+import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseViewHolder;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
-import com.truevalue.dreamappeal.base.IOServerCallback;
+import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.bean.BeanProfiles;
 import com.truevalue.dreamappeal.bean.BeanProfilesIndex;
 import com.truevalue.dreamappeal.utils.Comm_Param;
@@ -172,7 +172,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
      * @param token
      */
     private void httpPostProfiles(String token) {
-        BaseOkHttpClient client = new BaseOkHttpClient();
+        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
 
         HashMap header = Utils.getHttpHeader(token);
 
@@ -224,7 +224,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
         mAdapter.clear();
 
         HashMap header = Utils.getHttpHeader(token);
-        BaseOkHttpClient client = new BaseOkHttpClient();
+        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
         client.Get(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {

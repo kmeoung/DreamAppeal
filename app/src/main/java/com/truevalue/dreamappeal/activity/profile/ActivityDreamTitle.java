@@ -13,10 +13,10 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.base.BaseActivity;
-import com.truevalue.dreamappeal.base.BaseOkHttpClient;
+import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
-import com.truevalue.dreamappeal.base.IOServerCallback;
+import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.bean.BeanProfiles;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
@@ -101,7 +101,7 @@ public class ActivityDreamTitle extends BaseActivity implements IOBaseTitleBarLi
      *
      */
     private void httpPostProfiles() {
-        BaseOkHttpClient client = new BaseOkHttpClient();
+        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
         Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityDreamTitle.this);
         HashMap header = Utils.getHttpHeader(prefs.getToken());
 
@@ -165,7 +165,7 @@ public class ActivityDreamTitle extends BaseActivity implements IOBaseTitleBarLi
 
         body.put("job",mEtJob.getText().toString());
         body.put("value_style",mEtValueStyle.getText().toString());
-        BaseOkHttpClient client = new BaseOkHttpClient();
+        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
 
         client.Patch(url, header, body, new IOServerCallback() {
             @Override

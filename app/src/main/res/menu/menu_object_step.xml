@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/menu_complete"
+        android:title="완료하기"
+        android:icon="@null"/>
+
+    <item android:id="@+id/menu_edit"
+        android:title="수정"
+        android:icon="@null"/>
+
+    <item android:id="@+id/menu_delete"
+        android:title="삭제"
+        android:icon="@null"/>
+</menu>

@@ -21,13 +21,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.profile.ActivityAbilityOpportunity;
 import com.truevalue.dreamappeal.base.BaseFragment;
-import com.truevalue.dreamappeal.base.BaseOkHttpClient;
+import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.BaseViewHolder;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
-import com.truevalue.dreamappeal.base.IOServerCallback;
+import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.bean.BeanBlueprintAbilityOpportunity;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
@@ -78,7 +78,7 @@ public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTi
     @Override
     public void onResume() {
         super.onResume();
-        ((ActivityAbilityOpportunity) getActivity()).showToolbarBtn(BaseTitleBar.VISIBLE, BaseTitleBar.GONE, BaseTitleBar.GONE, BaseTitleBar.INVISIBLE, "갖출 능력 / 만들고픈 기회", "");
+        ((ActivityAbilityOpportunity) getActivity()).showToolbarBtn(BaseTitleBar.VISIBLE, BaseTitleBar.GONE, BaseTitleBar.GONE, BaseTitleBar.INVISIBLE, "꿈에 필요한 능력과 기회 정하기", "");
         ((ActivityAbilityOpportunity) getActivity()).setListener(this);
         httpGetAbilities(true);
     }
@@ -254,7 +254,7 @@ public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTi
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
 
-        BaseOkHttpClient client = new BaseOkHttpClient();
+        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
         client.Get(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -299,7 +299,7 @@ public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTi
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
 
-        BaseOkHttpClient client = new BaseOkHttpClient();
+        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
         client.Get(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -345,7 +345,7 @@ public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTi
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
 
-        BaseOkHttpClient client = new BaseOkHttpClient();
+        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
         client.Delete(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -377,7 +377,7 @@ public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTi
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
 
-        BaseOkHttpClient client = new BaseOkHttpClient();
+        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
         client.Delete(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -399,11 +399,11 @@ public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTi
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_add_ability: // 갖출 능력
-                ((ActivityAbilityOpportunity) getActivity()).showToolbarBtn(BaseTitleBar.VISIBLE, BaseTitleBar.GONE, BaseTitleBar.GONE, BaseTitleBar.VISIBLE, "어떤 능력을 갖춰야 할까?", "확인");
+                ((ActivityAbilityOpportunity) getActivity()).showToolbarBtn(BaseTitleBar.VISIBLE, BaseTitleBar.GONE, BaseTitleBar.GONE, BaseTitleBar.VISIBLE, "갖출 능력 등록하기", "확인");
                 ((ActivityAbilityOpportunity) getActivity()).replaceFragment(FragmentAddAbilityOpportunity.newInstance(FragmentAddAbilityOpportunity.TYPE_ABILITY), true);
                 break;
             case R.id.iv_add_opportunity: // 만들고픈 기회
-                ((ActivityAbilityOpportunity) getActivity()).showToolbarBtn(BaseTitleBar.VISIBLE, BaseTitleBar.GONE, BaseTitleBar.GONE, BaseTitleBar.VISIBLE, "어떤 기회를 만들어 볼까?", "확인");
+                ((ActivityAbilityOpportunity) getActivity()).showToolbarBtn(BaseTitleBar.VISIBLE, BaseTitleBar.GONE, BaseTitleBar.GONE, BaseTitleBar.VISIBLE, "만들어갈 기회 등록하기", "확인");
                 ((ActivityAbilityOpportunity) getActivity()).replaceFragment(FragmentAddAbilityOpportunity.newInstance(FragmentAddAbilityOpportunity.TYPE_OPPORTUNITY), true);
                 break;
         }
