@@ -19,7 +19,6 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.viewpager.widget.ViewPager;
 
-import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.base.BaseActivity;
@@ -35,12 +34,7 @@ import butterknife.OnClick;
 public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwner {
 
     public static final String VIEW_TYPE_ADD_ACTION_POST = "VIEW_TYPE_ADD_ACTION_POST";
-    private final int REQUEST_IMAGE_CAPTURE = 101010;
-
-    @BindView(R.id.tl_tab)
-    TabLayout mTlTab;
-    @BindView(R.id.vp_viewpager)
-    ViewPager mVpViewpager;
+    private final int REQUEST_IMAGE_CAPTURE = 303030;
     @BindView(R.id.v_status)
     View mVStatus;
     @BindView(R.id.iv_back)
@@ -51,12 +45,16 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
     TextView mTvTextBtn;
     @BindView(R.id.ll_title)
     LinearLayout mLlTitle;
+    @BindView(R.id.vp_viewpager)
+    ViewPager mVpViewpager;
     @BindView(R.id.base_container)
     FrameLayout mBaseContainer;
     @BindView(R.id.tv_gallery)
     TextView mTvGallery;
     @BindView(R.id.tv_camera)
     TextView mTvCamera;
+    @BindView(R.id.tl_tab)
+    TabLayout mTlTab;
 
     private ArrayList<String> mTabList;
 
@@ -100,14 +98,15 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
     public void onClickedCamera() {
         Intent intent = new Intent();
         intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-
         startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
     }
+
     private Uri ImageUriMyPhoto;
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_IMAGE_CAPTURE){
+        if (requestCode == REQUEST_IMAGE_CAPTURE) {
             Bundle extras = null;
             try {
                 extras = data.getExtras();
@@ -240,24 +239,6 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
 //                });
 //    }
 
-
-    @OnClick({R.id.iv_back, R.id.tv_text_btn, R.id.tv_gallery, R.id.tv_camera})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.iv_back:
-                finish();
-                break;
-            case R.id.tv_text_btn:
-                break;
-            case R.id.tv_gallery:
-
-                break;
-            case R.id.tv_camera:
-                onClickedCamera();
-                break;
-        }
-    }
-
     /**
      * 어댑터 초기화
      */
@@ -278,6 +259,22 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
         mTabList = new ArrayList<>();
         mTabList.add("갤러리");
         mTabList.add("카메라");
+    }
+
+    @OnClick({R.id.iv_back, R.id.tv_text_btn, R.id.tv_gallery, R.id.tv_camera})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.iv_back:
+                finish();
+                break;
+            case R.id.tv_text_btn:
+                break;
+            case R.id.tv_gallery:
+                break;
+            case R.id.tv_camera:
+                onClickedCamera();
+                break;
+        }
     }
 
     /**
