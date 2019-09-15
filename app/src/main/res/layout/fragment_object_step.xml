@@ -6,11 +6,6 @@
     android:background="@null"
     android:orientation="vertical">
 
-    <View
-        android:id="@+id/v_status"
-        android:layout_width="match_parent"
-        android:layout_height="0dp" />
-
     <!--툴바-->
     <com.truevalue.dreamappeal.base.BaseTitleBar
         android:id="@+id/btb_bar"

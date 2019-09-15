@@ -5,14 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.material.tabs.TabLayout;
-import com.truevalue.dreamappeal.R;
-import com.truevalue.dreamappeal.activity.ActivityMain;
-import com.truevalue.dreamappeal.base.BaseFragment;
-import com.truevalue.dreamappeal.base.BaseTitleBar;
-
-import java.util.ArrayList;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -20,19 +12,31 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.tabs.TabLayout;
+import com.truevalue.dreamappeal.R;
+import com.truevalue.dreamappeal.activity.ActivityMain;
+import com.truevalue.dreamappeal.base.BaseFragment;
+import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentBlueprint;
+import com.truevalue.dreamappeal.fragment.profile.dream_present.FragmentDreamPresent;
+import com.truevalue.dreamappeal.fragment.profile.performance.FragmentPerformance;
+
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class FragmentProfile extends BaseFragment {
 
-    @BindView(R.id.vp_viewpager)
-    ViewPager mVpViewpager;
     @BindView(R.id.tl_tab)
     TabLayout mTlTab;
+    @BindView(R.id.vp_viewpager)
+    ViewPager mVpViewpager;
 
     private ArrayList<String> mTabList = new ArrayList<>();
     private ViewPagerAdapter mAdapter;
     private ArrayList<BaseFragment> mFragmentList = new ArrayList<>();
+
+    private int mCurrentPage = -1;
 
     @Nullable
     @Override
@@ -46,18 +50,10 @@ public class FragmentProfile extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if(mAdapter == null) {
+        if (mAdapter == null) {
             initTab();
             initAdapter();
         }
-
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        // 상단바 설정
-        ((ActivityMain) getActivity()).showToolbarBtn(BaseTitleBar.GONE, BaseTitleBar.VISIBLE, BaseTitleBar.VISIBLE, BaseTitleBar.GONE);
     }
 
     /**
@@ -100,7 +96,8 @@ public class FragmentProfile extends BaseFragment {
                         else
                             mFragmentList.get(i).onViewPaged(false);
                     }
-
+                    // 마지막 페이지 저장
+                    ((ActivityMain) getActivity()).setmProfileIndex(position);
                 }
 
                 @Override
@@ -110,6 +107,14 @@ public class FragmentProfile extends BaseFragment {
             });
 
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // 마지막 페이지가 저장이 되어 있으면 해당 페이지로 이동
+        mCurrentPage = ((ActivityMain) getActivity()).getmProfileIndex();
+        if(mCurrentPage != -1) mVpViewpager.setCurrentItem(mCurrentPage);
     }
 
     /**

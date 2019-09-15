@@ -34,7 +34,7 @@ import butterknife.OnClick;
 public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwner {
 
     public static final String VIEW_TYPE_ADD_ACTION_POST = "VIEW_TYPE_ADD_ACTION_POST";
-    private final int REQUEST_IMAGE_CAPTURE = 303030;
+    private final int REQUEST_IMAGE_CAPTURE = 1004;
     @BindView(R.id.v_status)
     View mVStatus;
     @BindView(R.id.iv_back)

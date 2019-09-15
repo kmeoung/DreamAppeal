@@ -1,10 +1,8 @@
-package com.truevalue.dreamappeal.fragment.profile;
+package com.truevalue.dreamappeal.fragment.profile.dream_present;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,11 +21,8 @@ import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityGalleryCamera;
+import com.truevalue.dreamappeal.activity.ActivityMain;
 import com.truevalue.dreamappeal.activity.profile.ActivityCommentDetail;
-import com.truevalue.dreamappeal.activity.profile.ActivityDreamDescription;
-import com.truevalue.dreamappeal.activity.profile.ActivityDreamList;
-import com.truevalue.dreamappeal.activity.profile.ActivityDreamTitle;
-import com.truevalue.dreamappeal.activity.profile.ActivityMeritAndMotive;
 import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
@@ -46,6 +41,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -54,14 +50,6 @@ import butterknife.OnClick;
 import okhttp3.Call;
 
 public class FragmentDreamPresent extends BaseFragment implements IORecyclerViewListener {
-
-    public static final int REQUEST_ACTIVITY_DREAM_TITLE = 1000;
-    public static final int REQUEST_ACTIVITY_DESCRIPTION = 1001;
-    public static final int REQUEST_ACTIVITY_MERIT_AND_MOTIVE = 1002;
-    public static final int REQUEST_ACTIVITY_DREAM_LIST = 1003;
-
-
-    public static final String EXTRA_ACTIVITY_DREAM_LIST = "EXTRA_ACTIVITY_DREAM_LIST";
 
     BaseRecyclerViewAdapter mAdapter;
     @BindView(R.id.tv_dream_name)
@@ -322,9 +310,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
             case R.id.ll_dreams: // 내 꿈 레벨 (꿈 선택)
                 // 서버가 연동이 되어 있을 시에만
                 if (mUserIndex != -1) {
-                    intent = new Intent(getContext(), ActivityDreamList.class);
-                    intent.putExtra(ActivityDreamList.EXTRA_USER_INDEX, mUserIndex);
-                    startActivityForResult(intent, REQUEST_ACTIVITY_DREAM_LIST);
+                    ((ActivityMain) getActivity()).replaceFragmentRight(FragmentDreamList.newInstance(mUserIndex), true);
                 }
                 break;
             case R.id.ll_follower: // 팔로워
@@ -362,37 +348,34 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
                 break;
             case R.id.ll_dream_title: // 내 꿈 명칭 정하기 페이지 이동
             case R.id.tv_init_dream_title:
-                intent = new Intent(getContext(), ActivityDreamTitle.class);
                 String valueStyle = mTvValueStyle.getText().toString();
                 String job = mTvJob.getText().toString();
+                ArrayList dreamTitle = null;
                 if (!TextUtils.isEmpty(valueStyle) &&
                         !TextUtils.isEmpty(job)) {
-                    String dreamTitle = valueStyle + ActivityDreamTitle.EXTRA_DREAM_TITLE_DIVIDER + job;
-                    intent.putExtra(ActivityDreamTitle.EXTRA_DREAM_TITLE, dreamTitle);
+                    dreamTitle = new ArrayList();
+                    dreamTitle.add(valueStyle);
+                    dreamTitle.add(job);
                 }
-                startActivityForResult(intent, REQUEST_ACTIVITY_DREAM_TITLE);
+                ((ActivityMain) getActivity()).replaceFragmentRight(FragmentDreamTitle.newInstance(dreamTitle), true);
                 break;
             case R.id.ll_dream_description: // 핵심 문장으로 내 꿈 설명하기 페이지 이동
             case R.id.tv_init_dream_description:
-                intent = new Intent(getContext(), ActivityDreamDescription.class);
-
+                ArrayList<String> dreamDescription = null;
                 if (!TextUtils.isEmpty(mTvDreamDescription.getText().toString())) {
-                    String description = mTvDreamDescription.getText().toString();
+                    dreamDescription = new ArrayList<>();
+                    dreamDescription.add(mTvDreamDescription.getText().toString());
                     for (int i = 0; i < mAdapter.size(); i++) {
-                        description += ActivityDreamDescription.EXTRA_DESCRIPTION_DIVIDER;
-                        description += mAdapter.get(i);
+                        dreamDescription.add((String)mAdapter.get(i));
                     }
-                    intent.putExtra(ActivityDreamDescription.EXTRA_DREAM_DESCRIPTION, description);
                 }
-                startActivityForResult(intent, REQUEST_ACTIVITY_DESCRIPTION);
+                ((ActivityMain) getActivity()).replaceFragmentRight(FragmentDreamDescription.newInstance(dreamDescription), true);
                 break;
             case R.id.ll_merit_and_motive: // 이유 페이지 이동
             case R.id.tv_init_merit_and_motive:
-                intent = new Intent(getContext(), ActivityMeritAndMotive.class);
                 String meritAndMotive = mTvMeritAndMotive.getText().toString();
-                if (!TextUtils.isEmpty(meritAndMotive))
-                    intent.putExtra(ActivityMeritAndMotive.EXTRA_MERIT_AND_MOTIVE, meritAndMotive);
-                startActivityForResult(intent, REQUEST_ACTIVITY_MERIT_AND_MOTIVE);
+                if(TextUtils.isEmpty(meritAndMotive)) meritAndMotive = null;
+                ((ActivityMain) getActivity()).replaceFragmentRight(FragmentMeritAndMotive.newInstance(meritAndMotive), true);
                 break;
             case R.id.btn_follow: // 팔로우
 
@@ -403,32 +386,9 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == Activity.RESULT_OK) {
-            switch (requestCode) {
-                case REQUEST_ACTIVITY_DREAM_LIST: // 내 꿈 목록
-                case REQUEST_ACTIVITY_DREAM_TITLE: // 내 꿈 명칭
-                case REQUEST_ACTIVITY_DESCRIPTION: // 내 꿈 설명
-                case REQUEST_ACTIVITY_MERIT_AND_MOTIVE: // 내 꿈 매력
-                    Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
-                    // 페이지 리로드
-                    httpGetProfilesIndex(prefs.getProfileIndex(), prefs.getToken());
-                    isMyDreamMore = false;
-                    isMyDreamReason = false;
-                    break;
-                default:
-            }
-        }
-
-    }
-
     /**
      * RecyclerView Interface
      */
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return BaseViewHolder.newInstance(R.layout.listitem_dream_description, parent, false);

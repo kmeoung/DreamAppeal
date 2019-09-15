@@ -23,7 +23,6 @@ import butterknife.ButterKnife;
 
 public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBarListener, IORecyclerViewListener {
 
-
     @BindView(R.id.v_status)
     View mVStatus;
     @BindView(R.id.btb_bar)

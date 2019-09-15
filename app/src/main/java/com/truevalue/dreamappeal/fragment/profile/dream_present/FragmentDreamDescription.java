@@ -1,20 +1,23 @@
-package com.truevalue.dreamappeal.activity.profile;
+package com.truevalue.dreamappeal.fragment.profile.dream_present;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.truevalue.dreamappeal.R;
-import com.truevalue.dreamappeal.base.BaseActivity;
-import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
+import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
+import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
 import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
@@ -26,19 +29,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.Call;
 
-public class ActivityDreamDescription extends BaseActivity implements IOBaseTitleBarListener {
-
-    public static final String EXTRA_DREAM_DESCRIPTION = "EXTRA_DREAM_DESCRIPTION";
-    public static final String EXTRA_DESCRIPTION_DIVIDER = "<@<DESCRIPTION_DIVIDER>@>";
-
-    @BindView(R.id.v_status)
-    View mVStatus;
+public class FragmentDreamDescription extends BaseFragment implements IOBaseTitleBarListener {
+    
     @BindView(R.id.btb_bar)
     BaseTitleBar mBtbBar;
     @BindView(R.id.et_dream_description)
@@ -53,28 +52,42 @@ public class ActivityDreamDescription extends BaseActivity implements IOBaseTitl
     ViewPager mVpPager;
     @BindView(R.id.tl_tab)
     TabLayout mTlTab;
+    
+    private ArrayList<String> mArrayDescription = null;
+
+    public static FragmentDreamDescription newInstance(ArrayList<String> array_description){
+        FragmentDreamDescription fragment = new FragmentDreamDescription();
+        fragment.mArrayDescription = array_description;
+        return fragment;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_dream_description,container,false);
+        ButterKnife.bind(this,view);
+        return view;
+    }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dream_description);
-        ButterKnife.bind(this);
-        // 상태 창 투명화
-        updateStatusbarTranslate(mBtbBar);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         // 상단바 연동
         mBtbBar.setIOBaseTitleBarListener(this);
-
+        // 데이터 초기화
         initData();
     }
 
-    private void initData(){
-        if(getIntent().getStringExtra(EXTRA_DREAM_DESCRIPTION) != null){
-            String dreamDescriptions = getIntent().getStringExtra(EXTRA_DREAM_DESCRIPTION);
-            String[] dreamDescription = dreamDescriptions.split(EXTRA_DESCRIPTION_DIVIDER);
-            if(!TextUtils.isEmpty(dreamDescription[0])) mEtDreamDescription.setText(dreamDescription[0]);
-            if(!TextUtils.isEmpty(dreamDescription[1])) mEtDreamDescriptionDetail1.setText(dreamDescription[1]);
-            if(!TextUtils.isEmpty(dreamDescription[2])) mEtDreamDescriptionDetail2.setText(dreamDescription[2]);
-            if(!TextUtils.isEmpty(dreamDescription[3])) mEtDreamDescriptionDetail3.setText(dreamDescription[3]);
+    private void initData() {
+        if (mArrayDescription != null) {
+            if (!TextUtils.isEmpty(mArrayDescription.get(0)))
+                mEtDreamDescription.setText(mArrayDescription.get(0));
+            if (!TextUtils.isEmpty(mArrayDescription.get(1)))
+                mEtDreamDescriptionDetail1.setText(mArrayDescription.get(1));
+            if (!TextUtils.isEmpty(mArrayDescription.get(2)))
+                mEtDreamDescriptionDetail2.setText(mArrayDescription.get(2));
+            if (!TextUtils.isEmpty(mArrayDescription.get(3)))
+                mEtDreamDescriptionDetail3.setText(mArrayDescription.get(3));
         }
     }
 
@@ -83,7 +96,7 @@ public class ActivityDreamDescription extends BaseActivity implements IOBaseTitl
      */
     @Override
     public void OnClickBack() {
-        finish();
+        getActivity().onBackPressed();
     }
 
     /**
@@ -98,7 +111,7 @@ public class ActivityDreamDescription extends BaseActivity implements IOBaseTitl
      * Update Profiles
      */
     private void httpPatchProfiles() {
-        Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityDreamDescription.this);
+        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
         int profile_index = prefs.getProfileIndex();
         String token = prefs.getToken();
         String url = Comm_Param.URL_API_PROFILES_INDEX;
@@ -111,7 +124,7 @@ public class ActivityDreamDescription extends BaseActivity implements IOBaseTitl
                 || TextUtils.isEmpty(mEtDreamDescriptionDetail1.getText().toString())
                 || TextUtils.isEmpty(mEtDreamDescriptionDetail2.getText().toString())
                 || TextUtils.isEmpty(mEtDreamDescriptionDetail3.getText().toString())) {
-            Toast.makeText(this, "모든 항목을 입력해주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "모든 항목을 입력해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -135,10 +148,9 @@ public class ActivityDreamDescription extends BaseActivity implements IOBaseTitl
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(ActivityDreamDescription.this, message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
                 if (TextUtils.equals(code, SUCCESS)) {
-                    setResult(RESULT_OK);
-                    finish();
+                    getActivity().onBackPressed();
                 }
             }
         });

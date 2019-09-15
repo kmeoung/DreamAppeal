@@ -48,7 +48,7 @@ public class FragmentDrawer extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_profile:
-                DialogProfile dialog = new DialogProfile(getContext());
+                DialogProfile dialog = new DialogProfile(getActivity());
                 dialog.show();
                 break;
             case R.id.ll_logout:

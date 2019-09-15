@@ -19,16 +19,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.truevalue.dreamappeal.R;
-import com.truevalue.dreamappeal.activity.profile.ActivityAbilityOpportunity;
+import com.truevalue.dreamappeal.activity.ActivityMain;
 import com.truevalue.dreamappeal.base.BaseFragment;
-import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.BaseViewHolder;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
-import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.bean.BeanBlueprintAbilityOpportunity;
+import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
+import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
 import com.truevalue.dreamappeal.utils.Utils;
@@ -47,18 +47,20 @@ import butterknife.OnClick;
 import okhttp3.Call;
 
 public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTitleBarListener {
-    @BindView(R.id.rv_ability)
-    RecyclerView mRvAbility;
-    @BindView(R.id.rv_opportunity)
-    RecyclerView mRvOpportunity;
+
+    @BindView(R.id.btb_bar)
+    BaseTitleBar mBtbBar;
     @BindView(R.id.iv_add_ability)
     ImageView mIvAddAbility;
+    @BindView(R.id.rv_ability)
+    RecyclerView mRvAbility;
     @BindView(R.id.iv_add_opportunity)
     ImageView mIvAddOpportunity;
+    @BindView(R.id.rv_opportunity)
+    RecyclerView mRvOpportunity;
 
     private BaseRecyclerViewAdapter mAbilityAdapter;
     private BaseRecyclerViewAdapter mOpportunityAdapter;
-
 
     @Nullable
     @Override
@@ -71,6 +73,8 @@ public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTi
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        // Title Bar 초기화
+        mBtbBar.setIOBaseTitleBarListener(this);
         // Adapter 초기화
         initAdapter();
     }
@@ -78,8 +82,7 @@ public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTi
     @Override
     public void onResume() {
         super.onResume();
-        ((ActivityAbilityOpportunity) getActivity()).showToolbarBtn(BaseTitleBar.VISIBLE, BaseTitleBar.GONE, BaseTitleBar.GONE, BaseTitleBar.INVISIBLE, "꿈에 필요한 능력과 기회 정하기", "");
-        ((ActivityAbilityOpportunity) getActivity()).setListener(this);
+        // 서버 초기화
         httpGetAbilities(true);
     }
 
@@ -88,6 +91,9 @@ public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTi
         getActivity().onBackPressed();
     }
 
+    /**
+     * 어댑터 초기화
+     */
     private void initAdapter() {
         mAbilityAdapter = new BaseRecyclerViewAdapter(getContext(), new IORecyclerViewListener() {
             @Override
@@ -112,8 +118,12 @@ public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTi
                         AlertDialog dialog;
                         switch (id) {
                             case R.id.menu_edit:
-                                ((ActivityAbilityOpportunity) getActivity()).showToolbarBtn(BaseTitleBar.VISIBLE, BaseTitleBar.GONE, BaseTitleBar.GONE, BaseTitleBar.VISIBLE, "갖출 능력 수정", "확인");
-                                ((ActivityAbilityOpportunity) getActivity()).replaceFragment(FragmentAddAbilityOpportunity.newInstance(FragmentAddAbilityOpportunity.TYPE_ABILITY, bean), true);
+                                ((ActivityMain) getActivity())
+                                        .replaceFragmentRight(
+                                                FragmentAddAbilityOpportunity.newInstance(FragmentAddAbilityOpportunity.TYPE_ABILITY,
+                                                        "갖출 능력 수정",
+                                                        bean),
+                                                true);
                                 break;
                             case R.id.menu_delete:
                                 builder = new AlertDialog.Builder(getContext())
@@ -184,8 +194,11 @@ public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTi
                         AlertDialog dialog;
                         switch (id) {
                             case R.id.menu_edit:
-                                ((ActivityAbilityOpportunity) getActivity()).showToolbarBtn(BaseTitleBar.VISIBLE, BaseTitleBar.GONE, BaseTitleBar.GONE, BaseTitleBar.VISIBLE, "만들고픈 기회 수정", "확인");
-                                ((ActivityAbilityOpportunity) getActivity()).replaceFragment(FragmentAddAbilityOpportunity.newInstance(FragmentAddAbilityOpportunity.TYPE_OPPORTUNITY, bean), true);
+                                ((ActivityMain) getActivity())
+                                        .replaceFragmentRight(FragmentAddAbilityOpportunity
+                                                .newInstance(FragmentAddAbilityOpportunity.TYPE_OPPORTUNITY,
+                                                        "만들고픈 기회 수정",
+                                                        bean), true);
                                 break;
                             case R.id.menu_delete:
                                 builder = new AlertDialog.Builder(getContext())
@@ -399,13 +412,13 @@ public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTi
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_add_ability: // 갖출 능력
-                ((ActivityAbilityOpportunity) getActivity()).showToolbarBtn(BaseTitleBar.VISIBLE, BaseTitleBar.GONE, BaseTitleBar.GONE, BaseTitleBar.VISIBLE, "갖출 능력 등록하기", "확인");
-                ((ActivityAbilityOpportunity) getActivity()).replaceFragment(FragmentAddAbilityOpportunity.newInstance(FragmentAddAbilityOpportunity.TYPE_ABILITY), true);
+                ((ActivityMain) getActivity()).replaceFragmentRight(FragmentAddAbilityOpportunity.newInstance(FragmentAddAbilityOpportunity.TYPE_ABILITY, "갖출 능력 등록하기"), true);
                 break;
             case R.id.iv_add_opportunity: // 만들고픈 기회
-                ((ActivityAbilityOpportunity) getActivity()).showToolbarBtn(BaseTitleBar.VISIBLE, BaseTitleBar.GONE, BaseTitleBar.GONE, BaseTitleBar.VISIBLE, "만들어갈 기회 등록하기", "확인");
-                ((ActivityAbilityOpportunity) getActivity()).replaceFragment(FragmentAddAbilityOpportunity.newInstance(FragmentAddAbilityOpportunity.TYPE_OPPORTUNITY), true);
+                ((ActivityMain) getActivity()).replaceFragmentRight(FragmentAddAbilityOpportunity.newInstance(FragmentAddAbilityOpportunity.TYPE_OPPORTUNITY, "만들어갈 기회 등록하기"), true);
                 break;
         }
     }
+
+
 }

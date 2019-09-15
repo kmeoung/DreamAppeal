@@ -17,12 +17,12 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.truevalue.dreamappeal.R;
-import com.truevalue.dreamappeal.activity.profile.ActivityAbilityOpportunity;
 import com.truevalue.dreamappeal.base.BaseFragment;
-import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
+import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
-import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.bean.BeanBlueprintAbilityOpportunity;
+import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
+import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
 import com.truevalue.dreamappeal.utils.Utils;
@@ -42,6 +42,8 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
     public static final int TYPE_ABILITY = 0;
     public static final int TYPE_OPPORTUNITY = 1;
 
+    @BindView(R.id.btb_bar)
+    BaseTitleBar mBtbBar;
     @BindView(R.id.et_ability_opportunity)
     EditText mEtAbilityOpportunity;
     @BindView(R.id.tv_hint)
@@ -54,18 +56,21 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
     private int mType = -1;
     private boolean isEdit = false;
     private BeanBlueprintAbilityOpportunity mBean = null;
+    private String mTitle;
 
 
-    public static FragmentAddAbilityOpportunity newInstance(int type) {
+    public static FragmentAddAbilityOpportunity newInstance(int type, String title) {
         FragmentAddAbilityOpportunity fragment = new FragmentAddAbilityOpportunity();
         fragment.mType = type;
+        fragment.mTitle = title;
         return fragment;
     }
 
-    public static FragmentAddAbilityOpportunity newInstance(int type, BeanBlueprintAbilityOpportunity bean) {
+    public static FragmentAddAbilityOpportunity newInstance(int type, String title, BeanBlueprintAbilityOpportunity bean) {
         FragmentAddAbilityOpportunity fragment = new FragmentAddAbilityOpportunity();
         fragment.isEdit = true;
         fragment.mType = type;
+        fragment.mTitle = title;
         fragment.mBean = bean;
         return fragment;
     }
@@ -81,13 +86,9 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mBtbBar.setIOBaseTitleBarListener(this);
+        // 뷰 초기화
         initView();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        ((ActivityAbilityOpportunity) getActivity()).setListener(this);
     }
 
     @Override
@@ -97,7 +98,7 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
 
     @Override
     public void OnClickRightTextBtn() {
-        if(TextUtils.isEmpty(mEtAbilityOpportunity.getText().toString())){
+        if (TextUtils.isEmpty(mEtAbilityOpportunity.getText().toString())) {
             Toast.makeText(getContext(), "모든 항목을 입력해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -111,15 +112,20 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
         }
     }
 
+    /**
+     * View 초기화
+     */
     private void initView() {
+        // Title 설정
+        mBtbBar.setTitle(mTitle);
 
-        if(isEdit){
+        if (isEdit) {
             mTvHint.setVisibility(View.GONE);
             mEtAbilityOpportunity.setText(mBean.getContents());
-        }else{
-            if(mType == TYPE_ABILITY){
+        } else {
+            if (mType == TYPE_ABILITY) {
                 mTvHint.setText("수식어나 직업명에 어울리기 위해\n" + "어떤 능력이 있어야 할까?");
-            }else if(mType == TYPE_OPPORTUNITY){
+            } else if (mType == TYPE_OPPORTUNITY) {
                 mTvHint.setText("능동적으로 실력/경험을 쌓으려면\n" + "어떤 기회를 만들어야 할까?");
             }
 
@@ -145,8 +151,8 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
         url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        HashMap<String,String> body = new HashMap<>();
-        body.put("ability",mEtAbilityOpportunity.getText().toString());
+        HashMap<String, String> body = new HashMap<>();
+        body.put("ability", mEtAbilityOpportunity.getText().toString());
 
         DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
         client.Post(url, header, body, new IOServerCallback() {
@@ -176,8 +182,8 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
         url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        HashMap<String,String> body = new HashMap<>();
-        body.put("opportunity",mEtAbilityOpportunity.getText().toString());
+        HashMap<String, String> body = new HashMap<>();
+        body.put("opportunity", mEtAbilityOpportunity.getText().toString());
 
         DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
         client.Post(url, header, body, new IOServerCallback() {
@@ -210,8 +216,8 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
         url = url.replace(Comm_Param.ABILITY_INDEX, String.valueOf(ability_index));
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        HashMap<String,String> body = new HashMap<>();
-        body.put("ability",mEtAbilityOpportunity.getText().toString());
+        HashMap<String, String> body = new HashMap<>();
+        body.put("ability", mEtAbilityOpportunity.getText().toString());
 
         DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
         client.Patch(url, header, body, new IOServerCallback() {
@@ -244,8 +250,8 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
         url = url.replace(Comm_Param.OPPORTUNITY_INDEX, String.valueOf(opportunity_index));
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        HashMap<String,String> body = new HashMap<>();
-        body.put("opportunity",mEtAbilityOpportunity.getText().toString());
+        HashMap<String, String> body = new HashMap<>();
+        body.put("opportunity", mEtAbilityOpportunity.getText().toString());
 
         DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
         client.Patch(url, header, body, new IOServerCallback() {

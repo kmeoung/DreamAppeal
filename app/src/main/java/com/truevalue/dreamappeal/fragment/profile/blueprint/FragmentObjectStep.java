@@ -1,4 +1,4 @@
-package com.truevalue.dreamappeal.activity.profile;
+package com.truevalue.dreamappeal.fragment.profile.blueprint;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,17 +25,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
-import com.truevalue.dreamappeal.base.BaseActivity;
-import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
+import com.truevalue.dreamappeal.activity.ActivityMain;
+import com.truevalue.dreamappeal.activity.profile.ActivityActionPost;
+import com.truevalue.dreamappeal.activity.profile.ActivityCommentDetail;
+import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.BaseViewHolder;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
-import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.bean.BeanActionPost;
 import com.truevalue.dreamappeal.bean.BeanObjectStepHeader;
 import com.truevalue.dreamappeal.bean.BeanObjectStepSubHeader;
+import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
+import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
 import com.truevalue.dreamappeal.utils.Utils;
@@ -52,16 +56,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Call;
 
-public class ActivityObjectStep extends BaseActivity implements IOBaseTitleBarListener, IORecyclerViewListener {
+public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarListener, IORecyclerViewListener {
 
     private final int TYPE_TITLE_HEADER = 1;
     private final int TYPE_HEADER_SUB = 2;
     private final int TYPE_IMAGE = 3;
 
-    public static final String EXTRA_OBJECT_INDEX = "EXTRA_OBJECT_INDEX";
-
-    @BindView(R.id.v_status)
-    View mVStatus;
     @BindView(R.id.btb_bar)
     BaseTitleBar mBtbBar;
     @BindView(R.id.rv_achivement_ing)
@@ -77,39 +77,45 @@ public class ActivityObjectStep extends BaseActivity implements IOBaseTitleBarLi
     @BindView(R.id.btn_commit_comment)
     Button mBtnCommitComment;
 
+
     private BaseRecyclerViewAdapter mAdapter;
     private int mObjectIndex = -1;
 
+    public static FragmentObjectStep newInstance(int object_index) {
+        FragmentObjectStep fragment = new FragmentObjectStep();
+        fragment.mObjectIndex = object_index;
+        return fragment;
+    }
+
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_object_step);
-        ButterKnife.bind(this);
-        // 상태 창 투명화
-        updateStatusbarTranslate(mBtbBar);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_object_step, container, false);
+        ButterKnife.bind(this, view);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         // 상단바 연동
         mBtbBar.setIOBaseTitleBarListener(this);
-
-        initData();
         // Adapter 초기화
         initAdapter();
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
+        // 서버 초기화
         httpGetObjects();
     }
 
-    private void initData() {
-        mObjectIndex = getIntent().getIntExtra(EXTRA_OBJECT_INDEX, -1);
-    }
-
     private void initAdapter() {
-        mAdapter = new BaseRecyclerViewAdapter(ActivityObjectStep.this, this);
+        mAdapter = new BaseRecyclerViewAdapter(getContext(), this);
         mRvAchivementIng.setAdapter(mAdapter);
 
-        GridLayoutManager glm = new GridLayoutManager(ActivityObjectStep.this, 3, RecyclerView.VERTICAL, false);
+        GridLayoutManager glm = new GridLayoutManager(getContext(), 3, RecyclerView.VERTICAL, false);
         glm.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int i) {
@@ -127,7 +133,7 @@ public class ActivityObjectStep extends BaseActivity implements IOBaseTitleBarLi
      * 실천 목표 조회
      */
     private void httpGetObjects() {
-        Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityObjectStep.this);
+        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
         String url = Comm_Param.URL_API_BLUEPRINT_OBJECTS_INDEX;
         url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
         url = url.replace(Comm_Param.OBJECT_INDEX, String.valueOf(mObjectIndex));
@@ -142,7 +148,7 @@ public class ActivityObjectStep extends BaseActivity implements IOBaseTitleBarLi
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(ActivityObjectStep.this, message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
 
                 if (TextUtils.equals(code, SUCCESS)) {
                     mAdapter.clear();
@@ -191,7 +197,7 @@ public class ActivityObjectStep extends BaseActivity implements IOBaseTitleBarLi
      * 실천 목표 삭제
      */
     private void httpDeleteObjects() {
-        Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityObjectStep.this);
+        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
         String url = Comm_Param.URL_API_BLUEPRINT_OBJECTS_INDEX;
         url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
         url = url.replace(Comm_Param.OBJECT_INDEX, String.valueOf(mObjectIndex));
@@ -206,11 +212,10 @@ public class ActivityObjectStep extends BaseActivity implements IOBaseTitleBarLi
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(ActivityObjectStep.this, message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
 
                 if (TextUtils.equals(code, SUCCESS)) {
-                    setResult(RESULT_OK);
-                    finish();
+                    getActivity().onBackPressed();
                 }
             }
         });
@@ -242,15 +247,11 @@ public class ActivityObjectStep extends BaseActivity implements IOBaseTitleBarLi
             tvDetailStep.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(ActivityObjectStep.this, ActivityAddContents.class);
-                    intent.putExtra(ActivityAddContents.EXTRA_STR_TITLE, "실천목표에 세부단계 등록하기");
-                    intent.putExtra(ActivityAddContents.EXTRA_VIEW_TYPE, ActivityAddContents.EXTRA_TYPE_OBJECT_STEP);
-                    startActivity(intent);
-
+                    ((ActivityMain) getActivity()).replaceFragmentRight(FragmentAddContents.newInstance("실천목표에 세부단계 등록하기",FragmentAddContents.EXTRA_TYPE_OBJECT_STEP), true);
                 }
             });
 
-            PopupMenu popupMenu = new PopupMenu(ActivityObjectStep.this, ivMore);
+            PopupMenu popupMenu = new PopupMenu(getContext(), ivMore);
             popupMenu.getMenuInflater().inflate(R.menu.menu_object_step, popupMenu.getMenu());
 
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -264,13 +265,10 @@ public class ActivityObjectStep extends BaseActivity implements IOBaseTitleBarLi
 
                             break;
                         case R.id.menu_edit:
-                            Intent intent = new Intent(ActivityObjectStep.this, ActivityAddContents.class);
-                            intent.putExtra(ActivityAddContents.EXTRA_STR_TITLE, "꿈에 맞는 실천 목표를 세워보세요");
-                            intent.putExtra(ActivityAddContents.EXTRA_VIEW_TYPE, ActivityAddContents.EXTRA_TYPE_EDIT_OBJECTS);
-                            startActivity(intent);
+                            ((ActivityMain) getActivity()).replaceFragmentRight(FragmentAddContents.newInstance("꿈에 맞는 실천 목표를 세워보세요",FragmentAddContents.EXTRA_TYPE_EDIT_OBJECTS), true);
                             break;
                         case R.id.menu_delete:
-                            builder = new AlertDialog.Builder(ActivityObjectStep.this)
+                            builder = new AlertDialog.Builder(getContext())
                                     .setTitle("실천 목표 삭제")
                                     .setMessage("목표를 삭제하시겠습니까?")
                                     .setPositiveButton("네", new DialogInterface.OnClickListener() {
@@ -315,13 +313,13 @@ public class ActivityObjectStep extends BaseActivity implements IOBaseTitleBarLi
                 Glide.with(this).load(R.drawable.ic_image_black_24dp).into(iv);
             else
                 Glide.with(this).load(bean.getThumbnail_image()).placeholder(R.drawable.ic_image_black_24dp).into(iv);
-            Point point = Utils.getDisplaySize(this);
+            Point point = Utils.getDisplaySize(getActivity());
             Utils.setResizeView(iv, point.x / 3, point.x / 3);
 
             iv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(ActivityObjectStep.this, ActivityActionPost.class);
+                    Intent intent = new Intent(getContext(), ActivityActionPost.class);
                     startActivity(intent);
                 }
             });
@@ -347,14 +345,14 @@ public class ActivityObjectStep extends BaseActivity implements IOBaseTitleBarLi
 
     @Override
     public void OnClickBack() {
-        finish();
+        getActivity().onBackPressed();
     }
 
     @OnClick({R.id.iv_comment, R.id.iv_profile})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_comment:
-                Intent intent = new Intent(ActivityObjectStep.this, ActivityCommentDetail.class);
+                Intent intent = new Intent(getContext(), ActivityCommentDetail.class);
                 startActivity(intent);
                 break;
             case R.id.iv_profile:

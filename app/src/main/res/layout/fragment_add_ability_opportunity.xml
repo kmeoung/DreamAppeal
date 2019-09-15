@@ -7,6 +7,19 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
+    <!--툴바-->
+    <com.truevalue.dreamappeal.base.BaseTitleBar
+        android:id="@+id/btb_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:is_back_visibility="visible"
+        app:is_menu_visibility="gone"
+        app:is_right_text_visibility="visible"
+        app:is_search_visibility="gone"
+        app:right_text="확인"
+        app:title="" />
+    <!--툴바-->
+
     <!--내 꿈 이유 작성 영역-->
     <RelativeLayout
         android:layout_width="match_parent"
@@ -35,7 +48,7 @@
             android:ellipsize="end"
             android:fontFamily="@font/nanum_square_round_b"
             android:gravity="center"
-            android:inputType="text"
+            android:maxLines="2"
             android:maxLength="40"
             android:text="터치하여 내용을 입력해주세요"
             android:textColor="#a0a0a0"

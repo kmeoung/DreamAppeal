@@ -1,6 +1,7 @@
-package com.truevalue.dreamappeal.activity;
+package com.truevalue.dreamappeal.fragment;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -13,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.truevalue.dreamappeal.R;
-import com.truevalue.dreamappeal.base.BaseActivity;
+import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.BaseViewHolder;
@@ -24,10 +25,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ActivityNormalProfile extends BaseActivity implements IOBaseTitleBarListener, IORecyclerViewListener {
+public class FragmentNormalProfile extends BaseFragment implements IOBaseTitleBarListener, IORecyclerViewListener {
 
-    @BindView(R.id.v_status)
-    View mVStatus;
+
     @BindView(R.id.btb_bar)
     BaseTitleBar mBtbBar;
     @BindView(R.id.et_name)
@@ -50,36 +50,42 @@ public class ActivityNormalProfile extends BaseActivity implements IOBaseTitleBa
     ImageView mIvAddAffiliation;
     @BindView(R.id.rv_affiliation)
     RecyclerView mRvAffiliation;
-
     private BaseRecyclerViewAdapter mAdapter;
     private boolean isGender = false;
 
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_normal_profile);
-        ButterKnife.bind(this);
-        // 상태 창 투명화
-        updateStatusbarTranslate(mBtbBar);
-        mBtbBar.setIOBaseTitleBarListener(this);
-        initAdapter();
-        setGender();
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_normal_profile, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
-    private void setGender(){
-        if(isGender){
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        // ToolBar 설정
+        mBtbBar.setIOBaseTitleBarListener(this);
+        // 어댑터 초기화
+        initAdapter();
+        // 성별 초기화
+        initGender();
+    }
+
+    private void initGender() {
+        if (isGender) {
             mBtnMale.setSelected(false);
             mBtnFemale.setSelected(true);
-        }else{
+        } else {
             mBtnMale.setSelected(true);
             mBtnFemale.setSelected(false);
         }
     }
 
     private void initAdapter() {
-        mAdapter = new BaseRecyclerViewAdapter(ActivityNormalProfile.this, this);
+        mAdapter = new BaseRecyclerViewAdapter(getContext(), this);
         mRvAffiliation.setAdapter(mAdapter);
-        mRvAffiliation.setLayoutManager(new LinearLayoutManager(ActivityNormalProfile.this));
+        mRvAffiliation.setLayoutManager(new LinearLayoutManager(getContext()));
 
         for (int i = 0; i < 10; i++) {
             mAdapter.add("");
@@ -88,7 +94,7 @@ public class ActivityNormalProfile extends BaseActivity implements IOBaseTitleBa
 
     @Override
     public void OnClickBack() {
-        finish();
+        getActivity().onBackPressed();
     }
 
     @Override
@@ -120,12 +126,12 @@ public class ActivityNormalProfile extends BaseActivity implements IOBaseTitleBa
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_male:
-                if(isGender) isGender = false;
-                setGender();
+                if (isGender) isGender = false;
+                initGender();
                 break;
             case R.id.btn_female:
-                if(!isGender) isGender = true;
-                setGender();
+                if (!isGender) isGender = true;
+                initGender();
                 break;
             case R.id.iv_add_affiliation:
                 break;

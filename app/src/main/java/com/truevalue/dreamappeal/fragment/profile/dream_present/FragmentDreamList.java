@@ -1,10 +1,10 @@
-package com.truevalue.dreamappeal.activity.profile;
+package com.truevalue.dreamappeal.fragment.profile.dream_present;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -21,16 +21,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
-import com.truevalue.dreamappeal.base.BaseActivity;
+import com.truevalue.dreamappeal.activity.ActivityMain;
+import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.base.BaseItemDecorationVertical;
-import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.BaseViewHolder;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
-import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.bean.BeanDreamList;
+import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
+import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
 import com.truevalue.dreamappeal.utils.Utils;
@@ -48,54 +49,61 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Call;
 
-public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarListener, IORecyclerViewListener {
+public class FragmentDreamList extends BaseFragment implements IOBaseTitleBarListener, IORecyclerViewListener {
 
-    public static final String EXTRA_USER_INDEX = "EXTRA_USER_INDEX";
-    public static final int REQUEST_ADD_PROFILES = 1010;
 
-    @BindView(R.id.v_status)
-    View mVStatus;
     @BindView(R.id.btb_bar)
     BaseTitleBar mBtbBar;
-    @BindView(R.id.rv_dream_list)
-    RecyclerView mRvDreamList;
-    @BindView(R.id.btn_edit)
-    Button mBtnEdit;
     @BindView(R.id.iv_add_dream)
     ImageView mIvAddDream;
     @BindView(R.id.tv_add_dream)
     TextView mTvAddDream;
     @BindView(R.id.ll_add_dream)
     LinearLayout mLlAddDream;
+    @BindView(R.id.btn_edit)
+    Button mBtnEdit;
     @BindView(R.id.tv_level_info)
     TextView mTvLevelInfo;
+    @BindView(R.id.rv_dream_list)
+    RecyclerView mRvDreamList;
 
     private BaseRecyclerViewAdapter mAdapter;
     private boolean isEdit = false;
     private int mUserIndex = -1;
 
+    public static FragmentDreamList newInstance(int user_index) {
+        FragmentDreamList fragment = new FragmentDreamList();
+        fragment.mUserIndex = user_index;
+        return fragment;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_dream_list, container, false);
+        ButterKnife.bind(this, view);
+        return view;
+    }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dream_list);
-        ButterKnife.bind(this);
-        // 상태 창 투명화
-        updateStatusbarTranslate(mBtbBar);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         // 상단바 연동
         mBtbBar.setIOBaseTitleBarListener(this);
-
         // Init Adapter
         initAdapter();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         // Init Data
         initData();
-        // Bind Temp Data
-//        bindTempData();
     }
 
     // todo : 첫번째 꿈 두번쨰 꿈 설정해야 함
     private void initData() {
-        mUserIndex = getIntent().getIntExtra(EXTRA_USER_INDEX, -1);
         httpGetDreamList();
         mTvLevelInfo.setText("< 경험치 획득 > 실천등록 + 10 / 성과 등록 + 30");
     }
@@ -107,7 +115,7 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
     private void httpGetDreamList() {
         String url = Comm_Param.URL_API_PROFILES_INDEX_LIST;
         url = url.replace(Comm_Param.USER_INDEX, mUserIndex + "");
-        Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityDreamList.this);
+        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
         HashMap header = Utils.getHttpHeader(prefs.getToken());
         DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
         mAdapter.clear();
@@ -119,7 +127,7 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(ActivityDreamList.this, message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
 
                 if (TextUtils.equals(code, SUCCESS)) {
                     JSONObject object = new JSONObject(body);
@@ -145,7 +153,7 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
      */
     private void httpDeleteProfiles(int profile_idx) {
 
-        Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityDreamList.this);
+        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
         String token = prefs.getToken();
         String url = Comm_Param.URL_API_PROFILES_INDEX;
         url = url.replace(Comm_Param.PROFILES_INDEX, profile_idx + "");
@@ -163,7 +171,7 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
 
-                Toast.makeText(ActivityDreamList.this, message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
                 if (TextUtils.equals(code, SUCCESS)) {
                     httpGetDreamList();
                 }
@@ -175,10 +183,10 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
      * Init Adapter
      */
     private void initAdapter() {
-        mAdapter = new BaseRecyclerViewAdapter(ActivityDreamList.this, this);
+        mAdapter = new BaseRecyclerViewAdapter(getContext(), this);
         mRvDreamList.setAdapter(mAdapter);
-        mRvDreamList.setLayoutManager(new LinearLayoutManager(ActivityDreamList.this));
-        BaseItemDecorationVertical item = new BaseItemDecorationVertical(ActivityDreamList.this, 6);
+        mRvDreamList.setLayoutManager(new LinearLayoutManager(getContext()));
+        BaseItemDecorationVertical item = new BaseItemDecorationVertical(getContext(), 6);
         mRvDreamList.addItemDecoration(item);
         // Set Edit Mode
         isEditMode(false);
@@ -210,7 +218,7 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
      */
     @Override
     public void OnClickBack() {
-        finish();
+        getActivity().onBackPressed();
     }
 
     /**
@@ -218,7 +226,7 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
      */
     @Override
     public void OnClickRightTextBtn() {
-        onBackPressed();
+        getActivity().onBackPressed();
     }
 
     @Override
@@ -256,21 +264,21 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
             ivDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(ActivityDreamList.this)
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
                             .setTitle("프로필 삭제")
                             .setMessage("프로필을 삭제하시겠습니까?")
                             .setPositiveButton("네", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     if (mAdapter.size() > 1) {
-                                        Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityDreamList.this);
+                                        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
                                         if (bean.getIdx() == prefs.getProfileIndex()) {
-                                            Toast.makeText(ActivityDreamList.this, "현재 사용중인 프로필은 삭제가 불가능 합니다.", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getContext(), "현재 사용중인 프로필은 삭제가 불가능 합니다.", Toast.LENGTH_SHORT).show();
                                         } else {
                                             httpDeleteProfiles(bean.getIdx());
                                         }
                                     } else {
-                                        Toast.makeText(ActivityDreamList.this, "최소 1개의 프로필이 있어야 합니다.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getContext(), "최소 1개의 프로필이 있어야 합니다.", Toast.LENGTH_SHORT).show();
                                     }
                                     dialog.dismiss();
                                 }
@@ -287,24 +295,23 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
             });
         } else { // 수정 모드가 아닐 경우
             h.itemView.setOnClickListener(v -> {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ActivityDreamList.this)
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
                         .setTitle("프로필 선택")
                         .setMessage("프로필을 선택하시겠습니까?")
                         .setPositiveButton("네", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityDreamList.this);
+                                Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
                                 if (bean.getIdx() == prefs.getProfileIndex()) {
-                                    Toast.makeText(ActivityDreamList.this, "현재 사용중인 프로필입니다.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), "현재 사용중인 프로필입니다.", Toast.LENGTH_SHORT).show();
                                     dialog.dismiss();
                                     return;
                                 } else {
                                     prefs.setProfileIndex(bean.getIdx());
-                                    Toast.makeText(ActivityDreamList.this, "성공적으로 변경되었습니다.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), "성공적으로 변경되었습니다.", Toast.LENGTH_SHORT).show();
                                 }
                                 dialog.dismiss();
-                                setResult(RESULT_OK);
-                                finish();
+                                getActivity().onBackPressed();
                             }
                         })
                         .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
@@ -338,29 +345,16 @@ public class ActivityDreamList extends BaseActivity implements IOBaseTitleBarLis
                 // 버튼이 활성화 되어 있을 경우에만
                 if (mAdapter.size() < 3) {
                     if (mLlAddDream.isEnabled()) {
-                        Intent intent = new Intent(ActivityDreamList.this, ActivityDreamTitle.class);
-                        intent.putExtra(ActivityDreamTitle.EXTRA_ADD_PROFILES, true);
-                        startActivityForResult(intent, REQUEST_ADD_PROFILES);
+                        ((ActivityMain) getActivity()).replaceFragmentRight(new FragmentDreamTitle(), true);
                     }
                 } else {
-                    Toast.makeText(this, "프로필은 최대 3개까지만 추가할 수 있습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "프로필은 최대 3개까지만 추가할 수 있습니다.", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.btn_edit: // 수정 버튼
                 isEdit = !isEdit;
                 isEditMode(isEdit);
                 break;
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (requestCode == REQUEST_ADD_PROFILES) {
-                setResult(RESULT_OK);
-                finish();
-            }
         }
     }
 }

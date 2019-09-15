@@ -1,4 +1,4 @@
-package com.truevalue.dreamappeal.fragment.profile;
+package com.truevalue.dreamappeal.fragment.profile.performance;
 
 import android.app.AlertDialog;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package com.truevalue.dreamappeal.fragment.profile;
+package com.truevalue.dreamappeal.fragment.profile.blueprint;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,20 +20,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
-import com.truevalue.dreamappeal.activity.profile.ActivityAbilityOpportunity;
-import com.truevalue.dreamappeal.activity.profile.ActivityAddContents;
+import com.truevalue.dreamappeal.activity.ActivityMain;
 import com.truevalue.dreamappeal.activity.profile.ActivityCommentDetail;
-import com.truevalue.dreamappeal.activity.profile.ActivityObjectStep;
 import com.truevalue.dreamappeal.base.BaseFragment;
-import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseViewHolder;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
-import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.bean.BeanAbilityOpportunityHeader;
 import com.truevalue.dreamappeal.bean.BeanBlueprintAbilityOpportunity;
 import com.truevalue.dreamappeal.bean.BeanBlueprintObject;
 import com.truevalue.dreamappeal.bean.BeanObjectHeader;
+import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
+import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
 import com.truevalue.dreamappeal.utils.Utils;
@@ -52,18 +50,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Call;
 
-import static android.app.Activity.RESULT_OK;
-
 public class FragmentBlueprint extends BaseFragment implements IORecyclerViewListener {
 
     private final int LISTITEM_TYPE_ABILITY_OPPORTUNITY_HEADER = 0;
     private final int LISTITEM_TYPE_ABILITY_OPPORTUNITY = 1;
     private final int LISTITEM_TYPE_OBJECT_HEADER = 2;
     private final int LISTITEM_TYPE_OBJECT = 3;
-
-    public static final int REQUEST_ABILITY_OPPORTUNUTY = 1200;
-    public static final int REQUEST_ADD_OBJECTS = 1201;
-    public static final int REQUEST_OBJECT_STEP = 1202;
 
     @BindView(R.id.rv_blueprint)
     RecyclerView mRvBlueprint;
@@ -145,9 +137,9 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
                             int idx = ability.getInt("idx");
                             int profile_idx = ability.getInt("profile_idx");
                             String strAbility = ability.getString("ability");
-                            abilityList.add(new BeanBlueprintAbilityOpportunity(profile_idx,idx,strAbility));
+                            abilityList.add(new BeanBlueprintAbilityOpportunity(profile_idx, idx, strAbility));
                         }
-                    }catch (JSONException e){
+                    } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
@@ -158,61 +150,61 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
                             int idx = opportunity.getInt("idx");
                             int profile_idx = opportunity.getInt("profile_idx");
                             String strOpportunity = opportunity.getString("opportunity");
-                            opportunityList.add(new BeanBlueprintAbilityOpportunity(profile_idx,idx,strOpportunity));
+                            opportunityList.add(new BeanBlueprintAbilityOpportunity(profile_idx, idx, strOpportunity));
                         }
-                    }catch (JSONException e){
+                    } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
                     mAdapter.add(new BeanAbilityOpportunityHeader()); // 능력 / 기회 헤더
-                    if(abilityList.size() > 0 && opportunityList.size() > 0){ // 능력 및 기회가 둘다 1개이상 있을 시
-                        if(abilityList.size() > 1){ // 능력이 1개이상 있을 시
-                            for (int i = 0; i < 2 ; i++) {
+                    if (abilityList.size() > 0 && opportunityList.size() > 0) { // 능력 및 기회가 둘다 1개이상 있을 시
+                        if (abilityList.size() > 1) { // 능력이 1개이상 있을 시
+                            for (int i = 0; i < 2; i++) {
                                 mAdapter.add(abilityList.get(i));
                             }
 
-                            for (int i = 0; i < 1 ; i++) {
+                            for (int i = 0; i < 1; i++) {
                                 mAdapter.add(opportunityList.get(i));
                             }
-                        }else{ // 능력이 1개일 시
-                            if(opportunityList.size() > 1){ // 기회가 1개 이상일 시
-                                for (int i = 0; i < 1 ; i++) {
+                        } else { // 능력이 1개일 시
+                            if (opportunityList.size() > 1) { // 기회가 1개 이상일 시
+                                for (int i = 0; i < 1; i++) {
                                     mAdapter.add(abilityList.get(i));
                                 }
 
-                                for (int i = 0; i < 2 ; i++) {
+                                for (int i = 0; i < 2; i++) {
                                     mAdapter.add(opportunityList.get(i));
                                 }
-                            }else{ // 능력 및 기회가 1개일 시
-                                for (int i = 0; i < abilityList.size() ; i++) {
+                            } else { // 능력 및 기회가 1개일 시
+                                for (int i = 0; i < abilityList.size(); i++) {
                                     mAdapter.add(abilityList.get(i));
                                 }
 
-                                for (int i = 0; i < opportunityList.size() ; i++) {
+                                for (int i = 0; i < opportunityList.size(); i++) {
                                     mAdapter.add(opportunityList.get(i));
                                 }
                             }
                         }
-                    }else{
-                        if(abilityList.size() > 0){ // 능력만 있을 시
+                    } else {
+                        if (abilityList.size() > 0) { // 능력만 있을 시
 
                             int max = 0;
 
-                            if(abilityList.size() > 2){
+                            if (abilityList.size() > 2) {
                                 max = 3;
-                            }else max = abilityList.size();
+                            } else max = abilityList.size();
 
                             for (int i = 0; i < max; i++) {
                                 mAdapter.add(abilityList.get(i));
                             }
 
-                        }else if(opportunityList.size() > 0){ // 기회만 있을 시
+                        } else if (opportunityList.size() > 0) { // 기회만 있을 시
 
                             int max = 0;
 
-                            if(opportunityList.size() > 2){
+                            if (opportunityList.size() > 2) {
                                 max = 3;
-                            }else max = opportunityList.size();
+                            } else max = opportunityList.size();
 
                             for (int i = 0; i < max; i++) {
                                 mAdapter.add(opportunityList.get(i));
@@ -224,7 +216,7 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
 
                     JSONArray objects = json.getJSONArray("objects");
                     for (int i = 0; i < objects.length(); i++) {
-                        BeanBlueprintObject bean = gson.fromJson(objects.getJSONObject(i).toString(),BeanBlueprintObject.class);
+                        BeanBlueprintObject bean = gson.fromJson(objects.getJSONObject(i).toString(), BeanBlueprintObject.class);
                         mAdapter.add(bean);
                     }
                 }
@@ -265,8 +257,7 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
             h.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getContext(), ActivityAbilityOpportunity.class);
-                    startActivityForResult(intent,REQUEST_ABILITY_OPPORTUNUTY);
+                    ((ActivityMain) getActivity()).replaceFragmentRight(new FragmentAbilityOpportunity(), true);
                 }
             });
         }
@@ -277,14 +268,11 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
             ivAddObject.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getContext(), ActivityAddContents.class);
-                    intent.putExtra(ActivityAddContents.EXTRA_STR_TITLE, "실천목표 등록하기");
-                    intent.putExtra(ActivityAddContents.EXTRA_VIEW_TYPE,ActivityAddContents.EXTRA_TYPE_OBJECTS);
-                    startActivityForResult(intent,REQUEST_ADD_OBJECTS);
+                    ((ActivityMain) getActivity()).replaceFragmentRight(FragmentAddContents.newInstance("실천목표 등록하기",FragmentAddContents.EXTRA_TYPE_OBJECTS), true);
                 }
             });
 
-        } else if(getItemViewType(i) == LISTITEM_TYPE_ABILITY_OPPORTUNITY){
+        } else if (getItemViewType(i) == LISTITEM_TYPE_ABILITY_OPPORTUNITY) {
             BeanBlueprintAbilityOpportunity bean = (BeanBlueprintAbilityOpportunity) mAdapter.get(i);
             TextView tvContents = h.getItemView(R.id.tv_contents);
             tvContents.setText(bean.getContents());
@@ -299,18 +287,16 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
             tvObjectCount.setText("총 인증\n\n" + bean.getTotal_action_post_count() + "회");
             Glide.with(this).load(R.drawable.ic_side_triangle_blue).into(ivSize);
             // 완료 여부
-            if(bean.getComplete() == 0){
+            if (bean.getComplete() == 0) {
                 tvComplete.setVisibility(View.GONE);
-            }else{
+            } else {
                 tvComplete.setVisibility(View.VISIBLE);
             }
 
             h.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getContext(), ActivityObjectStep.class);
-                    intent.putExtra(ActivityObjectStep.EXTRA_OBJECT_INDEX,bean.getIdx());
-                    startActivityForResult(intent,REQUEST_OBJECT_STEP);
+                    ((ActivityMain) getActivity()).replaceFragmentRight(FragmentObjectStep.newInstance(bean.getIdx()), true);
                 }
             });
         }
@@ -332,19 +318,5 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
         else if (mAdapter.get(i) instanceof BeanBlueprintObject)
             return LISTITEM_TYPE_OBJECT;
         return 0;
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK){
-            switch (requestCode){
-                case REQUEST_ABILITY_OPPORTUNUTY:
-                case REQUEST_ADD_OBJECTS:
-                case REQUEST_OBJECT_STEP:
-                    httpGetBluePrint();
-                    break;
-            }
-        }
     }
 }

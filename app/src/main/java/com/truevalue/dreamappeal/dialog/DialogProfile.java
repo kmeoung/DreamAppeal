@@ -1,5 +1,6 @@
 package com.truevalue.dreamappeal.dialog;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -17,7 +18,8 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.truevalue.dreamappeal.R;
-import com.truevalue.dreamappeal.activity.ActivityNormalProfile;
+import com.truevalue.dreamappeal.activity.ActivityMain;
+import com.truevalue.dreamappeal.fragment.FragmentNormalProfile;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,8 +46,11 @@ public class DialogProfile extends Dialog {
     @BindView(R.id.iv_normal_profile_set)
     ImageView mIvNormalProfileSet;
 
-    public DialogProfile(@NonNull Context context) {
-        super(context);
+    private ActivityMain mActivityMain;
+
+    public DialogProfile(@NonNull Activity activity) {
+        super(activity);
+        mActivityMain = (ActivityMain) activity;
     }
 
     public DialogProfile(@NonNull Context context, int themeResId) {
@@ -81,8 +86,7 @@ public class DialogProfile extends Dialog {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_normal_profile_set:
-                Intent intent = new Intent(getContext(), ActivityNormalProfile.class);
-                getContext().startActivity(intent);
+                mActivityMain.replaceFragment(new FragmentNormalProfile(),true);
                 dismiss();
                 break;
             case R.id.iv_close:
