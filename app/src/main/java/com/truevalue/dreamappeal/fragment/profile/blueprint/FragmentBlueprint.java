@@ -30,7 +30,7 @@ import com.truevalue.dreamappeal.bean.BeanAbilityOpportunityHeader;
 import com.truevalue.dreamappeal.bean.BeanBlueprintAbilityOpportunity;
 import com.truevalue.dreamappeal.bean.BeanBlueprintObject;
 import com.truevalue.dreamappeal.bean.BeanObjectHeader;
-import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
+import com.truevalue.dreamappeal.http.DAHttpClient;
 import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
@@ -114,7 +114,7 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
         String url = Comm_Param.URL_API_BLUEPRINT;
         url = url.replaceAll(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance();
         client.Get(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -268,7 +268,7 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
             ivAddObject.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((ActivityMain) getActivity()).replaceFragmentRight(FragmentAddContents.newInstance("실천목표 등록하기",FragmentAddContents.EXTRA_TYPE_OBJECTS), true);
+                    ((ActivityMain) getActivity()).replaceFragmentRight(FragmentAddContents.newInstance("실천목표 등록하기"), true);
                 }
             });
 

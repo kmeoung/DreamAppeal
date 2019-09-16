@@ -1,6 +1,7 @@
 package com.truevalue.dreamappeal.fragment.image;
 
 import android.content.Context;
+import android.graphics.Matrix;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -78,7 +79,7 @@ public class FragmentGallery extends BaseFragment {
         int viewHeight = displayWidth;
 
         // 화면 사이즈
-        Utils.setResizeView(mRlSelectImage,viewWidth,viewHeight);
+        Utils.setResizeView(mRlSelectImage, viewWidth, viewHeight);
     }
 
     /**
@@ -169,10 +170,10 @@ public class FragmentGallery extends BaseFragment {
     // TODO : 수정 필요
     @OnClick(R.id.btn_resize)
     public void onViewClicked() {
-        if(!isImageResize) {
+        if (!isImageResize) {
             isImageResize = true;
-            mIvSelectImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        }else{
+            mIvSelectImage.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        } else {
             isImageResize = false;
             mIvSelectImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
         }

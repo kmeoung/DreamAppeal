@@ -16,7 +16,7 @@ import androidx.annotation.Nullable;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityMain;
 import com.truevalue.dreamappeal.base.BaseFragment;
-import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
+import com.truevalue.dreamappeal.http.DAHttpClient;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.http.IOServerCallback;
@@ -83,7 +83,7 @@ public class FragmentNormalLogin extends BaseFragment implements IOBaseTitleBarL
      */
     private void httpPostLogin() {
 
-        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance();
         HashMap<String, String> body = new HashMap<>();
         String id = mEtId.getText().toString();
         String password = mEtPassword.getText().toString();

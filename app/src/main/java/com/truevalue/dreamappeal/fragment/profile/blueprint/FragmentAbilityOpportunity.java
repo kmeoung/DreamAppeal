@@ -27,7 +27,7 @@ import com.truevalue.dreamappeal.base.BaseViewHolder;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
 import com.truevalue.dreamappeal.bean.BeanBlueprintAbilityOpportunity;
-import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
+import com.truevalue.dreamappeal.http.DAHttpClient;
 import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
@@ -267,7 +267,7 @@ public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTi
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
 
-        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance();
         client.Get(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -312,7 +312,7 @@ public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTi
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
 
-        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance();
         client.Get(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -358,7 +358,7 @@ public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTi
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
 
-        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance();
         client.Delete(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -390,7 +390,7 @@ public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTi
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
 
-        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance();
         client.Delete(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {

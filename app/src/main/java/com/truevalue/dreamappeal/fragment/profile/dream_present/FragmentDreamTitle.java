@@ -19,7 +19,7 @@ import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.bean.BeanProfiles;
-import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
+import com.truevalue.dreamappeal.http.DAHttpClient;
 import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
@@ -107,7 +107,7 @@ public class FragmentDreamTitle extends BaseFragment implements IOBaseTitleBarLi
      * 회원 등록
      */
     private void httpPostProfiles() {
-        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance();
         Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
         HashMap header = Utils.getHttpHeader(prefs.getToken());
 
@@ -169,7 +169,7 @@ public class FragmentDreamTitle extends BaseFragment implements IOBaseTitleBarLi
 
         body.put("job", mEtJob.getText().toString());
         body.put("value_style", mEtValueStyle.getText().toString());
-        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance();
 
         client.Patch(url, header, body, new IOServerCallback() {
             @Override

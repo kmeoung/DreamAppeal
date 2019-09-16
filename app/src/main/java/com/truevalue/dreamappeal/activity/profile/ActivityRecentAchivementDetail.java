@@ -18,7 +18,7 @@ import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.base.BaseActivity;
-import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
+import com.truevalue.dreamappeal.http.DAHttpClient;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.http.IOServerCallback;
@@ -102,7 +102,7 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
         url = url.replaceAll(Comm_Param.POST_INDEX, String.valueOf(index));
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance();
         client.Get(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -219,7 +219,7 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
        url = url.replace(Comm_Param.POST_INDEX,String.valueOf(mBean.getIdx()));
 
        HashMap header = Utils.getHttpHeader(prefs.getToken());
-       DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
+       DAHttpClient client = DAHttpClient.getInstance();
        client.Post(url, header, null, new IOServerCallback() {
            @Override
            public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -251,7 +251,7 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
         url = url.replaceAll(Comm_Param.POST_INDEX, String.valueOf(index));
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance();
         client.Delete(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {

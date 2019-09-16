@@ -19,7 +19,7 @@ import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityGalleryCamera;
 import com.truevalue.dreamappeal.base.BaseActivity;
 import com.truevalue.dreamappeal.base.BaseItemDecorationHorizontal;
-import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
+import com.truevalue.dreamappeal.http.DAHttpClient;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.BaseViewHolder;
@@ -160,7 +160,7 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
         body.put("thumbnail_image", "");
         body.put("tags", "");
 
-        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance();
         client.Patch(url, header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -204,7 +204,7 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
         body.put("register_date", strDate);
         body.put("tags", "");
 
-        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance();
         client.Post(url, header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {

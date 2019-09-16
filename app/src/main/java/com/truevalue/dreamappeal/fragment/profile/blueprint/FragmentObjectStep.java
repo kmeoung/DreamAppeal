@@ -37,7 +37,7 @@ import com.truevalue.dreamappeal.base.IORecyclerViewListener;
 import com.truevalue.dreamappeal.bean.BeanActionPost;
 import com.truevalue.dreamappeal.bean.BeanObjectStepHeader;
 import com.truevalue.dreamappeal.bean.BeanObjectStepSubHeader;
-import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
+import com.truevalue.dreamappeal.http.DAHttpClient;
 import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
@@ -139,7 +139,7 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
         url = url.replace(Comm_Param.OBJECT_INDEX, String.valueOf(mObjectIndex));
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance();
         client.Get(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -203,8 +203,7 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
         url = url.replace(Comm_Param.OBJECT_INDEX, String.valueOf(mObjectIndex));
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
-        client.Delete(url, header, null, new IOServerCallback() {
+        DAHttpClient.getInstance().Delete(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();
@@ -216,6 +215,35 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
 
                 if (TextUtils.equals(code, SUCCESS)) {
                     getActivity().onBackPressed();
+                }
+            }
+        });
+    }
+
+    /**
+     * http Delete
+     * 실천 목표 세부단계 삭제
+     */
+    private void httpDeleteObjectStep(int step_index) {
+        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+        String url = Comm_Param.URL_API_BLUEPRINT_OBJECTS_INDEX_STEPS_INDEX;
+        url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
+        url = url.replace(Comm_Param.OBJECT_INDEX, String.valueOf(mObjectIndex));
+        url = url.replace(Comm_Param.STEPS_INDEX, String.valueOf(step_index));
+
+        HashMap header = Utils.getHttpHeader(prefs.getToken());
+        DAHttpClient.getInstance().Delete(url, header, null, new IOServerCallback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
+                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+
+                if (TextUtils.equals(code, SUCCESS)) {
+                    httpGetObjects();
                 }
             }
         });
@@ -247,7 +275,7 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
             tvDetailStep.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((ActivityMain) getActivity()).replaceFragmentRight(FragmentAddContents.newInstance("실천목표에 세부단계 등록하기",FragmentAddContents.EXTRA_TYPE_OBJECT_STEP), true);
+                    ((ActivityMain) getActivity()).replaceFragmentRight(FragmentAddContents.newInstance("실천목표에 세부단계 등록하기", bean.getIdx()), true);
                 }
             });
 
@@ -265,7 +293,8 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
 
                             break;
                         case R.id.menu_edit:
-                            ((ActivityMain) getActivity()).replaceFragmentRight(FragmentAddContents.newInstance("꿈에 맞는 실천 목표를 세워보세요",FragmentAddContents.EXTRA_TYPE_EDIT_OBJECTS), true);
+                            ((ActivityMain) getActivity()).replaceFragmentRight(FragmentAddContents.newInstance("꿈에 맞는 실천 목표를 세워보세요",
+                                    bean.getObject_name(), bean.getIdx()), true);
                             break;
                         case R.id.menu_delete:
                             builder = new AlertDialog.Builder(getContext())
@@ -303,6 +332,49 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
             TextView tvPosition = h.getItemView(R.id.tv_position);
             TextView tvtitle = h.getItemView(R.id.tv_title);
             ImageView ivMore = h.getItemView(R.id.iv_more);
+
+            PopupMenu popupMenu = new PopupMenu(getContext(), ivMore);
+            popupMenu.getMenuInflater().inflate(R.menu.menu_achivement_post, popupMenu.getMenu());
+
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    int id = item.getItemId();
+                    AlertDialog.Builder builder;
+                    AlertDialog dialog;
+                    switch (id) {
+                        case R.id.menu_edit:
+                            ((ActivityMain) getActivity()).replaceFragmentRight(FragmentAddContents.newInstance("실천목표에 세부단계 등록하기",
+                                    bean.getTitle(), bean.getObject_idx(), bean.getIdx()), true);
+                            break;
+                        case R.id.menu_delete:
+                            builder = new AlertDialog.Builder(getContext())
+                                    .setTitle("실천 목표 세부사항 삭제")
+                                    .setMessage("세부사항을 삭제하시겠습니까?")
+                                    .setPositiveButton("네", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            httpDeleteObjectStep(bean.getIdx());
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                            dialog = builder.create();
+                            dialog.show();
+                            break;
+                    }
+                    return false;
+                }
+            });
+
+            ivMore.setOnClickListener(view -> {
+                popupMenu.show();
+            });
 
             tvPosition.setText(String.valueOf(bean.getPosition()));
             tvtitle.setText(bean.getTitle());

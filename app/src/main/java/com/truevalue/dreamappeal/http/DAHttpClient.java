@@ -5,8 +5,6 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.bumptech.glide.BuildConfig;
-import com.truevalue.dreamappeal.http.IOServerCallback;
-import com.truevalue.dreamappeal.utils.Comm_Prefs;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -25,25 +23,25 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class DreamAppealHttpClient {
+public class DAHttpClient {
 
     private OkHttpClient mClient;
     private Context mContext;
     public static final MediaType JSON
             = MediaType.parse("application/json; charset=utf-8");
 
-    private static DreamAppealHttpClient instance;
+    private static DAHttpClient instance;
 
-    public static DreamAppealHttpClient newInstance(Context context){
-        instance = new DreamAppealHttpClient(context);
+    public static DAHttpClient newInstance(Context context){
+        instance = new DAHttpClient(context);
         return instance;
     }
 
-    public static DreamAppealHttpClient getInstance(){
+    public static DAHttpClient getInstance(){
         return instance;
     }
 
-    public DreamAppealHttpClient(Context context) {
+    public DAHttpClient(Context context) {
         mContext = context;
         mClient = new OkHttpClient();
     }

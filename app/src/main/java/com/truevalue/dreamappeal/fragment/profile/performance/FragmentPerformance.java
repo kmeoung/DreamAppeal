@@ -35,7 +35,7 @@ import com.truevalue.dreamappeal.activity.profile.ActivityBestAchivementDetail;
 import com.truevalue.dreamappeal.activity.profile.ActivityCommentDetail;
 import com.truevalue.dreamappeal.activity.profile.ActivityRecentAchivementDetail;
 import com.truevalue.dreamappeal.base.BaseFragment;
-import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
+import com.truevalue.dreamappeal.http.DAHttpClient;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseViewHolder;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
@@ -127,7 +127,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
         url = url.replaceAll(Comm_Param.POST_INDEX, String.valueOf(mCurrentIndex));
         HashMap header = Utils.getHttpHeader(prefs.getToken());
 
-        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance();
         mAdapter.clear();
         mBestPostList.clear();
         client.Get(url, header, null, new IOServerCallback() {
@@ -392,7 +392,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
         url = url.replaceAll(Comm_Param.POST_INDEX, String.valueOf(index));
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance();
         client.Delete(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {

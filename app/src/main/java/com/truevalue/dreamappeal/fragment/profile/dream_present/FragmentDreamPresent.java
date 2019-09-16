@@ -24,7 +24,7 @@ import com.truevalue.dreamappeal.activity.ActivityGalleryCamera;
 import com.truevalue.dreamappeal.activity.ActivityMain;
 import com.truevalue.dreamappeal.activity.profile.ActivityCommentDetail;
 import com.truevalue.dreamappeal.base.BaseFragment;
-import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
+import com.truevalue.dreamappeal.http.DAHttpClient;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseViewHolder;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
@@ -161,7 +161,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
      * @param token
      */
     private void httpPostProfiles(String token) {
-        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance();
 
         HashMap header = Utils.getHttpHeader(token);
 
@@ -213,7 +213,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
         mAdapter.clear();
 
         HashMap header = Utils.getHttpHeader(token);
-        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance();
         client.Get(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {

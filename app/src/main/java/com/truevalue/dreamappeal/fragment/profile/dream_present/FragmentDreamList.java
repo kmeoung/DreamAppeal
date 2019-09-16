@@ -30,7 +30,7 @@ import com.truevalue.dreamappeal.base.BaseViewHolder;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
 import com.truevalue.dreamappeal.bean.BeanDreamList;
-import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
+import com.truevalue.dreamappeal.http.DAHttpClient;
 import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
@@ -117,7 +117,7 @@ public class FragmentDreamList extends BaseFragment implements IOBaseTitleBarLis
         url = url.replace(Comm_Param.USER_INDEX, mUserIndex + "");
         Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance();
         mAdapter.clear();
         client.Get(url, header, null, new IOServerCallback() {
             @Override
@@ -160,7 +160,7 @@ public class FragmentDreamList extends BaseFragment implements IOBaseTitleBarLis
 
         HashMap header = Utils.getHttpHeader(token);
 
-        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance();
 
         client.Delete(url, header, null, new IOServerCallback() {
             @Override

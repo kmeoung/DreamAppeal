@@ -18,7 +18,7 @@ import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.base.BaseActivity;
-import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
+import com.truevalue.dreamappeal.http.DAHttpClient;
 import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.bean.BeanPostDetail;
 import com.truevalue.dreamappeal.utils.Comm_Param;
@@ -109,7 +109,7 @@ public class ActivityBestAchivementDetail extends BaseActivity {
         url = url.replaceAll(Comm_Param.POST_INDEX, String.valueOf(index));
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance();
         client.Get(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -211,7 +211,7 @@ public class ActivityBestAchivementDetail extends BaseActivity {
         url = url.replace(Comm_Param.BEST_POST_INDEX,String.valueOf(best_index));
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance();
         client.Patch(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -243,7 +243,7 @@ public class ActivityBestAchivementDetail extends BaseActivity {
         url = url.replaceAll(Comm_Param.POST_INDEX, String.valueOf(index));
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance();
         client.Delete(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {

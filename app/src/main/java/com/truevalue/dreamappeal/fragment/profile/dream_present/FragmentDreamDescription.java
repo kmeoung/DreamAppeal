@@ -17,7 +17,7 @@ import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
-import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
+import com.truevalue.dreamappeal.http.DAHttpClient;
 import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
@@ -138,7 +138,7 @@ public class FragmentDreamDescription extends BaseFragment implements IOBaseTitl
             e.printStackTrace();
         }
         body.put("description_spec", jsonArray.toString());
-        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance();
 
         client.Patch(url, header, body, new IOServerCallback() {
             @Override

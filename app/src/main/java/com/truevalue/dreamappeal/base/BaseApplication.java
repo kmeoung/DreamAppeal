@@ -2,7 +2,7 @@ package com.truevalue.dreamappeal.base;
 
 import android.app.Application;
 
-import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
+import com.truevalue.dreamappeal.http.DAHttpClient;
 
 
 public class BaseApplication extends Application {
@@ -11,7 +11,7 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        DreamAppealHttpClient.newInstance(getApplicationContext());
+        DAHttpClient.newInstance(getApplicationContext());
     }
 
 }

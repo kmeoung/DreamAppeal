@@ -21,7 +21,7 @@ import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.bean.BeanBlueprintAbilityOpportunity;
-import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
+import com.truevalue.dreamappeal.http.DAHttpClient;
 import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
@@ -154,7 +154,7 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
         HashMap<String, String> body = new HashMap<>();
         body.put("ability", mEtAbilityOpportunity.getText().toString());
 
-        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance();
         client.Post(url, header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -185,7 +185,7 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
         HashMap<String, String> body = new HashMap<>();
         body.put("opportunity", mEtAbilityOpportunity.getText().toString());
 
-        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance();
         client.Post(url, header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -219,7 +219,7 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
         HashMap<String, String> body = new HashMap<>();
         body.put("ability", mEtAbilityOpportunity.getText().toString());
 
-        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance();
         client.Patch(url, header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -253,7 +253,7 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
         HashMap<String, String> body = new HashMap<>();
         body.put("opportunity", mEtAbilityOpportunity.getText().toString());
 
-        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance();
         client.Patch(url, header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {

@@ -7,6 +7,9 @@ public class Comm_Param {
     public static final String URL_API = "http://ec2-15-164-168-185.ap-northeast-2.compute.amazonaws.com:8080";
     public static final String URL_API_USERS = URL_API + "/users";
 
+    // 검색
+    public static final String URL_SEARCH = URL_API + "/search";
+
     public static final String URL_API_CHECK = URL_API_USERS + "/check";
     public static final String URL_API_CHECK_EMAIL = URL_API_CHECK + "/email";
 
@@ -29,6 +32,8 @@ public class Comm_Param {
     public static final String OPPORTUNITY_INDEX = "OPPORTUNITY_INDEX";
     // Objects Index
     public static final String OBJECT_INDEX = "OBJECT_INDEX";
+    // Steps Index
+    public static final String STEPS_INDEX = "STEPS_INDEX";
 
 
     // 내 꿈 소개 조회 / 내 꿈 소개 업데이트 / 프로필 삭제
@@ -64,6 +69,10 @@ public class Comm_Param {
     public static final String URL_API_BLUEPRINT_OBJECTS = URL_API_BLUEPRINT + "/objects";
     // 실천 목표 조회 / 수정 / 삭제
     public static final String URL_API_BLUEPRINT_OBJECTS_INDEX = URL_API_BLUEPRINT_OBJECTS + "/" + OBJECT_INDEX;
+    // 실천 목표 세부단계 추가
+    public static final String URL_API_BLUEPRINT_OBJECTS_INDEX_STEPS = URL_API_BLUEPRINT_OBJECTS_INDEX + "/steps";
+    // 실천 목표 세부단계 수정 / 삭제
+    public static final String URL_API_BLUEPRINT_OBJECTS_INDEX_STEPS_INDEX = URL_API_BLUEPRINT_OBJECTS_INDEX_STEPS + "/" + STEPS_INDEX;
 
 
     /**

@@ -17,7 +17,7 @@ import androidx.annotation.Nullable;
 
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.base.BaseFragment;
-import com.truevalue.dreamappeal.http.DreamAppealHttpClient;
+import com.truevalue.dreamappeal.http.DAHttpClient;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.http.IOServerCallback;
@@ -158,7 +158,7 @@ public class FragmentRegister extends BaseFragment implements IOBaseTitleBarList
      * Get Check Email
      */
     private void httpGetCheckEmail() {
-        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance();
         HashMap<String, String> body = new HashMap<>();
 
         String id = mEtId.getText().toString();
@@ -214,7 +214,7 @@ public class FragmentRegister extends BaseFragment implements IOBaseTitleBarList
      * Post Register
      */
     private void httpPostRegister(String id, String password, String name) {
-        DreamAppealHttpClient client = DreamAppealHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance();
         HashMap<String, String> body = new HashMap<>();
 
         body.put("email", id);
