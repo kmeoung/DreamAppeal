@@ -226,6 +226,8 @@ public class FragmentRegister extends BaseFragment implements IOBaseTitleBarList
         String birth = sdf.format(mCal.getTime());
         body.put("birth", birth);
         body.put("privacy", "1"); // 개인정보 동의 1
+        body.put("location", null);
+        body.put("affiliation", null);
 
         client.Post(Comm_Param.URL_API_USERS_SIGNUP, null, body, new IOServerCallback() {
             @Override

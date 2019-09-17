@@ -35,6 +35,7 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
 
     public static final String VIEW_TYPE_ADD_ACTION_POST = "VIEW_TYPE_ADD_ACTION_POST";
     private final int REQUEST_IMAGE_CAPTURE = 1004;
+    private final int REQUEST_ADD_ACTION_POST = 1040;
     @BindView(R.id.v_status)
     View mVStatus;
     @BindView(R.id.iv_back)
@@ -79,7 +80,7 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(ActivityGalleryCamera.this, ActivityAddActionPost.class);
-                    startActivity(intent);
+                    startActivityForResult(intent, REQUEST_ADD_ACTION_POST);
                     overridePendingTransition(0, 0);
                 }
             });
@@ -129,6 +130,11 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
 //                Glide.with(this)
 //                        .load(ImageUriMyPhoto)
 //                        .into(mIvMyPhoto);
+            }
+        } else if (requestCode == REQUEST_ADD_ACTION_POST) {
+            if (resultCode == RESULT_OK) {
+                setResult(RESULT_OK);
+                finish();
             }
         }
     }
@@ -311,4 +317,6 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
             return mTabList.get(position);
         }
     }
+
+
 }

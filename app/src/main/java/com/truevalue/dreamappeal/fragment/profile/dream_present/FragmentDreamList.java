@@ -307,7 +307,7 @@ public class FragmentDreamList extends BaseFragment implements IOBaseTitleBarLis
                                     dialog.dismiss();
                                     return;
                                 } else {
-                                    prefs.setProfileIndex(bean.getIdx());
+                                    prefs.setProfileIndex(bean.getIdx(), true);
                                     Toast.makeText(getContext(), "성공적으로 변경되었습니다.", Toast.LENGTH_SHORT).show();
                                 }
                                 dialog.dismiss();

@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.base.BaseActivity;
@@ -16,7 +17,7 @@ import com.truevalue.dreamappeal.fragment.profile.FragmentLevelChoice;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ActivityAddActionPost extends BaseActivity implements IOBaseTitleBarListener {
+public class ActivityAddActionPost extends BaseActivity {
 
     @BindView(R.id.v_status)
     View mVStatus;
@@ -32,25 +33,21 @@ public class ActivityAddActionPost extends BaseActivity implements IOBaseTitleBa
         ButterKnife.bind(this);
         // 상태 창 투명화
         updateStatusbarTranslate(mBtbBar);
-        mBtbBar.setIOBaseTitleBarListener(this);
 
         replaceFragment(R.id.base_container, new FragmentAddActionPost(), false);
+    }
+
+    public void replaceFragmentRight(Fragment fragment, boolean addToBack){
+        replaceFragmentRight(R.id.base_container,fragment,addToBack);
+    }
+
+    public BaseTitleBar getmBtbBar() {
+        return mBtbBar;
     }
 
     @Override
     public void finish() {
         super.finish();
         overridePendingTransition(0, 0);
-    }
-
-    @Override
-    public void OnClickBack() {
-        onBackPressed();
-    }
-
-    @Override
-    public void OnClickRightTextBtn() {
-        if (getSupportFragmentManager().findFragmentById(R.id.base_container) instanceof FragmentAddActionPost)
-            replaceFragmentRight(R.id.base_container, new FragmentLevelChoice(), true);
     }
 }

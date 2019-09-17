@@ -49,12 +49,22 @@ public class Comm_Prefs {
         return pref.getString(Comm_Prefs_Param.PREFS_USER_TOKEN,null);
     }
 
-    public void setProfileIndex(int profileIndex){
+    public void setProfileIndex(int profileIndex,boolean isMy){
+        if(isMy) setMyProfileIndex(profileIndex);
         pref.edit().putInt(Comm_Prefs_Param.PREFS_PROFILE_INDEX,profileIndex).commit();
     }
 
     public int getProfileIndex(){
         return pref.getInt(Comm_Prefs_Param.PREFS_PROFILE_INDEX,-1);
+    }
+
+    public void setMyProfileIndex(int profileIndex){
+
+        pref.edit().putInt(Comm_Prefs_Param.PREFS_MY_PROFILE_INDEX,profileIndex).commit();
+    }
+
+    public int getMyProfileIndex(){
+        return pref.getInt(Comm_Prefs_Param.PREFS_MY_PROFILE_INDEX,-1);
     }
 
     public void setDreamListIndex(int dream_list_index){

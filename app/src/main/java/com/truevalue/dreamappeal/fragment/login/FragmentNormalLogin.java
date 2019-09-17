@@ -115,7 +115,7 @@ public class FragmentNormalLogin extends BaseFragment implements IOBaseTitleBarL
                     String token = object.getString("token");
                     int profile_idx = object.getInt("profile_idx"); // 프로필이 없을 시 -1이 넘어 옴
                     Comm_Prefs prefs = new Comm_Prefs(getContext());
-                    prefs.setProfileIndex(profile_idx);
+                    prefs.setProfileIndex(profile_idx, true);
                     prefs.setLogined(true);
                     prefs.setToken(token);
 

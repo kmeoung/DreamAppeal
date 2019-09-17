@@ -1,5 +1,6 @@
 package com.truevalue.dreamappeal.fragment.search;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -73,7 +74,7 @@ public class FragmentSearchAppealer extends BaseFragment implements IORecyclerVi
     }
 
     private void initView() {
-        ((ActivitySearch) getActivity()).setmListener(this::search);
+        ((ActivitySearch) getActivity()).setmListener(this);
     }
 
     @Override
@@ -103,6 +104,13 @@ public class FragmentSearchAppealer extends BaseFragment implements IORecyclerVi
             // todo : 검색에서 삭제가 무엇인지 알아보아야 합니다.
             Toast.makeText(getContext(), "구현되지 않은 기능입니다.", Toast.LENGTH_SHORT).show();
         });
+
+        h.itemView.setOnClickListener(v -> {
+            Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+            prefs.setProfileIndex(bean.getIdx(),false);
+            getActivity().setResult(Activity.RESULT_OK);
+            getActivity().finish();
+        });
     }
 
     @Override
@@ -117,21 +125,21 @@ public class FragmentSearchAppealer extends BaseFragment implements IORecyclerVi
 
     @Override
     public void search(String text) {
-        httpGetSearch(text);
+        httpPostSearch(text);
     }
 
     /**
-     * http Get
+     * http Post
      * 검색
      *
      * @param keyword
      */
-    private void httpGetSearch(String keyword) {
+    private void httpPostSearch(String keyword) {
         Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
         HashMap header = Utils.getHttpHeader(prefs.getToken());
         HashMap<String, String> body = new HashMap<>();
         body.put("keyword", keyword);
-        DAHttpClient.getInstance().Get(Comm_Param.URL_SEARCH, header, body, new IOServerCallback() {
+        DAHttpClient.getInstance().Post(Comm_Param.URL_SEARCH, header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();

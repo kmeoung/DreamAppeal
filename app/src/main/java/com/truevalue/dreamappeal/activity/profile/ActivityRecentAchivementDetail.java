@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
+import com.truevalue.dreamappeal.activity.ActivityCommentDetail;
 import com.truevalue.dreamappeal.base.BaseActivity;
 import com.truevalue.dreamappeal.http.DAHttpClient;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
@@ -97,9 +98,10 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
     private void httpGetPostAchivement(int index) {
         if (index == -1) return;
         Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityRecentAchivementDetail.this);
-        String url = Comm_Param.URL_API_ACHIVEMENT_POSTS_INDEX;
-        url = url.replaceAll(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
-        url = url.replaceAll(Comm_Param.POST_INDEX, String.valueOf(index));
+        String url = Comm_Param.URL_API_MYPROFILEINDEX_ACHIVEMENT_POSTS_INDEX;
+        url = url.replace(Comm_Param.MY_PROFILES_INDEX,String.valueOf(prefs.getMyProfileIndex()));
+        url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
+        url = url.replace(Comm_Param.POST_INDEX, String.valueOf(index));
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
         DAHttpClient client = DAHttpClient.getInstance();
@@ -125,6 +127,10 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
                         Glide.with(ActivityRecentAchivementDetail.this).load(R.drawable.user).into(mIvImg);
                     else
                         Glide.with(ActivityRecentAchivementDetail.this).load(mBean.getThumbnail_image()).placeholder(R.drawable.user).into(mIvImg);
+
+                    mTvCheering.setText(String.format("%d개",mBean.getLike_count()));
+                    mTvComment.setText(String.format("%d개",mBean.getComment_count()));
+                    mLlCheering.setSelected(mBean.isStatus());
                 }
             }
         });

@@ -22,7 +22,7 @@ import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityGalleryCamera;
 import com.truevalue.dreamappeal.activity.ActivityMain;
-import com.truevalue.dreamappeal.activity.profile.ActivityCommentDetail;
+import com.truevalue.dreamappeal.activity.ActivityCommentDetail;
 import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.http.DAHttpClient;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
@@ -190,8 +190,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
                     Gson gson = new Gson();
                     BeanProfiles bean = gson.fromJson(result.toString(), BeanProfiles.class);
                     Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
-                    prefs.setProfileIndex(bean.getInsertId());
-
+                    prefs.setProfileIndex(bean.getInsertId(), true);
                     // 내 꿈 조회 호출
                     httpGetProfilesIndex(bean.getInsertId(), token);
                 }
@@ -206,8 +205,9 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
      * @param token
      */
     private void httpGetProfilesIndex(int profiles_index, String token) {
-
-        String url = Comm_Param.URL_API_PROFILES_INDEX;
+        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+        String url = Comm_Param.URL_API_PROFILES_INDEX_INDEX;
+        url = url.replace(Comm_Param.MY_PROFILES_INDEX, String.valueOf(prefs.getMyProfileIndex()));
         url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(profiles_index));
 
         mAdapter.clear();
@@ -285,11 +285,68 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
                         mTvInitMeritAndMotive.setVisibility(View.GONE);
                         mBtnMeritAndMotiveMore.setVisibility(View.VISIBLE);
                     }
-
+                    // 응원하기 조회
+                    httpGetLike();
                 }
             }
         });
+    }
 
+    /**
+     * http get
+     * 응원하기 조회
+     */
+    private void httpGetLike(){
+        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+        String url = Comm_Param.URL_API_PROFILES_INDEX_LIKE_MYPROFILEINDEX;
+        url = url.replace(Comm_Param.MY_PROFILES_INDEX,String.valueOf(prefs.getMyProfileIndex()));
+        url = url.replace(Comm_Param.PROFILES_INDEX,String.valueOf(prefs.getProfileIndex()));
+        HashMap header = Utils.getHttpHeader(prefs.getToken());
+        DAHttpClient.getInstance().Get(url, header, null, new IOServerCallback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
+                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+
+                if(TextUtils.equals(code,SUCCESS)){
+                    JSONObject json = new JSONObject(body);
+                    boolean isLike = json.getBoolean("status");
+
+                    mIvCheering.setSelected(isLike);
+                }
+            }
+        });
+    }
+
+    /**
+     * http patch
+     * 응원하기 / 취소
+     */
+    private void httpPatchLike(){
+        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+        String url = Comm_Param.URL_API_PROFILES_INDEX_LIKE_MYPROFILEINDEX;
+        url = url.replace(Comm_Param.MY_PROFILES_INDEX,String.valueOf(prefs.getMyProfileIndex()));
+        url = url.replace(Comm_Param.PROFILES_INDEX,String.valueOf(prefs.getProfileIndex()));
+        HashMap header = Utils.getHttpHeader(prefs.getToken());
+        DAHttpClient.getInstance().Patch(url, header, null, new IOServerCallback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
+                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+
+                if(TextUtils.equals(code,SUCCESS)){
+                    mIvCheering.setSelected(!mIvCheering.isSelected());
+                }
+            }
+        });
     }
 
     private void initAdapter() {
@@ -345,6 +402,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
                 startActivity(intent);
                 break;
             case R.id.ll_cheering: // 불꽃(좋아요)
+                httpPatchLike();
                 break;
             case R.id.ll_dream_title: // 내 꿈 명칭 정하기 페이지 이동
             case R.id.tv_init_dream_title:

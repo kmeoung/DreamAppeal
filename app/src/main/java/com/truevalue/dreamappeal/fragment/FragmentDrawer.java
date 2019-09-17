@@ -44,7 +44,7 @@ public class FragmentDrawer extends BaseFragment {
         return view;
     }
 
-    @OnClick({R.id.ll_profile, R.id.ll_logout,R.id.ll_drawer})
+    @OnClick({R.id.ll_profile, R.id.ll_logout, R.id.ll_drawer})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_profile:
@@ -56,7 +56,7 @@ public class FragmentDrawer extends BaseFragment {
 
                 Comm_Prefs prefs = new Comm_Prefs(getContext());
                 prefs.setLogined(false);
-                prefs.setProfileIndex(-1);
+                prefs.setProfileIndex(-1, true);
                 prefs.setToken(null);
                 prefs.setUserName(null);
 

@@ -21,7 +21,7 @@ import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityMain;
-import com.truevalue.dreamappeal.activity.profile.ActivityCommentDetail;
+import com.truevalue.dreamappeal.activity.ActivityCommentDetail;
 import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseViewHolder;

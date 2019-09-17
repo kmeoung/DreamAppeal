@@ -47,6 +47,11 @@ public class ActivityIntro extends BaseActivity {
                 } else { // 로그인 페이지
                     intent = new Intent(ActivityIntro.this, ActivityLogin.class);
                 }
+                // todo : 이부분 확인 필요
+                // 앱 껏다 켰을 시 다시 내 profile index로 설정
+                if(prefs.getMyProfileIndex() != prefs.getProfileIndex()){
+                    prefs.setProfileIndex(prefs.getMyProfileIndex(),true);
+                }
 
             } else {
                 // 권한 없음

@@ -32,7 +32,7 @@ import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.profile.ActivityAddAchivement;
 import com.truevalue.dreamappeal.activity.profile.ActivityBestAchivementDetail;
-import com.truevalue.dreamappeal.activity.profile.ActivityCommentDetail;
+import com.truevalue.dreamappeal.activity.ActivityCommentDetail;
 import com.truevalue.dreamappeal.activity.profile.ActivityRecentAchivementDetail;
 import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.http.DAHttpClient;
@@ -122,9 +122,11 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
      */
     private void httpGetAchivementPostMain() {
         Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
-        String url = Comm_Param.URL_API_ACHIVEMENT_POSTS_MAIN_INDEX;
-        url = url.replaceAll(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
-        url = url.replaceAll(Comm_Param.POST_INDEX, String.valueOf(mCurrentIndex));
+        String url = Comm_Param.URL_API_INDEX_ACHIVEMENT_POSTS_MAIN_INDEX;
+        url = url.replace(Comm_Param.MY_PROFILES_INDEX,String.valueOf(prefs.getMyProfileIndex()));
+        url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
+        // 페이지 조회 단위
+        url = url.replace(Comm_Param.POST_INDEX, String.valueOf(mCurrentIndex));
         HashMap header = Utils.getHttpHeader(prefs.getToken());
 
         DAHttpClient client = DAHttpClient.getInstance();
@@ -292,6 +294,10 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
         TextView tvContents = h.getItemView(R.id.tv_contents);
         ImageView ivProfile = h.getItemView(R.id.iv_profile);
         ImageButton ibtnMore = h.getItemView(R.id.ibtn_more);
+        TextView tvCheering = h.getItemView(R.id.tv_cheering);
+        TextView tvComment = h.getItemView(R.id.tv_comment);
+        LinearLayout llCheering = h.getItemView(R.id.ll_cheering);
+        LinearLayout llComment = h.getItemView(R.id.ll_comment);
 
         // View Resize (화면 크기에 맞춰 정사각형으로 맞춤)
         Point size = Utils.getDisplaySize(getActivity());
@@ -301,6 +307,10 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
         // todo : 아직 검증이 더 필요함
         Utils.setReadMore(tvContents,bean.getContent(),3);
         // todo : 시간은 서버쪽과 협의가 필요
+
+        tvCheering.setText(String.format("%d개",bean.getLike_count()));
+        tvComment.setText(String.format("%d개",bean.getComment_count()));
+        llCheering.setSelected(bean.getStatus());
 
         if (TextUtils.isEmpty(bean.getThumbnail_image()))
             Glide.with(getContext()).load(R.drawable.user).into(ivThumbnail);
@@ -369,7 +379,6 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
             }
         });
 
-        LinearLayout llComment = h.getItemView(R.id.ll_comment);
         llComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -141,7 +141,7 @@ public class FragmentDreamTitle extends BaseFragment implements IOBaseTitleBarLi
                     Gson gson = new Gson();
                     BeanProfiles bean = gson.fromJson(result.toString(), BeanProfiles.class);
                     Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
-                    prefs.setProfileIndex(bean.getInsertId());
+                    prefs.setProfileIndex(bean.getInsertId(), true);
 
                     getActivity().onBackPressed();
                 }

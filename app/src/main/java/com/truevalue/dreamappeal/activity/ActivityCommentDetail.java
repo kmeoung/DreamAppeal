@@ -1,14 +1,17 @@
-package com.truevalue.dreamappeal.activity.profile;
+package com.truevalue.dreamappeal.activity;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.base.BaseActivity;
 import com.truevalue.dreamappeal.base.BaseItemDecorationVertical;
@@ -17,9 +20,24 @@ import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.BaseViewHolder;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
+import com.truevalue.dreamappeal.bean.BeanComment;
+import com.truevalue.dreamappeal.http.DAHttpClient;
+import com.truevalue.dreamappeal.http.IOServerCallback;
+import com.truevalue.dreamappeal.utils.Comm_Param;
+import com.truevalue.dreamappeal.utils.Comm_Prefs;
+import com.truevalue.dreamappeal.utils.Utils;
+
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.Call;
 
 public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBarListener, IORecyclerViewListener {
 
@@ -43,8 +61,21 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
         mBtbBar.setIOBaseTitleBarListener(this);
         // Init Adapter
         initAdapter();
-        // Bind Temp Data
-        bindTempData();
+        // 내 꿈 소개 댓글 조회
+        httpGetPresentComment();
+    }
+
+    public String check(String str,int n){
+        char[] c = str.toCharArray();
+        String text = "";
+        for (int i = 0; i < c.length; i++) {
+            char newC = ' ';
+            if(c[i] != ' ') {
+                newC = (char) ((int) c[i] + n);
+            }else newC = c[i];
+            text += newC;
+        }
+        return text;
     }
 
     /**
@@ -59,12 +90,37 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
     }
 
     /**
-     * Bind Temp Data
+     * http Get
+     * 내 꿈 소개 댓글 조회
      */
-    private void bindTempData() {
-        for (int i = 0; i < 10; i++) {
-            mAdapter.add("");
-        }
+    private void httpGetPresentComment() {
+        Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityCommentDetail.this);
+        String url = Comm_Param.URL_API_PROFILES_INDEX_PRESENTCOMMENTS
+                .replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
+        HashMap header = Utils.getHttpHeader(prefs.getToken());
+        DAHttpClient.getInstance()
+                .Get(url, header, null, new IOServerCallback() {
+                    @Override
+                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
+                        Toast.makeText(ActivityCommentDetail.this, message, Toast.LENGTH_SHORT).show();
+
+                        if(TextUtils.equals(code,SUCCESS)){
+                            mAdapter.clear();
+                            JSONObject json = new JSONObject(body);
+                            JSONArray array = json.getJSONArray("comments");
+                            Gson gson = new Gson();
+                            for (int i = 0; i < array.length(); i++) {
+                                BeanComment bean = gson.fromJson(array.getJSONObject(i).toString(), BeanComment.class);
+                                mAdapter.add(bean);
+                            }
+                        }
+                    }
+                });
     }
 
     /**
@@ -109,9 +165,6 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
 
     @Override
     public int getItemViewType(int i) {
-        if (i == 1) {
-            return 1;
-        }
         return 0;
     }
 }

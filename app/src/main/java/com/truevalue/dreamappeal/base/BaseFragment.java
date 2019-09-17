@@ -70,4 +70,8 @@ public class BaseFragment extends Fragment {
     public void onViewPaged(boolean isView){
 
     }
+
+    public void refreshServer(){
+
+    }
 }

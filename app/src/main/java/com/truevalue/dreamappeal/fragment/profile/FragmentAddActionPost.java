@@ -1,10 +1,13 @@
 package com.truevalue.dreamappeal.fragment.profile;
 
+import android.app.Activity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,16 +15,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.truevalue.dreamappeal.R;
+import com.truevalue.dreamappeal.activity.ActivityAddActionPost;
 import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.base.BaseItemDecorationHorizontal;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseViewHolder;
+import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FragmentAddActionPost extends BaseFragment implements IORecyclerViewListener {
+public class FragmentAddActionPost extends BaseFragment implements IORecyclerViewListener, IOBaseTitleBarListener {
 
     @BindView(R.id.rv_action_post_img)
     RecyclerView mRvActionPostImg;
@@ -41,9 +46,15 @@ public class FragmentAddActionPost extends BaseFragment implements IORecyclerVie
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        // init Adapter
         initAdapter();
-        bindTempData();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // init Title Bar
+        initTitleBar();
     }
 
     /**
@@ -56,6 +67,10 @@ public class FragmentAddActionPost extends BaseFragment implements IORecyclerVie
         llm.setOrientation(RecyclerView.HORIZONTAL);
         mRvActionPostImg.setLayoutManager(llm);
         mRvActionPostImg.addItemDecoration(new BaseItemDecorationHorizontal(getContext(), 10));
+    }
+
+    private void initTitleBar() {
+        ((ActivityAddActionPost) getActivity()).getmBtbBar().setIOBaseTitleBarListener(this);
     }
 
     /**
@@ -87,4 +102,18 @@ public class FragmentAddActionPost extends BaseFragment implements IORecyclerVie
         return 0;
     }
 
+    @Override
+    public void OnClickBack() {
+        getActivity().onBackPressed();
+    }
+
+    @Override
+    public void OnClickRightTextBtn() {
+        String comment = mEtInputComment.getText().toString();
+        if(TextUtils.isEmpty(comment)){
+            Toast.makeText(getContext(), "모든 항목을 입력해주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        ((ActivityAddActionPost) getActivity()).replaceFragmentRight(FragmentLevelChoice.newInstance(comment), true);
+    }
 }

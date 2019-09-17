@@ -27,7 +27,7 @@ import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityMain;
 import com.truevalue.dreamappeal.activity.profile.ActivityActionPost;
-import com.truevalue.dreamappeal.activity.profile.ActivityCommentDetail;
+import com.truevalue.dreamappeal.activity.ActivityCommentDetail;
 import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
@@ -49,6 +49,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -56,11 +58,15 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Call;
 
+import static android.app.Activity.RESULT_OK;
+
 public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarListener, IORecyclerViewListener {
 
     private final int TYPE_TITLE_HEADER = 1;
     private final int TYPE_HEADER_SUB = 2;
     private final int TYPE_IMAGE = 3;
+
+    private final int REQUEST_ACTION_POST_DETAIL = 4050;
 
     @BindView(R.id.btb_bar)
     BaseTitleBar mBtbBar;
@@ -109,6 +115,16 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
         super.onResume();
         // 서버 초기화
         httpGetObjects();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            if(requestCode == REQUEST_ACTION_POST_DETAIL){
+                httpGetObjects();
+            }
+        }
     }
 
     private void initAdapter() {
@@ -249,6 +265,44 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
         });
     }
 
+    /**
+     * http Patch
+     * 실천 목표 수정
+     * @param isComplete true 면 완료 될 때 false 면 완료 취소 할 때
+     */
+    private void httpPatchObject(boolean isComplete) {
+        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+        String url = Comm_Param.URL_API_BLUEPRINT_OBJECTS_INDEX;
+        url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
+        url = url.replace(Comm_Param.OBJECT_INDEX, String.valueOf(mObjectIndex));
+
+        HashMap header = Utils.getHttpHeader(prefs.getToken());
+        HashMap<String, String> body = new HashMap<>();
+        if(isComplete) {
+            body.put("complete", "1");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            body.put("complete_date", sdf.format(new Date()));
+        }else{
+            body.put("complete", "0");
+            body.put("complete_date", null);
+        }
+        DAHttpClient.getInstance().Patch(url, header, body, new IOServerCallback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
+                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+
+                if (TextUtils.equals(code, SUCCESS)) {
+                    httpGetObjects();
+                }
+            }
+        });
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (TYPE_TITLE_HEADER == viewType)
@@ -279,6 +333,8 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
                 }
             });
 
+            // todo : 컴플리트 이미지 필요
+
             PopupMenu popupMenu = new PopupMenu(getContext(), ivMore);
             popupMenu.getMenuInflater().inflate(R.menu.menu_object_step, popupMenu.getMenu());
 
@@ -290,7 +346,11 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
                     AlertDialog dialog;
                     switch (id) {
                         case R.id.menu_complete:
-
+                            if(TextUtils.equals(bean.getComplete(),"1")){
+                                httpPatchObject(false);
+                            }else{
+                                httpPatchObject(true);
+                            }
                             break;
                         case R.id.menu_edit:
                             ((ActivityMain) getActivity()).replaceFragmentRight(FragmentAddContents.newInstance("꿈에 맞는 실천 목표를 세워보세요",
@@ -392,7 +452,8 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getContext(), ActivityActionPost.class);
-                    startActivity(intent);
+                    intent.putExtra(ActivityActionPost.EXTRA_ACTION_POST_INDEX,bean.getIdx());
+                    startActivityForResult(intent,REQUEST_ACTION_POST_DETAIL);
                 }
             });
         }

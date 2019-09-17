@@ -62,4 +62,15 @@ public class ActivityMain extends BaseActivity implements IOBaseTitleBarListener
     public void setmProfileIndex(int mProfileIndex) {
         this.mProfileIndex = mProfileIndex;
     }
+
+    /**
+     * Page 초기화
+     */
+    public void initPage(){
+//        FragmentManager fm = getSupportFragmentManager();
+//        for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+//            fm.popBackStack();
+//        }
+        replaceFragment(R.id.activity_container, new FragmentMain(), false);
+    }
 }
