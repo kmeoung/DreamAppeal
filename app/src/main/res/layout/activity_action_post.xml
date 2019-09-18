@@ -72,10 +72,12 @@
         <!--꿈 수식어 및 꿈 명-->
 
         <ImageView
-            android:layout_width="13dp"
-            android:layout_height="3dp"
-            android:layout_marginRight="20dp"
-            android:src="@drawable/more_btn" />
+            android:layout_width="45dp"
+            android:layout_height="30dp"
+            android:src="@drawable/more_btn"
+            android:scaleY="0.5"
+            android:scaleX="0.5"
+            android:id="@+id/iv_more"/>
 
     </LinearLayout>
 
@@ -174,7 +176,8 @@
             android:paddingRight="17dp"
             android:text="내용내용내내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용"
             android:textColor="@color/black"
-            android:textSize="13sp" />
+            android:textSize="13sp"
+            android:id="@+id/tv_contents"/>
 
         <!--응원 / 댓글 / 공유-->
         <LinearLayout

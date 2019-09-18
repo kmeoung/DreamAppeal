@@ -19,12 +19,23 @@ import butterknife.ButterKnife;
 
 public class ActivityAddActionPost extends BaseActivity {
 
+    public static final int TYPE_ADD_ACTION_POST = 0;
+    public static final int TYPE_EDIT_ACTION_POST = 1;
+    public static final int TYPE_RESET_LEVEL = 2;
+
+    public static final String EXTRA_ACTION_POST_TYPE = "EXTRA_ACTION_POST_TYPE";
+    public static final String EXTRA_ACTION_POST_INDEX = "EXTRA_ACTION_POST_INDEX";
+
     @BindView(R.id.v_status)
     View mVStatus;
     @BindView(R.id.btb_bar)
     BaseTitleBar mBtbBar;
     @BindView(R.id.base_container)
     FrameLayout mBaseContainer;
+
+    private int mExtraType = -1;
+    private int mPostIndex = -1;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,11 +45,36 @@ public class ActivityAddActionPost extends BaseActivity {
         // 상태 창 투명화
         updateStatusbarTranslate(mBtbBar);
 
-        replaceFragment(R.id.base_container, new FragmentAddActionPost(), false);
+        // init Data
+        initData();
+        // View init
+        initView();
     }
 
-    public void replaceFragmentRight(Fragment fragment, boolean addToBack){
-        replaceFragmentRight(R.id.base_container,fragment,addToBack);
+    private void initData() {
+        mExtraType = getIntent().getIntExtra(EXTRA_ACTION_POST_TYPE, -1);
+        if(mExtraType == TYPE_EDIT_ACTION_POST || mExtraType == TYPE_RESET_LEVEL){
+            mPostIndex = getIntent().getIntExtra(EXTRA_ACTION_POST_INDEX,-1);
+        }
+    }
+
+    private void initView() {
+        switch (mExtraType) {
+            case TYPE_ADD_ACTION_POST:
+                replaceFragment(R.id.base_container, new FragmentAddActionPost(), false);
+                break;
+            case TYPE_EDIT_ACTION_POST:
+                replaceFragment(R.id.base_container,FragmentAddActionPost.newInstance(mPostIndex), false);
+            break;
+            case TYPE_RESET_LEVEL:
+                replaceFragment(R.id.base_container,FragmentLevelChoice.newInstance(mPostIndex), false);
+            break;
+
+        }
+    }
+
+    public void replaceFragmentRight(Fragment fragment, boolean addToBack) {
+        replaceFragmentRight(R.id.base_container, fragment, addToBack);
     }
 
     public BaseTitleBar getmBtbBar() {
@@ -49,5 +85,9 @@ public class ActivityAddActionPost extends BaseActivity {
     public void finish() {
         super.finish();
         overridePendingTransition(0, 0);
+    }
+
+    public int getmExtraType() {
+        return mExtraType;
     }
 }

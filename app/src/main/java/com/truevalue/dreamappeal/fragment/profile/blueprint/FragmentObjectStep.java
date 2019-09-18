@@ -28,6 +28,7 @@ import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityMain;
 import com.truevalue.dreamappeal.activity.profile.ActivityActionPost;
 import com.truevalue.dreamappeal.activity.ActivityCommentDetail;
+import com.truevalue.dreamappeal.activity.profile.ActivityBestAchivementDetail;
 import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
@@ -120,8 +121,8 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK){
-            if(requestCode == REQUEST_ACTION_POST_DETAIL){
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_ACTION_POST_DETAIL) {
                 httpGetObjects();
             }
         }
@@ -150,7 +151,8 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
      */
     private void httpGetObjects() {
         Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
-        String url = Comm_Param.URL_API_BLUEPRINT_OBJECTS_INDEX;
+        String url = Comm_Param.URL_API_PROFILE_BLUEPRINT_OBJECTS_INDEX;
+        url = url.replace(Comm_Param.MY_PROFILES_INDEX, String.valueOf(prefs.getMyProfileIndex()));
         url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
         url = url.replace(Comm_Param.OBJECT_INDEX, String.valueOf(mObjectIndex));
 
@@ -170,6 +172,13 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
                     mAdapter.clear();
                     Gson gson = new Gson();
                     JSONObject json = new JSONObject(body);
+                    String image = json.getString("user_image");
+                    if (TextUtils.isEmpty(image))
+                        Glide.with(getContext()).load(R.drawable.drawer_user).into(mIvProfile);
+                    else
+                        Glide.with(getContext()).load(image).placeholder(R.drawable.drawer_user).into(mIvProfile);
+                    mTvCommentSize.setText(json.getInt("comment_count") + "개");
+
                     JSONObject object = json.getJSONObject("object");
                     int total_action_post_count = json.getInt("total_action_post_count");
                     BeanObjectStepHeader header = gson.fromJson(object.toString(), BeanObjectStepHeader.class);
@@ -268,6 +277,7 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
     /**
      * http Patch
      * 실천 목표 수정
+     *
      * @param isComplete true 면 완료 될 때 false 면 완료 취소 할 때
      */
     private void httpPatchObject(boolean isComplete) {
@@ -278,11 +288,11 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
         HashMap<String, String> body = new HashMap<>();
-        if(isComplete) {
+        if (isComplete) {
             body.put("complete", "1");
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             body.put("complete_date", sdf.format(new Date()));
-        }else{
+        } else {
             body.put("complete", "0");
             body.put("complete_date", null);
         }
@@ -346,9 +356,9 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
                     AlertDialog dialog;
                     switch (id) {
                         case R.id.menu_complete:
-                            if(TextUtils.equals(bean.getComplete(),"1")){
+                            if (TextUtils.equals(bean.getComplete(), "1")) {
                                 httpPatchObject(false);
-                            }else{
+                            } else {
                                 httpPatchObject(true);
                             }
                             break;
@@ -452,8 +462,8 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getContext(), ActivityActionPost.class);
-                    intent.putExtra(ActivityActionPost.EXTRA_ACTION_POST_INDEX,bean.getIdx());
-                    startActivityForResult(intent,REQUEST_ACTION_POST_DETAIL);
+                    intent.putExtra(ActivityActionPost.EXTRA_ACTION_POST_INDEX, bean.getIdx());
+                    startActivityForResult(intent, REQUEST_ACTION_POST_DETAIL);
                 }
             });
         }

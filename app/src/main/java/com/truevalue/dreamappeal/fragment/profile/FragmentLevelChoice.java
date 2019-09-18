@@ -56,9 +56,17 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
     private BaseRecyclerViewAdapter mAdapterCategory;
     private BaseRecyclerViewAdapter mAdapterObject;
 
-    private String mContents;
+    private String mContents = null;
+    private int mPostIndex = -1;
     private int mObjectSelected = -1;
     private int mCategorySelected = -1;
+
+    public static FragmentLevelChoice newInstance(int post_index) {
+        FragmentLevelChoice fragment = new FragmentLevelChoice();
+        fragment.mPostIndex = post_index;
+        return fragment;
+    }
+
 
     // todo : 이미지 업로드 성공 시 변경
     public static FragmentLevelChoice newInstance(String contents) {

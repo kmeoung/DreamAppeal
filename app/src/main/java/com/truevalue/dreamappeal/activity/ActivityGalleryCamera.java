@@ -80,6 +80,7 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(ActivityGalleryCamera.this, ActivityAddActionPost.class);
+                    intent.putExtra(ActivityAddActionPost.EXTRA_ACTION_POST_TYPE,ActivityAddActionPost.TYPE_ADD_ACTION_POST);
                     startActivityForResult(intent, REQUEST_ADD_ACTION_POST);
                     overridePendingTransition(0, 0);
                 }

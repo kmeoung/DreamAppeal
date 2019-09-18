@@ -17,20 +17,33 @@ public class BeanProfilesIndex {
     private String meritNmotive;
     private int achievement_post_count;
     private int action_post_count;
+    private int comment_count;
+    private int like_count;
+    private boolean status;
 
-    public BeanProfilesIndex(int idx, int user_idx, int number, int level, int point, String image, String value_style, String job, String description, String meritNmotive, int achievement_post_count, int action_post_count) {
-        this.idx = idx;
-        this.user_idx = user_idx;
-        this.number = number;
-        this.level = level;
-        this.point = point;
-        this.image = image;
-        this.value_style = value_style;
-        this.job = job;
-        this.description = description;
-        this.meritNmotive = meritNmotive;
-        this.achievement_post_count = achievement_post_count;
-        this.action_post_count = action_post_count;
+
+    public int getComment_count() {
+        return comment_count;
+    }
+
+    public void setComment_count(int comment_count) {
+        this.comment_count = comment_count;
+    }
+
+    public int getLike_count() {
+        return like_count;
+    }
+
+    public void setLike_count(int like_count) {
+        this.like_count = like_count;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     public int getIdx() {

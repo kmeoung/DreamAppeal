@@ -5,9 +5,9 @@ public class BeanActionPostDetail {
     private boolean status;
     private int like_count;
     private int comment_count;
+    private String step_name;
+    private String object_name;
     private String register_date;
-    private String tags;
-    private String thumbnail_image;
     private String content;
     private int step_idx;
     private int object_idx;
@@ -38,28 +38,28 @@ public class BeanActionPostDetail {
         this.comment_count = comment_count;
     }
 
+    public String getStep_name() {
+        return step_name;
+    }
+
+    public void setStep_name(String step_name) {
+        this.step_name = step_name;
+    }
+
+    public String getObject_name() {
+        return object_name;
+    }
+
+    public void setObject_name(String object_name) {
+        this.object_name = object_name;
+    }
+
     public String getRegister_date() {
         return register_date;
     }
 
     public void setRegister_date(String register_date) {
         this.register_date = register_date;
-    }
-
-    public String getTags() {
-        return tags;
-    }
-
-    public void setTags(String tags) {
-        this.tags = tags;
-    }
-
-    public String getThumbnail_image() {
-        return thumbnail_image;
-    }
-
-    public void setThumbnail_image(String thumbnail_image) {
-        this.thumbnail_image = thumbnail_image;
     }
 
     public String getContent() {

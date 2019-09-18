@@ -34,6 +34,13 @@ public class FragmentAddActionPost extends BaseFragment implements IORecyclerVie
     EditText mEtInputComment;
 
     private BaseRecyclerViewAdapter mAdapter;
+    private int mPostIndex = -1;
+
+    public static FragmentAddActionPost newInstance(int post_index) {
+        FragmentAddActionPost fragment = new FragmentAddActionPost();
+        fragment.mPostIndex = post_index;
+        return fragment;
+    }
 
     @Nullable
     @Override

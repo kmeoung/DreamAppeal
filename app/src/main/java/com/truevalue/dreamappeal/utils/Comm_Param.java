@@ -40,10 +40,10 @@ public class Comm_Param {
 
     public static final String URL_API_USERS_TOKENS = URL_API_USERS + "/tokens";
     public static final String URL_API_USERS_SIGNUP = URL_API_USERS + "/signup";
-
+    // todo : 그냥 호출
     // 내 꿈 소개 등록
     public static final String URL_API_PROFILES = URL_API + "/profiles";
-
+    // todo : 내 프로필도 호출
     // 내 꿈 소개 조회
     public static final String URL_API_PROFILES_INDEX_INDEX = URL_API_PROFILES + "/" + MY_PROFILES_INDEX + "/" + PROFILES_INDEX;
     // 내 꿈 소개 업데이트 / 프로필 삭제
@@ -69,6 +69,7 @@ public class Comm_Param {
     public static final String URL_API_ACHIVEMENT_BEST_POST_INDEX_POST_INDEX = URL_API_ACHIVEMENT_BEST_POST_INDEX + "/" + POST_INDEX;
 
     // 발전 계획
+    public static final String URL_API_PROFILE_BLUEPRINT = URL_API_PROFILES_INDEX_INDEX + "/blueprint";
     public static final String URL_API_BLUEPRINT = URL_API_PROFILES_INDEX + "/blueprint";
     // 갖출 능력 조회 / 등록
     public static final String URL_API_BLUEPRINT_ABILITIES = URL_API_BLUEPRINT + "/abilities";
@@ -80,7 +81,10 @@ public class Comm_Param {
     public static final String URL_API_BLUEPRINT_OPPORTUNITIES_INDEX = URL_API_BLUEPRINT_OPPORTUNITIES + "/" + OPPORTUNITY_INDEX;
     // 실천 목표 추가
     public static final String URL_API_BLUEPRINT_OBJECTS = URL_API_BLUEPRINT + "/objects";
-    // 실천 목표 조회 / 수정 / 삭제
+    public static final String URL_API_PROFILE_BLUEPRINT_OBJECTS = URL_API_PROFILE_BLUEPRINT + "/objects";
+    // 실천 목표 조회
+    public static final String URL_API_PROFILE_BLUEPRINT_OBJECTS_INDEX = URL_API_PROFILE_BLUEPRINT_OBJECTS + "/" + OBJECT_INDEX;
+    // 실천 목표 수정 / 삭제
     public static final String URL_API_BLUEPRINT_OBJECTS_INDEX = URL_API_BLUEPRINT_OBJECTS + "/" + OBJECT_INDEX;
     // 실천 목표 세부단계 추가
     public static final String URL_API_BLUEPRINT_OBJECTS_INDEX_STEPS = URL_API_BLUEPRINT_OBJECTS_INDEX + "/steps";

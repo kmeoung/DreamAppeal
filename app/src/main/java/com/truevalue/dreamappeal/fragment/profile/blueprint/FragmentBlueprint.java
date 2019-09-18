@@ -111,8 +111,9 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
      */
     private void httpGetBluePrint() {
         Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
-        String url = Comm_Param.URL_API_BLUEPRINT;
-        url = url.replaceAll(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
+        String url = Comm_Param.URL_API_PROFILE_BLUEPRINT;
+        url = url.replace(Comm_Param.MY_PROFILES_INDEX, String.valueOf(prefs.getMyProfileIndex()));
+        url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
         HashMap header = Utils.getHttpHeader(prefs.getToken());
         DAHttpClient client = DAHttpClient.getInstance();
         client.Get(url, header, null, new IOServerCallback() {
@@ -130,6 +131,17 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
                     JSONObject json = new JSONObject(body);
                     ArrayList<BeanBlueprintAbilityOpportunity> abilityList = new ArrayList<>();
                     ArrayList<BeanBlueprintAbilityOpportunity> opportunityList = new ArrayList<>();
+                    try {
+                        int commentCount = json.getInt("comment_count");
+                        mTvCommentSize.setText(commentCount + "개");
+                        String image = json.getString("image");
+                        if (TextUtils.isEmpty(image))
+                            Glide.with(getContext()).load(R.drawable.drawer_user).into(mIvProfile);
+                        else
+                            Glide.with(getContext()).load(image).placeholder(R.drawable.drawer_user).into(mIvProfile);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     try {
                         JSONArray abilities = json.getJSONArray("abilities");
                         for (int i = 0; i < abilities.length(); i++) {

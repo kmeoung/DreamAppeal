@@ -285,8 +285,9 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
                         mTvInitMeritAndMotive.setVisibility(View.GONE);
                         mBtnMeritAndMotiveMore.setVisibility(View.VISIBLE);
                     }
-                    // 응원하기 조회
-                    httpGetLike();
+                    mTvCheering.setText(String.format("%d개",bean.getLike_count()));
+                    mTvComment.setText(String.format("%d개",bean.getComment_count()));
+                    mIvCheering.setSelected(bean.isStatus());
                 }
             }
         });
@@ -295,6 +296,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
     /**
      * http get
      * 응원하기 조회
+     * todo : 필요할 시에만 사용
      */
     private void httpGetLike(){
         Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
