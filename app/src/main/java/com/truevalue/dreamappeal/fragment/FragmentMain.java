@@ -61,7 +61,9 @@ public class FragmentMain extends BaseFragment implements IOBaseTitleBarListener
     public static final int REQUEST_PERFORMANCE_EDIT_RECENT_ACHIVEMENT = REQUEST_PERFORMANCE + 1;
     public static final int REQUEST_PERFORMANCE_RECENT_ACHIVEMENT = REQUEST_PERFORMANCE + 2;
     public static final int REQUEST_PERFORMANCE_BEST_ACHIVEMENT = REQUEST_PERFORMANCE + 3;
+    public static final int REQUEST_PERFORMANCE_COMMENT = REQUEST_PERFORMANCE + 4;
     // blue_print
+    public static final int REQUEST_BLUEPRINT_COMMENT = REQUEST_BLUEPRINT + 0;
 
     @BindView(R.id.btb_bar)
     BaseMainTitleBar mBtbBar;

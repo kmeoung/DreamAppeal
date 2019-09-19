@@ -295,33 +295,38 @@ public class FragmentDreamList extends BaseFragment implements IOBaseTitleBarLis
             });
         } else { // 수정 모드가 아닐 경우
             h.itemView.setOnClickListener(v -> {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
-                        .setTitle("프로필 선택")
-                        .setMessage("프로필을 선택하시겠습니까?")
-                        .setPositiveButton("네", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
-                                if (bean.getIdx() == prefs.getProfileIndex()) {
-                                    Toast.makeText(getContext(), "현재 사용중인 프로필입니다.", Toast.LENGTH_SHORT).show();
+                Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+                if(prefs.getProfileIndex() == prefs.getMyProfileIndex()) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
+                            .setTitle("프로필 선택")
+                            .setMessage("프로필을 선택하시겠습니까?")
+                            .setPositiveButton("네", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+                                    if (bean.getIdx() == prefs.getProfileIndex()) {
+                                        Toast.makeText(getContext(), "현재 사용중인 프로필입니다.", Toast.LENGTH_SHORT).show();
+                                        dialog.dismiss();
+                                        return;
+                                    } else {
+                                        prefs.setProfileIndex(bean.getIdx(), true);
+                                        Toast.makeText(getContext(), "성공적으로 변경되었습니다.", Toast.LENGTH_SHORT).show();
+                                    }
                                     dialog.dismiss();
-                                    return;
-                                } else {
-                                    prefs.setProfileIndex(bean.getIdx(), true);
-                                    Toast.makeText(getContext(), "성공적으로 변경되었습니다.", Toast.LENGTH_SHORT).show();
+                                    getActivity().onBackPressed();
                                 }
-                                dialog.dismiss();
-                                getActivity().onBackPressed();
-                            }
-                        })
-                        .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                            })
+                            .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }else{
+                    Toast.makeText(getContext(), "권한이 없습니다.", Toast.LENGTH_SHORT).show();
+                }
             });
             llItemView.setBackground(getResources().getDrawable(R.drawable.dream_list_box_gray));
             ivDelete.setVisibility(View.GONE);

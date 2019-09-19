@@ -26,6 +26,7 @@ import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.bean.BeanActionPostDetail;
 import com.truevalue.dreamappeal.bean.BeanActionPostProfile;
+import com.truevalue.dreamappeal.fragment.FragmentMain;
 import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentAddContents;
 import com.truevalue.dreamappeal.http.DAHttpClient;
 import com.truevalue.dreamappeal.http.IOServerCallback;
@@ -199,13 +200,58 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
         switch (view.getId()) {
             case R.id.ll_comment:
                 Intent intent = new Intent(ActivityActionPost.this, ActivityCommentDetail.class);
-                startActivity(intent);
+                intent.putExtra(ActivityCommentDetail.EXTRA_COMMENT_TYPE, ActivityCommentDetail.TYPE_ACTION_POST);
+                intent.putExtra(ActivityCommentDetail.EXTRA_POST_INDEX, mBean.getIdx());
+                startActivityForResult(intent, FragmentMain.REQUEST_BLUEPRINT_COMMENT);
                 break;
             case R.id.ll_cheering:
+                httpPatchLike(mBean.getIdx());
                 break;
             case R.id.iv_more:
                 showPopupMenu();
                 break;
+        }
+    }
+
+    /**
+     * http patch
+     * 응원하기 / 취소
+     * @param post_index
+     */
+    private void httpPatchLike(int post_index){
+        Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityActionPost.this);
+        String url = Comm_Param.URL_API_PROFILES_INDEX_ACTIONPOST_INDEX_LIKE_INDEX;
+        url = url.replace(Comm_Param.MY_PROFILES_INDEX,String.valueOf(prefs.getMyProfileIndex()));
+        url = url.replace(Comm_Param.PROFILES_INDEX,String.valueOf(prefs.getProfileIndex()));
+        url = url.replace(Comm_Param.POST_INDEX,String.valueOf(post_index));
+        HashMap header = Utils.getHttpHeader(prefs.getToken());
+        DAHttpClient.getInstance().Patch(url, header, null, new IOServerCallback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
+                Toast.makeText(ActivityActionPost.this, message, Toast.LENGTH_SHORT).show();
+
+                if(TextUtils.equals(code,SUCCESS)){
+                    JSONObject json = new JSONObject(body);
+                    int likeCount = json.getInt("count");
+                    mTvCheering.setText(likeCount + "개");
+                    mIvCheering.setSelected(!mIvCheering.isSelected());
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if(requestCode == FragmentMain.REQUEST_BLUEPRINT_COMMENT){
+                httpGetActionPost();
+            }
         }
     }
 

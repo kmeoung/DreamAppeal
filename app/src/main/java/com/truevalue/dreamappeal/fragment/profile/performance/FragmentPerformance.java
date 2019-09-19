@@ -119,7 +119,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
     private void httpGetAchivementPostMain() {
         Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
         String url = Comm_Param.URL_API_INDEX_ACHIVEMENT_POSTS_MAIN_INDEX;
-        url = url.replace(Comm_Param.MY_PROFILES_INDEX,String.valueOf(prefs.getMyProfileIndex()));
+        url = url.replace(Comm_Param.MY_PROFILES_INDEX, String.valueOf(prefs.getMyProfileIndex()));
         url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
         // 페이지 조회 단위
         url = url.replace(Comm_Param.POST_INDEX, String.valueOf(mCurrentIndex));
@@ -270,6 +270,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
                 case FragmentMain.REQUEST_PERFORMANCE_EDIT_RECENT_ACHIVEMENT:
                 case FragmentMain.REQUEST_PERFORMANCE_RECENT_ACHIVEMENT:
                 case FragmentMain.REQUEST_PERFORMANCE_BEST_ACHIVEMENT:
+                case FragmentMain.REQUEST_PERFORMANCE_COMMENT:
                     httpGetAchivementPostMain();
                     break;
             }
@@ -293,6 +294,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
         TextView tvCheering = h.getItemView(R.id.tv_cheering);
         TextView tvComment = h.getItemView(R.id.tv_comment);
         LinearLayout llCheering = h.getItemView(R.id.ll_cheering);
+        ImageView ivCheering = h.getItemView(R.id.iv_cheering);
         LinearLayout llComment = h.getItemView(R.id.ll_comment);
 
         // View Resize (화면 크기에 맞춰 정사각형으로 맞춤)
@@ -301,12 +303,13 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
 
         tvTitle.setText(bean.getTitle());
         // todo : 아직 검증이 더 필요함
-        Utils.setReadMore(tvContents,bean.getContent(),3);
+        Utils.setReadMore(tvContents, bean.getContent(), 3);
         // todo : 시간은 서버쪽과 협의가 필요
 
-        tvCheering.setText(String.format("%d개",bean.getLike_count()));
-        tvComment.setText(String.format("%d개",bean.getComment_count()));
-        llCheering.setSelected(bean.getStatus());
+        tvCheering.setText(String.format("%d개", bean.getLike_count()));
+        tvComment.setText(String.format("%d개", bean.getComment_count()));
+
+        ivCheering.setSelected(bean.getStatus());
 
         if (TextUtils.isEmpty(bean.getThumbnail_image()))
             Glide.with(getContext()).load(R.drawable.user).into(ivThumbnail);
@@ -371,7 +374,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ActivityRecentAchivementDetail.class);
                 intent.putExtra(ActivityRecentAchivementDetail.EXTRA_RECENT_ACHIVEMENT_INDEX, bean.getIdx());
-                startActivityForResult(intent,FragmentMain.REQUEST_PERFORMANCE_RECENT_ACHIVEMENT);
+                startActivityForResult(intent, FragmentMain.REQUEST_PERFORMANCE_RECENT_ACHIVEMENT);
             }
         });
 
@@ -379,7 +382,53 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ActivityCommentDetail.class);
-                startActivity(intent);
+                intent.putExtra(ActivityCommentDetail.EXTRA_COMMENT_TYPE, ActivityCommentDetail.TYPE_PERFORMANCE);
+                intent.putExtra(ActivityCommentDetail.EXTRA_POST_INDEX, bean.getIdx());
+                startActivityForResult(intent, FragmentMain.REQUEST_BLUEPRINT_COMMENT);
+            }
+        });
+
+        llCheering.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                httpPatchLike(tvCheering,ivCheering,bean.getIdx());
+            }
+        });
+    }
+
+    /**
+     * http patch
+     * 응원하기 / 취소
+     *
+     * @param tvCheering
+     * @param ivCheering
+     * @param post_index
+     */
+    private void httpPatchLike(TextView tvCheering, ImageView ivCheering, int post_index) {
+        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+        String url = Comm_Param.URL_API_PROFILES_INDEX_PERFORMANCE_INDEX_LIKE_INDEX;
+        url = url.replace(Comm_Param.MY_PROFILES_INDEX, String.valueOf(prefs.getMyProfileIndex()));
+        url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
+        url = url.replace(Comm_Param.POST_INDEX, String.valueOf(post_index));
+        HashMap header = Utils.getHttpHeader(prefs.getToken());
+        DAHttpClient.getInstance().Patch(url, header, null, new IOServerCallback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
+                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+
+                if (TextUtils.equals(code, SUCCESS)) {
+                    JSONObject json = new JSONObject(body);
+//                    int likeCount = json.getInt("count");
+//                    tvCheering.setText(likeCount + "개");
+//                    ivCheering.setSelected(!ivCheering.isSelected());
+//                    mAdapter.notifyDataSetChanged();
+                    httpGetAchivementPostMain();
+                }
             }
         });
     }
@@ -480,8 +529,8 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
                     public void onClick(View v) {
                         Intent intent = new Intent(getContext(), ActivityBestAchivementDetail.class);
                         intent.putExtra(ActivityBestAchivementDetail.EXTRA_BEST_ACHIVEMENT_INDEX, bean.getIdx());
-                        intent.putExtra(ActivityBestAchivementDetail.EXTRA_BEST_ACHIVEMENT_BEST_INDEX,position + 1);
-                        startActivityForResult(intent,FragmentMain.REQUEST_PERFORMANCE_BEST_ACHIVEMENT);
+                        intent.putExtra(ActivityBestAchivementDetail.EXTRA_BEST_ACHIVEMENT_BEST_INDEX, position + 1);
+                        startActivityForResult(intent, FragmentMain.REQUEST_PERFORMANCE_BEST_ACHIVEMENT);
                     }
                 });
             }

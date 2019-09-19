@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityCommentDetail;
 import com.truevalue.dreamappeal.base.BaseActivity;
+import com.truevalue.dreamappeal.fragment.FragmentMain;
 import com.truevalue.dreamappeal.http.DAHttpClient;
 import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.bean.BeanPostDetail;
@@ -152,9 +153,12 @@ public class ActivityBestAchivementDetail extends BaseActivity {
                 break;
             case R.id.ll_comment: // 댓글
                 Intent intent = new Intent(ActivityBestAchivementDetail.this, ActivityCommentDetail.class);
-                startActivity(intent);
+                intent.putExtra(ActivityCommentDetail.EXTRA_COMMENT_TYPE, ActivityCommentDetail.TYPE_PERFORMANCE);
+                intent.putExtra(ActivityCommentDetail.EXTRA_POST_INDEX, mBean.getIdx());
+                startActivityForResult(intent, FragmentMain.REQUEST_BLUEPRINT_COMMENT);
                 break;
             case R.id.ll_cheering: // 응원하기
+                httpPatchLike(mBean.getIdx());
                 break;
             case R.id.iv_more: // 더보기
                 actionMore();
@@ -269,6 +273,38 @@ public class ActivityBestAchivementDetail extends BaseActivity {
         });
     }
 
+    /**
+     * http patch
+     * 응원하기 / 취소
+     * @param post_index
+     */
+    private void httpPatchLike(int post_index){
+        Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityBestAchivementDetail.this);
+        String url = Comm_Param.URL_API_PROFILES_INDEX_PERFORMANCE_INDEX_LIKE_INDEX;
+        url = url.replace(Comm_Param.MY_PROFILES_INDEX,String.valueOf(prefs.getMyProfileIndex()));
+        url = url.replace(Comm_Param.PROFILES_INDEX,String.valueOf(prefs.getProfileIndex()));
+        url = url.replace(Comm_Param.POST_INDEX,String.valueOf(post_index));
+        HashMap header = Utils.getHttpHeader(prefs.getToken());
+        DAHttpClient.getInstance().Patch(url, header, null, new IOServerCallback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
+                Toast.makeText(ActivityBestAchivementDetail.this, message, Toast.LENGTH_SHORT).show();
+
+                if(TextUtils.equals(code,SUCCESS)){
+                    JSONObject json = new JSONObject(body);
+                    int likeCount = json.getInt("count");
+                    mTvCheering.setText(likeCount + "개");
+                    mIvCheering.setSelected(!mIvCheering.isSelected());
+                }
+            }
+        });
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -276,6 +312,8 @@ public class ActivityBestAchivementDetail extends BaseActivity {
             if (requestCode == REQUEST_EDIT_RECENT_ACHIVEMENT) {
                 setResult(RESULT_OK);
                 finish();
+            }else if(requestCode == FragmentMain.REQUEST_BLUEPRINT_COMMENT){
+                httpGetBestPostAchivement(mBean.getIdx());
             }
         }
     }

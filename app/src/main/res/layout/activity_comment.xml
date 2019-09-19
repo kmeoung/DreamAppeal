@@ -39,46 +39,91 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingLeft="11dp"
         android:paddingRight="11dp">
 
-        <ImageView
-            android:id="@+id/iv_user"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/drawer_user" />
 
-        <EditText
-            android:id="@+id/et_input_comment"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="13dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="13dp"
-            android:layout_marginBottom="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/comment_input_bg"
-            android:hint="댓글 남기기"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/gray"
-            android:textSize="11sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btn_commit_comment"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:background="@null"
-            android:fontFamily="@font/nanum_square_round_b"
-            android:imeOptions="actionDone"
-            android:inputType="text"
-            android:text="게시"
-            android:textColor="@color/gray"
-            android:textSize="19dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:id="@+id/ll_writer"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tv_writer"
+                    android:layout_width="0dp"
+                    android:layout_height="25dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/nanum_square_round_r"
+                    android:gravity="center_vertical"
+                    android:text="reply의 댓글"
+                    android:textColor="@color/black"
+                    android:visibility="visible" />
+
+                <ImageView
+                    android:id="@+id/iv_writer_reply_close"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginRight="5dp"
+                    android:src="@drawable/ic_close" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_user"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/drawer_user" />
+
+                <EditText
+                    android:id="@+id/et_input_comment"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="13dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="13dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/comment_input_bg"
+                    android:hint="댓글 남기기"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/gray"
+                    android:textSize="11sp" />
+
+                <Button
+                    android:id="@+id/btn_commit_comment"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:text="게시"
+                    android:textColor="@color/gray"
+                    android:textSize="19dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
 

@@ -51,7 +51,6 @@ public class Comm_Param {
     // 내 꿈 목록 조회
     public static final String URL_API_PROFILES_INDEX_LIST = URL_API_PROFILES + "/" + USER_INDEX + "/list";
 
-
     // 실현 성과
     public static final String URL_API_MYPROFILEINDEX_ACHIVEMENT_POSTS = URL_API_PROFILES_INDEX_INDEX + "/achievement_posts";
     // 실현성과 조회
@@ -67,13 +66,29 @@ public class Comm_Param {
 
     // 내 꿈 소개 댓글 조회
     public static final String URL_API_PROFILES_INDEX_INDEX_PRESENTCOMMENTS = URL_API_PROFILES_INDEX_INDEX + "/present_comments";
+    // 발전 댓글 조회
+    public static final String URL_API_PROFILES_INDEX_INDEX_BLUEPRINTCOMMENTS = URL_API_PROFILES_INDEX_INDEX + "/blueprint_comments";
+    // 실현 성과 댓글 조회
+    public static final String URL_API_PROFILES_INDEX_INDEX_PERFORMANCE = URL_API_PROFILES_INDEX_INDEX + "/achievement_posts";
+    public static final String URL_API_PROFILES_INDEX_INDEX_PERFORMANCE_INDEX_COMMENTS = URL_API_PROFILES_INDEX_INDEX_PERFORMANCE + "/" + POST_INDEX + "/comments";
+
+    // 실천 인증 댓글 조회
+    public static final String URL_API_PROFILES_INDEX_INDEX_ACTIONPOST = URL_API_PROFILES_INDEX_INDEX + "/action_posts";
+    public static final String URL_API_PROFILES_INDEX_INDEX_ACTIONPOST_INDEX_COMMENTS = URL_API_PROFILES_INDEX_INDEX_ACTIONPOST + "/" + POST_INDEX + "/comments";
 
     // 실현성과 등록
     public static final String URL_API_ACHIVEMENT_POSTS = URL_API_PROFILES_INDEX + "/achievement_posts";
+    public static final String URL_API_ACHIVEMENT_POST = URL_API_PROFILES_INDEX + "/achievement_post";
     // 실현성과 / 대표성과 상세 조회
     public static final String URL_API_MYPROFILEINDEX_ACHIVEMENT_POSTS_INDEX = URL_API_MYPROFILEINDEX_ACHIVEMENT_POSTS + "/" + POST_INDEX;
+
     // 실현성과 수정 / 삭제
     public static final String URL_API_ACHIVEMENT_POSTS_INDEX = URL_API_ACHIVEMENT_POSTS + "/" + POST_INDEX;
+    public static final String URL_API_ACHIVEMENT_POST_INDEX = URL_API_ACHIVEMENT_POST + "/" + POST_INDEX;
+    // 실현성과 좋아요
+    public static final String URL_API_PROFILES_INDEX_PERFORMANCE_INDEX_LIKE_INDEX = URL_API_ACHIVEMENT_POST_INDEX + "/like/" + MY_PROFILES_INDEX;
+
+
 
     public static final String URL_API_ACHIVEMENT_BEST_POST = URL_API_ACHIVEMENT_POSTS + "/best_post";
     // 대표 성과 내리기
@@ -105,17 +120,50 @@ public class Comm_Param {
 
     // 실천 인증 추가
     public static final String URL_API_PROFILES_INDEX_ACTIONPOSTS = URL_API_PROFILES_INDEX + "/action_posts";
+    public static final String URL_API_PROFILES_INDEX_ACTIONPOST = URL_API_PROFILES_INDEX + "/action_post";
     // 실천 인증 카테고리 조회
     public static final String URL_API_PROFILES_INDEX_ACTIONPOSTS_CATEGORY = URL_API_PROFILES_INDEX_ACTIONPOSTS + "/category";
     // 실천 인증 카테고리 세부사항 조회
     public static final String URL_API_PROFILES_INDEX_ACTIONPOSTS_CATEGORY_INDEX = URL_API_PROFILES_INDEX_ACTIONPOSTS_CATEGORY + "/" + OBJECT_INDEX;
     // 실천 인증 상세 수정 / 삭제
     public static final String URL_API_PROFILES_INDEX_ACTIONPOSTS_INDEX = URL_API_PROFILES_INDEX_ACTIONPOSTS + "/" + POST_INDEX;
+    public static final String URL_API_PROFILES_INDEX_ACTIONPOST_INDEX = URL_API_PROFILES_INDEX_ACTIONPOST + "/" + POST_INDEX;
+    // 실천인증 좋아요
+    public static final String URL_API_PROFILES_INDEX_ACTIONPOST_INDEX_LIKE_INDEX = URL_API_PROFILES_INDEX_ACTIONPOST_INDEX + "/like/" + MY_PROFILES_INDEX;
 
     // 내 꿈 소개 댓글 추가
     public static final String URL_API_PROFILES_INDEX_PRESENTCOMMENTS = URL_API_PROFILES_INDEX + "/present_comments";
     // 내 꿈 소개 댓글 수정 / 삭제
     public static final String URL_API_PROFILES_INDEX_PRESENTCOMMENTS_INDEX = URL_API_PROFILES_INDEX_PRESENTCOMMENTS + "/" + COMMENTS_INDEX;
+    // 내 꿈 소개 댓글 좋아요
+    public static final String URL_API_PROFILES_INDEX_PRESENTCOMMENTS_INDEX_MYINDEX = URL_API_PROFILES_INDEX_PRESENTCOMMENTS_INDEX + "/like/" + MY_PROFILES_INDEX;
+
+    // 발전계획 댓글 추가
+    public static final String URL_API_PROFILES_INDEX_BLUEPRINTCOMMENTS = URL_API_PROFILES_INDEX + "/blueprint_comments";
+    // 발전계획 댓글 수정 / 삭제
+    public static final String URL_API_PROFILES_INDEX_BLUEPRINTCOMMENTS_INDEX = URL_API_PROFILES_INDEX_BLUEPRINTCOMMENTS + "/" + COMMENTS_INDEX;
+    // 발전계획 댓글 좋아요
+    public static final String URL_API_PROFILES_INDEX_BLUEPRINTCOMMENTS_INDEX_MYINDEX = URL_API_PROFILES_INDEX_BLUEPRINTCOMMENTS_INDEX + "/like/" + MY_PROFILES_INDEX;
+
+    // 실현성과 댓글 추가
+    public static final String URL_API_PROFILES_INDEX_PERFORMANCE= URL_API_PROFILES_INDEX + "/achievement_posts/" + POST_INDEX + "/comments";
+    // 실현성과 댓글 수정 / 삭제
+    public static final String URL_API_PROFILES_INDEX_PERFORMANCE_INDEX = URL_API_PROFILES_INDEX_PERFORMANCE + "/" + COMMENTS_INDEX;
+
+    // 실천인증 댓글 추가
+    public static final String URL_API_PROFILES_INDEX_ACTIONPOST_INDEX_COMMENTS = URL_API_PROFILES_INDEX + "/action_posts/" + POST_INDEX + "/comments";
+    // 실천인증 댓글 수정 / 삭제
+    public static final String URL_API_PROFILES_INDEX_ACTIONPOST_INDEX_COMMENTS_INDEX = URL_API_PROFILES_INDEX_ACTIONPOST + "/" + COMMENTS_INDEX;
+
+    // 실현성과 댓글 좋아요
+    public static final String URL_API_PROFILES_INDEX_PERFORMANCECOMMENTS= URL_API_PROFILES_INDEX + "/achievement_post_comments";
+    public static final String URL_API_PROFILES_INDEX_PERFORMANCECOMMENTS_INDEX = URL_API_PROFILES_INDEX_PERFORMANCECOMMENTS + "/" + COMMENTS_INDEX;
+    public static final String URL_API_PROFILES_INDEX_PERFORMANCECOMMENTS_INDEX_MYINDEX = URL_API_PROFILES_INDEX_PERFORMANCECOMMENTS_INDEX + "/like/" + MY_PROFILES_INDEX;
+
+    // 실천인증 댓글 좋아요
+    public static final String URL_API_PROFILES_INDEX_ACTIONPOSTCOMMENTS= URL_API_PROFILES_INDEX + "/action_post_comments";
+    public static final String URL_API_PROFILES_INDEX_ACTIONPOSTCOMMENTS_INDEX = URL_API_PROFILES_INDEX_ACTIONPOSTCOMMENTS + "/" + COMMENTS_INDEX;
+    public static final String URL_API_PROFILES_INDEX_ACTIONPOSTCOMMENTS_INDEX_MYINDEX = URL_API_PROFILES_INDEX_ACTIONPOSTCOMMENTS_INDEX + "/like/" + MY_PROFILES_INDEX;
 
     // 프로필 응원하기 / 응원하기 조회
     public static final String URL_API_PROFILES_INDEX_LIKE = URL_API_PROFILES_INDEX + "/like";

@@ -30,6 +30,7 @@ import com.truevalue.dreamappeal.bean.BeanAbilityOpportunityHeader;
 import com.truevalue.dreamappeal.bean.BeanBlueprintAbilityOpportunity;
 import com.truevalue.dreamappeal.bean.BeanBlueprintObject;
 import com.truevalue.dreamappeal.bean.BeanObjectHeader;
+import com.truevalue.dreamappeal.fragment.FragmentMain;
 import com.truevalue.dreamappeal.http.DAHttpClient;
 import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.utils.Comm_Param;
@@ -42,13 +43,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Call;
+
+import static android.app.Activity.RESULT_OK;
 
 public class FragmentBlueprint extends BaseFragment implements IORecyclerViewListener {
 
@@ -241,11 +246,12 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
         switch (view.getId()) {
             case R.id.iv_comment:
                 Intent intent = new Intent(getContext(), ActivityCommentDetail.class);
-                startActivity(intent);
+                intent.putExtra(ActivityCommentDetail.EXTRA_COMMENT_TYPE,ActivityCommentDetail.TYPE_BLUEPRINT);
+                startActivityForResult(intent, FragmentMain.REQUEST_BLUEPRINT_COMMENT);
                 break;
             case R.id.btn_commit_comment:
+                httpPostComment();
                 mEtComment.setText("");
-                Toast.makeText(getContext(), "댓글이 입력되었습니다.", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -330,5 +336,52 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
         else if (mAdapter.get(i) instanceof BeanBlueprintObject)
             return LISTITEM_TYPE_OBJECT;
         return 0;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            if(requestCode == FragmentMain.REQUEST_BLUEPRINT_COMMENT){
+                httpGetBluePrint();
+            }
+        }
+    }
+
+    /**
+     * http Post
+     * 댓글 등록
+     */
+    private void httpPostComment() {
+        if(TextUtils.isEmpty(mEtComment.getText().toString())){
+            Toast.makeText(getContext(), "댓글을 입력해주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+        String url = Comm_Param.URL_API_PROFILES_INDEX_BLUEPRINTCOMMENTS
+                .replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
+        HashMap header = Utils.getHttpHeader(prefs.getToken());
+        HashMap<String, String> body = new HashMap<>();
+        body.put("writer_idx", String.valueOf(prefs.getMyProfileIndex()));
+        body.put("content", mEtComment.getText().toString());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        body.put("register_date", sdf.format(new Date()));
+        DAHttpClient.getInstance()
+                .Post(url, header, body, new IOServerCallback() {
+                    @Override
+                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
+                        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+
+                        if (TextUtils.equals(code, SUCCESS)) {
+                            httpGetBluePrint();
+                        }
+                    }
+                });
     }
 }
