@@ -11,6 +11,7 @@ import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.base.BaseActivity;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
+import com.truevalue.dreamappeal.bean.BeanActionPostDetail;
 import com.truevalue.dreamappeal.fragment.profile.FragmentAddActionPost;
 import com.truevalue.dreamappeal.fragment.profile.FragmentLevelChoice;
 
@@ -25,6 +26,7 @@ public class ActivityAddActionPost extends BaseActivity {
 
     public static final String EXTRA_ACTION_POST_TYPE = "EXTRA_ACTION_POST_TYPE";
     public static final String EXTRA_ACTION_POST_INDEX = "EXTRA_ACTION_POST_INDEX";
+    public static final String EXTRA_ACTION_POST_CONTENTS = "EXTRA_ACTION_POST_CONTENTS";
 
     @BindView(R.id.v_status)
     View mVStatus;
@@ -35,6 +37,7 @@ public class ActivityAddActionPost extends BaseActivity {
 
     private int mExtraType = -1;
     private int mPostIndex = -1;
+    private BeanActionPostDetail mBean = null;
 
 
     @Override
@@ -44,7 +47,6 @@ public class ActivityAddActionPost extends BaseActivity {
         ButterKnife.bind(this);
         // 상태 창 투명화
         updateStatusbarTranslate(mBtbBar);
-
         // init Data
         initData();
         // View init
@@ -53,8 +55,11 @@ public class ActivityAddActionPost extends BaseActivity {
 
     private void initData() {
         mExtraType = getIntent().getIntExtra(EXTRA_ACTION_POST_TYPE, -1);
-        if(mExtraType == TYPE_EDIT_ACTION_POST || mExtraType == TYPE_RESET_LEVEL){
-            mPostIndex = getIntent().getIntExtra(EXTRA_ACTION_POST_INDEX,-1);
+        if (mExtraType == TYPE_EDIT_ACTION_POST || mExtraType == TYPE_RESET_LEVEL) {
+            mPostIndex = getIntent().getIntExtra(EXTRA_ACTION_POST_INDEX, -1);
+            if (getIntent().getSerializableExtra(EXTRA_ACTION_POST_CONTENTS) != null) {
+                mBean = (BeanActionPostDetail) getIntent().getSerializableExtra(EXTRA_ACTION_POST_CONTENTS);
+            }
         }
     }
 
@@ -64,12 +69,11 @@ public class ActivityAddActionPost extends BaseActivity {
                 replaceFragment(R.id.base_container, new FragmentAddActionPost(), false);
                 break;
             case TYPE_EDIT_ACTION_POST:
-                replaceFragment(R.id.base_container,FragmentAddActionPost.newInstance(mPostIndex), false);
-            break;
+                replaceFragment(R.id.base_container, FragmentAddActionPost.newInstance(mPostIndex, mBean), false);
+                break;
             case TYPE_RESET_LEVEL:
-                replaceFragment(R.id.base_container,FragmentLevelChoice.newInstance(mPostIndex), false);
-            break;
-
+                replaceFragment(R.id.base_container, FragmentLevelChoice.newInstance(mPostIndex, mBean), false);
+                break;
         }
     }
 

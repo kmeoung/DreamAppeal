@@ -1,6 +1,8 @@
 package com.truevalue.dreamappeal.bean;
 
-public class BeanActionPostDetail {
+import java.io.Serializable;
+
+public class BeanActionPostDetail implements Serializable {
 
     private boolean status;
     private int like_count;

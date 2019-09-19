@@ -87,6 +87,7 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
     ImageView mIvMore;
 
     private int mPostIndex = -1;
+    private BeanActionPostDetail mBean = null;
 
 
     @Override
@@ -142,18 +143,18 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
                         Glide.with(ActivityActionPost.this).load(actionPostProfile.getImage()).placeholder(R.drawable.drawer_user).into(mIvDreamProfile);
                     mTvValueStyle.setText(actionPostProfile.getValue_style());
                     mTvJob.setText(actionPostProfile.getJob());
-                    BeanActionPostDetail bean = gson.fromJson(json.getJSONObject("action_post").toString(), BeanActionPostDetail.class);
+                    mBean = gson.fromJson(json.getJSONObject("action_post").toString(), BeanActionPostDetail.class);
 
 //                    if (!TextUtils.isEmpty(actionPostProfile.getImage()))
 //                        Glide.with(ActivityActionPost.this).load(R.drawable.user).into(mIvImg);
 //                    else
 //                        Glide.with(ActivityActionPost.this).load(bean.get()).placeholder(R.drawable.user).into(mIvImg);
-                    mTvComment.setText(bean.getComment_count() + "개");
-                    mTvCheering.setText(bean.getLike_count() + "개");
-                    mTvContents.setText(bean.getContent());
-                    mTvTarget.setText(bean.getObject_name());
-                    mTvTargetDetail.setText(bean.getStep_name());
-                    mIvCheering.setSelected(bean.getStatus());
+                    mTvComment.setText(mBean.getComment_count() + "개");
+                    mTvCheering.setText(mBean.getLike_count() + "개");
+                    mTvContents.setText(mBean.getContent());
+                    mTvTarget.setText(mBean.getObject_name());
+                    mTvTargetDetail.setText(mBean.getStep_name());
+                    mIvCheering.setSelected(mBean.getStatus());
 
                 }
             }
@@ -203,7 +204,7 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
             case R.id.ll_cheering:
                 break;
             case R.id.iv_more:
-
+                showPopupMenu();
                 break;
         }
     }
@@ -224,12 +225,14 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
                         intent = new Intent(ActivityActionPost.this, ActivityAddActionPost.class);
                         intent.putExtra(ActivityAddActionPost.EXTRA_ACTION_POST_TYPE,ActivityAddActionPost.TYPE_RESET_LEVEL);
                         intent.putExtra(ActivityAddActionPost.EXTRA_ACTION_POST_INDEX,mPostIndex);
+                        intent.putExtra(ActivityAddActionPost.EXTRA_ACTION_POST_CONTENTS,mBean);
                         startActivity(intent);
                         break;
                     case R.id.menu_edit:
                         intent = new Intent(ActivityActionPost.this, ActivityAddActionPost.class);
                         intent.putExtra(ActivityAddActionPost.EXTRA_ACTION_POST_TYPE,ActivityAddActionPost.TYPE_EDIT_ACTION_POST);
                         intent.putExtra(ActivityAddActionPost.EXTRA_ACTION_POST_INDEX,mPostIndex);
+                        intent.putExtra(ActivityAddActionPost.EXTRA_ACTION_POST_CONTENTS,mBean);
                         startActivity(intent);
                         break;
                     case R.id.menu_delete:

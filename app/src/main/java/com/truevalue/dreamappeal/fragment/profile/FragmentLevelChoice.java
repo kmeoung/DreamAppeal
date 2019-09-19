@@ -23,8 +23,8 @@ import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseViewHolder;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
+import com.truevalue.dreamappeal.bean.BeanActionPostDetail;
 import com.truevalue.dreamappeal.bean.BeanLevelChoiceCategory;
-import com.truevalue.dreamappeal.bean.BeanLevelChoiceHeader;
 import com.truevalue.dreamappeal.bean.BeanLevelChoiceObject;
 import com.truevalue.dreamappeal.http.DAHttpClient;
 import com.truevalue.dreamappeal.http.IOServerCallback;
@@ -54,16 +54,20 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
     RecyclerView mRvObject;
 
     private BaseRecyclerViewAdapter mAdapterCategory;
-    private BaseRecyclerViewAdapter mAdapterObject;
+    private BaseRecyclerViewAdapter mAdapterStep;
 
     private String mContents = null;
     private int mPostIndex = -1;
-    private int mObjectSelected = -1;
+    private int mStepSelected = -1;
     private int mCategorySelected = -1;
+    private int mType = -1;
+    private BeanActionPostDetail mBean = null;
 
-    public static FragmentLevelChoice newInstance(int post_index) {
+    public static FragmentLevelChoice newInstance(int post_index, BeanActionPostDetail bean) {
         FragmentLevelChoice fragment = new FragmentLevelChoice();
         fragment.mPostIndex = post_index;
+        fragment.mType = ActivityAddActionPost.TYPE_RESET_LEVEL;
+        fragment.mBean = bean;
         return fragment;
     }
 
@@ -72,6 +76,7 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
     public static FragmentLevelChoice newInstance(String contents) {
         FragmentLevelChoice fragment = new FragmentLevelChoice();
         fragment.mContents = contents;
+        fragment.mType = ActivityAddActionPost.TYPE_ADD_ACTION_POST;
         return fragment;
     }
 
@@ -123,11 +128,7 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
                 tvTitle.setTextColor(getResources().getColor(R.color.black));
             }
             llItem.setOnClickListener(v -> {
-                mCategorySelected = bean.getIdx();
-                mObjectSelected = -1;
-                mAdapterObject.clear();
-                if (mCategorySelected != -1) httpGetActionPostCategoryObject(bean.getIdx());
-                mAdapterCategory.notifyDataSetChanged();
+                onClickedCategory(bean.getIdx());
             });
         }
 
@@ -142,6 +143,14 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
         }
     };
 
+    private void onClickedCategory(int index) {
+        mCategorySelected = index;
+        mStepSelected = -1;
+        mAdapterStep.clear();
+        if (mCategorySelected != -1) httpGetActionPostCategoryObject(index);
+        mAdapterCategory.notifyDataSetChanged();
+    }
+
     private IORecyclerViewListener mIOObjectListener = new IORecyclerViewListener() {
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -151,12 +160,12 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
         @Override
         public void onBindViewHolder(@NonNull BaseViewHolder h, int i) {
 
-            BeanLevelChoiceObject bean = (BeanLevelChoiceObject) mAdapterObject.get(i);
+            BeanLevelChoiceObject bean = (BeanLevelChoiceObject) mAdapterStep.get(i);
             LinearLayout llItem = h.getItemView(R.id.ll_item);
             TextView tvTitle = h.getItemView(R.id.tv_title);
             tvTitle.setText(bean.getTitle());
 
-            if (mObjectSelected == bean.getIdx()) {
+            if (mStepSelected == bean.getIdx()) {
                 llItem.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                 tvTitle.setTextColor(getResources().getColor(R.color.white));
             } else {
@@ -165,14 +174,14 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
             }
 
             llItem.setOnClickListener(v -> {
-                mObjectSelected = bean.getIdx();
-                mAdapterObject.notifyDataSetChanged();
+                mStepSelected = bean.getIdx();
+                mAdapterStep.notifyDataSetChanged();
             });
         }
 
         @Override
         public int getItemCount() {
-            return mAdapterObject.size();
+            return mAdapterStep.size();
         }
 
         @Override
@@ -187,8 +196,8 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
         mRvCategory.setAdapter(mAdapterCategory);
         mRvCategory.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        mAdapterObject = new BaseRecyclerViewAdapter(getContext(), mIOObjectListener);
-        mRvObject.setAdapter(mAdapterObject);
+        mAdapterStep = new BaseRecyclerViewAdapter(getContext(), mIOObjectListener);
+        mRvObject.setAdapter(mAdapterStep);
         mRvObject.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
@@ -216,7 +225,7 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
                         if (TextUtils.equals(code, SUCCESS)) {
                             mAdapterCategory.clear();
 
-                            mAdapterCategory.add(new BeanLevelChoiceCategory("임시 분류", -1));
+//                            mAdapterCategory.add(new BeanLevelChoiceCategory("임시 분류", -1));
                             JSONObject json = new JSONObject(body);
                             JSONArray objects = json.getJSONArray("objects");
                             Gson gson = new Gson();
@@ -224,6 +233,11 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
                                 BeanLevelChoiceCategory bean = gson.fromJson(objects.getJSONObject(i).toString(), BeanLevelChoiceCategory.class);
                                 mAdapterCategory.add(bean);
                             }
+                        }
+
+                        if (mCategorySelected == -1 && mBean != null) {
+                            mCategorySelected = mBean.getObject_idx();
+                            onClickedCategory(mCategorySelected);
                         }
                     }
                 });
@@ -260,7 +274,12 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
                             Gson gson = new Gson();
                             for (int i = 0; i < objects.length(); i++) {
                                 BeanLevelChoiceObject bean = gson.fromJson(objects.getJSONObject(i).toString(), BeanLevelChoiceObject.class);
-                                mAdapterObject.add(bean);
+                                mAdapterStep.add(bean);
+                            }
+
+                            if (mStepSelected == -1 && mBean != null) {
+                                mStepSelected = mBean.getStep_idx();
+                                mAdapterStep.notifyDataSetChanged();
                             }
                         }
                     }
@@ -293,14 +312,14 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
                     public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
                         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
 
-                        if(TextUtils.equals(code,SUCCESS)){
-                            if(mCategorySelected != -1){
+                        if (TextUtils.equals(code, SUCCESS)) {
+                            if (mCategorySelected != -1) {
                                 JSONObject json = new JSONObject(body);
                                 JSONObject result = json.getJSONObject("result");
                                 int insertId = result.getInt("insertId");
                                 httpPatchActionPost(insertId);
 
-                            }else{
+                            } else {
                                 getActivity().setResult(Activity.RESULT_OK);
                                 getActivity().finish();
                             }
@@ -313,17 +332,17 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
      * http Patch
      * 실천 인증 수정
      */
-    private void httpPatchActionPost(int action_post_index){
+    private void httpPatchActionPost(int action_post_index) {
         Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
         String url = Comm_Param.URL_API_PROFILES_INDEX_ACTIONPOSTS_INDEX;
         // 내 실천인증 수정
         url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getMyProfileIndex()));
-        url = url.replace(Comm_Param.POST_INDEX,String.valueOf(action_post_index));
+        url = url.replace(Comm_Param.POST_INDEX, String.valueOf(action_post_index));
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
         HashMap<String, String> body = new HashMap<>();
-        body.put("object_idx",String.valueOf(mCategorySelected));
-        if(mObjectSelected != -1) body.put("step_idx",String.valueOf(mObjectSelected));
+        if (mCategorySelected != -1) body.put("object_idx", String.valueOf(mCategorySelected));
+        if (mStepSelected != -1) body.put("step_idx", String.valueOf(mStepSelected));
         DAHttpClient.getInstance().Patch(url, header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -334,7 +353,7 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
                 Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
 
-                if(TextUtils.equals(code,SUCCESS)){
+                if (TextUtils.equals(code, SUCCESS)) {
                     getActivity().setResult(Activity.RESULT_OK);
                     getActivity().finish();
                 }
@@ -349,6 +368,10 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
 
     @Override
     public void OnClickRightTextBtn() {
-        httpPostActionPost();
+        if (mType == ActivityAddActionPost.TYPE_ADD_ACTION_POST) {
+            httpPostActionPost();
+        } else if (mType == ActivityAddActionPost.TYPE_RESET_LEVEL) {
+            httpPatchActionPost(mPostIndex);
+        }
     }
 }
