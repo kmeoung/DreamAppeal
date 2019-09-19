@@ -49,7 +49,19 @@ import static android.app.Activity.RESULT_OK;
 
 public class FragmentMain extends BaseFragment implements IOBaseTitleBarListener {
 
-    private final int REQUEST_SEARCH = 111;
+    public static final int REQUEST_SEARCH = 100;
+    private static final int REQUEST_DREAM_PRESENT = 1000;
+    private static final int REQUEST_PERFORMANCE = 1100;
+    private static final int REQUEST_BLUEPRINT = 1200;
+
+    // dream_present
+    public static final int REQUEST_DREAM_PRESENT_COMMENT = REQUEST_DREAM_PRESENT + 0;
+    // performance
+    public static final int REQUEST_PERFORMANCE_ADD_RECENT_ACHIVEMENT = REQUEST_PERFORMANCE + 0;
+    public static final int REQUEST_PERFORMANCE_EDIT_RECENT_ACHIVEMENT = REQUEST_PERFORMANCE + 1;
+    public static final int REQUEST_PERFORMANCE_RECENT_ACHIVEMENT = REQUEST_PERFORMANCE + 2;
+    public static final int REQUEST_PERFORMANCE_BEST_ACHIVEMENT = REQUEST_PERFORMANCE + 3;
+    // blue_print
 
     @BindView(R.id.btb_bar)
     BaseMainTitleBar mBtbBar;

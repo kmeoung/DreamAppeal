@@ -29,7 +29,7 @@
                     android:id="@+id/iv_dream_profile"
                     android:layout_width="57dp"
                     android:layout_height="57dp"
-                    android:layout_marginRight="40dp"
+                    android:layout_marginRight="20dp"
                     android:layout_marginBottom="10dp"
                     android:src="@drawable/drawer_user" />
                 <!--꿈 프로필 이미지-->
@@ -50,19 +50,24 @@
                         android:fontFamily="@font/nanum_pen"
                         android:text="천만 구독자"
                         android:textColor="@color/black"
-                        android:textSize="22sp" />
+                        android:textSize="22sp"
+                        android:lines="1"
+                        android:maxLines="1"
+                        android:ellipsize="end"/>
 
                     <TextView
                         android:id="@+id/tv_job"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="9dp"
-                        android:ellipsize="end"
                         android:fontFamily="@font/bmjua"
                         android:maxLength="30"
                         android:text="크리에이터"
                         android:textColor="@color/black"
-                        android:textSize="27sp" />
+                        android:textSize="27sp"
+                        android:lines="1"
+                        android:maxLines="1"
+                        android:ellipsize="end"/>
 
 
                 </LinearLayout>
@@ -83,7 +88,7 @@
                     android:id="@+id/tv_dream_level"
                     android:layout_width="57dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="40dp"
+                    android:layout_marginRight="20dp"
                     android:fontFamily="@font/nanum_square_round_b"
                     android:gravity="center"
                     android:text="LV. 00"
@@ -102,7 +107,7 @@
                         android:fontFamily="@font/nanum_square_round_r"
                         android:text="실천 인증 "
                         android:textColor="@color/gray"
-                        android:textSize="16sp" />
+                        android:textSize="13sp" />
 
                     <TextView
                         android:id="@+id/tv_action_post_count"
@@ -111,7 +116,7 @@
                         android:fontFamily="@font/nanum_square_round_r"
                         android:text="0회"
                         android:textColor="@color/colorAccent"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -126,7 +131,7 @@
                         android:fontFamily="@font/nanum_square_round_r"
                         android:text="실현 성과 "
                         android:textColor="@color/gray"
-                        android:textSize="16sp" />
+                        android:textSize="13sp" />
 
                     <TextView
                         android:id="@+id/tv_achivement_post_count"
@@ -135,7 +140,7 @@
                         android:fontFamily="@font/nanum_square_round_r"
                         android:text="0회"
                         android:textColor="@color/colorAccent"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 

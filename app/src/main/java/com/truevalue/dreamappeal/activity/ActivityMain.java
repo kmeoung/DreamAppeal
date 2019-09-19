@@ -63,6 +63,11 @@ public class ActivityMain extends BaseActivity implements IOBaseTitleBarListener
         this.mProfileIndex = mProfileIndex;
     }
 
+    public void setTitle(String title){
+        FragmentMain fragment = (FragmentMain)getSupportFragmentManager().findFragmentById(R.id.activity_container);
+        fragment.setTitle(title);
+    }
+
     /**
      * Page 초기화
      */

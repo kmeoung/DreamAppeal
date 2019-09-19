@@ -51,12 +51,25 @@ public class Comm_Param {
     // 내 꿈 목록 조회
     public static final String URL_API_PROFILES_INDEX_LIST = URL_API_PROFILES + "/" + USER_INDEX + "/list";
 
-    // 실현성과 등록
-    public static final String URL_API_ACHIVEMENT_POSTS = URL_API_PROFILES_INDEX + "/achievement_posts";
+
+    // 실현 성과
     public static final String URL_API_MYPROFILEINDEX_ACHIVEMENT_POSTS = URL_API_PROFILES_INDEX_INDEX + "/achievement_posts";
     // 실현성과 조회
     public static final String URL_API_ACHIVEMENT_POSTS_MAIN = URL_API_MYPROFILEINDEX_ACHIVEMENT_POSTS + "/main";
     public static final String URL_API_INDEX_ACHIVEMENT_POSTS_MAIN_INDEX = URL_API_ACHIVEMENT_POSTS_MAIN + "/" + POST_INDEX;
+
+    // 발전 계획 조회
+    public static final String URL_API_PROFILE_BLUEPRINT = URL_API_PROFILES_INDEX_INDEX + "/blueprint";
+
+    // 실천 인증 조회
+    public static final String URL_API_PROFILES_INDEX_INDEX_ACTIONPOSTS = URL_API_PROFILES_INDEX_INDEX + "/action_posts";
+    public static final String URL_API_PROFILES_INDEX_INDEX_ACTIONPOSTS_INDEX = URL_API_PROFILES_INDEX_INDEX_ACTIONPOSTS + "/" + POST_INDEX;
+
+    // 내 꿈 소개 댓글 조회
+    public static final String URL_API_PROFILES_INDEX_INDEX_PRESENTCOMMENTS = URL_API_PROFILES_INDEX_INDEX + "/present_comments";
+
+    // 실현성과 등록
+    public static final String URL_API_ACHIVEMENT_POSTS = URL_API_PROFILES_INDEX + "/achievement_posts";
     // 실현성과 / 대표성과 상세 조회
     public static final String URL_API_MYPROFILEINDEX_ACHIVEMENT_POSTS_INDEX = URL_API_MYPROFILEINDEX_ACHIVEMENT_POSTS + "/" + POST_INDEX;
     // 실현성과 수정 / 삭제
@@ -69,7 +82,6 @@ public class Comm_Param {
     public static final String URL_API_ACHIVEMENT_BEST_POST_INDEX_POST_INDEX = URL_API_ACHIVEMENT_BEST_POST_INDEX + "/" + POST_INDEX;
 
     // 발전 계획
-    public static final String URL_API_PROFILE_BLUEPRINT = URL_API_PROFILES_INDEX_INDEX + "/blueprint";
     public static final String URL_API_BLUEPRINT = URL_API_PROFILES_INDEX + "/blueprint";
     // 갖출 능력 조회 / 등록
     public static final String URL_API_BLUEPRINT_ABILITIES = URL_API_BLUEPRINT + "/abilities";
@@ -97,13 +109,10 @@ public class Comm_Param {
     public static final String URL_API_PROFILES_INDEX_ACTIONPOSTS_CATEGORY = URL_API_PROFILES_INDEX_ACTIONPOSTS + "/category";
     // 실천 인증 카테고리 세부사항 조회
     public static final String URL_API_PROFILES_INDEX_ACTIONPOSTS_CATEGORY_INDEX = URL_API_PROFILES_INDEX_ACTIONPOSTS_CATEGORY + "/" + OBJECT_INDEX;
-    // 실천 인증 조회
-    public static final String URL_API_PROFILES_INDEX_INDEX_ACTIONPOSTS = URL_API_PROFILES_INDEX_INDEX + "/action_posts";
-    public static final String URL_API_PROFILES_INDEX_INDEX_ACTIONPOSTS_INDEX = URL_API_PROFILES_INDEX_INDEX_ACTIONPOSTS + "/" + POST_INDEX;
     // 실천 인증 상세 수정 / 삭제
     public static final String URL_API_PROFILES_INDEX_ACTIONPOSTS_INDEX = URL_API_PROFILES_INDEX_ACTIONPOSTS + "/" + POST_INDEX;
 
-    // 내 꿈 소개 댓글 추가 / 조회
+    // 내 꿈 소개 댓글 추가
     public static final String URL_API_PROFILES_INDEX_PRESENTCOMMENTS = URL_API_PROFILES_INDEX + "/present_comments";
     // 내 꿈 소개 댓글 수정 / 삭제
     public static final String URL_API_PROFILES_INDEX_PRESENTCOMMENTS_INDEX = URL_API_PROFILES_INDEX_PRESENTCOMMENTS + "/" + COMMENTS_INDEX;

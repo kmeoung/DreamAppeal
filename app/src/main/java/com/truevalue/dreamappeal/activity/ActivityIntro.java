@@ -51,6 +51,7 @@ public class ActivityIntro extends BaseActivity {
                 // 앱 껏다 켰을 시 다시 내 profile index로 설정
                 if(prefs.getMyProfileIndex() != prefs.getProfileIndex()){
                     prefs.setProfileIndex(prefs.getMyProfileIndex(),true);
+
                 }
 
             } else {

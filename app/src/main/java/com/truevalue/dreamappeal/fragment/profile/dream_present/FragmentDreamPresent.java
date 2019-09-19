@@ -24,6 +24,7 @@ import com.truevalue.dreamappeal.activity.ActivityGalleryCamera;
 import com.truevalue.dreamappeal.activity.ActivityMain;
 import com.truevalue.dreamappeal.activity.ActivityCommentDetail;
 import com.truevalue.dreamappeal.base.BaseFragment;
+import com.truevalue.dreamappeal.fragment.FragmentMain;
 import com.truevalue.dreamappeal.http.DAHttpClient;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseViewHolder;
@@ -49,9 +50,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Call;
 
+import static android.app.Activity.RESULT_OK;
+
 public class FragmentDreamPresent extends BaseFragment implements IORecyclerViewListener {
 
-    BaseRecyclerViewAdapter mAdapter;
     @BindView(R.id.tv_dream_name)
     TextView mTvDreamName;
     @BindView(R.id.tv_dream_level)
@@ -113,8 +115,8 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
     private boolean isMyDreamReason = false;
 
     private int mUserIndex = -1;
-
     private boolean isViewCreated = false;
+    BaseRecyclerViewAdapter mAdapter;
 
     @Nullable
     @Override
@@ -151,7 +153,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
             httpPostProfiles(token);
         } else { // 회원정보가 존재하지 않을 시
             int profiles_index = prefs.getProfileIndex();
-            httpGetProfilesIndex(profiles_index, token);
+            httpGetProfilesIndex(profiles_index);
         }
     }
 
@@ -192,7 +194,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
                     Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
                     prefs.setProfileIndex(bean.getInsertId(), true);
                     // 내 꿈 조회 호출
-                    httpGetProfilesIndex(bean.getInsertId(), token);
+                    httpGetProfilesIndex(bean.getInsertId());
                 }
             }
         });
@@ -202,9 +204,8 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
      * 내 꿈 소개 조회
      *
      * @param profiles_index
-     * @param token
      */
-    private void httpGetProfilesIndex(int profiles_index, String token) {
+    private void httpGetProfilesIndex(int profiles_index) {
         Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
         String url = Comm_Param.URL_API_PROFILES_INDEX_INDEX;
         url = url.replace(Comm_Param.MY_PROFILES_INDEX, String.valueOf(prefs.getMyProfileIndex()));
@@ -212,7 +213,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
 
         mAdapter.clear();
 
-        HashMap header = Utils.getHttpHeader(token);
+        HashMap header = Utils.getHttpHeader(prefs.getToken());
         DAHttpClient client = DAHttpClient.getInstance();
         client.Get(url, header, null, new IOServerCallback() {
             @Override
@@ -230,7 +231,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
                     JSONObject object = new JSONObject(body);
                     JSONObject profile = object.getJSONObject("profile");
                     BeanProfilesIndex bean = gson.fromJson(profile.toString(), BeanProfilesIndex.class);
-
+                    ((ActivityMain)getActivity()).setTitle(bean.getName() + " 드림프로필");
                     try {
                         JSONArray jsonArray = profile.getJSONArray("description_spec");
 
@@ -345,6 +346,9 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
                 Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
 
                 if(TextUtils.equals(code,SUCCESS)){
+                    JSONObject json = new JSONObject(body);
+                    int likeCount = json.getInt("count");
+                    mTvCheering.setText(likeCount + "개");
                     mIvCheering.setSelected(!mIvCheering.isSelected());
                 }
             }
@@ -401,7 +405,8 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
                 break;
             case R.id.ll_comment: // 댓글
                 intent = new Intent(getContext(), ActivityCommentDetail.class);
-                startActivity(intent);
+                intent.putExtra(ActivityCommentDetail.EXTRA_COMMENT_TYPE,ActivityCommentDetail.TYPE_DREAM_PRESENT);
+                startActivityForResult(intent, FragmentMain.REQUEST_DREAM_PRESENT_COMMENT);
                 break;
             case R.id.ll_cheering: // 불꽃(좋아요)
                 httpPatchLike();
@@ -459,6 +464,19 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
         String strContents = (String) mAdapter.get(i);
         TextView tvDreamContents = h.getItemView(R.id.tv_contents);
         tvDreamContents.setText(strContents);
+
+        h.itemView.setOnClickListener(view -> {
+            ArrayList<String> dreamDescription = null;
+            if (!TextUtils.isEmpty(mTvDreamDescription.getText().toString())) {
+                dreamDescription = new ArrayList<>();
+                dreamDescription.add(mTvDreamDescription.getText().toString());
+                for (int j = 0; j < mAdapter.size(); j++) {
+                    dreamDescription.add((String)mAdapter.get(j));
+                }
+            }
+            ((ActivityMain) getActivity()).replaceFragmentRight(FragmentDreamDescription.newInstance(dreamDescription), true);
+        });
+
         if (isMyDreamMore) {
             tvDreamContents.setMaxLines(1000);
         } else {
@@ -474,5 +492,16 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
     @Override
     public int getItemViewType(int i) {
         return 0;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            if(requestCode == FragmentMain.REQUEST_DREAM_PRESENT_COMMENT){
+                Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+                httpGetProfilesIndex(prefs.getProfileIndex());
+            }
+        }
     }
 }

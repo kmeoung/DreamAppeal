@@ -35,6 +35,7 @@ import com.truevalue.dreamappeal.activity.profile.ActivityBestAchivementDetail;
 import com.truevalue.dreamappeal.activity.ActivityCommentDetail;
 import com.truevalue.dreamappeal.activity.profile.ActivityRecentAchivementDetail;
 import com.truevalue.dreamappeal.base.BaseFragment;
+import com.truevalue.dreamappeal.fragment.FragmentMain;
 import com.truevalue.dreamappeal.http.DAHttpClient;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseViewHolder;
@@ -65,11 +66,6 @@ import static android.app.Activity.RESULT_OK;
 public class FragmentPerformance extends BaseFragment implements IORecyclerViewListener {
 
     private static final int TYPE_LIST_OTHER = 0;
-
-    private static final int REQUEST_ADD_RECENT_ACHIVEMENT = 1100;
-    private static final int REQUEST_EDIT_RECENT_ACHIVEMENT = 1101;
-    private static final int REQUEST_RECENT_ACHIVEMENT = 1102;
-    private static final int REQUEST_BEST_ACHIVEMENT = 1103;
     private static final int TOP_BANNER_DELAY = 1000 * 4;
 
     @BindView(R.id.rv_dream_description)
@@ -270,10 +266,10 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case REQUEST_ADD_RECENT_ACHIVEMENT:
-                case REQUEST_EDIT_RECENT_ACHIVEMENT:
-                case REQUEST_RECENT_ACHIVEMENT:
-                case REQUEST_BEST_ACHIVEMENT:
+                case FragmentMain.REQUEST_PERFORMANCE_ADD_RECENT_ACHIVEMENT:
+                case FragmentMain.REQUEST_PERFORMANCE_EDIT_RECENT_ACHIVEMENT:
+                case FragmentMain.REQUEST_PERFORMANCE_RECENT_ACHIVEMENT:
+                case FragmentMain.REQUEST_PERFORMANCE_BEST_ACHIVEMENT:
                     httpGetAchivementPostMain();
                     break;
             }
@@ -335,7 +331,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
                     case R.id.menu_edit:
                         Intent intent = new Intent(getContext(), ActivityAddAchivement.class);
                         intent.putExtra(ActivityAddAchivement.EXTRA_EDIT_ACHIVEMENT_POST, bean);
-                        startActivityForResult(intent, REQUEST_EDIT_RECENT_ACHIVEMENT);
+                        startActivityForResult(intent, FragmentMain.REQUEST_PERFORMANCE_EDIT_RECENT_ACHIVEMENT);
                         break;
                     case R.id.menu_delete:
                         builder = new AlertDialog.Builder(getContext())
@@ -375,7 +371,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ActivityRecentAchivementDetail.class);
                 intent.putExtra(ActivityRecentAchivementDetail.EXTRA_RECENT_ACHIVEMENT_INDEX, bean.getIdx());
-                startActivityForResult(intent,REQUEST_RECENT_ACHIVEMENT);
+                startActivityForResult(intent,FragmentMain.REQUEST_PERFORMANCE_RECENT_ACHIVEMENT);
             }
         });
 
@@ -431,7 +427,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
     @OnClick(R.id.iv_add_achivement)
     public void onViewClicked() {
         Intent intent = new Intent(getContext(), ActivityAddAchivement.class);
-        startActivityForResult(intent, REQUEST_ADD_RECENT_ACHIVEMENT);
+        startActivityForResult(intent, FragmentMain.REQUEST_PERFORMANCE_ADD_RECENT_ACHIVEMENT);
     }
 
     /**
@@ -485,7 +481,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
                         Intent intent = new Intent(getContext(), ActivityBestAchivementDetail.class);
                         intent.putExtra(ActivityBestAchivementDetail.EXTRA_BEST_ACHIVEMENT_INDEX, bean.getIdx());
                         intent.putExtra(ActivityBestAchivementDetail.EXTRA_BEST_ACHIVEMENT_BEST_INDEX,position + 1);
-                        startActivityForResult(intent,REQUEST_BEST_ACHIVEMENT);
+                        startActivityForResult(intent,FragmentMain.REQUEST_PERFORMANCE_BEST_ACHIVEMENT);
                     }
                 });
             }

@@ -13,6 +13,7 @@ public class BeanProfilesIndex {
     private String value_style;
     private String job;
     private String description;
+    private String name;
 //    private JSONArray description_spec;
     private String meritNmotive;
     private int achievement_post_count;
@@ -21,6 +22,14 @@ public class BeanProfilesIndex {
     private int like_count;
     private boolean status;
 
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public int getComment_count() {
         return comment_count;

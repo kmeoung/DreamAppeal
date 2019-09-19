@@ -153,9 +153,11 @@ public class FragmentGallery extends BaseFragment {
                     }
                 }
                 // 이미지뷰 초기화
-                Glide.with(getContext())
-                        .load(mItemPath.get(0).getImagePath())
-                        .into(mIvSelectImage);
+                if (mItemPath.size() > 0) {
+                    Glide.with(getContext())
+                            .load(mItemPath.get(0).getImagePath())
+                            .into(mIvSelectImage);
+                }
 
                 mGridAdapter.notifyDataSetChanged();
             }
