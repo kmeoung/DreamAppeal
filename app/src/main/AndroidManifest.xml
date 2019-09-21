@@ -39,35 +39,35 @@
 
         <activity android:name=".activity.ActivityMain"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustResize"/>
 
         <activity android:name=".activity.ActivityCommentDetail"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustResize"/>
 
         <activity android:name=".activity.profile.ActivityAddAchivement"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustResize"/>
 
         <activity android:name=".activity.profile.ActivityBestAchivementDetail"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustResize"/>
 
         <activity android:name=".activity.ActivityGalleryCamera"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustResize"/>
 
         <activity android:name=".activity.profile.ActivityRecentAchivementDetail"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustResize"/>
 
         <activity android:name=".activity.profile.ActivityActionPost"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustResize"/>
 
         <activity android:name=".activity.ActivityAddActionPost"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustResize"/>
 
         <activity
             android:name=".activity.ActivityPermission"
@@ -76,7 +76,7 @@
 
         <activity android:name=".activity.ActivitySearch"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustResize"/>
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="500e2bccf72f3906c4aee099eb1056b51a28f127" />

@@ -276,7 +276,7 @@ public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTi
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                 if (TextUtils.equals(code, SUCCESS)) {
                     JSONObject object = new JSONObject(body);
@@ -321,7 +321,7 @@ public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTi
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                 if (TextUtils.equals(code, SUCCESS)) {
                     JSONObject object = new JSONObject(body);
@@ -367,7 +367,7 @@ public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTi
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                 if (TextUtils.equals(code, SUCCESS)) {
                     httpGetAbilities(false);
@@ -399,7 +399,7 @@ public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTi
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                 if (TextUtils.equals(code, SUCCESS)) {
                     httpGetOpportunities();

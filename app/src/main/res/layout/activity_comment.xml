@@ -97,17 +97,17 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="13dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:layout_marginRight="13dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/comment_input_bg"
                     android:hint="댓글 남기기"
-                    android:paddingLeft="10dp"
+                    android:paddingLeft="5dp"
                     android:paddingRight="10dp"
                     android:textColor="@color/black"
                     android:textColorHint="@color/gray"
-                    android:textSize="11sp" />
+                    android:textSize="15sp" />
 
                 <Button
                     android:id="@+id/btn_commit_comment"

@@ -136,7 +136,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                 JSONObject object = new JSONObject(body);
                 mProfileImage = object.getString("profile_image");
@@ -419,7 +419,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                 if (TextUtils.equals(code, SUCCESS)) {
                     JSONObject json = new JSONObject(body);
@@ -455,7 +455,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                 if (TextUtils.equals(code, SUCCESS)) {
                     httpGetAchivementPostMain();
                 }

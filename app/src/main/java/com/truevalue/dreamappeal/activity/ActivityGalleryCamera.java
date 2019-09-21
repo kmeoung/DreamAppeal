@@ -164,7 +164,7 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
 //
 //        if (TextUtils.isEmpty(mEtMainText.getText().toString())
 //                || TextUtils.isEmpty(mEtMoreText.getText().toString())) {
-//            Toast.makeText(this, "필수값을 제대로 입력해주세요", Toast.LENGTH_SHORT).show();
+//            CustomToast.makeText(this, "필수값을 제대로 입력해주세요", CustomToast.LENGTH_SHORT).show();
 //            dialog.dismiss();
 //            return;
 //        }
@@ -201,7 +201,7 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
 //        if (nameCardFile != null && nameCardFile.exists()) {
 //            fileBody.put("namecard1File", nameCardFile);
 //        } else {
-//            Toast.makeText(this, "필수값을 제대로 입력해주세요", Toast.LENGTH_SHORT).show();
+//            CustomToast.makeText(this, "필수값을 제대로 입력해주세요", CustomToast.LENGTH_SHORT).show();
 //            dialog.dismiss();
 //            return;
 //        }
@@ -238,7 +238,7 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
 //                                    finish();
 //                                } else {
 //                                    dialog.dismiss();
-//                                    Toast.makeText(ActivityBuyNameCard.this, "이미 구매요청이 되었습니다", Toast.LENGTH_SHORT).show();
+//                                    CustomToast.makeText(ActivityBuyNameCard.this, "이미 구매요청이 되었습니다", CustomToast.LENGTH_SHORT).show();
 //                                }
 //                            }
 //                        });

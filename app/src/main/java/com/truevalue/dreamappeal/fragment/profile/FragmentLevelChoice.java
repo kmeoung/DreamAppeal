@@ -220,7 +220,7 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
 
                     @Override
                     public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                         if (TextUtils.equals(code, SUCCESS)) {
                             mAdapterCategory.clear();
@@ -265,7 +265,7 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
 
                     @Override
                     public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                         if (TextUtils.equals(code, SUCCESS)) {
 
@@ -310,7 +310,7 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
 
                     @Override
                     public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                         if (TextUtils.equals(code, SUCCESS)) {
                             if (mCategorySelected != -1) {
@@ -351,7 +351,7 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                 if (TextUtils.equals(code, SUCCESS)) {
                     getActivity().setResult(Activity.RESULT_OK);

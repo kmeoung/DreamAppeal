@@ -17,6 +17,7 @@ import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
@@ -216,5 +217,9 @@ public class Utils {
                 }
             }
         });
+    }
+
+    public static void ToastMessage(Context context,String message){
+        Toast.makeText(context.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 }

@@ -24,12 +24,12 @@ public class BaseActivity extends AppCompatActivity {
      * 상태바 투명화
      */
     public void updateStatusbarTranslate() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            getWindow().setFlags(
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
-            );
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            getWindow().setFlags(
+//                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+//                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+//            );
+//        }
     }
 
 
@@ -39,12 +39,12 @@ public class BaseActivity extends AppCompatActivity {
      * 상태바 투명화 & 투명 배경 추가
      */
     public void updateStatusbarTranslate(View titleBar) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            int id = getResources().getIdentifier("status_bar_height", "dimen", "android");
-            int statusHeight = getResources().getDimensionPixelSize(id);
-//            params.height = statusHeight;
-            titleBar.setPadding(0,statusHeight,0,0);
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            int id = getResources().getIdentifier("status_bar_height", "dimen", "android");
+//            int statusHeight = getResources().getDimensionPixelSize(id);
+////            params.height = statusHeight;
+//            titleBar.setPadding(0,statusHeight,0,0);
+//        }
     }
 
     /***
@@ -52,21 +52,21 @@ public class BaseActivity extends AppCompatActivity {
      * 상태바 투명 + 색 지정
      */
     public void updateStatusbarTranslateColor(View vStatusBar, int colorValue) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            ViewGroup.LayoutParams params = vStatusBar.getLayoutParams();
-
-            int id = getResources().getIdentifier("status_bar_height", "dimen", "android");
-            int statusHeight = getResources().getDimensionPixelSize(id);
-
-            params.height = statusHeight;
-            vStatusBar.setLayoutParams(params);
-            vStatusBar.setBackgroundColor(colorValue);
-
-            getWindow().setFlags(
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
-            );
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            ViewGroup.LayoutParams params = vStatusBar.getLayoutParams();
+//
+//            int id = getResources().getIdentifier("status_bar_height", "dimen", "android");
+//            int statusHeight = getResources().getDimensionPixelSize(id);
+//
+//            params.height = statusHeight;
+//            vStatusBar.setLayoutParams(params);
+//            vStatusBar.setBackgroundColor(colorValue);
+//
+//            getWindow().setFlags(
+//                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+//                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+//            );
+//        }
     }
 
     /***

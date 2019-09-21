@@ -183,7 +183,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                 // 성공일 시
                 if (TextUtils.equals(code, SUCCESS)) {
@@ -223,7 +223,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                 if (TextUtils.equals(code, SUCCESS)) {
 
@@ -313,7 +313,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                 if(TextUtils.equals(code,SUCCESS)){
                     JSONObject json = new JSONObject(body);
@@ -343,7 +343,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                 if(TextUtils.equals(code,SUCCESS)){
                     JSONObject json = new JSONObject(body);

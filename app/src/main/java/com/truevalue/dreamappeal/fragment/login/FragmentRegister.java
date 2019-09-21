@@ -167,6 +167,7 @@ public class FragmentRegister extends BaseFragment implements IOBaseTitleBarList
         String name = mEtName.getText().toString();
 
         if (TextUtils.isEmpty(name)) {
+            Utils.ToastMessage(getContext(),"이름을 입력해주세요.");
             Toast.makeText(getContext(), "이름을 입력해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }

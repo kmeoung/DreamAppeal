@@ -65,7 +65,7 @@ public class ActivityPermission extends BaseActivity {
             } else {
                 // 권한 거부
 // 사용자가 해당권한을 거부했을때 해주어야 할 동작을 수행합니다
-//                Toast.makeText(this, "권한을 허용해주셔야 테스트가 가능합니다.", Toast.LENGTH_SHORT).show();
+//                CustomToast.makeText(this, "권한을 허용해주셔야 테스트가 가능합니다.", CustomToast.LENGTH_SHORT).show();
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE},
                         REQUEST_CODE_PERMISSION);

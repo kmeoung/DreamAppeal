@@ -114,8 +114,8 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
                 break;
             case TYPE_PERFORMANCE:
                 mPostCount = getIntent().getIntExtra(EXTRA_POST_INDEX, -1);
-                mGetCommentUrl = Comm_Param.URL_API_PROFILES_INDEX_INDEX_PERFORMANCE_INDEX_COMMENTS.replace(Comm_Param.POST_INDEX,String.valueOf(mPostCount));
-                mCommentUrl = Comm_Param.URL_API_PROFILES_INDEX_PERFORMANCE.replace(Comm_Param.POST_INDEX,String.valueOf(mPostCount));
+                mGetCommentUrl = Comm_Param.URL_API_PROFILES_INDEX_INDEX_PERFORMANCE_INDEX_COMMENTS.replace(Comm_Param.POST_INDEX, String.valueOf(mPostCount));
+                mCommentUrl = Comm_Param.URL_API_PROFILES_INDEX_PERFORMANCE.replace(Comm_Param.POST_INDEX, String.valueOf(mPostCount));
                 mCheeringUrl = Comm_Param.URL_API_PROFILES_INDEX_PERFORMANCECOMMENTS_INDEX_MYINDEX;
                 break;
             case TYPE_BLUEPRINT:
@@ -125,8 +125,8 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
                 break;
             case TYPE_ACTION_POST:
                 mPostCount = getIntent().getIntExtra(EXTRA_POST_INDEX, -1);
-                mGetCommentUrl = Comm_Param.URL_API_PROFILES_INDEX_INDEX_ACTIONPOST_INDEX_COMMENTS.replace(Comm_Param.POST_INDEX,String.valueOf(mPostCount));
-                mCommentUrl = Comm_Param.URL_API_PROFILES_INDEX_ACTIONPOST_INDEX_COMMENTS.replace(Comm_Param.POST_INDEX,String.valueOf(mPostCount));
+                mGetCommentUrl = Comm_Param.URL_API_PROFILES_INDEX_INDEX_ACTIONPOST_INDEX_COMMENTS.replace(Comm_Param.POST_INDEX, String.valueOf(mPostCount));
+                mCommentUrl = Comm_Param.URL_API_PROFILES_INDEX_ACTIONPOST_INDEX_COMMENTS.replace(Comm_Param.POST_INDEX, String.valueOf(mPostCount));
                 mCheeringUrl = Comm_Param.URL_API_PROFILES_INDEX_ACTIONPOSTCOMMENTS_INDEX_MYINDEX;
                 break;
         }
@@ -334,14 +334,15 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
     /**
      * http Patch
      * 댓글 좋아요
+     *
      * @param comment_index
      */
-    private void httpPatchCheering(int comment_index){
+    private void httpPatchCheering(int comment_index) {
         Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityCommentDetail.this);
         String url = mCheeringUrl
                 .replace(Comm_Param.MY_PROFILES_INDEX, String.valueOf(prefs.getMyProfileIndex()))
                 .replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()))
-                .replace(Comm_Param.COMMENTS_INDEX,String.valueOf(comment_index));
+                .replace(Comm_Param.COMMENTS_INDEX, String.valueOf(comment_index));
         HashMap header = Utils.getHttpHeader(prefs.getToken());
         DAHttpClient.getInstance()
                 .Patch(url, header, null, new IOServerCallback() {

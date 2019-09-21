@@ -129,7 +129,7 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                 if (TextUtils.equals(code, SUCCESS)) {
                     mAdapter.clear();
                     Gson gson = new Gson();
@@ -376,7 +376,7 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
 
                     @Override
                     public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                         if (TextUtils.equals(code, SUCCESS)) {
                             httpGetBluePrint();
