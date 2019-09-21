@@ -87,6 +87,7 @@ public class ActivityAddActionPost extends BaseActivity {
 
     @Override
     public void finish() {
+        setResult(RESULT_OK);
         super.finish();
         overridePendingTransition(0, 0);
     }

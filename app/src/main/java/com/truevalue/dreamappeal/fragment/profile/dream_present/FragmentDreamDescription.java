@@ -124,7 +124,7 @@ public class FragmentDreamDescription extends BaseFragment implements IOBaseTitl
                 || TextUtils.isEmpty(mEtDreamDescriptionDetail1.getText().toString())
                 || TextUtils.isEmpty(mEtDreamDescriptionDetail2.getText().toString())
                 || TextUtils.isEmpty(mEtDreamDescriptionDetail3.getText().toString())) {
-            Toast.makeText(getContext(), "모든 항목을 입력해주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext().getApplicationContext(), "모든 항목을 입력해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -138,7 +138,7 @@ public class FragmentDreamDescription extends BaseFragment implements IOBaseTitl
             e.printStackTrace();
         }
         body.put("description_spec", jsonArray.toString());
-        DAHttpClient client = DAHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance(getContext());
 
         client.Patch(url, header, body, new IOServerCallback() {
             @Override

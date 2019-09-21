@@ -143,7 +143,7 @@ public class FragmentAddActionPost extends BaseFragment implements IORecyclerVie
     public void OnClickRightTextBtn() {
         String comment = mEtInputComment.getText().toString();
         if (TextUtils.isEmpty(comment)) {
-            Toast.makeText(getContext(), "모든 항목을 입력해주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext().getApplicationContext(), "모든 항목을 입력해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
         if (mType == ActivityAddActionPost.TYPE_ADD_ACTION_POST) {
@@ -167,7 +167,7 @@ public class FragmentAddActionPost extends BaseFragment implements IORecyclerVie
         HashMap header = Utils.getHttpHeader(prefs.getToken());
         HashMap<String, String> body = new HashMap<>();
         body.put("content", mEtInputComment.getText().toString());
-        DAHttpClient.getInstance().Patch(url, header, body, new IOServerCallback() {
+        DAHttpClient.getInstance(getContext()).Patch(url, header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();

@@ -267,7 +267,7 @@ public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTi
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
 
-        DAHttpClient client = DAHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance(getContext());
         client.Get(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -312,7 +312,7 @@ public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTi
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
 
-        DAHttpClient client = DAHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance(getContext());
         client.Get(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -358,7 +358,7 @@ public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTi
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
 
-        DAHttpClient client = DAHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance(getContext());
         client.Delete(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -390,7 +390,7 @@ public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTi
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
 
-        DAHttpClient client = DAHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance(getContext());
         client.Delete(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {

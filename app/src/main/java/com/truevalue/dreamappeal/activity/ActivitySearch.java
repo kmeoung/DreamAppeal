@@ -93,16 +93,16 @@ public class ActivitySearch extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_popular: // 인기
-                Toast.makeText(ActivitySearch.this, "오픈 준비 중 입니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "오픈 준비 중 입니다.", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.tv_appealer: // 어필러
 
                 break;
             case R.id.tv_performance: // 실천인증
-                Toast.makeText(ActivitySearch.this, "오픈 준비 중 입니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "오픈 준비 중 입니다.", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.tv_tag: // 태그
-                Toast.makeText(ActivitySearch.this, "오픈 준비 중 입니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "오픈 준비 중 입니다.", Toast.LENGTH_SHORT).show();
                 break;
         }
     }

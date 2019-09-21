@@ -99,13 +99,13 @@ public class FragmentCamera extends BaseFragment implements LifecycleOwner {
                     @Override
                     public void onImageSaved(@NonNull File file) {
                         String msg = "사진 경로 : ${file.absolutePath}";
-                        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext().getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onError(@NonNull ImageCapture.UseCaseError useCaseError, @NonNull String message, @Nullable Throwable cause) {
                         String msg = "Photo capture failed: $message";
-                        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext().getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
                         Log.e("imageCaptureError : ", message);
                     }
                 });

@@ -102,7 +102,7 @@ public class FragmentSearchAppealer extends BaseFragment implements IORecyclerVi
 
         ivDelete.setOnClickListener(view -> {
             // todo : 검색에서 삭제가 무엇인지 알아보아야 합니다.
-            Toast.makeText(getContext(), "구현되지 않은 기능입니다.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext().getApplicationContext(), "구현되지 않은 기능입니다.", Toast.LENGTH_SHORT).show();
         });
 
         h.itemView.setOnClickListener(v -> {
@@ -139,7 +139,7 @@ public class FragmentSearchAppealer extends BaseFragment implements IORecyclerVi
         HashMap header = Utils.getHttpHeader(prefs.getToken());
         HashMap<String, String> body = new HashMap<>();
         body.put("keyword", keyword);
-        DAHttpClient.getInstance().Post(Comm_Param.URL_SEARCH, header, body, new IOServerCallback() {
+        DAHttpClient.getInstance(getContext()).Post(Comm_Param.URL_SEARCH, header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();

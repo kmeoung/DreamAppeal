@@ -50,6 +50,8 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
 
     public static final String EXTRA_ACTION_POST_INDEX = "EXTRA_ACTION_POST_INDEX";
 
+    public static final int REQUEST_ACTIVITY = 1000;
+
     @BindView(R.id.v_status)
     View mVStatus;
     @BindView(R.id.btb_bar)
@@ -124,7 +126,7 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
         url = url.replace(Comm_Param.POST_INDEX, String.valueOf(mPostIndex));
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DAHttpClient.getInstance().Get(url, header, null, new IOServerCallback() {
+        DAHttpClient.getInstance(ActivityActionPost.this).Get(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();
@@ -132,7 +134,7 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(ActivityActionPost.this, message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                 if (TextUtils.equals(code, SUCCESS)) {
                     JSONObject json = new JSONObject(body);
@@ -156,6 +158,7 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
                     mTvTarget.setText(mBean.getObject_name());
                     mTvTargetDetail.setText(mBean.getStep_name());
                     mIvCheering.setSelected(mBean.getStatus());
+                    mTvTime.setText(Utils.convertFromDate(mBean.getRegister_date()));
 
                 }
             }
@@ -173,7 +176,7 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
         url = url.replace(Comm_Param.POST_INDEX, String.valueOf(mPostIndex));
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DAHttpClient.getInstance().Delete(url, header, null, new IOServerCallback() {
+        DAHttpClient.getInstance(ActivityActionPost.this).Delete(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();
@@ -181,7 +184,7 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(ActivityActionPost.this, message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                 if (TextUtils.equals(code, SUCCESS)) {
                     finish();
@@ -202,7 +205,7 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
                 Intent intent = new Intent(ActivityActionPost.this, ActivityCommentDetail.class);
                 intent.putExtra(ActivityCommentDetail.EXTRA_COMMENT_TYPE, ActivityCommentDetail.TYPE_ACTION_POST);
                 intent.putExtra(ActivityCommentDetail.EXTRA_POST_INDEX, mBean.getIdx());
-                startActivityForResult(intent, FragmentMain.REQUEST_BLUEPRINT_COMMENT);
+                startActivityForResult(intent, REQUEST_ACTIVITY);
                 break;
             case R.id.ll_cheering:
                 httpPatchLike(mBean.getIdx());
@@ -225,7 +228,7 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
         url = url.replace(Comm_Param.PROFILES_INDEX,String.valueOf(prefs.getProfileIndex()));
         url = url.replace(Comm_Param.POST_INDEX,String.valueOf(post_index));
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DAHttpClient.getInstance().Patch(url, header, null, new IOServerCallback() {
+        DAHttpClient.getInstance(ActivityActionPost.this).Patch(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();
@@ -233,7 +236,7 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(ActivityActionPost.this, message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                 if(TextUtils.equals(code,SUCCESS)){
                     JSONObject json = new JSONObject(body);
@@ -249,7 +252,7 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            if(requestCode == FragmentMain.REQUEST_BLUEPRINT_COMMENT){
+            if(requestCode == REQUEST_ACTIVITY){
                 httpGetActionPost();
             }
         }
@@ -272,14 +275,14 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
                         intent.putExtra(ActivityAddActionPost.EXTRA_ACTION_POST_TYPE,ActivityAddActionPost.TYPE_RESET_LEVEL);
                         intent.putExtra(ActivityAddActionPost.EXTRA_ACTION_POST_INDEX,mPostIndex);
                         intent.putExtra(ActivityAddActionPost.EXTRA_ACTION_POST_CONTENTS,mBean);
-                        startActivity(intent);
+                        startActivityForResult(intent,REQUEST_ACTIVITY);
                         break;
                     case R.id.menu_edit:
                         intent = new Intent(ActivityActionPost.this, ActivityAddActionPost.class);
                         intent.putExtra(ActivityAddActionPost.EXTRA_ACTION_POST_TYPE,ActivityAddActionPost.TYPE_EDIT_ACTION_POST);
                         intent.putExtra(ActivityAddActionPost.EXTRA_ACTION_POST_INDEX,mPostIndex);
                         intent.putExtra(ActivityAddActionPost.EXTRA_ACTION_POST_CONTENTS,mBean);
-                        startActivity(intent);
+                        startActivityForResult(intent,REQUEST_ACTIVITY);
                         break;
                     case R.id.menu_delete:
                         builder = new AlertDialog.Builder(ActivityActionPost.this)

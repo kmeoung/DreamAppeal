@@ -1,10 +1,15 @@
 package com.truevalue.dreamappeal.http;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.bumptech.glide.BuildConfig;
+import com.truevalue.dreamappeal.activity.ActivityLogin;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -32,12 +37,13 @@ public class DAHttpClient {
 
     private static DAHttpClient instance;
 
-    public static DAHttpClient newInstance(Context context){
+    public static DAHttpClient newInstance(Context context) {
         instance = new DAHttpClient(context);
         return instance;
     }
 
-    public static DAHttpClient getInstance(){
+    public static DAHttpClient getInstance(Context context) {
+        instance.mContext = context;
         return instance;
     }
 
@@ -50,6 +56,7 @@ public class DAHttpClient {
 
     /**
      * 파일 전송 테스트
+     *
      * @param context
      * @param url
      * @param header
@@ -111,6 +118,7 @@ public class DAHttpClient {
 
         mClient.newCall(request).enqueue(callback);
     }
+
 
     /**
      * Post Server 방식
@@ -181,6 +189,16 @@ public class DAHttpClient {
                     JSONObject object = new JSONObject(body);
                     String code = object.getString("code");
                     String message = object.getString("message");
+
+                    if (TextUtils.equals(code, IOServerCallback.USER_NOT_FOUND)) {
+                        handler.post(() -> {
+                            Toast.makeText(mContext.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                        });
+                        Intent intent = new Intent(mContext, ActivityLogin.class);
+                        mContext.startActivity(intent);
+                        ((Activity) mContext).finish();
+                        return;
+                    }
 
                     handler.post(new Runnable() {
                         @Override
@@ -267,6 +285,16 @@ public class DAHttpClient {
                     JSONObject object = new JSONObject(body);
                     String code = object.getString("code");
                     String message = object.getString("message");
+
+                    if (TextUtils.equals(code, IOServerCallback.USER_NOT_FOUND)) {
+                        handler.post(() -> {
+                            Toast.makeText(mContext.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                        });
+                        Intent intent = new Intent(mContext, ActivityLogin.class);
+                        mContext.startActivity(intent);
+                        ((Activity) mContext).finish();
+                        return;
+                    }
 
                     handler.post(new Runnable() {
                         @Override
@@ -358,6 +386,16 @@ public class DAHttpClient {
                     String code = object.getString("code");
                     String message = object.getString("message");
 
+                    if (TextUtils.equals(code, IOServerCallback.USER_NOT_FOUND)) {
+                        handler.post(() -> {
+                            Toast.makeText(mContext.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                        });
+                        Intent intent = new Intent(mContext, ActivityLogin.class);
+                        mContext.startActivity(intent);
+                        ((Activity) mContext).finish();
+                        return;
+                    }
+
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
@@ -447,6 +485,16 @@ public class DAHttpClient {
                     JSONObject object = new JSONObject(body);
                     String code = object.getString("code");
                     String message = object.getString("message");
+
+                    if (TextUtils.equals(code, IOServerCallback.USER_NOT_FOUND)) {
+                        handler.post(() -> {
+                            Toast.makeText(mContext.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                        });
+                        Intent intent = new Intent(mContext, ActivityLogin.class);
+                        mContext.startActivity(intent);
+                        ((Activity) mContext).finish();
+                        return;
+                    }
 
                     handler.post(new Runnable() {
                         @Override

@@ -60,7 +60,6 @@ public class FragmentNormalLogin extends BaseFragment implements IOBaseTitleBarL
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mBtbBar.setIOBaseTitleBarListener(this);
-        mBtbBar.setPadding(0, Utils.getStatusBarHeight(getContext()), 0, 0);
         // TODO : 테스트용
         if (Comm_Param.IS_TEST) {
             mEtId.setText("debug@gmail.com");
@@ -83,18 +82,18 @@ public class FragmentNormalLogin extends BaseFragment implements IOBaseTitleBarL
      */
     private void httpPostLogin() {
 
-        DAHttpClient client = DAHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance(getContext());
         HashMap<String, String> body = new HashMap<>();
         String id = mEtId.getText().toString();
         String password = mEtPassword.getText().toString();
 
         if (TextUtils.isEmpty(id)) {
-            Toast.makeText(getContext(), "아이디를 입력해주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext().getApplicationContext(), "아이디를 입력해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (TextUtils.isEmpty(password)) {
-            Toast.makeText(getContext(), "비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext().getApplicationContext(), "비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -110,7 +109,7 @@ public class FragmentNormalLogin extends BaseFragment implements IOBaseTitleBarL
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
                 if (TextUtils.equals(SUCCESS, code)) {
-                    Toast.makeText(getContext(), "로그인에 성공했습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext().getApplicationContext(), "로그인에 성공했습니다.", Toast.LENGTH_SHORT).show();
                     JSONObject object = new JSONObject(body);
                     String token = object.getString("token");
                     int profile_idx = object.getInt("profile_idx"); // 프로필이 없을 시 -1이 넘어 옴
@@ -125,7 +124,7 @@ public class FragmentNormalLogin extends BaseFragment implements IOBaseTitleBarL
                     // 로그인 저장
 
                 } else {
-                    Toast.makeText(getContext(), "아이디 / 비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext().getApplicationContext(), "아이디 / 비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -211,7 +211,7 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
         // 내 카테고리 조회
         url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getMyProfileIndex()));
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DAHttpClient.getInstance()
+        DAHttpClient.getInstance(getContext())
                 .Get(url, header, null, new IOServerCallback() {
                     @Override
                     public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -256,7 +256,7 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
         url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getMyProfileIndex()));
         url = url.replace(Comm_Param.OBJECT_INDEX, String.valueOf(object_index));
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DAHttpClient.getInstance()
+        DAHttpClient.getInstance(getContext())
                 .Get(url, header, null, new IOServerCallback() {
                     @Override
                     public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -301,7 +301,7 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         body.put("register_date", sdf.format(new Date()));
 
-        DAHttpClient.getInstance()
+        DAHttpClient.getInstance(getContext())
                 .Post(url, header, body, new IOServerCallback() {
                     @Override
                     public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -343,7 +343,7 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
         HashMap<String, String> body = new HashMap<>();
         if (mCategorySelected != -1) body.put("object_idx", String.valueOf(mCategorySelected));
         if (mStepSelected != -1) body.put("step_idx", String.valueOf(mStepSelected));
-        DAHttpClient.getInstance().Patch(url, header, body, new IOServerCallback() {
+        DAHttpClient.getInstance(getContext()).Patch(url, header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();

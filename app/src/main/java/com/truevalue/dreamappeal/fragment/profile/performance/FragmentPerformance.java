@@ -125,7 +125,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
         url = url.replace(Comm_Param.POST_INDEX, String.valueOf(mCurrentIndex));
         HashMap header = Utils.getHttpHeader(prefs.getToken());
 
-        DAHttpClient client = DAHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance(getContext());
         mAdapter.clear();
         mBestPostList.clear();
         client.Get(url, header, null, new IOServerCallback() {
@@ -296,6 +296,9 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
         LinearLayout llCheering = h.getItemView(R.id.ll_cheering);
         ImageView ivCheering = h.getItemView(R.id.iv_cheering);
         LinearLayout llComment = h.getItemView(R.id.ll_comment);
+        TextView tvTime = h.getItemView(R.id.tv_time);
+
+        tvTime.setText(Utils.convertFromDate(bean.getRegister_date()));
 
         // View Resize (화면 크기에 맞춰 정사각형으로 맞춤)
         Point size = Utils.getDisplaySize(getActivity());
@@ -411,7 +414,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
         url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
         url = url.replace(Comm_Param.POST_INDEX, String.valueOf(post_index));
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DAHttpClient.getInstance().Patch(url, header, null, new IOServerCallback() {
+        DAHttpClient.getInstance(getContext()).Patch(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();
@@ -423,11 +426,11 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
 
                 if (TextUtils.equals(code, SUCCESS)) {
                     JSONObject json = new JSONObject(body);
-//                    int likeCount = json.getInt("count");
-//                    tvCheering.setText(likeCount + "개");
-//                    ivCheering.setSelected(!ivCheering.isSelected());
+                    int likeCount = json.getInt("count");
+                    tvCheering.setText(likeCount + "개");
+                    ivCheering.setSelected(!ivCheering.isSelected());
 //                    mAdapter.notifyDataSetChanged();
-                    httpGetAchivementPostMain();
+//                    httpGetAchivementPostMain();
                 }
             }
         });
@@ -446,7 +449,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
         url = url.replaceAll(Comm_Param.POST_INDEX, String.valueOf(index));
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DAHttpClient client = DAHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance(getContext());
         client.Delete(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {

@@ -42,7 +42,7 @@ public class ActivityIntro extends BaseActivity {
                 // 권한 있음
                 Comm_Prefs prefs = new Comm_Prefs(ActivityIntro.this);
 
-                if (prefs.isLogin() && prefs.getProfileIndex() != -1) { // 바로 메인
+                if (prefs.isLogin() && prefs.getMyProfileIndex() != -1) { // 바로 메인
                     intent = new Intent(ActivityIntro.this, ActivityMain.class);
                 } else { // 로그인 페이지
                     intent = new Intent(ActivityIntro.this, ActivityLogin.class);

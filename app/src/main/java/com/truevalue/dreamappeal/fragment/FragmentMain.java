@@ -18,6 +18,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityGalleryCamera;
 import com.truevalue.dreamappeal.activity.ActivityMain;
@@ -25,6 +26,7 @@ import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.base.BaseMainTitleBar;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
+import com.truevalue.dreamappeal.bean.BeanUser;
 import com.truevalue.dreamappeal.fragment.profile.FragmentProfile;
 import com.truevalue.dreamappeal.activity.ActivitySearch;
 import com.truevalue.dreamappeal.http.DAHttpClient;
@@ -50,6 +52,7 @@ import static android.app.Activity.RESULT_OK;
 public class FragmentMain extends BaseFragment implements IOBaseTitleBarListener {
 
     public static final int REQUEST_SEARCH = 100;
+    public static final int REQUEST_ADD_POST = 101;
     private static final int REQUEST_DREAM_PRESENT = 1000;
     private static final int REQUEST_PERFORMANCE = 1100;
     private static final int REQUEST_BLUEPRINT = 1200;
@@ -146,7 +149,7 @@ public class FragmentMain extends BaseFragment implements IOBaseTitleBarListener
             case R.id.iv_add_board: // 게시글 추가
                 Intent intent = new Intent(getContext(), ActivityGalleryCamera.class);
                 intent.putExtra(ActivityGalleryCamera.VIEW_TYPE_ADD_ACTION_POST, "VIEW_TYPE_ADD_ACTION_POST");
-                startActivity(intent);
+                startActivityForResult(intent,REQUEST_ADD_POST);
                 break;
             case R.id.iv_notification: // 알림
                 break;
@@ -187,7 +190,7 @@ public class FragmentMain extends BaseFragment implements IOBaseTitleBarListener
         String url = Comm_Param.URL_API_USERS_INDEX
                 .replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DAHttpClient.getInstance().Get(url, header, null, new IOServerCallback() {
+        DAHttpClient.getInstance(getContext()).Get(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();
@@ -199,8 +202,10 @@ public class FragmentMain extends BaseFragment implements IOBaseTitleBarListener
 
                 if (TextUtils.equals(code, SUCCESS)) {
                     JSONObject json = new JSONObject(body);
-                    String name = json.getString("name");
-                    mBtbBar.setTitle(name + " 드림프로필");
+                    Gson gson = new Gson();
+                    BeanUser bean = gson.fromJson(json.toString(),BeanUser.class);
+                    mBtbBar.setTitle(bean.getName() + " 드림프로필");
+                    ((ActivityMain) getActivity()).setUser(bean);
                     // todo : Drawer 설정 필요
                 }
             }
@@ -213,6 +218,8 @@ public class FragmentMain extends BaseFragment implements IOBaseTitleBarListener
         if(resultCode == RESULT_OK){
             if(requestCode == REQUEST_SEARCH){
                 ((ActivityMain) getActivity()).setmProfileIndex(0);
+                ((ActivityMain) getActivity()).initPage();
+            }else if(requestCode == REQUEST_ADD_POST){
                 ((ActivityMain) getActivity()).initPage();
             }
         }

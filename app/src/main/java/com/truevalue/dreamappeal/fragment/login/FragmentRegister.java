@@ -81,7 +81,6 @@ public class FragmentRegister extends BaseFragment implements IOBaseTitleBarList
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mBtbBar.setIOBaseTitleBarListener(this);
-        mBtbBar.setPadding(0, Utils.getStatusBarHeight(getContext()), 0, 0);
         initView();
     }
 
@@ -158,7 +157,7 @@ public class FragmentRegister extends BaseFragment implements IOBaseTitleBarList
      * Get Check Email
      */
     private void httpGetCheckEmail() {
-        DAHttpClient client = DAHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance(getContext());
         HashMap<String, String> body = new HashMap<>();
 
         String id = mEtId.getText().toString();
@@ -167,28 +166,27 @@ public class FragmentRegister extends BaseFragment implements IOBaseTitleBarList
         String name = mEtName.getText().toString();
 
         if (TextUtils.isEmpty(name)) {
-            Utils.ToastMessage(getContext(),"이름을 입력해주세요.");
-            Toast.makeText(getContext(), "이름을 입력해주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext().getApplicationContext(), "이름을 입력해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (TextUtils.isEmpty(id)) {
-            Toast.makeText(getContext(), "아이디를 입력해주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext().getApplicationContext(), "아이디를 입력해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (!Utils.isEmailValid(id)) {
-            Toast.makeText(getContext(), "아이디를 이메일형식으로 입력해주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext().getApplicationContext(), "아이디를 이메일형식으로 입력해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (TextUtils.isEmpty(password)) {
-            Toast.makeText(getContext(), "비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext().getApplicationContext(), "비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (!TextUtils.equals(password, rePassword)) {
-            Toast.makeText(getContext(), "비밀번호가 서로 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext().getApplicationContext(), "비밀번호가 서로 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -203,7 +201,7 @@ public class FragmentRegister extends BaseFragment implements IOBaseTitleBarList
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
                 if (TextUtils.equals(code, VALIDATE_EMAIL)) httpPostRegister(id, password, name);
                 else {
-                    Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -215,7 +213,7 @@ public class FragmentRegister extends BaseFragment implements IOBaseTitleBarList
      * Post Register
      */
     private void httpPostRegister(String id, String password, String name) {
-        DAHttpClient client = DAHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance(getContext());
         HashMap<String, String> body = new HashMap<>();
 
         body.put("email", id);
@@ -238,7 +236,7 @@ public class FragmentRegister extends BaseFragment implements IOBaseTitleBarList
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                 if (code.equals(SUCCESS)) {
                     // 로그인 저장

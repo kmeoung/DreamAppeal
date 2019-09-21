@@ -15,8 +15,8 @@ import butterknife.ButterKnife;
 
 public class ActivityLogin extends BaseActivity {
 
-    @BindView(R.id.v_status)
-    View mVStatus;
+//    @BindView(R.id.v_status)
+//    View mVStatus;
     @BindView(R.id.login_container)
     FrameLayout mLoginContainer;
 

@@ -19,12 +19,12 @@ import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityCommentDetail;
 import com.truevalue.dreamappeal.base.BaseActivity;
-import com.truevalue.dreamappeal.fragment.FragmentMain;
-import com.truevalue.dreamappeal.http.DAHttpClient;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
-import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.bean.BeanPostDetail;
+import com.truevalue.dreamappeal.fragment.FragmentMain;
+import com.truevalue.dreamappeal.http.DAHttpClient;
+import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
 import com.truevalue.dreamappeal.utils.Utils;
@@ -64,6 +64,10 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
     LinearLayout mLlCheering;
     @BindView(R.id.tv_contents)
     TextView mTvContents;
+    @BindView(R.id.tv_time)
+    TextView mTvTime;
+    @BindView(R.id.ll_share)
+    LinearLayout mLlShare;
 
     private BeanPostDetail mBean = null;
 
@@ -100,12 +104,12 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
         if (index == -1) return;
         Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityRecentAchivementDetail.this);
         String url = Comm_Param.URL_API_MYPROFILEINDEX_ACHIVEMENT_POSTS_INDEX;
-        url = url.replace(Comm_Param.MY_PROFILES_INDEX,String.valueOf(prefs.getMyProfileIndex()));
+        url = url.replace(Comm_Param.MY_PROFILES_INDEX, String.valueOf(prefs.getMyProfileIndex()));
         url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
         url = url.replace(Comm_Param.POST_INDEX, String.valueOf(index));
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DAHttpClient client = DAHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance(ActivityRecentAchivementDetail.this);
         client.Get(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -114,7 +118,7 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(ActivityRecentAchivementDetail.this, message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                 if (TextUtils.equals(code, SUCCESS)) {
                     Gson gson = new Gson();
                     JSONObject object = new JSONObject(body);
@@ -123,15 +127,16 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
 
                     mBtbBar.setTitle(mBean.getTitle());
                     // todo : 아직 검증이 필요함
-                    Utils.setReadMore(mTvContents,mBean.getContent(),3);
+                    Utils.setReadMore(mTvContents, mBean.getContent(), 3);
                     if (TextUtils.isEmpty(mBean.getThumbnail_image()))
-                        Glide.with(ActivityRecentAchivementDetail.this).load(R.drawable.user).into(mIvImg);
+                        Glide.with(getApplicationContext()).load(R.drawable.user).into(mIvImg);
                     else
-                        Glide.with(ActivityRecentAchivementDetail.this).load(mBean.getThumbnail_image()).placeholder(R.drawable.user).into(mIvImg);
+                        Glide.with(getApplicationContext()).load(mBean.getThumbnail_image()).placeholder(R.drawable.user).into(mIvImg);
 
-                    mTvCheering.setText(String.format("%d개",mBean.getLike_count()));
-                    mTvComment.setText(String.format("%d개",mBean.getComment_count()));
+                    mTvCheering.setText(String.format("%d개", mBean.getLike_count()));
+                    mTvComment.setText(String.format("%d개", mBean.getComment_count()));
                     mLlCheering.setSelected(mBean.isStatus());
+                    mTvTime.setText(Utils.convertFromDate(mBean.getRegister_date()));
                 }
             }
         });
@@ -169,7 +174,7 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
      * 더보기 Dialog 띄우기
      */
     private void showMoreDialog() {
-        String[] list = {"대표 성과1 지정","대표 성과2 지정","대표 성과3 지정","수정","삭제"};
+        String[] list = {"대표 성과1 지정", "대표 성과2 지정", "대표 성과3 지정", "수정", "삭제"};
         AlertDialog.Builder builder = new AlertDialog.Builder(ActivityRecentAchivementDetail.this);
         builder.setItems(list, new DialogInterface.OnClickListener() {
             @Override
@@ -221,31 +226,31 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
     /**
      * 대표 성과 등록
      */
-    private void httpPostBestAchivement(int best_index){
-       Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityRecentAchivementDetail.this);
-       String url = Comm_Param.URL_API_ACHIVEMENT_BEST_POST_INDEX_POST_INDEX;
-       url = url.replace(Comm_Param.PROFILES_INDEX,String.valueOf(prefs.getProfileIndex()));
-       url = url.replace(Comm_Param.BEST_POST_INDEX,String.valueOf(best_index));
-       url = url.replace(Comm_Param.POST_INDEX,String.valueOf(mBean.getIdx()));
+    private void httpPostBestAchivement(int best_index) {
+        Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityRecentAchivementDetail.this);
+        String url = Comm_Param.URL_API_ACHIVEMENT_BEST_POST_INDEX_POST_INDEX;
+        url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
+        url = url.replace(Comm_Param.BEST_POST_INDEX, String.valueOf(best_index));
+        url = url.replace(Comm_Param.POST_INDEX, String.valueOf(mBean.getIdx()));
 
-       HashMap header = Utils.getHttpHeader(prefs.getToken());
-       DAHttpClient client = DAHttpClient.getInstance();
-       client.Post(url, header, null, new IOServerCallback() {
-           @Override
-           public void onFailure(@NotNull Call call, @NotNull IOException e) {
-               e.printStackTrace();
-           }
+        HashMap header = Utils.getHttpHeader(prefs.getToken());
+        DAHttpClient client = DAHttpClient.getInstance(ActivityRecentAchivementDetail.this);
+        client.Post(url, header, null, new IOServerCallback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
 
-           @Override
-           public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-               Toast.makeText(ActivityRecentAchivementDetail.this, message, Toast.LENGTH_SHORT).show();
+            @Override
+            public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
-               if(TextUtils.equals(code,SUCCESS)){
-                   setResult(RESULT_OK);
-                   finish();
-               }
-           }
-       });
+                if (TextUtils.equals(code, SUCCESS)) {
+                    setResult(RESULT_OK);
+                    finish();
+                }
+            }
+        });
     }
 
     /**
@@ -261,7 +266,7 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
         url = url.replaceAll(Comm_Param.POST_INDEX, String.valueOf(index));
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DAHttpClient client = DAHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance(ActivityRecentAchivementDetail.this);
         client.Delete(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -270,7 +275,7 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(ActivityRecentAchivementDetail.this, message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                 if (TextUtils.equals(code, SUCCESS)) {
                     if (mBean != null) {
                         setResult(RESULT_OK);
@@ -284,16 +289,17 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
     /**
      * http patch
      * 응원하기 / 취소
+     *
      * @param post_index
      */
-    private void httpPatchLike(int post_index){
+    private void httpPatchLike(int post_index) {
         Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityRecentAchivementDetail.this);
         String url = Comm_Param.URL_API_PROFILES_INDEX_PERFORMANCE_INDEX_LIKE_INDEX;
-        url = url.replace(Comm_Param.MY_PROFILES_INDEX,String.valueOf(prefs.getMyProfileIndex()));
-        url = url.replace(Comm_Param.PROFILES_INDEX,String.valueOf(prefs.getProfileIndex()));
-        url = url.replace(Comm_Param.POST_INDEX,String.valueOf(post_index));
+        url = url.replace(Comm_Param.MY_PROFILES_INDEX, String.valueOf(prefs.getMyProfileIndex()));
+        url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
+        url = url.replace(Comm_Param.POST_INDEX, String.valueOf(post_index));
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DAHttpClient.getInstance().Patch(url, header, null, new IOServerCallback() {
+        DAHttpClient.getInstance(ActivityRecentAchivementDetail.this).Patch(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();
@@ -301,9 +307,9 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(ActivityRecentAchivementDetail.this, message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
-                if(TextUtils.equals(code,SUCCESS)){
+                if (TextUtils.equals(code, SUCCESS)) {
                     JSONObject json = new JSONObject(body);
                     int likeCount = json.getInt("count");
                     mTvCheering.setText(likeCount + "개");
@@ -320,7 +326,7 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
             if (requestCode == REQUEST_EDIT_RECENT_ACHIVEMENT) {
                 setResult(RESULT_OK);
                 finish();
-            }else if(requestCode == FragmentMain.REQUEST_BLUEPRINT_COMMENT){
+            } else if (requestCode == FragmentMain.REQUEST_BLUEPRINT_COMMENT) {
                 httpGetPostAchivement(mBean.getIdx());
             }
         }

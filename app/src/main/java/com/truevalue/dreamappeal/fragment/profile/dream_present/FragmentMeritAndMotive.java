@@ -119,12 +119,12 @@ public class FragmentMeritAndMotive extends BaseFragment implements IOBaseTitleB
         HashMap<String, String> body = new HashMap<>();
 
         if (TextUtils.isEmpty(mEtMeritAndMotive.getText().toString())) {
-            Toast.makeText(getContext(), "모든 항목을 입력해주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext().getApplicationContext(), "모든 항목을 입력해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
 
         body.put("meritNmotive", mEtMeritAndMotive.getText().toString());
-        DAHttpClient client = DAHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance(getContext());
 
         client.Patch(url, header, body, new IOServerCallback() {
             @Override

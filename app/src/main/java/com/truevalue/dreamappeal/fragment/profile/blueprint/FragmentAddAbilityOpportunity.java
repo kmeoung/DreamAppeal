@@ -99,7 +99,7 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
     @Override
     public void OnClickRightTextBtn() {
         if (TextUtils.isEmpty(mEtAbilityOpportunity.getText().toString())) {
-            Toast.makeText(getContext(), "모든 항목을 입력해주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext().getApplicationContext(), "모든 항목을 입력해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
         if (!isEdit) {
@@ -154,7 +154,7 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
         HashMap<String, String> body = new HashMap<>();
         body.put("ability", mEtAbilityOpportunity.getText().toString());
 
-        DAHttpClient client = DAHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance(getContext());
         client.Post(url, header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -185,7 +185,7 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
         HashMap<String, String> body = new HashMap<>();
         body.put("opportunity", mEtAbilityOpportunity.getText().toString());
 
-        DAHttpClient client = DAHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance(getContext());
         client.Post(url, header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -219,7 +219,7 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
         HashMap<String, String> body = new HashMap<>();
         body.put("ability", mEtAbilityOpportunity.getText().toString());
 
-        DAHttpClient client = DAHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance(getContext());
         client.Patch(url, header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -253,7 +253,7 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
         HashMap<String, String> body = new HashMap<>();
         body.put("opportunity", mEtAbilityOpportunity.getText().toString());
 
-        DAHttpClient client = DAHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance(getContext());
         client.Patch(url, header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {

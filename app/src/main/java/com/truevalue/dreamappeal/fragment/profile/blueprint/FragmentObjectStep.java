@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -159,7 +160,7 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
         url = url.replace(Comm_Param.OBJECT_INDEX, String.valueOf(mObjectIndex));
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DAHttpClient client = DAHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance(getContext());
         client.Get(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -230,7 +231,7 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
         url = url.replace(Comm_Param.OBJECT_INDEX, String.valueOf(mObjectIndex));
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DAHttpClient.getInstance().Delete(url, header, null, new IOServerCallback() {
+        DAHttpClient.getInstance(getContext()).Delete(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();
@@ -259,7 +260,7 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
         url = url.replace(Comm_Param.STEPS_INDEX, String.valueOf(step_index));
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DAHttpClient.getInstance().Delete(url, header, null, new IOServerCallback() {
+        DAHttpClient.getInstance(getContext()).Delete(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();
@@ -298,7 +299,7 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
             body.put("complete", "0");
             body.put("complete_date", null);
         }
-        DAHttpClient.getInstance().Patch(url, header, body, new IOServerCallback() {
+        DAHttpClient.getInstance(getContext()).Patch(url, header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();
@@ -334,6 +335,7 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
             TextView tvDetailStep = h.getItemView(R.id.tv_detail_step);
             ImageView ivMore = h.getItemView(R.id.iv_more);
             TextView tvTotalCount = h.getItemView(R.id.tv_total_count);
+            LinearLayout llComplete = h.getItemView(R.id.ll_complete);
 
             tvTitle.setText(bean.getObject_name());
             tvTotalCount.setText(String.format("총 인증 %d회", bean.getTotal_action_post_count()));
@@ -349,6 +351,14 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
 
             PopupMenu popupMenu = new PopupMenu(getContext(), ivMore);
             popupMenu.getMenuInflater().inflate(R.menu.menu_object_step, popupMenu.getMenu());
+
+            if(TextUtils.equals(bean.getComplete(),"1")){
+                popupMenu.getMenu().findItem(R.id.menu_complete).setTitle("취소하기");
+                llComplete.setVisibility(View.VISIBLE);
+            }else {
+                popupMenu.getMenu().findItem(R.id.menu_complete).setTitle("완료하기");
+                llComplete.setVisibility(View.GONE);
+            }
 
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
@@ -516,7 +526,7 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
      */
     private void httpPostComment() {
         if (TextUtils.isEmpty(mEtComment.getText().toString())) {
-            Toast.makeText(getContext(), "댓글을 입력해주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext().getApplicationContext(), "댓글을 입력해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -529,7 +539,7 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
         body.put("content", mEtComment.getText().toString());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         body.put("register_date", sdf.format(new Date()));
-        DAHttpClient.getInstance()
+        DAHttpClient.getInstance(getContext())
                 .Post(url, header, body, new IOServerCallback() {
                     @Override
                     public void onFailure(@NotNull Call call, @NotNull IOException e) {

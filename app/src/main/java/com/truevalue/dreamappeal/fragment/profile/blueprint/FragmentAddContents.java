@@ -173,7 +173,7 @@ public class FragmentAddContents extends BaseFragment implements IOBaseTitleBarL
     @Override
     public void OnClickRightTextBtn() {
         if (TextUtils.isEmpty(mEtAbilityOpportunity.getText().toString())) {
-            Toast.makeText(getContext(), "모든 항목을 입력해주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext().getApplicationContext(), "모든 항목을 입력해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -199,7 +199,7 @@ public class FragmentAddContents extends BaseFragment implements IOBaseTitleBarL
         HashMap header = Utils.getHttpHeader(prefs.getToken());
         HashMap<String, String> body = new HashMap();
         body.put("object_name", mEtAbilityOpportunity.getText().toString());
-        DAHttpClient.getInstance().Post(url, header, body, new IOServerCallback() {
+        DAHttpClient.getInstance(getContext()).Post(url, header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();
@@ -229,7 +229,7 @@ public class FragmentAddContents extends BaseFragment implements IOBaseTitleBarL
         HashMap header = Utils.getHttpHeader(prefs.getToken());
         HashMap<String, String> body = new HashMap<>();
         body.put("object_name", mEtAbilityOpportunity.getText().toString());
-        DAHttpClient.getInstance().Patch(url, header, body, new IOServerCallback() {
+        DAHttpClient.getInstance(getContext()).Patch(url, header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();
@@ -259,7 +259,7 @@ public class FragmentAddContents extends BaseFragment implements IOBaseTitleBarL
         HashMap header = Utils.getHttpHeader(prefs.getToken());
         HashMap<String, String> body = new HashMap<>();
         body.put("title", mEtAbilityOpportunity.getText().toString());
-        DAHttpClient.getInstance().Post(url, header, body, new IOServerCallback() {
+        DAHttpClient.getInstance(getContext()).Post(url, header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();
@@ -290,7 +290,7 @@ public class FragmentAddContents extends BaseFragment implements IOBaseTitleBarL
         HashMap header = Utils.getHttpHeader(prefs.getToken());
         HashMap<String, String> body = new HashMap<>();
         body.put("title", mEtAbilityOpportunity.getText().toString());
-        DAHttpClient.getInstance().Patch(url, header, body, new IOServerCallback() {
+        DAHttpClient.getInstance(getContext()).Patch(url, header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();

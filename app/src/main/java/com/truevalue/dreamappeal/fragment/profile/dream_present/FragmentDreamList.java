@@ -117,7 +117,7 @@ public class FragmentDreamList extends BaseFragment implements IOBaseTitleBarLis
         url = url.replace(Comm_Param.USER_INDEX, mUserIndex + "");
         Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DAHttpClient client = DAHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance(getContext());
         mAdapter.clear();
         client.Get(url, header, null, new IOServerCallback() {
             @Override
@@ -160,7 +160,7 @@ public class FragmentDreamList extends BaseFragment implements IOBaseTitleBarLis
 
         HashMap header = Utils.getHttpHeader(token);
 
-        DAHttpClient client = DAHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance(getContext());
 
         client.Delete(url, header, null, new IOServerCallback() {
             @Override
@@ -273,12 +273,12 @@ public class FragmentDreamList extends BaseFragment implements IOBaseTitleBarLis
                                     if (mAdapter.size() > 1) {
                                         Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
                                         if (bean.getIdx() == prefs.getProfileIndex()) {
-                                            Toast.makeText(getContext(), "현재 사용중인 프로필은 삭제가 불가능 합니다.", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getContext().getApplicationContext(), "현재 사용중인 프로필은 삭제가 불가능 합니다.", Toast.LENGTH_SHORT).show();
                                         } else {
                                             httpDeleteProfiles(bean.getIdx());
                                         }
                                     } else {
-                                        Toast.makeText(getContext(), "최소 1개의 프로필이 있어야 합니다.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getContext().getApplicationContext(), "최소 1개의 프로필이 있어야 합니다.", Toast.LENGTH_SHORT).show();
                                     }
                                     dialog.dismiss();
                                 }
@@ -305,12 +305,13 @@ public class FragmentDreamList extends BaseFragment implements IOBaseTitleBarLis
                                 public void onClick(DialogInterface dialog, int which) {
                                     Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
                                     if (bean.getIdx() == prefs.getProfileIndex()) {
-                                        Toast.makeText(getContext(), "현재 사용중인 프로필입니다.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getContext().getApplicationContext(), "현재 사용중인 프로필입니다.", Toast.LENGTH_SHORT).show();
                                         dialog.dismiss();
                                         return;
                                     } else {
                                         prefs.setProfileIndex(bean.getIdx(), true);
-                                        Toast.makeText(getContext(), "성공적으로 변경되었습니다.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getContext().getApplicationContext(), "성공적으로 변경되었습니다.", Toast.LENGTH_SHORT).show();
+                                        ((ActivityMain) getActivity()).setmProfileOrder(bean.getProfile_order());
                                     }
                                     dialog.dismiss();
                                     getActivity().onBackPressed();
@@ -325,7 +326,7 @@ public class FragmentDreamList extends BaseFragment implements IOBaseTitleBarLis
                     AlertDialog dialog = builder.create();
                     dialog.show();
                 }else{
-                    Toast.makeText(getContext(), "권한이 없습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext().getApplicationContext(), "권한이 없습니다.", Toast.LENGTH_SHORT).show();
                 }
             });
             llItemView.setBackground(getResources().getDrawable(R.drawable.dream_list_box_gray));
@@ -353,7 +354,7 @@ public class FragmentDreamList extends BaseFragment implements IOBaseTitleBarLis
                         ((ActivityMain) getActivity()).replaceFragmentRight(new FragmentDreamTitle(), true);
                     }
                 } else {
-                    Toast.makeText(getContext(), "프로필은 최대 3개까지만 추가할 수 있습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext().getApplicationContext(), "프로필은 최대 3개까지만 추가할 수 있습니다.", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.btn_edit: // 수정 버튼

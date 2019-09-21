@@ -25,7 +25,11 @@ import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.bean.BeanGalleryInfo;
 import com.truevalue.dreamappeal.bean.BeanGalleryInfoList;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -126,10 +130,11 @@ public class Utils {
 
     /**
      * Display Size 가져오기
+     *
      * @param activity
      * @return
      */
-    public static Point getDisplaySize(Activity activity){
+    public static Point getDisplaySize(Activity activity) {
         Display display = activity.getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
@@ -138,11 +143,12 @@ public class Utils {
 
     /**
      * Resize View
+     *
      * @param view
      * @param width
      * @param height
      */
-    public static void setResizeView(View view,int width,int height){
+    public static void setResizeView(View view, int width, int height) {
         // 화면 사이즈
         ViewGroup.LayoutParams params = view.getLayoutParams();
         params.width = width;
@@ -150,13 +156,13 @@ public class Utils {
         view.setLayoutParams(params);
     }
 
-    public static int getStatusBarHeight(Context context){
+    public static int getStatusBarHeight(Context context) {
         int id = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
         int statusHeight = context.getResources().getDimensionPixelSize(id);
         return statusHeight;
     }
 
-    public static HashMap<String,String> getHttpHeader(String token){
+    public static HashMap<String, String> getHttpHeader(String token) {
         HashMap<String, String> header = new HashMap<>();
         header.put("Authorization", "Bearer " + token);
         return header;
@@ -164,6 +170,7 @@ public class Utils {
 
     /**
      * SNS 더보기 설정
+     *
      * @param view
      * @param text
      * @param maxLine
@@ -219,7 +226,45 @@ public class Utils {
         });
     }
 
-    public static void ToastMessage(Context context,String message){
-        Toast.makeText(context.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    public static String convertFromDate(String strPostDate) {
+
+        String strDate = "";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy. MM. dd");
+        Calendar nowCal = Calendar.getInstance();
+
+        int nowHour = nowCal.get(Calendar.HOUR);
+        int nowMinute = nowCal.get(Calendar.MINUTE);
+        int nowSeconds = nowCal.get(Calendar.SECOND);
+        try {
+            Date nowDate = sdf2.parse(sdf.format(nowCal.getTime()));
+
+            nowCal.setTime(sdf.parse(strPostDate));
+
+            Date postDate = sdf2.parse(sdf.format(nowCal.getTime()));
+
+            if (nowDate.compareTo(postDate) > 0) {
+                strDate = sdf2.format(postDate);
+            } else {
+
+                int postHour = nowCal.get(Calendar.HOUR);
+                int postMinute = nowCal.get(Calendar.MINUTE);
+                int postSeconds = nowCal.get(Calendar.SECOND);
+
+                if (postHour < nowHour) {
+                    strDate = String.format("%d시간전", nowHour - postHour);
+                } else {
+                    if (postMinute < nowMinute) {
+                        strDate = String.format("%d분전", nowMinute - postMinute);
+                    } else {
+                        strDate = String.format("%d초전", nowSeconds - postSeconds);
+                    }
+                }
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return strDate;
     }
 }

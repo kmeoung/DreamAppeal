@@ -133,6 +133,9 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
 
         if (mAdapter == null) initAdapter();
         initView();
+
+        // todo : 이미지 업로드 테스트
+//        httpPostProfilesImage();
     }
 
     @Override
@@ -163,7 +166,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
      * @param token
      */
     private void httpPostProfiles(String token) {
-        DAHttpClient client = DAHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance(getContext());
 
         HashMap header = Utils.getHttpHeader(token);
 
@@ -201,6 +204,35 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
     }
 
     /**
+     * 회원을 처음 등록했을 때 초기화
+     */
+    private void httpPostProfilesImage() {
+        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+
+        HashMap header = Utils.getHttpHeader(prefs.getToken());
+        DAHttpClient client = DAHttpClient.getInstance(getContext());
+
+
+        client.Patch(Comm_Param.URL_API_PROFILE_INDEX_IMAGE.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex())), header, null, new IOServerCallback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
+                Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+
+                // 성공일 시
+                if (TextUtils.equals(code, SUCCESS)) {
+
+                }
+            }
+        });
+    }
+
+
+    /**
      * 내 꿈 소개 조회
      *
      * @param profiles_index
@@ -214,7 +246,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
         mAdapter.clear();
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DAHttpClient client = DAHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance(getContext());
         client.Get(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -231,7 +263,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
                     JSONObject object = new JSONObject(body);
                     JSONObject profile = object.getJSONObject("profile");
                     BeanProfilesIndex bean = gson.fromJson(profile.toString(), BeanProfilesIndex.class);
-                    ((ActivityMain)getActivity()).setTitle(bean.getName() + " 드림프로필");
+                    ((ActivityMain) getActivity()).setTitle(bean.getName() + " 드림프로필");
                     try {
                         JSONArray jsonArray = profile.getJSONArray("description_spec");
 
@@ -286,9 +318,29 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
                         mTvInitMeritAndMotive.setVisibility(View.GONE);
                         mBtnMeritAndMotiveMore.setVisibility(View.VISIBLE);
                     }
-                    mTvCheering.setText(String.format("%d개",bean.getLike_count()));
-                    mTvComment.setText(String.format("%d개",bean.getComment_count()));
+                    mTvCheering.setText(String.format("%d개", bean.getLike_count()));
+                    mTvComment.setText(String.format("%d개", bean.getComment_count()));
                     mIvCheering.setSelected(bean.isStatus());
+
+                    // todo : 임시로 내꿈 리스트 몇번째 인지 조회하는 코드 입니다.
+                    int profile_order = 0;
+                    if (prefs.getMyProfileIndex() == prefs.getProfileIndex()) {
+                        profile_order = ((ActivityMain) getActivity()).getmProfileOrder();
+                    } else {
+                        profile_order = 1;
+                    }
+
+                    switch (profile_order){
+                        case 1:
+                            mTvDreamName.setText("첫번째 꿈");
+                            break;
+                        case 2:
+                            mTvDreamName.setText("두번째 꿈");
+                            break;
+                        case 3:
+                            mTvDreamName.setText("세번째 꿈");
+                            break;
+                    }
                 }
             }
         });
@@ -299,13 +351,13 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
      * 응원하기 조회
      * todo : 필요할 시에만 사용
      */
-    private void httpGetLike(){
+    private void httpGetLike() {
         Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
         String url = Comm_Param.URL_API_PROFILES_INDEX_LIKE_MYPROFILEINDEX;
-        url = url.replace(Comm_Param.MY_PROFILES_INDEX,String.valueOf(prefs.getMyProfileIndex()));
-        url = url.replace(Comm_Param.PROFILES_INDEX,String.valueOf(prefs.getProfileIndex()));
+        url = url.replace(Comm_Param.MY_PROFILES_INDEX, String.valueOf(prefs.getMyProfileIndex()));
+        url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DAHttpClient.getInstance().Get(url, header, null, new IOServerCallback() {
+        DAHttpClient.getInstance(getContext()).Get(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();
@@ -315,7 +367,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
                 Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
-                if(TextUtils.equals(code,SUCCESS)){
+                if (TextUtils.equals(code, SUCCESS)) {
                     JSONObject json = new JSONObject(body);
                     boolean isLike = json.getBoolean("status");
 
@@ -329,13 +381,13 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
      * http patch
      * 응원하기 / 취소
      */
-    private void httpPatchLike(){
+    private void httpPatchLike() {
         Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
         String url = Comm_Param.URL_API_PROFILES_INDEX_LIKE_MYPROFILEINDEX;
-        url = url.replace(Comm_Param.MY_PROFILES_INDEX,String.valueOf(prefs.getMyProfileIndex()));
-        url = url.replace(Comm_Param.PROFILES_INDEX,String.valueOf(prefs.getProfileIndex()));
+        url = url.replace(Comm_Param.MY_PROFILES_INDEX, String.valueOf(prefs.getMyProfileIndex()));
+        url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DAHttpClient.getInstance().Patch(url, header, null, new IOServerCallback() {
+        DAHttpClient.getInstance(getContext()).Patch(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();
@@ -345,7 +397,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
                 Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
-                if(TextUtils.equals(code,SUCCESS)){
+                if (TextUtils.equals(code, SUCCESS)) {
                     JSONObject json = new JSONObject(body);
                     int likeCount = json.getInt("count");
                     mTvCheering.setText(likeCount + "개");
@@ -405,7 +457,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
                 break;
             case R.id.ll_comment: // 댓글
                 intent = new Intent(getContext(), ActivityCommentDetail.class);
-                intent.putExtra(ActivityCommentDetail.EXTRA_COMMENT_TYPE,ActivityCommentDetail.TYPE_DREAM_PRESENT);
+                intent.putExtra(ActivityCommentDetail.EXTRA_COMMENT_TYPE, ActivityCommentDetail.TYPE_DREAM_PRESENT);
                 startActivityForResult(intent, FragmentMain.REQUEST_DREAM_PRESENT_COMMENT);
                 break;
             case R.id.ll_cheering: // 불꽃(좋아요)
@@ -431,7 +483,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
                     dreamDescription = new ArrayList<>();
                     dreamDescription.add(mTvDreamDescription.getText().toString());
                     for (int i = 0; i < mAdapter.size(); i++) {
-                        dreamDescription.add((String)mAdapter.get(i));
+                        dreamDescription.add((String) mAdapter.get(i));
                     }
                 }
                 ((ActivityMain) getActivity()).replaceFragmentRight(FragmentDreamDescription.newInstance(dreamDescription), true);
@@ -439,7 +491,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
             case R.id.ll_merit_and_motive: // 이유 페이지 이동
             case R.id.tv_init_merit_and_motive:
                 String meritAndMotive = mTvMeritAndMotive.getText().toString();
-                if(TextUtils.isEmpty(meritAndMotive)) meritAndMotive = null;
+                if (TextUtils.isEmpty(meritAndMotive)) meritAndMotive = null;
                 ((ActivityMain) getActivity()).replaceFragmentRight(FragmentMeritAndMotive.newInstance(meritAndMotive), true);
                 break;
             case R.id.btn_follow: // 팔로우
@@ -471,7 +523,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
                 dreamDescription = new ArrayList<>();
                 dreamDescription.add(mTvDreamDescription.getText().toString());
                 for (int j = 0; j < mAdapter.size(); j++) {
-                    dreamDescription.add((String)mAdapter.get(j));
+                    dreamDescription.add((String) mAdapter.get(j));
                 }
             }
             ((ActivityMain) getActivity()).replaceFragmentRight(FragmentDreamDescription.newInstance(dreamDescription), true);
@@ -497,8 +549,8 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK){
-            if(requestCode == FragmentMain.REQUEST_DREAM_PRESENT_COMMENT){
+        if (resultCode == RESULT_OK) {
+            if (requestCode == FragmentMain.REQUEST_DREAM_PRESENT_COMMENT) {
                 Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
                 httpGetProfilesIndex(prefs.getProfileIndex());
             }

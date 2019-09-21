@@ -107,12 +107,12 @@ public class FragmentDreamTitle extends BaseFragment implements IOBaseTitleBarLi
      * 회원 등록
      */
     private void httpPostProfiles() {
-        DAHttpClient client = DAHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance(getContext());
         Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
         HashMap header = Utils.getHttpHeader(prefs.getToken());
 
         if (TextUtils.isEmpty(mEtJob.getText().toString()) || TextUtils.isEmpty(mEtValueStyle.getText().toString())) {
-            Toast.makeText(getContext(), "모든 항목을 입력해주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext().getApplicationContext(), "모든 항목을 입력해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -163,13 +163,13 @@ public class FragmentDreamTitle extends BaseFragment implements IOBaseTitleBarLi
         HashMap<String, String> body = new HashMap<>();
 
         if (TextUtils.isEmpty(mEtJob.getText().toString()) || TextUtils.isEmpty(mEtValueStyle.getText().toString())) {
-            Toast.makeText(getContext(), "모든 항목을 입력해주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext().getApplicationContext(), "모든 항목을 입력해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
 
         body.put("job", mEtJob.getText().toString());
         body.put("value_style", mEtValueStyle.getText().toString());
-        DAHttpClient client = DAHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance(getContext());
 
         client.Patch(url, header, body, new IOServerCallback() {
             @Override

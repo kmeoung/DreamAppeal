@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -120,7 +121,7 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
         url = url.replace(Comm_Param.MY_PROFILES_INDEX, String.valueOf(prefs.getMyProfileIndex()));
         url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DAHttpClient client = DAHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance(getContext());
         client.Get(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -299,16 +300,16 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
             BeanBlueprintObject bean = (BeanBlueprintObject) mAdapter.get(i);
             TextView tvObjectTitle = h.getItemView(R.id.tv_object_title);
             TextView tvObjectCount = h.getItemView(R.id.tv_object_count);
-            TextView tvComplete = h.getItemView(R.id.tv_complete);
+            LinearLayout llComplete = h.getItemView(R.id.ll_complete);
             ImageView ivSize = h.getItemView(R.id.iv_size);
             tvObjectTitle.setText(bean.getObject_name());
             tvObjectCount.setText("총 인증\n\n" + bean.getTotal_action_post_count() + "회");
             Glide.with(this).load(R.drawable.ic_side_triangle_blue).into(ivSize);
             // 완료 여부
             if (bean.getComplete() == 0) {
-                tvComplete.setVisibility(View.GONE);
+                llComplete.setVisibility(View.GONE);
             } else {
-                tvComplete.setVisibility(View.VISIBLE);
+                llComplete.setVisibility(View.VISIBLE);
             }
 
             h.itemView.setOnClickListener(new View.OnClickListener() {
@@ -354,7 +355,7 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
      */
     private void httpPostComment() {
         if(TextUtils.isEmpty(mEtComment.getText().toString())){
-            Toast.makeText(getContext(), "댓글을 입력해주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext().getApplicationContext(), "댓글을 입력해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -367,7 +368,7 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
         body.put("content", mEtComment.getText().toString());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         body.put("register_date", sdf.format(new Date()));
-        DAHttpClient.getInstance()
+        DAHttpClient.getInstance(getContext())
                 .Post(url, header, body, new IOServerCallback() {
                     @Override
                     public void onFailure(@NotNull Call call, @NotNull IOException e) {

@@ -131,7 +131,7 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
                 break;
         }
         // 댓글 조회
-        httpGetComment();
+        httpGetComment(false);
     }
 
     /**
@@ -176,6 +176,8 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
             TextView tvCheering = h.getItemView(R.id.tv_cheering);
             TextView tvCommentTime = h.getItemView(R.id.tv_comment_time);
 
+            tvCommentTime.setText(Utils.convertFromDate(bean.getRegister_date()));
+
             tvValueStyle.setText(bean.getValue_style());
             tvJob.setText(bean.getJob());
             tvComment.setText(bean.getContent());
@@ -203,6 +205,7 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
             TextView tvComment = h.getItemView(R.id.tv_comment);
             TextView tvCommentTime = h.getItemView(R.id.tv_comment_time);
 
+            tvCommentTime.setText(Utils.convertFromDate(bean.getRegister_date()));
             LinearLayout llCheering = h.getItemView(R.id.ll_cheering);
             ImageView ivCheering = h.getItemView(R.id.iv_cheering);
             TextView tvCheering = h.getItemView(R.id.tv_cheering);
@@ -238,13 +241,13 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
      * http Get
      * 내 꿈 소개 댓글 조회
      */
-    private void httpGetComment() {
+    private void httpGetComment(boolean isScroll) {
         Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityCommentDetail.this);
         String url = mGetCommentUrl
                 .replace(Comm_Param.MY_PROFILES_INDEX, String.valueOf(prefs.getMyProfileIndex()))
                 .replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DAHttpClient.getInstance()
+        DAHttpClient.getInstance(ActivityCommentDetail.this)
                 .Get(url, header, null, new IOServerCallback() {
                     @Override
                     public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -253,7 +256,7 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
 
                     @Override
                     public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                        Toast.makeText(ActivityCommentDetail.this, message, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                         if (TextUtils.equals(code, SUCCESS)) {
                             mAdapter.clear();
@@ -285,6 +288,10 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
                                     }
                                 }
                             }
+                            if (isScroll
+                                    && mAdapter != null
+                                    && mAdapter.size() > 0)
+                                mRvComment.scrollToPosition(mAdapter.getItemCount() - 1);
                         }
                     }
                 });
@@ -309,7 +316,7 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
         if (parent_index != -1) {
             body.put("parent_idx", String.valueOf(parent_index));
         }
-        DAHttpClient.getInstance()
+        DAHttpClient.getInstance(ActivityCommentDetail.this)
                 .Post(url, header, body, new IOServerCallback() {
                     @Override
                     public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -318,14 +325,14 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
 
                     @Override
                     public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                        Toast.makeText(ActivityCommentDetail.this, message, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                         if (TextUtils.equals(code, SUCCESS)) {
                             mEtInputComment.setText("");
                             mCommentIndex = -1;
                             mLlWriter.setVisibility(View.GONE);
 
-                            httpGetComment();
+                            httpGetComment(true);
                         }
                     }
                 });
@@ -344,7 +351,7 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
                 .replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()))
                 .replace(Comm_Param.COMMENTS_INDEX, String.valueOf(comment_index));
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DAHttpClient.getInstance()
+        DAHttpClient.getInstance(ActivityCommentDetail.this)
                 .Patch(url, header, null, new IOServerCallback() {
                     @Override
                     public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -353,14 +360,14 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
 
                     @Override
                     public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                        Toast.makeText(ActivityCommentDetail.this, message, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                         if (TextUtils.equals(code, SUCCESS)) {
                             mEtInputComment.setText("");
                             mCommentIndex = -1;
                             mLlWriter.setVisibility(View.GONE);
 
-                            httpGetComment();
+                            httpGetComment(false);
                         }
                     }
                 });
@@ -383,7 +390,7 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
                 break;
             case R.id.btn_commit_comment:
                 if (TextUtils.isEmpty(mEtInputComment.getText().toString())) {
-                    Toast.makeText(this, "댓글을 입력해 주세요.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "댓글을 입력해 주세요.", Toast.LENGTH_SHORT).show();
                 }
                 if (mCommentIndex == -1) {
                     // 댓글 등록

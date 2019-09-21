@@ -19,10 +19,10 @@ import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityCommentDetail;
 import com.truevalue.dreamappeal.base.BaseActivity;
+import com.truevalue.dreamappeal.bean.BeanPostDetail;
 import com.truevalue.dreamappeal.fragment.FragmentMain;
 import com.truevalue.dreamappeal.http.DAHttpClient;
 import com.truevalue.dreamappeal.http.IOServerCallback;
-import com.truevalue.dreamappeal.bean.BeanPostDetail;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
 import com.truevalue.dreamappeal.utils.Utils;
@@ -71,6 +71,10 @@ public class ActivityBestAchivementDetail extends BaseActivity {
     TextView mTvContents;
     @BindView(R.id.iv_more)
     ImageView mIvMore;
+    @BindView(R.id.tv_time)
+    TextView mTvTime;
+    @BindView(R.id.ll_share)
+    LinearLayout mLlShare;
 
     private BeanPostDetail mBean = null;
     private int mBestIndex = -1;
@@ -94,7 +98,7 @@ public class ActivityBestAchivementDetail extends BaseActivity {
 
     private void initData() {
         int index = getIntent().getIntExtra(EXTRA_BEST_ACHIVEMENT_INDEX, -1);
-        mBestIndex = getIntent().getIntExtra(EXTRA_BEST_ACHIVEMENT_BEST_INDEX,-1);
+        mBestIndex = getIntent().getIntExtra(EXTRA_BEST_ACHIVEMENT_BEST_INDEX, -1);
         httpGetBestPostAchivement(index);
     }
 
@@ -107,12 +111,12 @@ public class ActivityBestAchivementDetail extends BaseActivity {
         if (index == -1) return;
         Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityBestAchivementDetail.this);
         String url = Comm_Param.URL_API_MYPROFILEINDEX_ACHIVEMENT_POSTS_INDEX;
-        url = url.replace(Comm_Param.MY_PROFILES_INDEX,String.valueOf(prefs.getMyProfileIndex()));
+        url = url.replace(Comm_Param.MY_PROFILES_INDEX, String.valueOf(prefs.getMyProfileIndex()));
         url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
         url = url.replace(Comm_Param.POST_INDEX, String.valueOf(index));
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DAHttpClient client = DAHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance(ActivityBestAchivementDetail.this);
         client.Get(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -121,7 +125,7 @@ public class ActivityBestAchivementDetail extends BaseActivity {
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(ActivityBestAchivementDetail.this, message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                 if (TextUtils.equals(code, SUCCESS)) {
                     Gson gson = new Gson();
                     JSONObject object = new JSONObject(body);
@@ -130,15 +134,16 @@ public class ActivityBestAchivementDetail extends BaseActivity {
 
                     mTvTitle.setText(mBean.getTitle());
                     // todo : 아직 검증이 필요함
-                    Utils.setReadMore(mTvContents,mBean.getContent(),3);
+                    Utils.setReadMore(mTvContents, mBean.getContent(), 3);
                     if (TextUtils.isEmpty(mBean.getThumbnail_image()))
                         Glide.with(ActivityBestAchivementDetail.this).load(R.drawable.user).into(mIvImg);
                     else
                         Glide.with(ActivityBestAchivementDetail.this).load(mBean.getThumbnail_image()).placeholder(R.drawable.user).into(mIvImg);
 
-                    mTvCheering.setText(String.format("%d개",mBean.getLike_count()));
-                    mTvComment.setText(String.format("%d개",mBean.getComment_count()));
+                    mTvCheering.setText(String.format("%d개", mBean.getLike_count()));
+                    mTvComment.setText(String.format("%d개", mBean.getComment_count()));
                     mLlCheering.setSelected(mBean.isStatus());
+                    mTvTime.setText(Utils.convertFromDate(mBean.getRegister_date()));
                 }
             }
         });
@@ -175,7 +180,7 @@ public class ActivityBestAchivementDetail extends BaseActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 switch (list[i]) {
                     case "대표 성과 내리기":
-                        if(mBestIndex != -1) httpPatchBestAchivement(mBestIndex);
+                        if (mBestIndex != -1) httpPatchBestAchivement(mBestIndex);
                         break;
                     case "수정":
                         if (mBean != null) {
@@ -214,14 +219,14 @@ public class ActivityBestAchivementDetail extends BaseActivity {
     /**
      * 대표 성과 내리기
      */
-    private void httpPatchBestAchivement(int best_index){
+    private void httpPatchBestAchivement(int best_index) {
         Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityBestAchivementDetail.this);
         String url = Comm_Param.URL_API_ACHIVEMENT_BEST_POST_INDEX;
-        url = url.replace(Comm_Param.PROFILES_INDEX,String.valueOf(prefs.getProfileIndex()));
-        url = url.replace(Comm_Param.BEST_POST_INDEX,String.valueOf(best_index));
+        url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
+        url = url.replace(Comm_Param.BEST_POST_INDEX, String.valueOf(best_index));
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DAHttpClient client = DAHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance(ActivityBestAchivementDetail.this);
         client.Patch(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -230,9 +235,9 @@ public class ActivityBestAchivementDetail extends BaseActivity {
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(ActivityBestAchivementDetail.this, message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
-                if(TextUtils.equals(code,SUCCESS)){
+                if (TextUtils.equals(code, SUCCESS)) {
                     setResult(RESULT_OK);
                     finish();
                 }
@@ -253,7 +258,7 @@ public class ActivityBestAchivementDetail extends BaseActivity {
         url = url.replaceAll(Comm_Param.POST_INDEX, String.valueOf(index));
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DAHttpClient client = DAHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance(ActivityBestAchivementDetail.this);
         client.Delete(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -262,7 +267,7 @@ public class ActivityBestAchivementDetail extends BaseActivity {
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(ActivityBestAchivementDetail.this, message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                 if (TextUtils.equals(code, SUCCESS)) {
                     if (mBean != null) {
                         setResult(RESULT_OK);
@@ -276,16 +281,17 @@ public class ActivityBestAchivementDetail extends BaseActivity {
     /**
      * http patch
      * 응원하기 / 취소
+     *
      * @param post_index
      */
-    private void httpPatchLike(int post_index){
+    private void httpPatchLike(int post_index) {
         Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityBestAchivementDetail.this);
         String url = Comm_Param.URL_API_PROFILES_INDEX_PERFORMANCE_INDEX_LIKE_INDEX;
-        url = url.replace(Comm_Param.MY_PROFILES_INDEX,String.valueOf(prefs.getMyProfileIndex()));
-        url = url.replace(Comm_Param.PROFILES_INDEX,String.valueOf(prefs.getProfileIndex()));
-        url = url.replace(Comm_Param.POST_INDEX,String.valueOf(post_index));
+        url = url.replace(Comm_Param.MY_PROFILES_INDEX, String.valueOf(prefs.getMyProfileIndex()));
+        url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
+        url = url.replace(Comm_Param.POST_INDEX, String.valueOf(post_index));
         HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DAHttpClient.getInstance().Patch(url, header, null, new IOServerCallback() {
+        DAHttpClient.getInstance(ActivityBestAchivementDetail.this).Patch(url, header, null, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();
@@ -293,9 +299,9 @@ public class ActivityBestAchivementDetail extends BaseActivity {
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(ActivityBestAchivementDetail.this, message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
-                if(TextUtils.equals(code,SUCCESS)){
+                if (TextUtils.equals(code, SUCCESS)) {
                     JSONObject json = new JSONObject(body);
                     int likeCount = json.getInt("count");
                     mTvCheering.setText(likeCount + "개");
@@ -312,7 +318,7 @@ public class ActivityBestAchivementDetail extends BaseActivity {
             if (requestCode == REQUEST_EDIT_RECENT_ACHIVEMENT) {
                 setResult(RESULT_OK);
                 finish();
-            }else if(requestCode == FragmentMain.REQUEST_BLUEPRINT_COMMENT){
+            } else if (requestCode == FragmentMain.REQUEST_BLUEPRINT_COMMENT) {
                 httpGetBestPostAchivement(mBean.getIdx());
             }
         }

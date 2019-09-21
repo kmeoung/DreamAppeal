@@ -147,7 +147,7 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
         else url = url.replace(Comm_Param.POST_INDEX, String.valueOf(mBeanDetail.getIdx()));
 
         if (TextUtils.isEmpty(mEtTitle.getText().toString()) || TextUtils.isEmpty(mEtInputComment.getText().toString())) {
-            Toast.makeText(this, "모든 항목을 입력해주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "모든 항목을 입력해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -160,7 +160,7 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
         body.put("thumbnail_image", "");
         body.put("tags", "");
 
-        DAHttpClient client = DAHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance(ActivityAddAchivement.this);
         client.Patch(url, header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -169,7 +169,7 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(ActivityAddAchivement.this, message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                 if (TextUtils.equals(code, SUCCESS)) {
                     setResult(RESULT_OK);
                     finish();
@@ -187,7 +187,7 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
         url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
 
         if (TextUtils.isEmpty(mEtTitle.getText().toString()) || TextUtils.isEmpty(mEtInputComment.getText().toString())) {
-            Toast.makeText(this, "모든 항목을 입력해주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "모든 항목을 입력해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -204,7 +204,7 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
         body.put("register_date", strDate);
         body.put("tags", "");
 
-        DAHttpClient client = DAHttpClient.getInstance();
+        DAHttpClient client = DAHttpClient.getInstance(ActivityAddAchivement.this);
         client.Post(url, header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -213,7 +213,7 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(ActivityAddAchivement.this, message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                 if (TextUtils.equals(code, SUCCESS)) {
                     setResult(RESULT_OK);
                     finish();

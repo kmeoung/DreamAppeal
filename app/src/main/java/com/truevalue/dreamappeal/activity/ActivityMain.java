@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.base.BaseActivity;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
+import com.truevalue.dreamappeal.bean.BeanUser;
 import com.truevalue.dreamappeal.fragment.FragmentMain;
 
 import butterknife.BindView;
@@ -23,6 +24,8 @@ public class ActivityMain extends BaseActivity implements IOBaseTitleBarListener
     View mVStatus;
 
     private int mProfileIndex = -1;
+    private BeanUser mBeanUser = null;
+    private int mProfileOrder = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +69,23 @@ public class ActivityMain extends BaseActivity implements IOBaseTitleBarListener
     public void setTitle(String title){
         FragmentMain fragment = (FragmentMain)getSupportFragmentManager().findFragmentById(R.id.activity_container);
         fragment.setTitle(title);
+    }
+
+    public void setUser(BeanUser bean){
+        mBeanUser = bean;
+    }
+
+    public BeanUser getUser(){
+        if(mBeanUser == null) return null;
+        return getUser();
+    }
+
+    public int getmProfileOrder() {
+        return mProfileOrder;
+    }
+
+    public void setmProfileOrder(int mProfileOrder) {
+        this.mProfileOrder = mProfileOrder;
     }
 
     /**
