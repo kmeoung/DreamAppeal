@@ -64,7 +64,7 @@ public class DAHttpClient {
      * @param fileBody
      * @param callback
      */
-    public void post(Context context, String url, HashMap<String, String> header
+    public void Post(Context context, String url, HashMap<String, String> header
             , HashMap<String, Object> mapBody, HashMap<String, File> fileBody,IOServerCallback callback) {
 
 //        LinkedHashMap<String,Object> mapBody
@@ -115,7 +115,7 @@ public class DAHttpClient {
         }
 
         Request request = builder.build();
-
+        Call call = mClient.newCall(request);
         call.enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
