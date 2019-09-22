@@ -65,7 +65,7 @@ public class DAHttpClient {
      * @param callback
      */
     public void post(Context context, String url, HashMap<String, String> header
-            , HashMap<String, Object> mapBody, HashMap<String, File> fileBody, Callback callback) {
+            , HashMap<String, Object> mapBody, HashMap<String, File> fileBody,IOServerCallback callback) {
 
 //        LinkedHashMap<String,Object> mapBody
 
@@ -116,7 +116,51 @@ public class DAHttpClient {
 
         Request request = builder.build();
 
-        mClient.newCall(request).enqueue(callback);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                callback.onFailure(call, e);
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                int serverCode = response.code();
+                String body = response.body().string();
+                if (BuildConfig.DEBUG) Log.d("SERVER POST CODE", serverCode + "");
+                if (BuildConfig.DEBUG) Log.d("SERVER POST RESPONSE", body);
+                try {
+                    JSONObject object = new JSONObject(body);
+                    String code = object.getString("code");
+                    String message = object.getString("message");
+
+                    if (TextUtils.equals(code, IOServerCallback.USER_NOT_FOUND)) {
+                        handler.post(() -> {
+                            Toast.makeText(mContext.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                        });
+                        Intent intent = new Intent(mContext, ActivityLogin.class);
+                        mContext.startActivity(intent);
+                        ((Activity) mContext).finish();
+                        return;
+                    }
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                callback.onResponse(call, serverCode, body, code, message);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
 
