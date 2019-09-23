@@ -322,15 +322,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
                     mTvComment.setText(String.format("%d개", bean.getComment_count()));
                     mIvCheering.setSelected(bean.isStatus());
 
-                    // todo : 임시로 내꿈 리스트 몇번째 인지 조회하는 코드 입니다.
-                    int profile_order = 0;
-                    if (prefs.getMyProfileIndex() == prefs.getProfileIndex()) {
-                        profile_order = ((ActivityMain) getActivity()).getmProfileOrder();
-                    } else {
-                        profile_order = 1;
-                    }
-
-                    switch (profile_order){
+                    switch (bean.getProfile_order()){
                         case 1:
                             mTvDreamName.setText("첫번째 꿈");
                             break;

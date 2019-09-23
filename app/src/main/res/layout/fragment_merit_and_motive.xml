@@ -26,75 +26,76 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-    <!--내 꿈 이유 작성 영역-->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_weight="1"
-        android:background="@null">
 
-        <EditText
-            android:id="@+id/et_merit_and_motive"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@null"
-            android:fontFamily="@font/nanum_square_round_b"
-            android:gravity="left|top"
-            android:padding="10dp"
-            android:textSize="16sp" />
+            android:orientation="vertical">
+            <!--내 꿈 이유 작성 영역-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_weight="1"
+                android:background="@null">
 
-        <TextView
-            android:id="@+id/tv_hint"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@null"
-            android:fontFamily="@font/nanum_square_round_b"
-            android:gravity="center"
-            android:text="이 꿈의 매력과 계기를 적어주세요"
-            android:textColor="#a0a0a0"
-            android:textSize="16sp" />
+                <EditText
+                    android:id="@+id/et_merit_and_motive"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:gravity="left|top"
+                    android:padding="10dp"
+                    android:textSize="16sp" />
 
-    </RelativeLayout>
-    <!--내 꿈 이유 작성 영역-->
+                <TextView
+                    android:id="@+id/tv_hint"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:gravity="center"
+                    android:text="이 꿈의 매력과 계기를 적어주세요"
+                    android:textColor="#a0a0a0"
+                    android:textSize="16sp" />
 
-    <!--Divider-->
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/black" />
-    <!--Divider-->
+            </RelativeLayout>
+            <!--내 꿈 이유 작성 영역-->
 
-    <!--예시 화면-->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="242dp">
+            <!--Divider-->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black" />
+            <!--Divider-->
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/vp_pager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            <!--예시 화면-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="242dp">
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tl_tab"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            app:tabIndicator="@null">
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/vp_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
 
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="5dp"
-                android:layout_height="5dp"
-                android:icon="@drawable/circle_gray" />
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tl_tab"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    app:tabIndicator="@null">
 
-        </com.google.android.material.tabs.TabLayout>
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="5dp"
+                        android:layout_height="5dp"
+                        android:icon="@drawable/circle_gray" />
 
-    </RelativeLayout>
-    <!--예시 화면-->
-    </LinearLayout>
+                </com.google.android.material.tabs.TabLayout>
+
+            </RelativeLayout>
+            <!--예시 화면-->
+        </LinearLayout>
     </androidx.core.widget.NestedScrollView>
     <!--Divider-->
     <ImageView
@@ -105,7 +106,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="95dp"
+        android:layout_height="80dp"
         android:layout_marginTop="7dp"
         android:background="@color/colorAccent"></LinearLayout>
 </LinearLayout>

@@ -264,16 +264,18 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case FragmentMain.REQUEST_PERFORMANCE_ADD_RECENT_ACHIVEMENT:
-                case FragmentMain.REQUEST_PERFORMANCE_EDIT_RECENT_ACHIVEMENT:
-                case FragmentMain.REQUEST_PERFORMANCE_RECENT_ACHIVEMENT:
-                case FragmentMain.REQUEST_PERFORMANCE_BEST_ACHIVEMENT:
-                case FragmentMain.REQUEST_PERFORMANCE_COMMENT:
+        switch (requestCode) {
+            case FragmentMain.REQUEST_PERFORMANCE_ADD_RECENT_ACHIVEMENT:
+            case FragmentMain.REQUEST_PERFORMANCE_EDIT_RECENT_ACHIVEMENT:
+                if(resultCode == RESULT_OK){
                     httpGetAchivementPostMain();
-                    break;
-            }
+                }
+                break;
+            case FragmentMain.REQUEST_PERFORMANCE_RECENT_ACHIVEMENT:
+            case FragmentMain.REQUEST_PERFORMANCE_BEST_ACHIVEMENT:
+            case FragmentMain.REQUEST_PERFORMANCE_COMMENT:
+                httpGetAchivementPostMain();
+                break;
         }
     }
 
@@ -394,7 +396,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
         llCheering.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                httpPatchLike(tvCheering,ivCheering,bean.getIdx());
+                httpPatchLike(tvCheering, ivCheering, bean.getIdx());
             }
         });
     }

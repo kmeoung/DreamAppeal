@@ -1,7 +1,9 @@
 package com.truevalue.dreamappeal.activity;
 
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -102,6 +104,7 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
         initAdapter();
         // 데이터 초기화
         initData();
+        // View 초기화
     }
 
     private void initData() {
@@ -132,6 +135,29 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
         }
         // 댓글 조회
         httpGetComment(false);
+    }
+
+    private void initView(){
+        mEtInputComment.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(mEtInputComment.getText().toString().length() > 0){
+                    mBtnCommitComment.setTextColor(getResources().getColor(R.color.colorAccent));
+                }else{
+                    mBtnCommitComment.setTextColor(getResources().getColor(R.color.gray));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
     /**

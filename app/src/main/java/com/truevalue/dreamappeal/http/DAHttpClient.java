@@ -3,6 +3,8 @@ package com.truevalue.dreamappeal.http;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
@@ -53,6 +55,20 @@ public class DAHttpClient {
     }
 
     private android.os.Handler handler = new Handler();
+
+    public static boolean isInternet(Context context)
+    {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        if (activeNetwork != null) {
+            if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) { // 와이파이
+                return true;
+            } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) { // 데이터
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * 파일 전송 테스트
@@ -173,6 +189,17 @@ public class DAHttpClient {
      * @param callback
      */
     public void Post(String url, HashMap<String, String> header, HashMap<String, String> responseBody, IOServerCallback callback) {
+
+        if(!isInternet(mContext)){
+            handler.post(() -> {
+                Toast.makeText(mContext.getApplicationContext(), "인터넷이 연결되어 있지 않습니다.", Toast.LENGTH_SHORT).show();
+            });
+            Intent intent = new Intent(mContext, ActivityLogin.class);
+            mContext.startActivity(intent);
+            ((Activity) mContext).finish();
+            return;
+        }
+
         RequestBody body = RequestBody.create(new JSONObject().toString(), JSON);
         if (BuildConfig.DEBUG) Log.d("SERVER POST URL", url);
         if (responseBody != null && responseBody.size() > 0) {
@@ -276,6 +303,16 @@ public class DAHttpClient {
     public void Get(String url, HashMap<String, String> header, HashMap<String, String> body, IOServerCallback callback) {
         String urlBody = (body != null && body.size() > 0) ? url + "?" : url;
 
+        if(!isInternet(mContext)){
+            handler.post(() -> {
+                Toast.makeText(mContext.getApplicationContext(), "인터넷이 연결되어 있지 않습니다.", Toast.LENGTH_SHORT).show();
+            });
+            Intent intent = new Intent(mContext, ActivityLogin.class);
+            mContext.startActivity(intent);
+            ((Activity) mContext).finish();
+            return;
+        }
+
         int i = 0;
         if (body != null && body.size() > 0) {
             for (String key : body.keySet()) {
@@ -369,6 +406,17 @@ public class DAHttpClient {
      * @param callback
      */
     public void Patch(String url, HashMap<String, String> header, HashMap<String, String> responseBody, IOServerCallback callback) {
+
+        if(!isInternet(mContext)){
+            handler.post(() -> {
+                Toast.makeText(mContext.getApplicationContext(), "인터넷이 연결되어 있지 않습니다.", Toast.LENGTH_SHORT).show();
+            });
+            Intent intent = new Intent(mContext, ActivityLogin.class);
+            mContext.startActivity(intent);
+            ((Activity) mContext).finish();
+            return;
+        }
+
         RequestBody body = RequestBody.create(new JSONObject().toString(), JSON);
         if (BuildConfig.DEBUG) Log.d("SERVER PATCH URL", url);
         if (responseBody != null && responseBody.size() > 0) {
@@ -469,6 +517,17 @@ public class DAHttpClient {
      * @param callback
      */
     public void Delete(String url, HashMap<String, String> header, HashMap<String, String> responseBody, IOServerCallback callback) {
+
+        if(!isInternet(mContext)){
+            handler.post(() -> {
+                Toast.makeText(mContext.getApplicationContext(), "인터넷이 연결되어 있지 않습니다.", Toast.LENGTH_SHORT).show();
+            });
+            Intent intent = new Intent(mContext, ActivityLogin.class);
+            mContext.startActivity(intent);
+            ((Activity) mContext).finish();
+            return;
+        }
+
         RequestBody body = RequestBody.create(new JSONObject().toString(), JSON);
         if (BuildConfig.DEBUG) Log.d("SERVER DELETE URL", url);
         if (responseBody != null && responseBody.size() > 0) {

@@ -283,7 +283,8 @@
                                 android:gravity="bottom|center"
                                 android:text="더보기"
                                 android:textColor="@color/gray"
-                                android:textSize="11sp" />
+                                android:textSize="11sp"
+                                android:visibility="gone"/>
 
                             <!--내 꿈 설명-->
 
@@ -361,7 +362,8 @@
                                 android:gravity="bottom|center"
                                 android:text="더보기"
                                 android:textColor="@color/gray"
-                                android:textSize="11sp" />
+                                android:textSize="11sp"
+                                android:visibility="gone"/>
                             <!--내 꿈 이유 더보기 버튼-->
                         </LinearLayout>
                         <!--내 꿈 이유-->

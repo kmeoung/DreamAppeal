@@ -353,7 +353,7 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
             popupMenu.getMenuInflater().inflate(R.menu.menu_object_step, popupMenu.getMenu());
 
             if(TextUtils.equals(bean.getComplete(),"1")){
-                popupMenu.getMenu().findItem(R.id.menu_complete).setTitle("취소하기");
+                popupMenu.getMenu().findItem(R.id.menu_complete).setTitle("완료취소");
                 llComplete.setVisibility(View.VISIBLE);
             }else {
                 popupMenu.getMenu().findItem(R.id.menu_complete).setTitle("완료하기");

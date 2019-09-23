@@ -8,7 +8,6 @@
     android:orientation="vertical">
 
 
-
     <!--툴바-->
     <com.truevalue.dreamappeal.base.BaseTitleBar
         android:id="@+id/btb_bar"
@@ -22,202 +21,229 @@
         app:title="핵심문장으로 꿈 설명하기" />
     <!--툴바-->
 
-    <!--핵심 문장으로 설명하는 내꿈-->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="58dp"
-        android:fontFamily="@font/nanum_pen"
-        android:text="한 문장으로 어떤 사람일까?"
-        android:textColor="@color/black"
-        android:textSize="29sp" />
-    <!--핵심 문장으로 설명하는 내꿈-->
-
-    <!--내 꿈 한문장 표현-->
-    <EditText
-        android:id="@+id/et_dream_description"
-        android:layout_width="250dp"
-        android:layout_height="30dp"
-        android:layout_gravity="left"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/edit_text_bg_gray"
-        android:fontFamily="@font/nanum_square_round_r"
-        android:gravity="left|center_vertical"
-        android:hint="입력해주세요"
-        android:imeOptions="actionNext"
-        android:inputType="text"
-        android:lines="1"
-        android:maxLines="1"
-        android:paddingLeft="7dp"
-        android:textColor="@color/black"
-        android:textColorHint="@color/color_hint"
-        android:textSize="14sp" />
-    <!--내 꿈 한문장 표현-->
-
-
-    <!--구체적으로 어떤 일을 하는 사람인지-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="left"
-        android:orientation="vertical"
-        android:paddingLeft="30dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="52dp"
-            android:fontFamily="@font/nanum_pen"
-            android:text="구체적으로 어떤 일을 하는 걸까??"
-            android:textColor="@color/black"
-            android:textSize="29sp" />
-
-        <!--상세 설명 1-->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="8dp"
-                android:layout_height="8dp"
-                android:layout_marginLeft="4dp"
-                android:src="@drawable/circle" />
-
-            <EditText
-                android:id="@+id/et_dream_description_detail_1"
-                android:layout_width="230dp"
-                android:layout_height="25dp"
-                android:layout_marginLeft="18dp"
-                android:background="@drawable/edit_text_bg_gray"
-                android:fontFamily="@font/nanum_square_round_r"
-                android:hint="입력해주세요"
-                android:imeOptions="actionNext"
-                android:inputType="text"
-                android:lines="1"
-                android:maxLines="1"
-                android:paddingLeft="5dp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/color_hint"
-                android:textSize="14sp" />
-
-        </LinearLayout>
-        <!--상세 설명 1-->
-
-        <!--상세 설명 2-->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="8dp"
-                android:layout_height="8dp"
-                android:layout_marginLeft="4dp"
-                android:src="@drawable/circle" />
-
-            <EditText
-                android:id="@+id/et_dream_description_detail_2"
-                android:layout_width="230dp"
-                android:layout_height="25dp"
-                android:layout_marginLeft="18dp"
-                android:background="@drawable/edit_text_bg_gray"
-                android:fontFamily="@font/nanum_square_round_r"
-                android:hint="입력해주세요"
-                android:imeOptions="actionNext"
-                android:inputType="text"
-                android:lines="1"
-                android:maxLines="1"
-                android:paddingLeft="5dp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/color_hint"
-                android:textSize="14sp" />
-
-        </LinearLayout>
-        <!--상세 설명 2-->
-
-        <!--상세 설명 3-->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="8dp"
-                android:layout_height="8dp"
-                android:layout_marginLeft="4dp"
-                android:src="@drawable/circle" />
-
-            <EditText
-                android:id="@+id/et_dream_description_detail_3"
-                android:layout_width="230dp"
-                android:layout_height="25dp"
-                android:layout_marginLeft="18dp"
-                android:background="@drawable/edit_text_bg_gray"
-                android:fontFamily="@font/nanum_square_round_r"
-                android:hint="입력해주세요"
-                android:imeOptions="actionDone"
-                android:inputType="text"
-                android:lines="1"
-                android:maxLines="1"
-                android:paddingLeft="5dp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/color_hint"
-                android:textSize="14sp" />
-
-        </LinearLayout>
-        <!--상세 설명 3-->
-
-    </LinearLayout>
-    <!--구체적으로 어떤 일을 하는 사람인지-->
-
-    <Space
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:minHeight="44dp" />
-    <!--Divider-->
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/black" />
-    <!--Divider-->
+        android:layout_weight="1">
 
-    <!--예시 화면-->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="242dp">
-
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/vp_pager"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tl_tab"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            app:tabIndicator="@null">
+            <!--핵심 문장으로 설명하는 내꿈-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="58dp"
+                android:fontFamily="@font/nanum_pen"
+                android:text="한 문장으로 어떤 사람일까?"
+                android:textColor="@color/black"
+                android:textSize="29sp" />
+            <!--핵심 문장으로 설명하는 내꿈-->
 
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="5dp"
-                android:layout_height="5dp"
-                android:icon="@drawable/circle_gray" />
+            <!--내 꿈 한문장 표현-->
+            <EditText
+                android:id="@+id/et_dream_description"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_gravity="left"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/edit_text_bg_gray"
+                android:fontFamily="@font/nanum_square_round_r"
+                android:gravity="left|center_vertical"
+                android:hint="입력해주세요"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:lines="1"
+                android:maxLines="1"
+                android:paddingLeft="7dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/color_hint"
+                android:textSize="14sp" />
+            <!--내 꿈 한문장 표현-->
 
-        </com.google.android.material.tabs.TabLayout>
 
-    </RelativeLayout>
-    <!--예시 화면-->
+            <!--구체적으로 어떤 일을 하는 사람인지-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="52dp"
+                    android:fontFamily="@font/nanum_pen"
+                    android:text="구체적으로 어떤 일을 하는 걸까??"
+                    android:textColor="@color/black"
+                    android:textSize="29sp" />
+
+                <!--상세 설명 1-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:gravity="left|center"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="10dp">
+
+                    <ImageView
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:layout_marginLeft="4dp"
+                        android:src="@drawable/circle" />
+
+                    <EditText
+                        android:id="@+id/et_dream_description_detail_1"
+                        android:layout_width="0dp"
+                        android:layout_height="25dp"
+                        android:layout_marginLeft="18dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/edit_text_bg_gray"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:hint="입력해주세요"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:lines="1"
+                        android:maxLines="1"
+                        android:paddingLeft="5dp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/color_hint"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+                <!--상세 설명 1-->
+
+                <!--상세 설명 2-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:gravity="left|center"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="10dp">
+
+                    <ImageView
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:layout_marginLeft="4dp"
+                        android:src="@drawable/circle" />
+
+                    <EditText
+                        android:id="@+id/et_dream_description_detail_2"
+                        android:layout_width="0dp"
+                        android:layout_height="25dp"
+                        android:layout_marginLeft="18dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/edit_text_bg_gray"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:hint="입력해주세요"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:lines="1"
+                        android:maxLines="1"
+                        android:paddingLeft="5dp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/color_hint"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+                <!--상세 설명 2-->
+
+                <!--상세 설명 3-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:gravity="left|center"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="10dp">
+
+                    <ImageView
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:layout_marginLeft="4dp"
+                        android:src="@drawable/circle" />
+
+                    <EditText
+                        android:id="@+id/et_dream_description_detail_3"
+                        android:layout_width="0dp"
+                        android:layout_height="25dp"
+                        android:layout_marginLeft="18dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/edit_text_bg_gray"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:hint="입력해주세요"
+                        android:imeOptions="actionDone"
+                        android:inputType="text"
+                        android:lines="1"
+                        android:maxLines="1"
+                        android:paddingLeft="5dp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/color_hint"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+                <!--상세 설명 3-->
+
+            </LinearLayout>
+            <!--구체적으로 어떤 일을 하는 사람인지-->
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:minHeight="44dp" />
+            <!--Divider-->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black" />
+            <!--Divider-->
+
+            <!--예시 화면-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="242dp">
+
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/vp_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tl_tab"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    app:tabIndicator="@null">
+
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="5dp"
+                        android:layout_height="5dp"
+                        android:icon="@drawable/circle_gray" />
+
+                </com.google.android.material.tabs.TabLayout>
+
+            </RelativeLayout>
+            <!--예시 화면-->
+
+        </LinearLayout>
+
+    </ScrollView>
 
     <!--Divider-->
     <ImageView
