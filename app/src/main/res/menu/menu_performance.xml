@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/menu_edit"
+        android:title="수정"
+        android:icon="@null"/>
+
+    <item android:id="@+id/menu_best_1"
+        android:title="대표 성과1 지정"
+        android:icon="@null"/>
+
+    <item android:id="@+id/menu_best_2"
+        android:title="대표 성과2 지정"
+        android:icon="@null"/>
+
+    <item android:id="@+id/menu_best_3"
+        android:title="대표 성과3 지정"
+        android:icon="@null"/>
+
+    <item android:id="@+id/menu_delete"
+        android:title="삭제"
+        android:icon="@null"/>
+
+
+</menu>

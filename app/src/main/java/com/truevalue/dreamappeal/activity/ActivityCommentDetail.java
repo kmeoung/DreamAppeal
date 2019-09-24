@@ -1,6 +1,7 @@
 package com.truevalue.dreamappeal.activity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -111,6 +113,7 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
         // 데이터 초기화
         initData();
         // View 초기화
+        initView();
     }
 
     private void initData() {
@@ -144,6 +147,11 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
     }
 
     private void initView() {
+        mBtnCommitComment.setFocusableInTouchMode(true);
+        mBtnCommitComment.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(mBtnCommitComment, 0);
+
         mEtInputComment.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

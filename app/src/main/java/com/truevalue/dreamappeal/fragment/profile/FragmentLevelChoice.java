@@ -20,6 +20,7 @@ import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityAddActionPost;
 import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
+import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.BaseViewHolder;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
@@ -104,7 +105,10 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
     }
 
     private void initTitleBar() {
-        ((ActivityAddActionPost) getActivity()).getmBtbBar().setIOBaseTitleBarListener(this);
+        BaseTitleBar btbBar = ((ActivityAddActionPost) getActivity()).getmBtbBar();
+        btbBar.setTitle("해당 목표와 단계를 선택해주세요");
+        btbBar.setIOBaseTitleBarListener(this);
+        btbBar.getmTvTextBtn().setText("완료");
     }
 
     private IORecyclerViewListener mIOCategoryListener = new IORecyclerViewListener() {
@@ -291,6 +295,10 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
      * 실천인증 추가
      */
     private void httpPostActionPost() {
+        if(mCategorySelected == -1){
+            Toast.makeText(getContext().getApplicationContext(), "실천목표를 선택해주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
         // 내 실천인증 추가
         String url = Comm_Param.URL_API_PROFILES_INDEX_ACTIONPOSTS
@@ -333,6 +341,10 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
      * 실천 인증 수정
      */
     private void httpPatchActionPost(int action_post_index) {
+        if(mCategorySelected == -1){
+            Toast.makeText(getContext().getApplicationContext(), "실천목표를 선택해주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
         String url = Comm_Param.URL_API_PROFILES_INDEX_ACTIONPOSTS_INDEX;
         // 내 실천인증 수정

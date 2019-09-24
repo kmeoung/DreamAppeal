@@ -19,7 +19,7 @@
         app:is_right_text_visibility="visible"
         app:is_search_visibility="gone"
         app:right_text="등록"
-        app:title="꿈에 매력과 계기 표현하기" />
+        app:title="꿈의 매력과 계기 표현하기" />
     <!--툴바-->
 
     <androidx.core.widget.NestedScrollView

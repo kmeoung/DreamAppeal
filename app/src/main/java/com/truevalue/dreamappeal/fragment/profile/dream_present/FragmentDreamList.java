@@ -66,6 +66,8 @@ public class FragmentDreamList extends BaseFragment implements IOBaseTitleBarLis
     TextView mTvLevelInfo;
     @BindView(R.id.rv_dream_list)
     RecyclerView mRvDreamList;
+    @BindView(R.id.ll_edit_list)
+    LinearLayout mLlEditList;
 
     private BaseRecyclerViewAdapter mAdapter;
     private boolean isEdit = false;
@@ -104,8 +106,13 @@ public class FragmentDreamList extends BaseFragment implements IOBaseTitleBarLis
 
     // todo : 첫번째 꿈 두번쨰 꿈 설정해야 함
     private void initData() {
+        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+        if (prefs.getMyProfileIndex() == prefs.getProfileIndex()) {
+            mLlEditList.setVisibility(View.VISIBLE);
+        }else mLlEditList.setVisibility(View.GONE);
+
         httpGetDreamList();
-        mTvLevelInfo.setText("< 경험치 획득 > 실천등록 + 10 / 성과 등록 + 30");
+        mTvLevelInfo.setText("< 경험치 획득 > 실천 등록 + 10 / 성과 등록 + 30");
     }
 
     /**
@@ -350,12 +357,12 @@ public class FragmentDreamList extends BaseFragment implements IOBaseTitleBarLis
         switch (view.getId()) {
             case R.id.ll_add_dream: // 드림 리스트 추가 버튼
                 // 버튼이 활성화 되어 있을 경우에만
-                if (mAdapter.size() < 3) {
+                if (mAdapter.size() < 10) {
                     if (mLlAddDream.isEnabled()) {
                         ((ActivityMain) getActivity()).replaceFragmentRight(new FragmentDreamTitle(), true);
                     }
                 } else {
-                    Toast.makeText(getContext().getApplicationContext(), "프로필은 최대 3개까지만 추가할 수 있습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext().getApplicationContext(), "프로필은 최대 10개까지만 추가할 수 있습니다.", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.btn_edit: // 수정 버튼

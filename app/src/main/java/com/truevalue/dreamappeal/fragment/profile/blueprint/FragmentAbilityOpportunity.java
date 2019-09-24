@@ -121,7 +121,7 @@ public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTi
                                 ((ActivityMain) getActivity())
                                         .replaceFragmentRight(
                                                 FragmentAddAbilityOpportunity.newInstance(FragmentAddAbilityOpportunity.TYPE_ABILITY,
-                                                        "갖출 능력 수정",
+                                                        "갖출 능력 등록하기",
                                                         bean),
                                                 true);
                                 break;
@@ -197,12 +197,12 @@ public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTi
                                 ((ActivityMain) getActivity())
                                         .replaceFragmentRight(FragmentAddAbilityOpportunity
                                                 .newInstance(FragmentAddAbilityOpportunity.TYPE_OPPORTUNITY,
-                                                        "만들고픈 기회 수정",
+                                                        "만들어갈 기회 등록하기",
                                                         bean), true);
                                 break;
                             case R.id.menu_delete:
                                 builder = new AlertDialog.Builder(getContext())
-                                        .setTitle("만들고픈 기회 삭제")
+                                        .setTitle("만들어갈 기회 삭제")
                                         .setMessage("기회를 삭제하시겠습니까?")
                                         .setPositiveButton("네", new DialogInterface.OnClickListener() {
                                             @Override

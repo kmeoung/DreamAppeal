@@ -105,7 +105,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nanum_square_round_r"
-                        android:text="실천 인증 "
+                        android:text="인증 "
                         android:textColor="@color/gray"
                         android:textSize="13sp" />
 
@@ -129,7 +129,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nanum_square_round_r"
-                        android:text="실현 성과 "
+                        android:text="성과 "
                         android:textColor="@color/gray"
                         android:textSize="13sp" />
 

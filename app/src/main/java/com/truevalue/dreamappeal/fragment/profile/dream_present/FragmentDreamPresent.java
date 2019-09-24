@@ -20,18 +20,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
+import com.truevalue.dreamappeal.activity.ActivityCommentDetail;
 import com.truevalue.dreamappeal.activity.ActivityGalleryCamera;
 import com.truevalue.dreamappeal.activity.ActivityMain;
-import com.truevalue.dreamappeal.activity.ActivityCommentDetail;
 import com.truevalue.dreamappeal.base.BaseFragment;
-import com.truevalue.dreamappeal.fragment.FragmentMain;
-import com.truevalue.dreamappeal.http.DAHttpClient;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseViewHolder;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
-import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.bean.BeanProfiles;
 import com.truevalue.dreamappeal.bean.BeanProfilesIndex;
+import com.truevalue.dreamappeal.fragment.FragmentMain;
+import com.truevalue.dreamappeal.http.DAHttpClient;
+import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
 import com.truevalue.dreamappeal.utils.Utils;
@@ -49,8 +49,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Call;
-
-import static android.app.Activity.RESULT_OK;
 
 public class FragmentDreamPresent extends BaseFragment implements IORecyclerViewListener {
 
@@ -110,6 +108,8 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
     Button mBtnFollow;
     @BindView(R.id.ll_share)
     LinearLayout mLlShare;
+    @BindView(R.id.iv_comment)
+    ImageView mIvComment;
 
     private boolean isMyDreamMore = false;
     private boolean isMyDreamReason = false;
@@ -332,6 +332,27 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
                         case 3:
                             mTvDreamName.setText("세번째 꿈");
                             break;
+                        case 4:
+                            mTvDreamName.setText("네번째 꿈");
+                            break;
+                        case 5:
+                            mTvDreamName.setText("다섯번째 꿈");
+                            break;
+                        case 6:
+                            mTvDreamName.setText("여섯번째 꿈");
+                            break;
+                        case 7:
+                            mTvDreamName.setText("일곱번째 꿈");
+                            break;
+                        case 8:
+                            mTvDreamName.setText("여덟번째 꿈");
+                            break;
+                        case 9:
+                            mTvDreamName.setText("아홉번째 꿈");
+                            break;
+                        case 10:
+                            mTvDreamName.setText("열번째 꿈");
+                            break;
                     }
                 }
             }
@@ -410,7 +431,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
             R.id.btn_merit_and_motive_more, R.id.ll_comment,
             R.id.ll_cheering, R.id.ll_dream_title, R.id.ll_dream_description, R.id.tv_init_dream_title,
             R.id.tv_init_dream_description, R.id.tv_init_merit_and_motive,
-            R.id.btn_follow, R.id.ll_share})
+            R.id.btn_follow, R.id.ll_share,R.id.iv_comment})
     public void onViewClicked(View view) {
         Intent intent = null;
         switch (view.getId()) {
@@ -448,6 +469,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
                 }
                 break;
             case R.id.ll_comment: // 댓글
+            case R.id.iv_comment:
                 intent = new Intent(getContext(), ActivityCommentDetail.class);
                 intent.putExtra(ActivityCommentDetail.EXTRA_COMMENT_TYPE, ActivityCommentDetail.TYPE_DREAM_PRESENT);
                 startActivityForResult(intent, FragmentMain.REQUEST_DREAM_PRESENT_COMMENT);

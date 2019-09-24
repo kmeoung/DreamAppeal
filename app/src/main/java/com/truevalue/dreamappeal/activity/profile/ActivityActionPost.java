@@ -199,10 +199,11 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
         finish();
     }
 
-    @OnClick({R.id.ll_comment, R.id.ll_cheering, R.id.iv_more})
+    @OnClick({R.id.ll_comment, R.id.ll_cheering, R.id.iv_more, R.id.iv_comment})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_comment:
+            case R.id.iv_comment:
                 Intent intent = new Intent(ActivityActionPost.this, ActivityCommentDetail.class);
                 intent.putExtra(ActivityCommentDetail.EXTRA_COMMENT_TYPE, ActivityCommentDetail.TYPE_ACTION_POST);
                 intent.putExtra(ActivityCommentDetail.EXTRA_POST_INDEX, mBean.getIdx());
@@ -257,7 +258,7 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
             if (resultCode == RESULT_OK) {
                 httpGetActionPost();
             }
-        }else if(requestCode == REQUEST_COMMENT_DETAIL){
+        } else if (requestCode == REQUEST_COMMENT_DETAIL) {
             httpGetActionPost();
         }
     }

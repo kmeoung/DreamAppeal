@@ -47,7 +47,8 @@
             android:layout_width="18dp"
             android:layout_height="18dp"
             android:layout_gravity="center"
-            android:src="@drawable/ic_setting" />
+            android:src="@drawable/ic_setting"
+            android:visibility="gone"/>
 
     </LinearLayout>
     <!--갖출 능력 / 만들고픈 기회-->

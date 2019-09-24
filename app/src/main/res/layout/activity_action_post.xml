@@ -243,7 +243,8 @@
                                 android:layout_height="match_parent"
                                 android:scaleX="0.5"
                                 android:scaleY="0.5"
-                                android:src="@drawable/conversation" />
+                                android:src="@drawable/conversation"
+                                android:id="@+id/iv_comment"/>
 
                             <TextView
                                 android:id="@+id/tv_comment"

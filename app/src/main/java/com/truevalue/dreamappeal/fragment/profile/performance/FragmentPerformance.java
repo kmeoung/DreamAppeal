@@ -141,19 +141,24 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
                 JSONObject object = new JSONObject(body);
                 mProfileImage = object.getString("profile_image");
 
-                JSONArray array = object.getJSONArray("achievement_posts");
                 Gson gson = new Gson();
-                for (int i = 0; i < array.length(); i++) {
-                    BeanAchivementPostMain bean = gson.fromJson(array.getJSONObject(i).toString(), BeanAchivementPostMain.class);
-                    mAdapter.add(bean);
+                JSONObject bestPosts = object.getJSONObject("best_posts");
+
+                try {
+                    JSONArray array = object.getJSONArray("achievement_posts");
+                    for (int i = 0; i < array.length(); i++) {
+                        BeanAchivementPostMain bean = gson.fromJson(array.getJSONObject(i).toString(), BeanAchivementPostMain.class);
+                        mAdapter.add(bean);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
 
-                JSONObject bestPosts = object.getJSONObject("best_posts");
                 try {
                     JSONObject bestPost = bestPosts.getJSONObject("best_post_1");
                     BeanBestPost bean = gson.fromJson(bestPost.toString(), BeanBestPost.class);
                     mBestPostList.add(bean);
-                } catch (JSONException e) {
+                }catch (JSONException e){
                     e.printStackTrace();
                     mBestPostList.add(null);
                 }
@@ -162,7 +167,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
                     JSONObject bestPost = bestPosts.getJSONObject("best_post_2");
                     BeanBestPost bean = gson.fromJson(bestPost.toString(), BeanBestPost.class);
                     mBestPostList.add(bean);
-                } catch (JSONException e) {
+                }catch (JSONException e){
                     e.printStackTrace();
                     mBestPostList.add(null);
                 }
@@ -171,10 +176,11 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
                     JSONObject bestPost = bestPosts.getJSONObject("best_post_3");
                     BeanBestPost bean = gson.fromJson(bestPost.toString(), BeanBestPost.class);
                     mBestPostList.add(bean);
-                } catch (JSONException e) {
+                }catch (JSONException e){
                     e.printStackTrace();
                     mBestPostList.add(null);
                 }
+
                 mPagerAdapter.notifyDataSetChanged();
             }
         });
@@ -267,7 +273,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
         switch (requestCode) {
             case FragmentMain.REQUEST_PERFORMANCE_ADD_RECENT_ACHIVEMENT:
             case FragmentMain.REQUEST_PERFORMANCE_EDIT_RECENT_ACHIVEMENT:
-                if(resultCode == RESULT_OK){
+                if (resultCode == RESULT_OK) {
                     httpGetAchivementPostMain();
                 }
                 break;
@@ -299,6 +305,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
         ImageView ivCheering = h.getItemView(R.id.iv_cheering);
         LinearLayout llComment = h.getItemView(R.id.ll_comment);
         TextView tvTime = h.getItemView(R.id.tv_time);
+        ImageView ivComment = h.getItemView(R.id.iv_comment);
 
         tvTime.setText(Utils.convertFromDate(bean.getRegister_date()));
 
@@ -327,7 +334,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
             Glide.with(getContext()).load(bean.getThumbnail_image()).placeholder(R.drawable.drawer_user).into(ivProfile);
 
         PopupMenu popupMenu = new PopupMenu(getContext(), ibtnMore);
-        popupMenu.getMenuInflater().inflate(R.menu.menu_achivement_post, popupMenu.getMenu());
+        popupMenu.getMenuInflater().inflate(R.menu.menu_performance, popupMenu.getMenu());
 
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
@@ -340,6 +347,15 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
                         Intent intent = new Intent(getContext(), ActivityAddAchivement.class);
                         intent.putExtra(ActivityAddAchivement.EXTRA_EDIT_ACHIVEMENT_POST, bean);
                         startActivityForResult(intent, FragmentMain.REQUEST_PERFORMANCE_EDIT_RECENT_ACHIVEMENT);
+                        break;
+                    case R.id.menu_best_1:
+                        httpPostBestAchivement(bean.getIdx(),1);
+                        break;
+                    case R.id.menu_best_2:
+                        httpPostBestAchivement(bean.getIdx(),2);
+                        break;
+                    case R.id.menu_best_3:
+                        httpPostBestAchivement(bean.getIdx(),3);
                         break;
                     case R.id.menu_delete:
                         builder = new AlertDialog.Builder(getContext())
@@ -383,7 +399,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
             }
         });
 
-        llComment.setOnClickListener(new View.OnClickListener() {
+        View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ActivityCommentDetail.class);
@@ -391,12 +407,44 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
                 intent.putExtra(ActivityCommentDetail.EXTRA_POST_INDEX, bean.getIdx());
                 startActivityForResult(intent, FragmentMain.REQUEST_PERFORMANCE_COMMENT);
             }
-        });
+        };
+
+        llComment.setOnClickListener(listener);
+        ivComment.setOnClickListener(listener);
 
         llCheering.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 httpPatchLike(tvCheering, ivCheering, bean.getIdx());
+            }
+        });
+    }
+
+    /**
+     * 대표 성과 등록
+     */
+    private void httpPostBestAchivement(int post_index, int best_index) {
+        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+        String url = Comm_Param.URL_API_ACHIVEMENT_BEST_POST_INDEX_POST_INDEX;
+        url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
+        url = url.replace(Comm_Param.BEST_POST_INDEX, String.valueOf(best_index));
+        url = url.replace(Comm_Param.POST_INDEX, String.valueOf(post_index));
+
+        HashMap header = Utils.getHttpHeader(prefs.getToken());
+        DAHttpClient client = DAHttpClient.getInstance(getContext());
+        client.Post(url, header, null, new IOServerCallback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
+                Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+
+                if (TextUtils.equals(code, SUCCESS)) {
+                    httpGetAchivementPostMain();
+                }
             }
         });
     }

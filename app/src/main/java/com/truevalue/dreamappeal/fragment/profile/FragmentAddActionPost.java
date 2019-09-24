@@ -19,6 +19,7 @@ import com.truevalue.dreamappeal.activity.ActivityAddActionPost;
 import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.base.BaseItemDecorationHorizontal;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
+import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.BaseViewHolder;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
@@ -102,7 +103,15 @@ public class FragmentAddActionPost extends BaseFragment implements IORecyclerVie
     }
 
     private void initTitleBar() {
-        ((ActivityAddActionPost) getActivity()).getmBtbBar().setIOBaseTitleBarListener(this);
+        BaseTitleBar btbBar = ((ActivityAddActionPost) getActivity()).getmBtbBar();
+        btbBar.setIOBaseTitleBarListener(this);
+        if (mType == ActivityAddActionPost.TYPE_ADD_ACTION_POST) {
+            btbBar.setTitle("새 실천목표");
+            btbBar.getmTvTextBtn().setText("다음");
+        } else if (mType == ActivityAddActionPost.TYPE_EDIT_ACTION_POST) {
+            btbBar.setTitle("실천목표 수정");
+            btbBar.getmTvTextBtn().setText("완료");
+        }
     }
 
     /**

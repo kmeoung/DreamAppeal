@@ -75,6 +75,8 @@ public class ActivityBestAchivementDetail extends BaseActivity {
     TextView mTvTime;
     @BindView(R.id.ll_share)
     LinearLayout mLlShare;
+    @BindView(R.id.iv_comment)
+    ImageView mIvComment;
 
     private BeanPostDetail mBean = null;
     private int mBestIndex = -1;
@@ -99,6 +101,7 @@ public class ActivityBestAchivementDetail extends BaseActivity {
     private void initData() {
         int index = getIntent().getIntExtra(EXTRA_BEST_ACHIVEMENT_INDEX, -1);
         mBestIndex = getIntent().getIntExtra(EXTRA_BEST_ACHIVEMENT_BEST_INDEX, -1);
+        mTvAchivementTitle.setText("대표성과 " + mBestIndex);
         httpGetBestPostAchivement(index);
     }
 
@@ -150,13 +153,14 @@ public class ActivityBestAchivementDetail extends BaseActivity {
     }
 
 
-    @OnClick({R.id.iv_back, R.id.ll_comment, R.id.ll_cheering, R.id.iv_more})
+    @OnClick({R.id.iv_back, R.id.ll_comment, R.id.ll_cheering, R.id.iv_more,R.id.iv_comment})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back: // 뒤로가기
                 finish();
                 break;
             case R.id.ll_comment: // 댓글
+            case R.id.iv_comment:
                 Intent intent = new Intent(ActivityBestAchivementDetail.this, ActivityCommentDetail.class);
                 intent.putExtra(ActivityCommentDetail.EXTRA_COMMENT_TYPE, ActivityCommentDetail.TYPE_PERFORMANCE);
                 intent.putExtra(ActivityCommentDetail.EXTRA_POST_INDEX, mBean.getIdx());
@@ -316,7 +320,7 @@ public class ActivityBestAchivementDetail extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == FragmentMain.REQUEST_BLUEPRINT_COMMENT) {
             httpGetBestPostAchivement(mBean.getIdx());
-        }else if (requestCode == REQUEST_EDIT_RECENT_ACHIVEMENT) {
+        } else if (requestCode == REQUEST_EDIT_RECENT_ACHIVEMENT) {
             if (resultCode == RESULT_OK) {
                 setResult(RESULT_OK);
                 finish();
