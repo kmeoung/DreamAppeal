@@ -330,7 +330,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
                         profile_order = 1;
                     }
 
-                    switch (profile_order){
+                    switch (profile_order) {
                         case 1:
                             mTvDreamName.setText("첫번째 꿈");
                             break;

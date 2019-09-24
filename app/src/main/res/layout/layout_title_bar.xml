@@ -71,4 +71,9 @@
             android:visibility="gone" />
     </LinearLayout>
     <!--툴바-->
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#fefefe"></ImageView>
 </LinearLayout>

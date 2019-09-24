@@ -343,8 +343,11 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
             tvDetailStep.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((ActivityMain) getActivity()).replaceFragmentRight(FragmentAddContents.newInstance("실천목표에 세부단계 등록하기", bean.getIdx()), true);
+                    if (TextUtils.equals(bean.getComplete(), "0")) {
+                        ((ActivityMain) getActivity()).replaceFragmentRight(FragmentAddContents.newInstance("실천목표에 세부단계 등록하기", bean.getIdx()), true);
+                    }
                 }
+                
             });
 
             // todo : 컴플리트 이미지 필요
@@ -352,10 +355,10 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
             PopupMenu popupMenu = new PopupMenu(getContext(), ivMore);
             popupMenu.getMenuInflater().inflate(R.menu.menu_object_step, popupMenu.getMenu());
 
-            if(TextUtils.equals(bean.getComplete(),"1")){
+            if (TextUtils.equals(bean.getComplete(), "1")) {
                 popupMenu.getMenu().findItem(R.id.menu_complete).setTitle("취소하기");
                 llComplete.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 popupMenu.getMenu().findItem(R.id.menu_complete).setTitle("완료하기");
                 llComplete.setVisibility(View.GONE);
             }
