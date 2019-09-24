@@ -87,14 +87,16 @@ public class DialogProfile extends Dialog {
 
     private void initData(){
         BeanUser bean = mActivityMain.getUser();
-        mTvAddress.setText(bean.getLocation());
-        String gender = (bean.getGender() == 1)?"여":"남";
-        mTvGender.setText(gender);
-        mTvEmail.setText(bean.getEmail());
-        mTvName.setText(bean.getName());
-        mTvAge.setText(String.valueOf(calculateAgeForKorean(bean.getBirth())));
-        // todo : 전화번호 추가 필요
-        mTvPhone.setText("");
+        if(bean != null) {
+            mTvAddress.setText(bean.getLocation());
+            String gender = (bean.getGender() == 1) ? "여" : "남";
+            mTvGender.setText(gender);
+            mTvEmail.setText(bean.getEmail());
+            mTvName.setText(bean.getName());
+            mTvAge.setText(String.valueOf(calculateAgeForKorean(bean.getBirth())));
+            // todo : 전화번호 추가 필요
+            mTvPhone.setText("");
+        }
     }
 
     public static int calculateAgeForKorean(String ssn) { // ssn의 형식은 yyyymmdd 임

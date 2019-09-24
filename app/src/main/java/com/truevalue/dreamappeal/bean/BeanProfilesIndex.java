@@ -21,7 +21,15 @@ public class BeanProfilesIndex {
     private int comment_count;
     private int like_count;
     private boolean status;
+    private int profile_order;
 
+    public int getProfile_order() {
+        return profile_order;
+    }
+
+    public void setProfile_order(int profile_order) {
+        this.profile_order = profile_order;
+    }
 
     public String getName() {
         return name;

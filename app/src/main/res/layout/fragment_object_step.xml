@@ -16,7 +16,7 @@
         app:is_right_text_visibility="invisible"
         app:is_search_visibility="gone"
         app:right_text="확인"
-        app:title="실천 진행사항" />
+        app:title="실천 진행상황" />
     <!--툴바-->
 
     <androidx.recyclerview.widget.RecyclerView

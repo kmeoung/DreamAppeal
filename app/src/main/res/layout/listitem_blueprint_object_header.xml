@@ -15,7 +15,8 @@
         android:text="더보기"
         android:textColor="@color/gray"
         android:textSize="11sp"
-        android:layout_marginRight="19dp"/>
+        android:layout_marginRight="19dp"
+        android:visibility="gone"/>
 
 
     <!--실천 목표-->

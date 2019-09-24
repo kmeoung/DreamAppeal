@@ -20,176 +20,187 @@
         app:title="꿈에 명칭 달아주기" />
     <!--툴바-->
 
-    <!--수식어로 정의해보는 내꿈-->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_marginLeft="17dp"
-        android:layout_marginTop="34dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/nanum_pen"
-            android:text="내 꿈에 "
-            android:textColor="@color/black"
-            android:textSize="29sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/nanum_pen"
-            android:text="특색 있는 "
-            android:textColor="@color/colorAccent"
-            android:textSize="29sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/nanum_pen"
-            android:text="명칭을 달아주세요"
-            android:textColor="@color/black"
-            android:textSize="29sp" />
-
-
-    </LinearLayout>
-    <!--수식어로 정의해보는 내꿈-->
-
-    <!--페이지 내용 설명-->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_marginLeft="17dp"
-        android:layout_marginTop="27dp"
-        android:fontFamily="@font/nanum_square_round_r"
-        android:text="직업명을 적고, 수식어로 꾸며보세요"
-        android:textColor="@color/black"
-        android:textSize="16sp" />
-    <!--페이지 내용 설명-->
-
-    <!--수식어, 직업명 적는곳-->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_marginLeft="43dp"
-        android:layout_marginTop="62dp"
-        android:orientation="vertical">
-        <!--수식어-->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="55dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/nanum_pen"
-                android:text="수식어"
-                android:textColor="@color/colorAccent"
-                android:textSize="25sp" />
-
-            <EditText
-                android:id="@+id/et_value_style"
-                style="@style/edit_text_under_bar_color"
-                android:layout_width="161dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="18dp"
-                android:fontFamily="@font/nanum_square_round_b"
-                android:hint="입력해주세요"
-                android:imeOptions="actionNext"
-                android:inputType="text"
-                android:lines="1"
-                android:maxLines="1"
-                android:paddingLeft="10dp"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:theme="@style/edit_text_under_bar_color" />
-
-
-        </LinearLayout>
-        <!--수식어-->
-
-        <!--직업명-->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="55dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/nanum_pen"
-                android:text="직업명"
-                android:textColor="@color/colorAccent"
-                android:textSize="25sp" />
-
-            <EditText
-                android:id="@+id/et_job"
-                style="@style/edit_text_under_bar_color"
-                android:layout_width="161dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="18dp"
-                android:fontFamily="@font/nanum_square_round_b"
-                android:hint="입력해주세요"
-                android:imeOptions="actionDone"
-                android:inputType="text"
-                android:lines="1"
-                android:maxLines="1"
-                android:paddingLeft="10dp"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:theme="@style/edit_text_under_bar_color" />
-
-        </LinearLayout>
-        <!--직업명-->
-    </LinearLayout>
-    <!--수식어, 직업명 적는곳-->
-
-    <Space
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:minHeight="107dp" />
-    <!--Divider-->
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/black" />
-    <!--Divider-->
+        android:layout_weight="1">
 
-    <!--예시 화면-->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="242dp">
-
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/vp_pager"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tl_tab"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            app:tabIndicator="@null">
+            <!--수식어로 정의해보는 내꿈-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="34dp"
+                android:orientation="horizontal">
 
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="5dp"
-                android:layout_height="5dp"
-                android:icon="@drawable/circle_gray" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nanum_pen"
+                    android:text="내 꿈에 "
+                    android:textColor="@color/black"
+                    android:textSize="29sp" />
 
-        </com.google.android.material.tabs.TabLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nanum_pen"
+                    android:text="특색 있는 "
+                    android:textColor="@color/colorAccent"
+                    android:textSize="29sp" />
 
-    </RelativeLayout>
-    <!--예시 화면-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nanum_pen"
+                    android:text="명칭을 달아주세요"
+                    android:textColor="@color/black"
+                    android:textSize="29sp" />
+
+
+            </LinearLayout>
+            <!--수식어로 정의해보는 내꿈-->
+
+            <!--페이지 내용 설명-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="27dp"
+                android:fontFamily="@font/nanum_square_round_r"
+                android:text="직업명을 적고, 수식어로 꾸며보세요"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+            <!--페이지 내용 설명-->
+
+            <!--수식어, 직업명 적는곳-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="62dp"
+                android:orientation="vertical">
+                <!--수식어-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="55dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nanum_pen"
+                        android:text="수식어"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="25sp" />
+
+                    <EditText
+                        android:id="@+id/et_value_style"
+                        style="@style/edit_text_under_bar_color"
+                        android:layout_width="180dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="18dp"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:hint="입력해주세요"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:lines="1"
+                        android:maxLines="1"
+                        android:paddingLeft="10dp"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:theme="@style/edit_text_under_bar_color" />
+
+
+                </LinearLayout>
+                <!--수식어-->
+
+                <!--직업명-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="55dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nanum_pen"
+                        android:text="직업명"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="25sp" />
+
+                    <EditText
+                        android:id="@+id/et_job"
+                        style="@style/edit_text_under_bar_color"
+                        android:layout_width="180dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="18dp"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:hint="입력해주세요"
+                        android:imeOptions="actionDone"
+                        android:inputType="text"
+                        android:lines="1"
+                        android:maxLines="1"
+                        android:paddingLeft="10dp"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:theme="@style/edit_text_under_bar_color" />
+
+                </LinearLayout>
+                <!--직업명-->
+            </LinearLayout>
+            <!--수식어, 직업명 적는곳-->
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:minHeight="107dp" />
+            <!--Divider-->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black" />
+            <!--Divider-->
+
+            <!--예시 화면-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="242dp">
+
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/vp_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tl_tab"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    app:tabIndicator="@null">
+
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="5dp"
+                        android:layout_height="5dp"
+                        android:icon="@drawable/circle_gray" />
+
+                </com.google.android.material.tabs.TabLayout>
+
+            </RelativeLayout>
+            <!--예시 화면-->
+
+        </LinearLayout>
+
+    </ScrollView>
 
     <!--Divider-->
     <ImageView
@@ -200,7 +211,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="95dp"
+        android:layout_height="80dp"
         android:layout_marginTop="7dp"
         android:background="@color/colorAccent"></LinearLayout>
 </LinearLayout>

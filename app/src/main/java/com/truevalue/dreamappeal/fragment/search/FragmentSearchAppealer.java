@@ -125,7 +125,11 @@ public class FragmentSearchAppealer extends BaseFragment implements IORecyclerVi
 
     @Override
     public void search(String text) {
-        httpPostSearch(text);
+        if(text.length() > 0) {
+            httpPostSearch(text);
+        }else{
+            mAdapter.clear();
+        }
     }
 
     /**

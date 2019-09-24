@@ -283,6 +283,8 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
 
         if (getItemViewType(i) == LISTITEM_TYPE_OBJECT_HEADER) {
             ImageView ivAddObject = h.getItemView(R.id.iv_add_object);
+            // todo : 추후 처리
+            Button btn = h.getItemView(R.id.btn_abliity_opportunity);
 
             ivAddObject.setOnClickListener(new View.OnClickListener() {
                 @Override
