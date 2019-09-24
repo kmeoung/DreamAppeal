@@ -51,6 +51,7 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
     public static final String EXTRA_ACTION_POST_INDEX = "EXTRA_ACTION_POST_INDEX";
 
     public static final int REQUEST_ACTIVITY = 1000;
+    public static final int REQUEST_COMMENT_DETAIL = 1001;
 
     @BindView(R.id.v_status)
     View mVStatus;
@@ -205,7 +206,7 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
                 Intent intent = new Intent(ActivityActionPost.this, ActivityCommentDetail.class);
                 intent.putExtra(ActivityCommentDetail.EXTRA_COMMENT_TYPE, ActivityCommentDetail.TYPE_ACTION_POST);
                 intent.putExtra(ActivityCommentDetail.EXTRA_POST_INDEX, mBean.getIdx());
-                startActivityForResult(intent, REQUEST_ACTIVITY);
+                startActivityForResult(intent, REQUEST_COMMENT_DETAIL);
                 break;
             case R.id.ll_cheering:
                 httpPatchLike(mBean.getIdx());
@@ -219,14 +220,15 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
     /**
      * http patch
      * 응원하기 / 취소
+     *
      * @param post_index
      */
-    private void httpPatchLike(int post_index){
+    private void httpPatchLike(int post_index) {
         Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityActionPost.this);
         String url = Comm_Param.URL_API_PROFILES_INDEX_ACTIONPOST_INDEX_LIKE_INDEX;
-        url = url.replace(Comm_Param.MY_PROFILES_INDEX,String.valueOf(prefs.getMyProfileIndex()));
-        url = url.replace(Comm_Param.PROFILES_INDEX,String.valueOf(prefs.getProfileIndex()));
-        url = url.replace(Comm_Param.POST_INDEX,String.valueOf(post_index));
+        url = url.replace(Comm_Param.MY_PROFILES_INDEX, String.valueOf(prefs.getMyProfileIndex()));
+        url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
+        url = url.replace(Comm_Param.POST_INDEX, String.valueOf(post_index));
         HashMap header = Utils.getHttpHeader(prefs.getToken());
         DAHttpClient.getInstance(ActivityActionPost.this).Patch(url, header, null, new IOServerCallback() {
             @Override
@@ -238,7 +240,7 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
                 Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
-                if(TextUtils.equals(code,SUCCESS)){
+                if (TextUtils.equals(code, SUCCESS)) {
                     JSONObject json = new JSONObject(body);
                     int likeCount = json.getInt("count");
                     mTvCheering.setText(likeCount + "개");
@@ -251,14 +253,16 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if(requestCode == REQUEST_ACTIVITY){
+        if (requestCode == REQUEST_ACTIVITY) {
+            if (resultCode == RESULT_OK) {
                 httpGetActionPost();
             }
+        }else if(requestCode == REQUEST_COMMENT_DETAIL){
+            httpGetActionPost();
         }
     }
 
-    private void showPopupMenu(){
+    private void showPopupMenu() {
         PopupMenu popupMenu = new PopupMenu(ActivityActionPost.this, mIvMore);
         popupMenu.getMenuInflater().inflate(R.menu.menu_object_step, popupMenu.getMenu());
 
@@ -272,17 +276,17 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
                 switch (id) {
                     case R.id.menu_level_reset:
                         intent = new Intent(ActivityActionPost.this, ActivityAddActionPost.class);
-                        intent.putExtra(ActivityAddActionPost.EXTRA_ACTION_POST_TYPE,ActivityAddActionPost.TYPE_RESET_LEVEL);
-                        intent.putExtra(ActivityAddActionPost.EXTRA_ACTION_POST_INDEX,mPostIndex);
-                        intent.putExtra(ActivityAddActionPost.EXTRA_ACTION_POST_CONTENTS,mBean);
-                        startActivityForResult(intent,REQUEST_ACTIVITY);
+                        intent.putExtra(ActivityAddActionPost.EXTRA_ACTION_POST_TYPE, ActivityAddActionPost.TYPE_RESET_LEVEL);
+                        intent.putExtra(ActivityAddActionPost.EXTRA_ACTION_POST_INDEX, mPostIndex);
+                        intent.putExtra(ActivityAddActionPost.EXTRA_ACTION_POST_CONTENTS, mBean);
+                        startActivityForResult(intent, REQUEST_ACTIVITY);
                         break;
                     case R.id.menu_edit:
                         intent = new Intent(ActivityActionPost.this, ActivityAddActionPost.class);
-                        intent.putExtra(ActivityAddActionPost.EXTRA_ACTION_POST_TYPE,ActivityAddActionPost.TYPE_EDIT_ACTION_POST);
-                        intent.putExtra(ActivityAddActionPost.EXTRA_ACTION_POST_INDEX,mPostIndex);
-                        intent.putExtra(ActivityAddActionPost.EXTRA_ACTION_POST_CONTENTS,mBean);
-                        startActivityForResult(intent,REQUEST_ACTIVITY);
+                        intent.putExtra(ActivityAddActionPost.EXTRA_ACTION_POST_TYPE, ActivityAddActionPost.TYPE_EDIT_ACTION_POST);
+                        intent.putExtra(ActivityAddActionPost.EXTRA_ACTION_POST_INDEX, mPostIndex);
+                        intent.putExtra(ActivityAddActionPost.EXTRA_ACTION_POST_CONTENTS, mBean);
+                        startActivityForResult(intent, REQUEST_ACTIVITY);
                         break;
                     case R.id.menu_delete:
                         builder = new AlertDialog.Builder(ActivityActionPost.this)

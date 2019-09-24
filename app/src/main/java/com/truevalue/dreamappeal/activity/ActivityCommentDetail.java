@@ -1,9 +1,13 @@
 package com.truevalue.dreamappeal.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -15,11 +19,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
+import com.truevalue.dreamappeal.activity.profile.ActivityActionPost;
 import com.truevalue.dreamappeal.base.BaseActivity;
 import com.truevalue.dreamappeal.base.BaseItemDecorationVertical;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
@@ -137,7 +143,7 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
         httpGetComment(false);
     }
 
-    private void initView(){
+    private void initView() {
         mEtInputComment.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -146,9 +152,9 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(mEtInputComment.getText().toString().length() > 0){
+                if (mEtInputComment.getText().toString().length() > 0) {
                     mBtnCommitComment.setTextColor(getResources().getColor(R.color.colorAccent));
-                }else{
+                } else {
                     mBtnCommitComment.setTextColor(getResources().getColor(R.color.gray));
                 }
             }
@@ -225,6 +231,52 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
                     mTvWriter.setText(bean.getName());
                 }
             });
+
+            PopupMenu popupMenu = new PopupMenu(ActivityCommentDetail.this, tvComment);
+            popupMenu.getMenuInflater().inflate(R.menu.menu_achivement_post, popupMenu.getMenu());
+
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    int id = item.getItemId();
+                    AlertDialog.Builder builder;
+                    AlertDialog dialog;
+                    Intent intent = null;
+                    switch (id) {
+                        case R.id.menu_edit:
+
+                            break;
+                        case R.id.menu_delete:
+                            builder = new AlertDialog.Builder(ActivityCommentDetail.this)
+                                    .setTitle("댓글 삭제")
+                                    .setMessage("댓글을 삭제하시겠습니까?")
+                                    .setPositiveButton("네", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                            dialog = builder.create();
+                            dialog.show();
+                            break;
+                    }
+                    return false;
+                }
+            });
+
+            h.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+
+                    return true;
+                }
+            });
         } else if (getItemViewType(i) == LISTITEM_REPLY) {
             TextView tvName = h.getItemView(R.id.tv_name);
             TextView tvTag = h.getItemView(R.id.tv_tag);
@@ -246,6 +298,53 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
                 @Override
                 public void onClick(View view) {
                     httpPatchCheering(bean.getIdx());
+                }
+            });
+
+            PopupMenu popupMenu = new PopupMenu(ActivityCommentDetail.this, tvComment);
+            popupMenu.getMenuInflater().inflate(R.menu.menu_achivement_post, popupMenu.getMenu());
+
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    int id = item.getItemId();
+                    AlertDialog.Builder builder;
+                    AlertDialog dialog;
+                    Intent intent = null;
+                    switch (id) {
+                        case R.id.menu_edit:
+
+                            break;
+                        case R.id.menu_delete:
+                            builder = new AlertDialog.Builder(ActivityCommentDetail.this)
+                                    .setTitle("댓글 삭제")
+                                    .setMessage("댓글을 삭제하시겠습니까?")
+                                    .setPositiveButton("네", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            httpDeleteComment(bean.getIdx());
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                            dialog = builder.create();
+                            dialog.show();
+                            break;
+                    }
+                    return false;
+                }
+            });
+
+            h.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+
+                    return true;
                 }
             });
         }
@@ -359,6 +458,67 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
                             mLlWriter.setVisibility(View.GONE);
 
                             httpGetComment(true);
+                        }
+                    }
+                });
+    }
+
+    /**
+     * http Delete
+     * 댓글 삭제
+     *
+     * @param comment_index
+     */
+    private void httpDeleteComment(int comment_index) {
+        Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityCommentDetail.this);
+        String url = Comm_Param.URL_API_PROFILES_INDEX_PRESENTCOMMENTS_INDEX.replace(Comm_Param.COMMENTS_INDEX, String.valueOf(comment_index));
+        HashMap header = Utils.getHttpHeader(prefs.getToken());
+        HashMap<String, String> body = new HashMap<>();
+        body.put("my_profile_idx",String.valueOf(prefs.getMyProfileIndex()));
+        DAHttpClient.getInstance(ActivityCommentDetail.this)
+                .Delete(url, header, body, new IOServerCallback() {
+                    @Override
+                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+
+                        if (TextUtils.equals(message, SUCCESS)) {
+                            httpGetComment(false);
+                        }
+                    }
+                });
+    }
+
+    /**
+     * http Patch
+     * 댓글 수정
+     *
+     * @param comment_index
+     */
+    private void httpPatchComment(int comment_index) {
+        Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityCommentDetail.this);
+        String url = Comm_Param.URL_API_PROFILES_INDEX_PRESENTCOMMENTS_INDEX.replace(Comm_Param.COMMENTS_INDEX, String.valueOf(comment_index));
+        HashMap header = Utils.getHttpHeader(prefs.getToken());
+        HashMap<String, String> body = new HashMap<>();
+        body.put("my_profile_idx",String.valueOf(prefs.getMyProfileIndex()));
+        body.put("content",mEtInputComment.getText().toString());
+        DAHttpClient.getInstance(ActivityCommentDetail.this)
+                .Patch(url, header, null, new IOServerCallback() {
+                    @Override
+                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+
+                        if (TextUtils.equals(message, SUCCESS)) {
+                            httpGetComment(false);
                         }
                     }
                 });

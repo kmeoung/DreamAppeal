@@ -322,7 +322,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
                     mTvComment.setText(String.format("%d개", bean.getComment_count()));
                     mIvCheering.setSelected(bean.isStatus());
 
-                    switch (bean.getProfile_order()){
+                    switch (bean.getProfile_order()) {
                         case 1:
                             mTvDreamName.setText("첫번째 꿈");
                             break;
@@ -541,11 +541,9 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (requestCode == FragmentMain.REQUEST_DREAM_PRESENT_COMMENT) {
-                Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
-                httpGetProfilesIndex(prefs.getProfileIndex());
-            }
+        if (requestCode == FragmentMain.REQUEST_DREAM_PRESENT_COMMENT) {
+            Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+            httpGetProfilesIndex(prefs.getProfileIndex());
         }
     }
 }

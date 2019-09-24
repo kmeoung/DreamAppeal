@@ -207,7 +207,7 @@ public class FragmentMain extends BaseFragment implements IOBaseTitleBarListener
                     mBtbBar.setTitle(bean.getName() + " 드림프로필");
                     ((ActivityMain) getActivity()).setUser(bean);
                     // todo : Drawer 설정 필요
-                }
+                };
             }
         });
     }

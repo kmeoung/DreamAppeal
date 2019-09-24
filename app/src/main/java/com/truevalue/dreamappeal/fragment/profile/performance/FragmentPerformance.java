@@ -389,7 +389,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
                 Intent intent = new Intent(getContext(), ActivityCommentDetail.class);
                 intent.putExtra(ActivityCommentDetail.EXTRA_COMMENT_TYPE, ActivityCommentDetail.TYPE_PERFORMANCE);
                 intent.putExtra(ActivityCommentDetail.EXTRA_POST_INDEX, bean.getIdx());
-                startActivityForResult(intent, FragmentMain.REQUEST_BLUEPRINT_COMMENT);
+                startActivityForResult(intent, FragmentMain.REQUEST_PERFORMANCE_COMMENT);
             }
         });
 

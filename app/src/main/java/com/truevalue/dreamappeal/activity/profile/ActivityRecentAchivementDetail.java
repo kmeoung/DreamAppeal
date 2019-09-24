@@ -322,12 +322,12 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (requestCode == REQUEST_EDIT_RECENT_ACHIVEMENT) {
+        if (requestCode == FragmentMain.REQUEST_BLUEPRINT_COMMENT) {
+            httpGetPostAchivement(mBean.getIdx());
+        } else if (requestCode == REQUEST_EDIT_RECENT_ACHIVEMENT) {
+            if (resultCode == RESULT_OK) {
                 setResult(RESULT_OK);
                 finish();
-            } else if (requestCode == FragmentMain.REQUEST_BLUEPRINT_COMMENT) {
-                httpGetPostAchivement(mBean.getIdx());
             }
         }
     }

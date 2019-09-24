@@ -122,10 +122,11 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (requestCode == REQUEST_ACTION_POST_DETAIL) {
-                httpGetObjects();
-            } else if (requestCode == FragmentMain.REQUEST_BLUEPRINT_COMMENT) {
+
+        if (requestCode == FragmentMain.REQUEST_BLUEPRINT_COMMENT) {
+            httpGetObjects();
+        }else if (requestCode == REQUEST_ACTION_POST_DETAIL) {
+            if (resultCode == RESULT_OK) {
                 httpGetObjects();
             }
         }
@@ -347,7 +348,7 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
                         ((ActivityMain) getActivity()).replaceFragmentRight(FragmentAddContents.newInstance("실천목표에 세부단계 등록하기", bean.getIdx()), true);
                     }
                 }
-                
+
             });
 
             // todo : 컴플리트 이미지 필요
@@ -355,7 +356,7 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
             PopupMenu popupMenu = new PopupMenu(getContext(), ivMore);
             popupMenu.getMenuInflater().inflate(R.menu.menu_object_step, popupMenu.getMenu());
 
-            if(TextUtils.equals(bean.getComplete(),"1")){
+            if (TextUtils.equals(bean.getComplete(), "1")) {
                 popupMenu.getMenu().findItem(R.id.menu_complete).setTitle("완료취소");
                 llComplete.setVisibility(View.VISIBLE);
             } else {

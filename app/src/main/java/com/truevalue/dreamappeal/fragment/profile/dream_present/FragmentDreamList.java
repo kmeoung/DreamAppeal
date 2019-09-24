@@ -296,38 +296,39 @@ public class FragmentDreamList extends BaseFragment implements IOBaseTitleBarLis
         } else { // 수정 모드가 아닐 경우
             h.itemView.setOnClickListener(v -> {
                 Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
-                if(prefs.getProfileIndex() == prefs.getMyProfileIndex()) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
-                            .setTitle("프로필 선택")
-                            .setMessage("프로필을 선택하시겠습니까?")
-                            .setPositiveButton("네", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
-                                    if (bean.getIdx() == prefs.getProfileIndex()) {
-                                        Toast.makeText(getContext().getApplicationContext(), "현재 사용중인 프로필입니다.", Toast.LENGTH_SHORT).show();
-                                        dialog.dismiss();
-                                        return;
-                                    } else {
-                                        prefs.setProfileIndex(bean.getIdx(), true);
-                                        Toast.makeText(getContext().getApplicationContext(), "성공적으로 변경되었습니다.", Toast.LENGTH_SHORT).show();
-                                        ((ActivityMain) getActivity()).setmProfileOrder(bean.getProfile_order());
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
+                        .setTitle("프로필 선택")
+                        .setMessage("프로필을 선택하시겠습니까?")
+                        .setPositiveButton("네", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+                                if (bean.getIdx() == prefs.getProfileIndex()) {
+                                    Toast.makeText(getContext().getApplicationContext(), "현재 사용중인 프로필입니다.", Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+                                    return;
+                                } else {
+                                    boolean isMy = false;
+                                    if (prefs.getProfileIndex() == prefs.getMyProfileIndex()) {
+                                        isMy = true;
                                     }
-                                    dialog.dismiss();
-                                    getActivity().onBackPressed();
+                                    prefs.setProfileIndex(bean.getIdx(), isMy);
+                                    Toast.makeText(getContext().getApplicationContext(), "성공적으로 변경되었습니다.", Toast.LENGTH_SHORT).show();
+                                    ((ActivityMain) getActivity()).setmProfileOrder(bean.getProfile_order());
                                 }
-                            })
-                            .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                }else{
-                    Toast.makeText(getContext().getApplicationContext(), "권한이 없습니다.", Toast.LENGTH_SHORT).show();
-                }
+                                dialog.dismiss();
+                                getActivity().onBackPressed();
+                            }
+                        })
+                        .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                AlertDialog dialog = builder.create();
+                dialog.show();
             });
             llItemView.setBackground(getResources().getDrawable(R.drawable.dream_list_box_gray));
             ivDelete.setVisibility(View.GONE);
