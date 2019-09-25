@@ -359,8 +359,8 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
                         break;
                     case R.id.menu_delete:
                         builder = new AlertDialog.Builder(getContext())
-                                .setTitle("프로필 삭제")
-                                .setMessage("프로필을 삭제하시겠습니까?")
+                                .setTitle("게시물 삭제")
+                                .setMessage("게시물을 삭제하시겠습니까?")
                                 .setPositiveButton("네", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {

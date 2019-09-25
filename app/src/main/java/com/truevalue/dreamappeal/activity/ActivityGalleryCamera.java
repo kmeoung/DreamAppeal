@@ -5,12 +5,15 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -24,12 +27,31 @@ import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.base.BaseActivity;
 import com.truevalue.dreamappeal.fragment.image.FragmentCamera;
 import com.truevalue.dreamappeal.fragment.image.FragmentGallery;
+import com.truevalue.dreamappeal.http.DAHttpClient;
+import com.truevalue.dreamappeal.http.IOServerCallback;
+import com.truevalue.dreamappeal.utils.Comm_Param;
+import com.truevalue.dreamappeal.utils.Comm_Prefs;
+import com.truevalue.dreamappeal.utils.Utils;
 
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwner {
 
@@ -60,6 +82,7 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
     TabLayout mTlTab;
 
     private ArrayList<String> mTabList;
+    private String mPath;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,6 +97,14 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
 //        initAdapter();
     }
 
+    public String getmPath() {
+        return mPath;
+    }
+
+    public void setmPath(String mPath) {
+        this.mPath = mPath;
+    }
+
     private void initView() {
         if (getIntent().getStringExtra(VIEW_TYPE_ADD_ACTION_POST) != null) {
             mTvTextBtn.setText("다음");
@@ -82,12 +113,104 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(ActivityGalleryCamera.this, ActivityAddActionPost.class);
-                    intent.putExtra(ActivityAddActionPost.EXTRA_ACTION_POST_TYPE,ActivityAddActionPost.TYPE_ADD_ACTION_POST);
+                    intent.putExtra(ActivityAddActionPost.EXTRA_ACTION_POST_TYPE, ActivityAddActionPost.TYPE_ADD_ACTION_POST);
                     startActivityForResult(intent, REQUEST_ADD_ACTION_POST);
                     overridePendingTransition(0, 0);
                 }
             });
+        } else {
+            mTvTextBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // todo : 이미지 업로드 테스트
+                    httpPostProfilesImage();
+                }
+            });
         }
+    }
+
+    /**
+     * 회원을 처음 등록했을 때 초기화
+     */
+    private void httpPostProfilesImage() {
+        Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityGalleryCamera.this);
+
+        HashMap header = Utils.getHttpHeader(prefs.getToken());
+        DAHttpClient client = DAHttpClient.getInstance(ActivityGalleryCamera.this);
+
+        File file = new File(getmPath());
+        Log.d("FILE", file.getName());
+        HashMap<String, String> body = new HashMap<>();
+        String[] fileInfo = file.getName().split("\\.");
+        body.put("key", fileInfo[0]);
+        body.put("type", fileInfo[1]);
+
+        client.Post(Comm_Param.URL_API_PROFILE_INDEX_IMAGE.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex())), header, null, new IOServerCallback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+
+                // 성공일 시
+                if (TextUtils.equals(code, SUCCESS)) {
+                    JSONObject json = new JSONObject(body);
+                    JSONObject jsonUrl = json.getJSONObject("url");
+                    String fileUrl = jsonUrl.getString("fileURL");
+                    String url = jsonUrl.getString("uploadURL");
+                    httpPostUploadImage(file, fileUrl, url);
+                }
+            }
+        });
+    }
+
+    private void httpPostUploadImage(File file, String fileUrl, String uploadUrl) {
+        // Create the connection and use it to upload the new object using the pre-signed URL.
+
+        DAHttpClient.getInstance(ActivityGalleryCamera.this).Put(uploadUrl, file, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    profileUpdate(fileUrl);
+                }
+            }
+        });
+    }
+
+    private void profileUpdate(String fileUrl) {
+        Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityGalleryCamera.this);
+
+        HashMap header = Utils.getHttpHeader(prefs.getToken());
+        DAHttpClient client = DAHttpClient.getInstance(ActivityGalleryCamera.this);
+
+        HashMap<String, String> body = new HashMap<>();
+        body.put("image", fileUrl);
+
+        client.Patch(Comm_Param.URL_API_PROFILES_INDEX.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex())), header, body, new IOServerCallback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+
+                // 성공일 시
+                if (TextUtils.equals(code, SUCCESS)) {
+                    setResult(RESULT_OK);
+                    finish();
+                }
+            }
+        });
     }
 
 

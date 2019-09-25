@@ -15,7 +15,7 @@
         app:is_right_text_visibility="invisible"
         app:is_search_visibility="gone"
         app:right_text="확인"
-        app:title="꿈에 필요한 능력과 기회 정하기" />
+        app:title="꿈에 필요한 능력과 기회 정리하기" />
     <!--툴바-->
 
     <!--갖출 능력-->
@@ -93,7 +93,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/nanum_pen"
             android:gravity="center_vertical"
-            android:text="내 꿈에 맞게 만들고픈 기회"
+            android:text="내 꿈에 맞게 만들어갈 기회"
             android:textColor="@color/color_opportunity"
             android:textSize="25sp" />
 

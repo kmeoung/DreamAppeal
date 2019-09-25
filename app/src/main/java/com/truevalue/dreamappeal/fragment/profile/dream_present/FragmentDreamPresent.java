@@ -133,9 +133,6 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
 
         if (mAdapter == null) initAdapter();
         initView();
-
-        // todo : 이미지 업로드 테스트
-//        httpPostProfilesImage();
     }
 
     @Override
@@ -202,35 +199,6 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
             }
         });
     }
-
-    /**
-     * 회원을 처음 등록했을 때 초기화
-     */
-    private void httpPostProfilesImage() {
-        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
-
-        HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DAHttpClient client = DAHttpClient.getInstance(getContext());
-
-
-        client.Patch(Comm_Param.URL_API_PROFILE_INDEX_IMAGE.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex())), header, null, new IOServerCallback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-
-                // 성공일 시
-                if (TextUtils.equals(code, SUCCESS)) {
-
-                }
-            }
-        });
-    }
-
 
     /**
      * 내 꿈 소개 조회

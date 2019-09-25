@@ -122,6 +122,8 @@ public class FragmentGallery extends BaseFragment {
                 Glide.with(getContext())
                         .load(mItemPath.get(0).getImagePath())
                         .into(mIvSelectImage);
+
+                ((ActivityGalleryCamera) getActivity()).setmPath(mItemPath.get(0).getImagePath());
                 firstImage = true;
             }
         }
@@ -134,6 +136,8 @@ public class FragmentGallery extends BaseFragment {
                 Glide.with(getContext())
                         .load(mItemPath.get(i).getImagePath())
                         .into(mIvSelectImage);
+
+                ((ActivityGalleryCamera) getActivity()).setmPath(mItemPath.get(i).getImagePath());
             }
         });
 
@@ -157,6 +161,8 @@ public class FragmentGallery extends BaseFragment {
                     Glide.with(getContext())
                             .load(mItemPath.get(0).getImagePath())
                             .into(mIvSelectImage);
+
+                    ((ActivityGalleryCamera) getActivity()).setmPath(mItemPath.get(0).getImagePath());
                 }
 
                 mGridAdapter.notifyDataSetChanged();

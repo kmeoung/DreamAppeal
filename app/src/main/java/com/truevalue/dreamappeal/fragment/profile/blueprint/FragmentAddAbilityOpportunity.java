@@ -129,7 +129,6 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
                 mTvHint.setText("능동적으로 실력/경험을 쌓으려면\n" + "어떤 기회를 만들어야 할까?");
             }
 
-
             // 처음 Hint 글자 안보이게 하고 Focus잡기
             mTvHint.setOnClickListener(v -> {
                 mEtAbilityOpportunity.setFocusableInTouchMode(true);
