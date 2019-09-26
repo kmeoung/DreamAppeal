@@ -25,6 +25,7 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.profile.ActivityActionPost;
@@ -215,6 +216,10 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
             ImageView ivCheering = h.getItemView(R.id.iv_cheering);
             TextView tvCheering = h.getItemView(R.id.tv_cheering);
             TextView tvCommentTime = h.getItemView(R.id.tv_comment_time);
+            ImageView ivComment = h.getItemView(R.id.iv_comment);
+
+            if(TextUtils.isEmpty(bean.getImage())) Glide.with(ActivityCommentDetail.this).load(R.drawable.drawer_user).into(ivComment);
+            else Glide.with(ActivityCommentDetail.this).load(bean.getImage()).placeholder(R.drawable.drawer_user).into(ivComment);
 
             tvCommentTime.setText(Utils.convertFromDate(bean.getRegister_date()));
 
