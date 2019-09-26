@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityCommentDetail;
@@ -255,12 +256,15 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
                     mUserIndex = bean.getUser_idx();
                     // 내 이미지가 비어있을 경우
                     if (TextUtils.isEmpty(bean.getImage()))
-                        Glide.with(getContext()).load(R.drawable.drawer_user).into(mIvDreamProfile);
-                    else
+                        Glide.with(getContext()).load(R.drawable.drawer_user).apply(new RequestOptions().circleCrop()).into(mIvDreamProfile);
+                    else{
+                        ((ActivityMain) getActivity()).setProfile_image(bean.getImage());
                         Glide.with(getContext()).
                                 load(bean.getImage()).
+                                apply(new RequestOptions().circleCrop()).
                                 placeholder(R.drawable.drawer_user).
                                 into(mIvDreamProfile);
+                    }
 
                     // 꿈에 대한 설명이 비어있을 경우
                     if (TextUtils.isEmpty(bean.getDescription())) {

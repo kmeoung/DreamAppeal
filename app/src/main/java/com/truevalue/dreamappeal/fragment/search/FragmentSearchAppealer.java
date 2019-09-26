@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivitySearch;
@@ -92,9 +93,9 @@ public class FragmentSearchAppealer extends BaseFragment implements IORecyclerVi
         ImageView ivDelete = h.getItemView(R.id.iv_delete);
 
         if (TextUtils.isEmpty(bean.getImage()))
-            Glide.with(this).load(R.drawable.drawer_user).into(ivProfile);
+            Glide.with(this).load(R.drawable.drawer_user).apply(new RequestOptions().circleCrop()).into(ivProfile);
         else
-            Glide.with(this).load(bean.getImage()).placeholder(R.drawable.drawer_user).into(ivProfile);
+            Glide.with(this).load(bean.getImage()).placeholder(R.drawable.drawer_user).apply(new RequestOptions().circleCrop()).into(ivProfile);
 
         tvValueStyle.setText(bean.getValue_style());
         tvJob.setText(bean.getJob());

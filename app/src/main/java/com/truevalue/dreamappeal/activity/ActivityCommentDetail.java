@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.profile.ActivityActionPost;
@@ -148,10 +149,10 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
     }
 
     private void initView() {
-        mBtnCommitComment.setFocusableInTouchMode(true);
-        mBtnCommitComment.requestFocus();
+        mEtInputComment.setFocusableInTouchMode(true);
+        mEtInputComment.requestFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(mBtnCommitComment, 0);
+        imm.showSoftInput(mEtInputComment, 0);
 
         mEtInputComment.addTextChangedListener(new TextWatcher() {
             @Override
@@ -218,8 +219,8 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
             TextView tvCommentTime = h.getItemView(R.id.tv_comment_time);
             ImageView ivComment = h.getItemView(R.id.iv_comment);
 
-            if(TextUtils.isEmpty(bean.getImage())) Glide.with(ActivityCommentDetail.this).load(R.drawable.drawer_user).into(ivComment);
-            else Glide.with(ActivityCommentDetail.this).load(bean.getImage()).placeholder(R.drawable.drawer_user).into(ivComment);
+            if(TextUtils.isEmpty(bean.getImage())) Glide.with(ActivityCommentDetail.this).load(R.drawable.drawer_user).apply(new RequestOptions().circleCrop()).into(ivComment);
+            else Glide.with(ActivityCommentDetail.this).load(bean.getImage()).placeholder(R.drawable.drawer_user).apply(new RequestOptions().circleCrop()).into(ivComment);
 
             tvCommentTime.setText(Utils.convertFromDate(bean.getRegister_date()));
 
@@ -300,6 +301,10 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
             LinearLayout llCheering = h.getItemView(R.id.ll_cheering);
             ImageView ivCheering = h.getItemView(R.id.iv_cheering);
             TextView tvCheering = h.getItemView(R.id.tv_cheering);
+            ImageView ivComment = h.getItemView(R.id.iv_comment);
+
+            if(TextUtils.isEmpty(bean.getImage())) Glide.with(ActivityCommentDetail.this).load(R.drawable.drawer_user).apply(new RequestOptions().circleCrop()).into(ivComment);
+            else Glide.with(ActivityCommentDetail.this).load(bean.getImage()).placeholder(R.drawable.drawer_user).apply(new RequestOptions().circleCrop()).into(ivComment);
 
             tvName.setText(bean.getName());
             tvTag.setText("@" + bean.getParent_name());
@@ -399,6 +404,8 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
                         if (TextUtils.equals(code, SUCCESS)) {
                             mAdapter.clear();
                             JSONObject json = new JSONObject(body);
+                            String profileImage = json.getString("image");
+                            Glide.with(ActivityCommentDetail.this).load(profileImage).apply(new RequestOptions().circleCrop()).placeholder(R.drawable.drawer_user).into(mIvUser);
                             JSONArray array = json.getJSONArray("comments");
                             Gson gson = new Gson();
                             ArrayList<BeanComment> parent = new ArrayList<>();

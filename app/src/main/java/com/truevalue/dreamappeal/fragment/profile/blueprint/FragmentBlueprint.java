@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityMain;
@@ -140,11 +141,11 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
                     try {
                         int commentCount = json.getInt("comment_count");
                         mTvCommentSize.setText(commentCount + "개");
-                        String image = json.getString("image");
+                        String image = json.getString("user_image");
                         if (TextUtils.isEmpty(image))
-                            Glide.with(getContext()).load(R.drawable.drawer_user).into(mIvProfile);
+                            Glide.with(getContext()).load(R.drawable.drawer_user).apply(new RequestOptions().circleCrop()).into(mIvProfile);
                         else
-                            Glide.with(getContext()).load(image).placeholder(R.drawable.drawer_user).into(mIvProfile);
+                            Glide.with(getContext()).load(image).placeholder(R.drawable.drawer_user).apply(new RequestOptions().circleCrop()).into(mIvProfile);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

@@ -26,6 +26,7 @@ public class ActivityMain extends BaseActivity implements IOBaseTitleBarListener
     private int mProfileIndex = -1;
     private BeanUser mBeanUser = null;
     private int mProfileOrder = 1;
+    private String profile_image = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +70,14 @@ public class ActivityMain extends BaseActivity implements IOBaseTitleBarListener
     public void setTitle(String title){
         FragmentMain fragment = (FragmentMain)getSupportFragmentManager().findFragmentById(R.id.activity_container);
         fragment.setTitle(title);
+    }
+
+    public String getProfile_image() {
+        return profile_image;
+    }
+
+    public void setProfile_image(String profile_image) {
+        this.profile_image = profile_image;
     }
 
     public void setUser(BeanUser bean){

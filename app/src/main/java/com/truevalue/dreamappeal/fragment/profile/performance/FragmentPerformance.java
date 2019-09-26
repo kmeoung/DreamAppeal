@@ -28,8 +28,10 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
+import com.truevalue.dreamappeal.activity.ActivityMain;
 import com.truevalue.dreamappeal.activity.profile.ActivityAddAchivement;
 import com.truevalue.dreamappeal.activity.profile.ActivityBestAchivementDetail;
 import com.truevalue.dreamappeal.activity.ActivityCommentDetail;
@@ -328,10 +330,12 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
         else
             Glide.with(getContext()).load(bean.getThumbnail_image()).placeholder(R.drawable.user).into(ivThumbnail);
 
-        if (TextUtils.isEmpty(mProfileImage))
-            Glide.with(getContext()).load(R.drawable.drawer_user).into(ivProfile);
+        String tempProfileUrl = ((ActivityMain)getActivity()).getProfile_image();
+        // todo : no Profile Image
+        if (tempProfileUrl == null)
+            Glide.with(getContext()).load(R.drawable.drawer_user).apply(new RequestOptions().circleCrop()).into(ivProfile);
         else
-            Glide.with(getContext()).load(bean.getThumbnail_image()).placeholder(R.drawable.drawer_user).into(ivProfile);
+            Glide.with(getContext()).load(tempProfileUrl).placeholder(R.drawable.drawer_user).apply(new RequestOptions().circleCrop()).into(ivProfile);
 
         PopupMenu popupMenu = new PopupMenu(getContext(), ibtnMore);
         popupMenu.getMenuInflater().inflate(R.menu.menu_performance, popupMenu.getMenu());

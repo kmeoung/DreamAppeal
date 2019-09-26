@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityMain;
@@ -255,9 +256,9 @@ public class FragmentDreamList extends BaseFragment implements IOBaseTitleBarLis
 
 
         if (TextUtils.isEmpty(bean.getImage()))
-            Glide.with(this).load(R.drawable.drawer_user).into(ivDreamProfile);
+            Glide.with(this).load(R.drawable.drawer_user).apply(new RequestOptions().circleCrop()).into(ivDreamProfile);
         else
-            Glide.with(this).load(bean.getImage()).placeholder(R.drawable.drawer_user).into(ivDreamProfile);
+            Glide.with(this).load(bean.getImage()).placeholder(R.drawable.drawer_user).apply(new RequestOptions().circleCrop()).into(ivDreamProfile);
 
         tvValueStyle.setText(bean.getValue_style());
         tvJob.setText(bean.getJob());

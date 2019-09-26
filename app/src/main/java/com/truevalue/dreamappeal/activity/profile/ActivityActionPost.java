@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityAddActionPost;
@@ -142,9 +143,14 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
                     Gson gson = new Gson();
                     BeanActionPostProfile actionPostProfile = gson.fromJson(json.getJSONObject("profile").toString(), BeanActionPostProfile.class);
                     if (TextUtils.isEmpty(actionPostProfile.getImage()))
-                        Glide.with(ActivityActionPost.this).load(R.drawable.drawer_user).into(mIvDreamProfile);
+                        Glide.with(ActivityActionPost.this).load(R.drawable.drawer_user).apply(new RequestOptions().circleCrop()).into(mIvDreamProfile);
                     else
-                        Glide.with(ActivityActionPost.this).load(actionPostProfile.getImage()).placeholder(R.drawable.drawer_user).into(mIvDreamProfile);
+                        Glide.with(ActivityActionPost.this).
+                                load(actionPostProfile.getImage()).
+                                apply(new RequestOptions().circleCrop()).
+                                placeholder(R.drawable.drawer_user).
+                                into(mIvDreamProfile);
+
                     mTvValueStyle.setText(actionPostProfile.getValue_style());
                     mTvJob.setText(actionPostProfile.getJob());
                     mBean = gson.fromJson(json.getJSONObject("action_post").toString(), BeanActionPostDetail.class);
