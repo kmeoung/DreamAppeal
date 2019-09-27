@@ -48,7 +48,7 @@ import okhttp3.Call;
 public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBarListener, IORecyclerViewListener {
 
     public static final String EXTRA_EDIT_ACHIVEMENT_POST = "EXTRA_EDIT_ACHIVEMENT_POST";
-
+    public static final int REQUEST_GET_IMAGE = 1004;
 
     @BindView(R.id.v_status)
     View mVStatus;
@@ -248,7 +248,7 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
         switch (view.getId()) {
             case R.id.iv_add_img: // 이미지 추가 버튼
                 Intent intent = new Intent(ActivityAddAchivement.this, ActivityGalleryCamera.class);
-                startActivity(intent);
+                startActivityForResult(intent,REQUEST_GET_IMAGE);
                 break;
             case R.id.btn_edit: // 수정 버튼
                 break;
@@ -258,6 +258,11 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        
+        if(resultCode == RESULT_OK){
+            if(requestCode == REQUEST_GET_IMAGE){
+
+            }
+        }
+
     }
 }

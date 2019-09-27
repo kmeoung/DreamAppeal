@@ -53,6 +53,7 @@ public class FragmentMain extends BaseFragment implements IOBaseTitleBarListener
 
     public static final int REQUEST_SEARCH = 100;
     public static final int REQUEST_ADD_POST = 101;
+    public static final int REQUEST_ADD_ACHIVEMENT = 102;
     private static final int REQUEST_DREAM_PRESENT = 1000;
     private static final int REQUEST_PERFORMANCE = 1100;
     private static final int REQUEST_BLUEPRINT = 1200;
