@@ -150,7 +150,7 @@ public class FragmentMain extends BaseFragment implements IOBaseTitleBarListener
                 break;
             case R.id.iv_add_board: // 게시글 추가
                 Intent intent = new Intent(getContext(), ActivityGalleryCamera.class);
-                intent.putExtra(ActivityGalleryCamera.VIEW_TYPE_ADD_ACTION_POST, "VIEW_TYPE_ADD_ACTION_POST");
+                intent.putExtra(ActivityGalleryCamera.VIEW_TYPE_ADD_ACTION_POST,FragmentMain.REQUEST_ADD_POST);
                 startActivityForResult(intent,REQUEST_ADD_POST);
                 break;
             case R.id.iv_notification: // 알림

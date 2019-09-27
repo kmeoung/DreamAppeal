@@ -27,6 +27,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.base.BaseActivity;
+import com.truevalue.dreamappeal.fragment.FragmentMain;
 import com.truevalue.dreamappeal.fragment.image.FragmentCamera;
 import com.truevalue.dreamappeal.fragment.image.FragmentGallery;
 import com.truevalue.dreamappeal.http.DAHttpClient;
@@ -59,6 +60,7 @@ import okhttp3.Response;
 public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwner {
 
     public static final String VIEW_TYPE_ADD_ACTION_POST = "VIEW_TYPE_ADD_ACTION_POST";
+    public static final String REQEUST_IMAGE_FILE = "REQEUST_IMAGE_FILE";
     private final int REQUEST_IMAGE_CAPTURE = 1004;
     private final int REQUEST_ADD_ACTION_POST = 1040;
 
@@ -85,7 +87,8 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
     TabLayout mTlTab;
 
     private ArrayList<String> mTabList;
-    private String mPath;
+    private File mImageFile;
+    private int mViewType = -1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,33 +103,53 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
 //        initAdapter();
     }
 
-    public String getmPath() {
-        return mPath;
+    public File getmImageFile() {
+        return mImageFile;
     }
 
-    public void setmPath(String mPath) {
-        this.mPath = mPath;
+    public void setmImageFile(File mImageFile) {
+        this.mImageFile = mImageFile;
     }
 
     private void initView() {
-        if (getIntent().getStringExtra(VIEW_TYPE_ADD_ACTION_POST) != null) {
-            mTvTextBtn.setText("다음");
+        mViewType = getIntent().getIntExtra(VIEW_TYPE_ADD_ACTION_POST, -1);
+        if (mViewType != -1) {
 
-            mTvTextBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(ActivityGalleryCamera.this, ActivityAddActionPost.class);
-                    intent.putExtra(ActivityAddActionPost.EXTRA_ACTION_POST_TYPE, ActivityAddActionPost.TYPE_ADD_ACTION_POST);
-                    startActivityForResult(intent, REQUEST_ADD_ACTION_POST);
-                    overridePendingTransition(0, 0);
-                }
-            });
+            switch (mViewType) {
+                case FragmentMain.REQUEST_ADD_POST:
+                    mTvTextBtn.setText("다음");
+
+                    mTvTextBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(ActivityGalleryCamera.this, ActivityAddActionPost.class);
+                            intent.putExtra(ActivityAddActionPost.EXTRA_ACTION_POST_TYPE, ActivityAddActionPost.TYPE_ADD_ACTION_POST);
+                            startActivityForResult(intent, REQUEST_ADD_ACTION_POST);
+                            overridePendingTransition(0, 0);
+                        }
+                    });
+                    break;
+                case FragmentMain.REQUEST_ADD_ACHIVEMENT:
+                    mTvTextBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            File sendFile = getmImageFile();
+                            Intent intent = new Intent();
+                            intent.putExtra(REQEUST_IMAGE_FILE, sendFile);
+                            setResult(RESULT_OK, intent);
+                            finish();
+                        }
+                    });
+
+                    break;
+            }
+
         } else {
             mTvTextBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     // todo : 이미지 업로드 테스트
-                    httpPostProfilesImage(null);
+                    httpPostProfilesImage();
                 }
             });
         }
@@ -135,14 +158,12 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
     /**
      * Image Upload
      */
-    private void httpPostProfilesImage(File file) {
+    private void httpPostProfilesImage() {
         Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityGalleryCamera.this);
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
         DAHttpClient client = DAHttpClient.getInstance(ActivityGalleryCamera.this);
-        File sendFile;
-        if(file == null) sendFile = new File(getmPath());
-        else sendFile = file;
+        File sendFile = getmImageFile();
         Log.d("FILE", sendFile.getName());
         HashMap<String, String> body = new HashMap<>();
         String[] fileInfo = sendFile.getName().split("\\.");
@@ -254,15 +275,22 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
                 String filePath = Environment.getExternalStorageDirectory().getPath() + "/";
                 String fileName;
                 fileName = new Date().getTime() + ".jpeg";
-                Utils.SaveBitmapToFileCache(photo,filePath,fileName);
+                Utils.SaveBitmapToFileCache(photo, filePath, fileName);
                 file = new File(filePath + fileName);
             }
             if (uri != null) {
                 uri = data.getData();
-                file = new File(Utils.getRealPathFromURI(ActivityGalleryCamera.this,uri));
+                file = new File(Utils.getRealPathFromURI(ActivityGalleryCamera.this, uri));
             }
 
-            httpPostProfilesImage(file);
+            if (mViewType == FragmentMain.REQUEST_ADD_ACHIVEMENT) {
+                Intent intent = new Intent();
+                intent.putExtra(REQEUST_IMAGE_FILE, file);
+                setResult(RESULT_OK, intent);
+                finish();
+            } else {
+                httpPostProfilesImage();
+            }
 
         } else if (requestCode == REQUEST_ADD_ACTION_POST) {
             if (resultCode == RESULT_OK) {

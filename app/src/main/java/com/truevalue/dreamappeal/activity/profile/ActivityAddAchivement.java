@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityGalleryCamera;
 import com.truevalue.dreamappeal.base.BaseActivity;
@@ -36,6 +37,7 @@ import com.truevalue.dreamappeal.utils.Utils;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -230,7 +232,9 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
 
     @Override
     public void onBindViewHolder(@NonNull BaseViewHolder h, int i) {
-
+        File file =(File) mAdapter.get(i);
+        ImageView ivImage = h.getItemView(R.id.iv_achivement);
+        Glide.with(ActivityAddAchivement.this).load(file).into(ivImage);
     }
 
     @Override
@@ -262,7 +266,8 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK){
             if(requestCode == REQUEST_GET_IMAGE){
-
+                File file = (File) data.getSerializableExtra(ActivityGalleryCamera.REQEUST_IMAGE_FILE);
+                mAdapter.add(file);
             }
         }
 
