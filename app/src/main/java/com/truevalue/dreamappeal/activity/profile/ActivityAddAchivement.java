@@ -19,6 +19,7 @@ import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityGalleryCamera;
 import com.truevalue.dreamappeal.base.BaseActivity;
 import com.truevalue.dreamappeal.base.BaseItemDecorationHorizontal;
+import com.truevalue.dreamappeal.fragment.FragmentMain;
 import com.truevalue.dreamappeal.http.DAHttpClient;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
@@ -248,6 +249,7 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
         switch (view.getId()) {
             case R.id.iv_add_img: // 이미지 추가 버튼
                 Intent intent = new Intent(ActivityAddAchivement.this, ActivityGalleryCamera.class);
+                intent.putExtra(ActivityGalleryCamera.VIEW_TYPE_ADD_ACTION_POST, FragmentMain.REQUEST_ADD_ACHIVEMENT);
                 startActivityForResult(intent,REQUEST_GET_IMAGE);
                 break;
             case R.id.btn_edit: // 수정 버튼
