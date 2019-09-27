@@ -59,6 +59,7 @@ public class FragmentMain extends BaseFragment implements IOBaseTitleBarListener
 
     // dream_present
     public static final int REQUEST_DREAM_PRESENT_COMMENT = REQUEST_DREAM_PRESENT + 0;
+    public static final int REQUEST_DREAM_PROFILE_IMAGE = REQUEST_DREAM_PRESENT + 1;
     // performance
     public static final int REQUEST_PERFORMANCE_ADD_RECENT_ACHIVEMENT = REQUEST_PERFORMANCE + 0;
     public static final int REQUEST_PERFORMANCE_EDIT_RECENT_ACHIVEMENT = REQUEST_PERFORMANCE + 1;

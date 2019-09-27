@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -22,6 +23,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.viewpager.widget.ViewPager;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.base.BaseActivity;
@@ -44,6 +46,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -123,25 +126,26 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
                 @Override
                 public void onClick(View view) {
                     // todo : 이미지 업로드 테스트
-                    httpPostProfilesImage();
+                    httpPostProfilesImage(null);
                 }
             });
         }
     }
 
     /**
-     * 회원을 처음 등록했을 때 초기화
+     * Image Upload
      */
-    private void httpPostProfilesImage() {
+    private void httpPostProfilesImage(File file) {
         Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityGalleryCamera.this);
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
         DAHttpClient client = DAHttpClient.getInstance(ActivityGalleryCamera.this);
-
-        File file = new File(getmPath());
-        Log.d("FILE", file.getName());
+        File sendFile;
+        if(file == null) sendFile = new File(getmPath());
+        else sendFile = file;
+        Log.d("FILE", sendFile.getName());
         HashMap<String, String> body = new HashMap<>();
-        String[] fileInfo = file.getName().split("\\.");
+        String[] fileInfo = sendFile.getName().split("\\.");
         body.put("key", fileInfo[0]);
         body.put("type", fileInfo[1]);
 
@@ -161,7 +165,7 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
                     JSONObject jsonUrl = json.getJSONObject("url");
                     String fileUrl = jsonUrl.getString("fileURL");
                     String url = jsonUrl.getString("uploadURL");
-                    httpPostUploadImage(file, fileUrl, url);
+                    httpPostUploadImage(sendFile, fileUrl, url);
                 }
             }
         });
@@ -228,8 +232,6 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
         startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
     }
 
-    private Uri ImageUriMyPhoto;
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -246,17 +248,22 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
+            File file = null;
             if (extras != null) {
                 Bitmap photo = extras.getParcelable("data");
-//                mIvMyPhoto.setImageBitmap(photo);
+                String filePath = Environment.getExternalStorageDirectory().getPath() + "/";
+                String fileName;
+                fileName = new Date().getTime() + ".jpeg";
+                Utils.SaveBitmapToFileCache(photo,filePath,fileName);
+                file = new File(filePath + fileName);
             }
             if (uri != null) {
-                ImageUriMyPhoto = data.getData();
-//                Glide.with(this)
-//                        .load(ImageUriMyPhoto)
-//                        .into(mIvMyPhoto);
+                uri = data.getData();
+                file = new File(Utils.getRealPathFromURI(ActivityGalleryCamera.this,uri));
             }
+
+            httpPostProfilesImage(file);
+
         } else if (requestCode == REQUEST_ADD_ACTION_POST) {
             if (resultCode == RESULT_OK) {
                 setResult(RESULT_OK);
@@ -264,112 +271,6 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
             }
         }
     }
-
-//    private void httpPostBuyNameCard(final BaseProgressDialog dialog) {
-//        TlogHashMap header = new TlogHashMap(ActivityBuyNameCard.this);
-//
-//        LinkedHashMap<String, File> fileBody = new LinkedHashMap<>();
-//        LinkedHashMap<String, Object> body = new LinkedHashMap<>();
-//
-//        if (type == 0) {
-//            body.put("goodsType", "NORMAL");
-//        } else {
-//            body.put("goodsType", "PREMIUM");
-//        }
-//        body.put("isDefaultCard", "true");
-//        // todo : 미리 등록해놓은 카드정보가 있을 경우
-////        body.put("cardNumber", "");
-////        body.put("cardExpireDate", "");
-////        body.put("cardName", "");
-////        body.put("cardContact", "");
-//        body.put("mainDescription", mEtMainText.getText().toString());
-//        body.put("subDescription", mEtMoreText.getText().toString());
-//        body.put("selfIntroduction", mEtIntroduceText.getText().toString());
-//        body.put("applyMemo", "unwelted");
-//
-//        if (TextUtils.isEmpty(mEtMainText.getText().toString())
-//                || TextUtils.isEmpty(mEtMoreText.getText().toString())) {
-//            CustomToast.makeText(this, "필수값을 제대로 입력해주세요", CustomToast.LENGTH_SHORT).show();
-//            dialog.dismiss();
-//            return;
-//        }
-//
-//        Drawable nameCardDrawable = null;
-//        Drawable myPhotoDrawable = null;
-//        nameCardDrawable = mIvRealNameCard.getDrawable();
-//        myPhotoDrawable = mIvMyPhoto.getDrawable();
-//
-//        File nameCardFile = null;
-//        File myPhotoFile = null;
-//        if (nameCardDrawable != null) {
-//            Bitmap bitmap = ((BitmapDrawable) nameCardDrawable).getBitmap();
-//
-//            String filePath = Environment.getExternalStorageDirectory().getPath() + "/";
-//            String fileName = "tempNameCard.jpeg";
-//
-//            SaveBitmapToFileCache(bitmap, filePath, fileName);
-//
-//            nameCardFile = new File(filePath + fileName);
-//        }
-//
-//        if (myPhotoDrawable != null) {
-//            Bitmap bitmap = ((BitmapDrawable) myPhotoDrawable).getBitmap();
-//
-//            String filePath = Environment.getExternalStorageDirectory().getPath() + "/";
-//            String fileName = "tempMyPhoto.jpeg";
-//
-//            SaveBitmapToFileCache(bitmap, filePath, fileName);
-//
-//            myPhotoFile = new File(filePath + fileName);
-//        }
-//
-//        if (nameCardFile != null && nameCardFile.exists()) {
-//            fileBody.put("namecard1File", nameCardFile);
-//        } else {
-//            CustomToast.makeText(this, "필수값을 제대로 입력해주세요", CustomToast.LENGTH_SHORT).show();
-//            dialog.dismiss();
-//            return;
-//        }
-////        fileBody.put("namecard2File", null);
-//
-//        if (myPhotoFile != null && myPhotoFile.exists()) {
-//            fileBody.put("photo1File", myPhotoFile);
-//        } else {
-////            fileBody.put("photo1File", null);
-//        }
-////        fileBody.put("photo2File", null);
-//
-//
-//        final Handler handler = new Handler(getMainLooper());
-//
-//        TlogClient.getInstance().post(ActivityBuyNameCard.this,
-//                Comm_Params.URL_USER_ID_BUY_NAMECARD, header, body, fileBody, new Callback() {
-//                    @Override
-//                    public void onFailure(Call call, IOException e) {
-//                        e.printStackTrace();
-//                        dialog.dismiss();
-//                    }
-//
-//                    @Override
-//                    public void onResponse(Call call, final Response response) throws IOException {
-//                        final String strResponse = response.body().string();
-//                        Log.d("ActivityBuyNameCard", strResponse);
-//
-//                        handler.post(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                if (response.code() == 201) {
-//                                    dialog.dismiss();
-//                                    finish();
-//                                } else {
-//                                    dialog.dismiss();
-//                                    CustomToast.makeText(ActivityBuyNameCard.this, "이미 구매요청이 되었습니다", CustomToast.LENGTH_SHORT).show();
-//                                }
-//                            }
-//                        });
-//                    }
-//                });
-//    }
 
     /**
      * 어댑터 초기화

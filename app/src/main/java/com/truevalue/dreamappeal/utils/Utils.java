@@ -3,6 +3,7 @@ package com.truevalue.dreamappeal.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -25,6 +26,10 @@ import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.bean.BeanGalleryInfo;
 import com.truevalue.dreamappeal.bean.BeanGalleryInfoList;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -47,6 +52,96 @@ public class Utils {
         float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DP, context.getResources()
                 .getDisplayMetrics());
         return (int) px;
+    }
+
+    /**
+     * image RealPath
+     *
+     * @param context
+     * @param contentUri
+     * @return
+     */
+    public static String getRealPathFromURI(Context context, Uri contentUri) {
+//        Cursor cursor = null;
+//        try {
+////            String[] proj = {MediaStore.Video.Media.DATA};
+//            cursor = context.getContentResolver().query(contentUri, null, null, null, null);
+//            cursor.moveToFirst();
+//            String document_id = cursor.getString(0);
+//
+//            cursor = context.getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, null, null, null, null);
+//
+//            if (cursor.moveToFirst()) {
+//                do {
+//                    String id = cursor.getString(0);
+//
+//                    if (document_id.contains(id)) {
+//                        break;
+//                    }
+//                } while (cursor.moveToNext());
+//
+//            }
+//
+//            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
+//            return cursor.getString(column_index);
+//        } finally {
+//            if (cursor != null) {
+//                cursor.close();
+//            }
+//        }
+        String result = null;
+
+        Cursor cursor = context.getContentResolver().query(contentUri, null, null, null, null);
+
+        if (cursor == null) { // Source is Dropbox or other similar local file path
+            result = contentUri.getPath();
+        } else {
+            if (cursor.moveToFirst()) {
+                int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+                result = cursor.getString(idx);
+            }
+            cursor.close();
+        }
+        return result;
+
+    }
+
+    /**
+     * 비트맵 파일 변환
+     *
+     * @param bitmap
+     * @param strFilePath
+     * @param filename
+     */
+    public static File SaveBitmapToFileCache(Bitmap bitmap, String strFilePath,
+                                             String filename) {
+
+        File file = new File(strFilePath);
+
+        // If no folders
+        if (!file.exists()) {
+            file.mkdirs();
+            // Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
+        }
+
+        File fileCacheItem = new File(strFilePath + filename);
+        OutputStream out = null;
+
+        try {
+            fileCacheItem.createNewFile();
+            out = new FileOutputStream(fileCacheItem);
+
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return file;
     }
 
     /**

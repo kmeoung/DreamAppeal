@@ -417,7 +417,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
                 break;
             case R.id.iv_dream_profile: // 내 꿈 프로필 이미지
                 intent = new Intent(getContext(), ActivityGalleryCamera.class);
-                startActivity(intent);
+                startActivityForResult(intent,FragmentMain.REQUEST_DREAM_PROFILE_IMAGE);
                 break;
             case R.id.btn_dream_description_more: // 내 꿈 더보기
                 if (isMyDreamMore) {
@@ -536,6 +536,9 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == FragmentMain.REQUEST_DREAM_PRESENT_COMMENT) {
+            Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+            httpGetProfilesIndex(prefs.getProfileIndex());
+        }else if(requestCode == FragmentMain.REQUEST_DREAM_PROFILE_IMAGE){
             Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
             httpGetProfilesIndex(prefs.getProfileIndex());
         }

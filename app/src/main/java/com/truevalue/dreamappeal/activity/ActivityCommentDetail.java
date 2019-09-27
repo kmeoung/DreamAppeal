@@ -404,8 +404,12 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
                         if (TextUtils.equals(code, SUCCESS)) {
                             mAdapter.clear();
                             JSONObject json = new JSONObject(body);
-                            String profileImage = json.getString("image");
-                            Glide.with(ActivityCommentDetail.this).load(profileImage).apply(new RequestOptions().circleCrop()).placeholder(R.drawable.drawer_user).into(mIvUser);
+                            try{
+                                String profileImage = json.getString("image");
+                                Glide.with(ActivityCommentDetail.this).load(profileImage).apply(new RequestOptions().circleCrop()).placeholder(R.drawable.drawer_user).into(mIvUser);
+                            }catch (JSONException e){
+                                e.printStackTrace();
+                            }
                             JSONArray array = json.getJSONArray("comments");
                             Gson gson = new Gson();
                             ArrayList<BeanComment> parent = new ArrayList<>();

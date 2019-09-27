@@ -66,6 +66,7 @@ public class Comm_Param {
     // 실천 인증 조회
     public static final String URL_API_PROFILES_INDEX_INDEX_ACTIONPOSTS = URL_API_PROFILES_INDEX_INDEX + "/action_posts";
     public static final String URL_API_PROFILES_INDEX_INDEX_ACTIONPOSTS_INDEX = URL_API_PROFILES_INDEX_INDEX_ACTIONPOSTS + "/" + POST_INDEX;
+    public static final String URL_API_PROFILES_INDEX_INDEX_ACTIONPOSTS_INDEX_IMAGES = URL_API_PROFILES_INDEX_INDEX_ACTIONPOSTS_INDEX + "/images";
 
     // 내 꿈 소개 댓글 조회
     public static final String URL_API_PROFILES_INDEX_INDEX_PRESENTCOMMENTS = URL_API_PROFILES_INDEX_INDEX + "/present_comments";

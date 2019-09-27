@@ -106,7 +106,7 @@ public class FragmentAddActionPost extends BaseFragment implements IORecyclerVie
         BaseTitleBar btbBar = ((ActivityAddActionPost) getActivity()).getmBtbBar();
         btbBar.setIOBaseTitleBarListener(this);
         if (mType == ActivityAddActionPost.TYPE_ADD_ACTION_POST) {
-            btbBar.setTitle("새 실천목표");
+            btbBar.setTitle("새 실천인증");
             btbBar.getmTvTextBtn().setText("다음");
         } else if (mType == ActivityAddActionPost.TYPE_EDIT_ACTION_POST) {
             btbBar.setTitle("실천목표 수정");
