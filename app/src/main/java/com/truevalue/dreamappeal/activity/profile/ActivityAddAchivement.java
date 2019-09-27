@@ -15,10 +15,12 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityGalleryCamera;
 import com.truevalue.dreamappeal.base.BaseActivity;
 import com.truevalue.dreamappeal.base.BaseItemDecorationHorizontal;
+import com.truevalue.dreamappeal.fragment.FragmentMain;
 import com.truevalue.dreamappeal.http.DAHttpClient;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
@@ -35,6 +37,7 @@ import com.truevalue.dreamappeal.utils.Utils;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -229,7 +232,9 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
 
     @Override
     public void onBindViewHolder(@NonNull BaseViewHolder h, int i) {
-
+        File file =(File) mAdapter.get(i);
+        ImageView ivImage = h.getItemView(R.id.iv_achivement);
+        Glide.with(ActivityAddAchivement.this).load(file).into(ivImage);
     }
 
     @Override
@@ -248,6 +253,7 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
         switch (view.getId()) {
             case R.id.iv_add_img: // 이미지 추가 버튼
                 Intent intent = new Intent(ActivityAddAchivement.this, ActivityGalleryCamera.class);
+                intent.putExtra(ActivityGalleryCamera.VIEW_TYPE_ADD_ACTION_POST, FragmentMain.REQUEST_ADD_ACHIVEMENT);
                 startActivityForResult(intent,REQUEST_GET_IMAGE);
                 break;
             case R.id.btn_edit: // 수정 버튼
@@ -260,7 +266,8 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK){
             if(requestCode == REQUEST_GET_IMAGE){
-
+                File file = (File) data.getSerializableExtra(ActivityGalleryCamera.REQEUST_IMAGE_FILE);
+                mAdapter.add(file);
             }
         }
 

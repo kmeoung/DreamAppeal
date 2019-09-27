@@ -1,11 +1,9 @@
 package com.truevalue.dreamappeal.fragment.image;
 
 import android.content.Context;
-import android.graphics.Matrix;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +27,7 @@ import com.truevalue.dreamappeal.bean.BeanGalleryInfo;
 import com.truevalue.dreamappeal.bean.BeanGalleryInfoList;
 import com.truevalue.dreamappeal.utils.Utils;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -123,7 +122,7 @@ public class FragmentGallery extends BaseFragment {
                         .load(mItemPath.get(0).getImagePath())
                         .into(mIvSelectImage);
 
-                ((ActivityGalleryCamera) getActivity()).setmPath(mItemPath.get(0).getImagePath());
+                ((ActivityGalleryCamera) getActivity()).setmImageFile(new File(mItemPath.get(0).getImagePath()));
                 firstImage = true;
             }
         }
@@ -137,7 +136,7 @@ public class FragmentGallery extends BaseFragment {
                         .load(mItemPath.get(i).getImagePath())
                         .into(mIvSelectImage);
 
-                ((ActivityGalleryCamera) getActivity()).setmPath(mItemPath.get(i).getImagePath());
+                ((ActivityGalleryCamera) getActivity()).setmImageFile(new File(mItemPath.get(i).getImagePath()));
             }
         });
 
@@ -162,7 +161,7 @@ public class FragmentGallery extends BaseFragment {
                             .load(mItemPath.get(0).getImagePath())
                             .into(mIvSelectImage);
 
-                    ((ActivityGalleryCamera) getActivity()).setmPath(mItemPath.get(0).getImagePath());
+                    ((ActivityGalleryCamera) getActivity()).setmImageFile(new File(mItemPath.get(0).getImagePath()));
                 }
 
                 mGridAdapter.notifyDataSetChanged();
