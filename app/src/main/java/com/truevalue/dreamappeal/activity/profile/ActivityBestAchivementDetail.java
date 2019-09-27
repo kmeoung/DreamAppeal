@@ -28,6 +28,7 @@ import com.truevalue.dreamappeal.utils.Comm_Prefs;
 import com.truevalue.dreamappeal.utils.Utils;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -147,6 +148,14 @@ public class ActivityBestAchivementDetail extends BaseActivity {
                     mTvComment.setText(String.format("%d개", mBean.getComment_count()));
                     mLlCheering.setSelected(mBean.isStatus());
                     mTvTime.setText(Utils.convertFromDate(mBean.getRegister_date()));
+
+                    JSONArray jArray = post.getJSONArray("image");
+                    for (int i = 0; i < jArray.length(); i++) {
+                        JSONObject jObject = jArray.getJSONObject(i);
+                        String url = jObject.getString("url");
+                        Glide.with(ActivityBestAchivementDetail.this).load(url).into(mIvImg);
+                        // todo : 현재 페이지 다중 이미지 조회 필요 및 수정 필요
+                    }
                 }
             }
         });

@@ -102,7 +102,7 @@ public class ActivityMain extends BaseActivity implements IOBaseTitleBarListener
     public void initPage(){
         FragmentManager fm = getSupportFragmentManager();
         for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
-            fm.popBackStack();
+                fm.popBackStack();
         }
         replaceFragment(R.id.activity_container, new FragmentMain(), false);
     }

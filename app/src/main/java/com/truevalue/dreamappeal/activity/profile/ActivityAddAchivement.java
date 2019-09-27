@@ -20,26 +20,29 @@ import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityGalleryCamera;
 import com.truevalue.dreamappeal.base.BaseActivity;
 import com.truevalue.dreamappeal.base.BaseItemDecorationHorizontal;
-import com.truevalue.dreamappeal.fragment.FragmentMain;
-import com.truevalue.dreamappeal.http.DAHttpClient;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.BaseViewHolder;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
-import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.bean.BeanAchivementPostMain;
 import com.truevalue.dreamappeal.bean.BeanPostDetail;
+import com.truevalue.dreamappeal.fragment.FragmentMain;
+import com.truevalue.dreamappeal.http.DAHttpClient;
+import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
 import com.truevalue.dreamappeal.utils.Utils;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -47,6 +50,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBarListener, IORecyclerViewListener {
 
@@ -218,12 +223,139 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
                 Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                 if (TextUtils.equals(code, SUCCESS)) {
+//                    setResult(RESULT_OK);
+//                    finish();
+                    JSONObject object = new JSONObject(body);
+                    JSONObject result = object.getJSONObject("result");
+                    int post_index = result.getInt("insertId");
+                    httpPostProfilesImage(post_index);
+                }
+            }
+        });
+    }
+
+
+    /**
+     * Image Upload
+     */
+    private void httpPostProfilesImage(int posts_index) {
+        Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityAddAchivement.this);
+
+        HashMap header = Utils.getHttpHeader(prefs.getToken());
+        DAHttpClient client = DAHttpClient.getInstance(ActivityAddAchivement.this);
+        HashMap<String, String> body = new HashMap<>();
+        JSONArray jArray = new JSONArray();
+
+        try {
+            for (int i = 0; i < mAdapter.size(); i++) {
+                File file = (File) mAdapter.get(i);
+                JSONObject set = new JSONObject();
+                String[] fileInfo = file.getName().split("\\.");
+                set.put("key", fileInfo[0]);
+                set.put("type", fileInfo[1]);
+                jArray.put(set);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        body.put("set", jArray.toString());
+
+        client.Post(Comm_Param.URL_API_ACHIVEMENT_POSTS_INDEX_IMAGES
+                .replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()))
+                .replace(Comm_Param.POST_INDEX, String.valueOf(posts_index)), header, body, new IOServerCallback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+
+                // 성공일 시
+                if (TextUtils.equals(code, SUCCESS)) {
+                    JSONObject json = new JSONObject(body);
+                    mImageUploadCheck = new ArrayList<>();
+                    JSONArray jsonUrl = json.getJSONArray("urlList");
+                    for (int i = 0; i < jsonUrl.length(); i++) {
+                        JSONObject url = jsonUrl.getJSONObject(i);
+                        String fileURL = url.getString("fileURL");
+                        String uploadURL = url.getString("uploadURL");
+                        httpPostUploadImage(posts_index, (File) mAdapter.get(i), fileURL, uploadURL);
+                    }
+                }
+            }
+        });
+    }
+
+    private ArrayList<String> mImageUploadCheck = null;
+
+    private void httpPostUploadImage(int posts_index, File file, String fileUrl, String uploadUrl) {
+        // Create the connection and use it to upload the new object using the pre-signed URL.
+
+        DAHttpClient.getInstance(ActivityAddAchivement.this).Put(uploadUrl, file, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    mImageUploadCheck.add(fileUrl);
+
+                    if (mImageUploadCheck.size() == mAdapter.size()) {
+                        profileUpdate(posts_index);
+                    }
+
+                }
+            }
+        });
+    }
+
+    private void profileUpdate(int post_index) {
+        Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityAddAchivement.this);
+
+        HashMap header = Utils.getHttpHeader(prefs.getToken());
+        DAHttpClient client = DAHttpClient.getInstance(ActivityAddAchivement.this);
+
+        HashMap<String, String> body = new HashMap<>();
+        JSONArray jArray = new JSONArray();
+
+        try {
+            for (int i = 0; i < mImageUploadCheck.size(); i++) {
+                JSONObject jObject = new JSONObject();
+                String fileUrl = mImageUploadCheck.get(i);
+                jObject.put("url", fileUrl);
+                jArray.put(jObject);
+            }
+            body.put("image", jArray.toString());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        client.Patch(Comm_Param.URL_API_ACHIVEMENT_POSTS_INDEX
+                .replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()))
+                .replace(Comm_Param.POST_INDEX, String.valueOf(post_index)), header, body, new IOServerCallback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+
+                // 성공일 시
+                if (TextUtils.equals(code, SUCCESS)) {
                     setResult(RESULT_OK);
                     finish();
                 }
             }
         });
     }
+
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -232,7 +364,7 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
 
     @Override
     public void onBindViewHolder(@NonNull BaseViewHolder h, int i) {
-        File file =(File) mAdapter.get(i);
+        File file = (File) mAdapter.get(i);
         ImageView ivImage = h.getItemView(R.id.iv_achivement);
         Glide.with(ActivityAddAchivement.this).load(file).into(ivImage);
     }
@@ -254,7 +386,7 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
             case R.id.iv_add_img: // 이미지 추가 버튼
                 Intent intent = new Intent(ActivityAddAchivement.this, ActivityGalleryCamera.class);
                 intent.putExtra(ActivityGalleryCamera.VIEW_TYPE_ADD_ACTION_POST, FragmentMain.REQUEST_ADD_ACHIVEMENT);
-                startActivityForResult(intent,REQUEST_GET_IMAGE);
+                startActivityForResult(intent, REQUEST_GET_IMAGE);
                 break;
             case R.id.btn_edit: // 수정 버튼
                 break;
@@ -264,8 +396,8 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK){
-            if(requestCode == REQUEST_GET_IMAGE){
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_GET_IMAGE) {
                 File file = (File) data.getSerializableExtra(ActivityGalleryCamera.REQEUST_IMAGE_FILE);
                 mAdapter.add(file);
             }

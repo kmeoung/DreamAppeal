@@ -51,7 +51,7 @@ public class Comm_Param {
     // 내 꿈 목록 조회
     public static final String URL_API_PROFILES_INDEX_LIST = URL_API_PROFILES + "/" + USER_INDEX + "/list";
 
-    // 이미지 업로드 는 패치
+    // 내 꿈 이미지 업로드
     public static final String URL_API_PROFILE_INDEX_IMAGE  = URL_API_PROFILES_INDEX + "/images";
 
     // 실현 성과
@@ -91,6 +91,9 @@ public class Comm_Param {
     public static final String URL_API_ACHIVEMENT_POST_INDEX = URL_API_ACHIVEMENT_POST + "/" + POST_INDEX;
     // 실현성과 좋아요
     public static final String URL_API_PROFILES_INDEX_PERFORMANCE_INDEX_LIKE_INDEX = URL_API_ACHIVEMENT_POST_INDEX + "/like/" + MY_PROFILES_INDEX;
+
+    // 성과 이미지 업로드
+    public static final String URL_API_ACHIVEMENT_POSTS_INDEX_IMAGES = URL_API_ACHIVEMENT_POSTS_INDEX + "/images";
 
 
 

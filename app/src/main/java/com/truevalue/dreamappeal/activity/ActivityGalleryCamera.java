@@ -170,7 +170,7 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
         body.put("key", fileInfo[0]);
         body.put("type", fileInfo[1]);
 
-        client.Post(Comm_Param.URL_API_PROFILE_INDEX_IMAGE.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex())), header, null, new IOServerCallback() {
+        client.Post(Comm_Param.URL_API_PROFILE_INDEX_IMAGE.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex())), header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();
