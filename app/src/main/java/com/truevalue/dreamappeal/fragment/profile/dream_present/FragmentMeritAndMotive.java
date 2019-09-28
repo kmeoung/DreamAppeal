@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,9 +18,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.tabs.TabLayout;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.base.BaseFragment;
+import com.truevalue.dreamappeal.base.BasePagerAdapter;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.http.DAHttpClient;
@@ -29,7 +30,9 @@ import com.truevalue.dreamappeal.utils.Comm_Prefs;
 import com.truevalue.dreamappeal.utils.Utils;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -46,11 +49,14 @@ public class FragmentMeritAndMotive extends BaseFragment implements IOBaseTitleB
     EditText mEtMeritAndMotive;
     @BindView(R.id.tv_hint)
     TextView mTvHint;
-    @BindView(R.id.vp_pager)
-    ViewPager mVpPager;
-    @BindView(R.id.tl_tab)
-    TabLayout mTlTab;
+    @BindView(R.id.pager_image)
+    ViewPager mPagerImage;
+    @BindView(R.id.tv_indicator)
+    TextView mTvIndicator;
+    @BindView(R.id.ll_indicator)
+    LinearLayout mLlIndicator;
     private String mMeritAndMotive = null;
+    private BasePagerAdapter mAdapter = null;
 
     public static FragmentMeritAndMotive newInstance(String merit_motive) {
         FragmentMeritAndMotive fragment = new FragmentMeritAndMotive();
@@ -72,10 +78,56 @@ public class FragmentMeritAndMotive extends BaseFragment implements IOBaseTitleB
         // 상단바 연동
         mBtbBar.setIOBaseTitleBarListener(this);
         mBtbBar.getmIvClose().setVisibility(View.VISIBLE);
+        initAdapter();
         // 데이터 초기화
         initData();
         // 뷰 초기화
         initView();
+
+        httpGetExampleImage();
+    }
+
+    private void initAdapter() {
+        mAdapter = new BasePagerAdapter(getContext());
+        mPagerImage.setAdapter(mAdapter);
+        mPagerImage.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                mTvIndicator.setText((position + 1) + " / " + mAdapter.getCount());
+            }
+        });
+    }
+
+    /**
+     * http Get
+     * Get Example Image
+     */
+    private void httpGetExampleImage() {
+        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+        String url = Comm_Param.URL_API_EXAMPLE_PROFILE_INDEX.replace(Comm_Param.EX_INDEX, String.valueOf(3));
+        HashMap header = Utils.getHttpHeader(prefs.getToken());
+        DAHttpClient.getInstance(getContext()).Get(url, header, null, new IOServerCallback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
+                if (TextUtils.equals(code, SUCCESS)) {
+                    JSONObject json = new JSONObject(body);
+                    JSONArray list = json.getJSONArray("ex_url");
+                    mTvIndicator.setText(1 + " / " + list.length());
+                    for (int i = 0; i < list.length(); i++) {
+                        JSONObject urls = list.getJSONObject(i);
+                        String imageUrl = urls.getString("url");
+                        mAdapter.add(imageUrl);
+                    }
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
+        });
     }
 
     private void initData() {
@@ -116,10 +168,10 @@ public class FragmentMeritAndMotive extends BaseFragment implements IOBaseTitleB
         });
     }
 
-    private void initRightBtn(){
+    private void initRightBtn() {
         if (TextUtils.isEmpty(mEtMeritAndMotive.getText().toString())) {
             mBtbBar.getmTvTextBtn().setSelected(false);
-        }else{
+        } else {
             mBtbBar.getmTvTextBtn().setSelected(true);
         }
     }

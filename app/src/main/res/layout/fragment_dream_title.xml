@@ -153,7 +153,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:minHeight="107dp" />
+                android:minHeight="50dp" />
             <!--Divider-->
             <ImageView
                 android:layout_width="match_parent"
@@ -164,12 +164,12 @@
             <!--예시 화면-->
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="360dp">
+                android:layout_height="300dp">
 
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/pager_image"
                     android:layout_width="match_parent"
-                    android:layout_height="360dp" />
+                    android:layout_height="match_parent" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"

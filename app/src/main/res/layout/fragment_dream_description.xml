@@ -21,7 +21,7 @@
         app:title="핵심문장으로 꿈 설명하기" />
     <!--툴바-->
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
@@ -217,33 +217,41 @@
             <!--예시 화면-->
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="242dp">
+                android:layout_height="300dp">
 
                 <androidx.viewpager.widget.ViewPager
-                    android:id="@+id/vp_pager"
+                    android:id="@+id/pager_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tl_tab"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/bg_black_box_indicator"
+                    android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
-                    app:tabIndicator="@null">
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:padding="5dp"
+                    android:gravity="center"
+                    android:id="@+id/ll_indicator">
 
-                    <com.google.android.material.tabs.TabItem
-                        android:layout_width="5dp"
-                        android:layout_height="5dp"
-                        android:icon="@drawable/circle_gray" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:text="10 / 10"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:id="@+id/tv_indicator"/>
 
-                </com.google.android.material.tabs.TabLayout>
+                </LinearLayout>
 
             </RelativeLayout>
             <!--예시 화면-->
 
         </LinearLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <!--Divider-->
     <ImageView

@@ -27,6 +27,7 @@ import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityAddActionPost;
 import com.truevalue.dreamappeal.activity.ActivityCommentDetail;
 import com.truevalue.dreamappeal.base.BaseActivity;
+import com.truevalue.dreamappeal.base.BasePagerAdapter;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.bean.BeanActionPostDetail;
@@ -103,8 +104,7 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
 
     private int mPostIndex = -1;
     private BeanActionPostDetail mBean = null;
-    private
-    ViewPagerAdapter mAdapter = null;
+    private BasePagerAdapter mAdapter = null;
 
 
     @Override
@@ -134,7 +134,7 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
     }
 
     private void initAdapter() {
-        mAdapter = new ViewPagerAdapter(ActivityActionPost.this);
+        mAdapter = new BasePagerAdapter(ActivityActionPost.this);
         mPagerImage.setAdapter(mAdapter);
         mPagerImage.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
@@ -369,54 +369,5 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
 
         popupMenu.show();
     }
-
-    public class ViewPagerAdapter<String> extends PagerAdapter {
-
-        private ArrayList<String> mArray;
-        private Context mContext;
-
-        public ViewPagerAdapter(Context context) {
-            super();
-            mContext = context;
-            mArray = new ArrayList<>();
-        }
-
-        @Override
-        public int getCount() {
-            return mArray.size();
-        }
-
-        public void add(String item) {
-            this.mArray.add(item);
-        }
-
-        public String get(int i) {
-            return mArray.get(i);
-        }
-
-        @Override
-        public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-            return view == object;
-        }
-
-        @Override
-        public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-            container.removeView((ImageView) object);
-        }
-
-        @NonNull
-        @Override
-        public Object instantiateItem(@NonNull ViewGroup container, int position) {
-            ImageView imageView = new ImageView(mContext);
-            String url = mArray.get(position);
-            Glide.with(ActivityActionPost.this)
-                    .load(url)
-                    .placeholder(R.drawable.ic_image_black_24dp)
-                    .into(imageView);
-            container.addView(imageView, 0);
-            return imageView;
-        }
-    }
-
 
 }

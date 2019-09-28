@@ -8,15 +8,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.tabs.TabLayout;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.base.BaseFragment;
+import com.truevalue.dreamappeal.base.BasePagerAdapter;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.http.DAHttpClient;
@@ -39,7 +41,8 @@ import butterknife.ButterKnife;
 import okhttp3.Call;
 
 public class FragmentDreamDescription extends BaseFragment implements IOBaseTitleBarListener {
-    
+
+
     @BindView(R.id.btb_bar)
     BaseTitleBar mBtbBar;
     @BindView(R.id.et_dream_description)
@@ -50,14 +53,16 @@ public class FragmentDreamDescription extends BaseFragment implements IOBaseTitl
     EditText mEtDreamDescriptionDetail2;
     @BindView(R.id.et_dream_description_detail_3)
     EditText mEtDreamDescriptionDetail3;
-    @BindView(R.id.vp_pager)
-    ViewPager mVpPager;
-    @BindView(R.id.tl_tab)
-    TabLayout mTlTab;
-    
+    @BindView(R.id.pager_image)
+    ViewPager mPagerImage;
+    @BindView(R.id.tv_indicator)
+    TextView mTvIndicator;
+    @BindView(R.id.ll_indicator)
+    LinearLayout mLlIndicator;
     private ArrayList<String> mArrayDescription = null;
+    private BasePagerAdapter mAdapter = null;
 
-    public static FragmentDreamDescription newInstance(ArrayList<String> array_description){
+    public static FragmentDreamDescription newInstance(ArrayList<String> array_description) {
         FragmentDreamDescription fragment = new FragmentDreamDescription();
         fragment.mArrayDescription = array_description;
         return fragment;
@@ -66,8 +71,8 @@ public class FragmentDreamDescription extends BaseFragment implements IOBaseTitl
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_dream_description,container,false);
-        ButterKnife.bind(this,view);
+        View view = inflater.inflate(R.layout.fragment_dream_description, container, false);
+        ButterKnife.bind(this, view);
         return view;
     }
 
@@ -77,10 +82,57 @@ public class FragmentDreamDescription extends BaseFragment implements IOBaseTitl
         // 상단바 연동
         mBtbBar.setIOBaseTitleBarListener(this);
         mBtbBar.getmIvClose().setVisibility(View.VISIBLE);
+
+        initAdapter();
         // 데이터 초기화
         initData();
 
         initView();
+
+        httpGetExampleImage();
+    }
+
+    private void initAdapter(){
+        mAdapter = new BasePagerAdapter(getContext());
+        mPagerImage.setAdapter(mAdapter);
+        mPagerImage.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                mTvIndicator.setText((position + 1) + " / " + mAdapter.getCount());
+            }
+        });
+    }
+
+    /**
+     * http Get
+     * Get Example Image
+     */
+    private void httpGetExampleImage() {
+        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+        String url = Comm_Param.URL_API_EXAMPLE_PROFILE_INDEX.replace(Comm_Param.EX_INDEX, String.valueOf(2));
+        HashMap header = Utils.getHttpHeader(prefs.getToken());
+        DAHttpClient.getInstance(getContext()).Get(url, header, null, new IOServerCallback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
+                if (TextUtils.equals(code, SUCCESS)) {
+                    JSONObject json = new JSONObject(body);
+                    JSONArray list = json.getJSONArray("ex_url");
+                    mTvIndicator.setText(1 + " / " + list.length());
+                    for (int i = 0; i < list.length(); i++) {
+                        JSONObject urls = list.getJSONObject(i);
+                        String imageUrl = urls.getString("url");
+                        mAdapter.add(imageUrl);
+                    }
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
+        });
     }
 
     private void initData() {
@@ -97,7 +149,7 @@ public class FragmentDreamDescription extends BaseFragment implements IOBaseTitl
         }
     }
 
-    private void initView(){
+    private void initView() {
         TextWatcher tw = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -121,13 +173,13 @@ public class FragmentDreamDescription extends BaseFragment implements IOBaseTitl
         mEtDreamDescriptionDetail3.addTextChangedListener(tw);
     }
 
-    private void initRightText(){
+    private void initRightText() {
         if (TextUtils.isEmpty(mEtDreamDescription.getText().toString())
                 || TextUtils.isEmpty(mEtDreamDescriptionDetail1.getText().toString())
                 || TextUtils.isEmpty(mEtDreamDescriptionDetail2.getText().toString())
                 || TextUtils.isEmpty(mEtDreamDescriptionDetail3.getText().toString())) {
             mBtbBar.getmTvTextBtn().setSelected(false);
-        }else{
+        } else {
             mBtbBar.getmTvTextBtn().setSelected(true);
         }
     }
