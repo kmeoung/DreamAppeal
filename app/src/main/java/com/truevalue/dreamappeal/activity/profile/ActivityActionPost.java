@@ -90,8 +90,6 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
     LinearLayout mLlShare;
     @BindView(R.id.tv_contents)
     TextView mTvContents;
-    @BindView(R.id.iv_more)
-    ImageView mIvMore;
     @BindView(R.id.pager_image)
     ViewPager mPagerImage;
     @BindView(R.id.tv_indicator)
@@ -100,9 +98,12 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
     LinearLayout mLlIndicator;
     @BindView(R.id.iv_comment)
     ImageView mIvComment;
+    @BindView(R.id.iv_action_more)
+    ImageView mIvActionMore;
 
     private int mPostIndex = -1;
-    private BeanActionPostDetail mBean = null;private
+    private BeanActionPostDetail mBean = null;
+    private
     ViewPagerAdapter mAdapter = null;
 
 
@@ -116,9 +117,20 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
 //        initView();
         // 상단바 연동
         mBtbBar.setIOBaseTitleBarListener(this);
+
+        initView();
         initAdapter();
         // 데이터 초기화
         initData();
+    }
+
+    private void initView() {
+        Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityActionPost.this);
+        if (prefs.getProfileIndex() == prefs.getMyProfileIndex()) {
+            mIvActionMore.setVisibility(View.VISIBLE);
+        } else {
+            mIvActionMore.setVisibility(View.GONE);
+        }
     }
 
     private void initAdapter() {
@@ -240,7 +252,7 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
         finish();
     }
 
-    @OnClick({R.id.ll_comment, R.id.ll_cheering, R.id.iv_more, R.id.iv_comment})
+    @OnClick({R.id.ll_comment, R.id.ll_cheering, R.id.iv_action_more, R.id.iv_comment})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_comment:
@@ -253,7 +265,7 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
             case R.id.ll_cheering:
                 httpPatchLike(mBean.getIdx());
                 break;
-            case R.id.iv_more:
+            case R.id.iv_action_more:
                 showPopupMenu();
                 break;
         }
@@ -305,8 +317,8 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
     }
 
     private void showPopupMenu() {
-        PopupMenu popupMenu = new PopupMenu(ActivityActionPost.this, mIvMore);
-        popupMenu.getMenuInflater().inflate(R.menu.menu_object_step, popupMenu.getMenu());
+        PopupMenu popupMenu = new PopupMenu(ActivityActionPost.this, mIvActionMore);
+        popupMenu.getMenuInflater().inflate(R.menu.menu_action_post, popupMenu.getMenu());
 
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override

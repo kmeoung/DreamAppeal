@@ -75,8 +75,20 @@ public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTi
         super.onViewCreated(view, savedInstanceState);
         // Title Bar 초기화
         mBtbBar.setIOBaseTitleBarListener(this);
+        initView();
         // Adapter 초기화
         initAdapter();
+    }
+
+    private void initView() {
+        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+        if (prefs.getProfileIndex() == prefs.getMyProfileIndex()) {
+            mIvAddAbility.setVisibility(View.VISIBLE);
+            mIvAddOpportunity.setVisibility(View.VISIBLE);
+        } else {
+            mIvAddAbility.setVisibility(View.GONE);
+            mIvAddOpportunity.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -103,12 +115,17 @@ public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTi
 
             @Override
             public void onBindViewHolder(@NonNull BaseViewHolder h, int i) {
+                Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
                 BeanBlueprintAbilityOpportunity bean = (BeanBlueprintAbilityOpportunity) mAbilityAdapter.get(i);
                 ImageView ivMore = h.getItemView(R.id.iv_more);
-                TextView tvTitle = h.getItemView(R.id.tv_ability_opportunity);
+                TextView tvTitle = h.getItemView(R.id.tv_default_text);
                 tvTitle.setText(bean.getContents());
                 PopupMenu popupMenu = new PopupMenu(getContext(), ivMore);
                 popupMenu.getMenuInflater().inflate(R.menu.menu_achivement_post, popupMenu.getMenu());
+
+                if (prefs.getProfileIndex() == prefs.getMyProfileIndex())
+                    ivMore.setVisibility(View.VISIBLE);
+                else ivMore.setVisibility(View.GONE);
 
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
@@ -179,12 +196,17 @@ public class FragmentAbilityOpportunity extends BaseFragment implements IOBaseTi
 
             @Override
             public void onBindViewHolder(@NonNull BaseViewHolder h, int i) {
+                Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
                 BeanBlueprintAbilityOpportunity bean = (BeanBlueprintAbilityOpportunity) mOpportunityAdapter.get(i);
                 ImageView ivMore = h.getItemView(R.id.iv_more);
-                TextView tvTitle = h.getItemView(R.id.tv_ability_opportunity);
+                TextView tvTitle = h.getItemView(R.id.tv_default_text);
                 tvTitle.setText(bean.getContents());
                 PopupMenu popupMenu = new PopupMenu(getContext(), ivMore);
                 popupMenu.getMenuInflater().inflate(R.menu.menu_achivement_post, popupMenu.getMenu());
+
+                if (prefs.getProfileIndex() == prefs.getMyProfileIndex())
+                    ivMore.setVisibility(View.VISIBLE);
+                else ivMore.setVisibility(View.GONE);
 
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -94,6 +95,7 @@ public class FragmentDreamList extends BaseFragment implements IOBaseTitleBarLis
 
         // 상단바 연동
         mBtbBar.setIOBaseTitleBarListener(this);
+        mBtbBar.getmTvTextBtn().setSelected(true);
         // Init Adapter
         initAdapter();
     }
@@ -253,6 +255,11 @@ public class FragmentDreamList extends BaseFragment implements IOBaseTitleBarLis
         TextView tvDreamLevel = h.getItemView(R.id.tv_dream_level);
         TextView tvActionPostCount = h.getItemView(R.id.tv_action_post_count);
         TextView tvAchivementPostCount = h.getItemView(R.id.tv_achivement_post_count);
+        ProgressBar pbExp = h.getItemView(R.id.pb_exp);
+        TextView tvExp = h.getItemView(R.id.tv_exp);
+        pbExp.setMax(bean.getMax_exp());
+        pbExp.setProgress(bean.getExp());
+        tvExp.setText(bean.getExp() + " / " + bean.getMax_exp());
 
 
         if (TextUtils.isEmpty(bean.getImage()))

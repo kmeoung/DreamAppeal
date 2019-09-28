@@ -37,6 +37,10 @@ public class BaseTitleBar extends LinearLayout {
     LinearLayout mLlHeader;
     @BindView(R.id.iv_more)
     ImageView mIvMore;
+    @BindView(R.id.iv_close)
+    ImageView mIvClose;
+    @BindView(R.id.iv_line)
+    ImageView mIvLine;
 
     private IOBaseTitleBarListener mIOBaseTitleBarListener;
 
@@ -77,6 +81,10 @@ public class BaseTitleBar extends LinearLayout {
 
     public void setTitle(String title) {
         mTvTitle.setText(title);
+    }
+
+    public ImageView getmIvClose() {
+        return mIvClose;
     }
 
     /**
@@ -258,7 +266,7 @@ public class BaseTitleBar extends LinearLayout {
 
     }
 
-    @OnClick({R.id.iv_menu, R.id.iv_back, R.id.iv_search, R.id.tv_text_btn,R.id.iv_more})
+    @OnClick({R.id.iv_menu, R.id.iv_back, R.id.iv_search, R.id.tv_text_btn, R.id.iv_more,R.id.iv_close})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_menu: // 메뉴
@@ -275,6 +283,9 @@ public class BaseTitleBar extends LinearLayout {
                 break;
             case R.id.iv_more:
                 if (mIOBaseTitleBarListener != null) mIOBaseTitleBarListener.OnClickMoreBtn();
+                break;
+            case R.id.iv_close:
+                if (mIOBaseTitleBarListener != null) mIOBaseTitleBarListener.OnClickClose();
                 break;
         }
     }

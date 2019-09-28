@@ -2,7 +2,9 @@ package com.truevalue.dreamappeal.fragment.profile.blueprint;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,12 +89,18 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mBtbBar.setIOBaseTitleBarListener(this);
+        mBtbBar.getmIvClose().setVisibility(View.VISIBLE);
         // 뷰 초기화
         initView();
     }
 
     @Override
     public void OnClickBack() {
+
+    }
+
+    @Override
+    public void OnClickClose() {
         getActivity().onBackPressed();
     }
 
@@ -137,6 +145,32 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
                 imm.showSoftInput(mEtAbilityOpportunity, 0);
                 mTvHint.setVisibility(View.GONE);
             });
+        }
+        initRightBtn();
+
+        mEtAbilityOpportunity.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                initRightBtn();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+
+    private void initRightBtn(){
+        if(mEtAbilityOpportunity.getText().length() > 0){
+            mBtbBar.getmTvTextBtn().setSelected(true);
+        }else{
+            mBtbBar.getmTvTextBtn().setSelected(false);
         }
     }
 

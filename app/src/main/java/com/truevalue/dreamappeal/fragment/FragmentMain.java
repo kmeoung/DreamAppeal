@@ -227,6 +227,9 @@ public class FragmentMain extends BaseFragment implements IOBaseTitleBarListener
                 ((ActivityMain) getActivity()).setmProfileIndex(0);
                 ((ActivityMain) getActivity()).initPage();
             }else if(requestCode == REQUEST_ADD_POST){
+                Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+                if(prefs.getMyProfileIndex() != prefs.getProfileIndex())
+                    prefs.setProfileIndex(prefs.getMyProfileIndex(),true);
                 ((ActivityMain) getActivity()).initPage();
             }
         }

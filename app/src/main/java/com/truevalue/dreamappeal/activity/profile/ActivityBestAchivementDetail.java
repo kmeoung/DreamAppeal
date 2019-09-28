@@ -120,6 +120,13 @@ public class ActivityBestAchivementDetail extends BaseActivity {
     }
 
     private void initView() {
+        Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityBestAchivementDetail.this);
+        if(prefs.getProfileIndex() == prefs.getMyProfileIndex()){
+            mIvMore.setVisibility(View.VISIBLE);
+        }else{
+            mIvMore.setVisibility(View.INVISIBLE);
+        }
+
         Point size = Utils.getDisplaySize(this);
         Utils.setResizeView(mPagerImage, size.x, size.x);
     }

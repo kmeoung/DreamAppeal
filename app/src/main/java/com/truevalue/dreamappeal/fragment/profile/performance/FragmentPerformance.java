@@ -100,6 +100,17 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
         if (mAdapter == null) {
             initAdapter();
         }
+
+        initView();
+    }
+
+    private void initView(){
+        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+        if(prefs.getProfileIndex() == prefs.getMyProfileIndex()){
+            mIvAddAchivement.setVisibility(View.VISIBLE);
+        }else{
+            mIvAddAchivement.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -295,7 +306,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
      */
     private void onBindViewOther(BaseViewHolder h, int i) {
         BeanAchivementPostMain bean = (BeanAchivementPostMain) mAdapter.get(i);
-
+        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
         ImageView ivThumbnail = h.getItemView(R.id.iv_thumbnail);
         TextView tvTitle = h.getItemView(R.id.tv_title);
         TextView tvContents = h.getItemView(R.id.tv_contents);
@@ -308,6 +319,12 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
         LinearLayout llComment = h.getItemView(R.id.ll_comment);
         TextView tvTime = h.getItemView(R.id.tv_time);
         ImageView ivComment = h.getItemView(R.id.iv_comment);
+
+        if(prefs.getProfileIndex() == prefs.getMyProfileIndex()){
+            ibtnMore.setVisibility(View.VISIBLE);
+        }else{
+            ibtnMore.setVisibility(View.GONE);
+        }
 
         tvTime.setText(Utils.convertFromDate(bean.getRegister_date()));
 

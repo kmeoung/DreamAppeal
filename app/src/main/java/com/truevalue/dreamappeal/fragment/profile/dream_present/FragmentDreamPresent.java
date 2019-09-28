@@ -161,12 +161,12 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
             httpGetProfilesIndex(profiles_index);
         }
 
-        mTvInitDreamTitle.setText(Utils.replaceTextColor(getContext(),mTvInitDreamTitle,"명칭"));
-        mTvInitDreamDescription.setText(Utils.replaceTextColor(getContext(),mTvInitDreamDescription,"설명"));
+        mTvInitDreamTitle.setText(Utils.replaceTextColor(getContext(), mTvInitDreamTitle, "명칭"));
+        mTvInitDreamDescription.setText(Utils.replaceTextColor(getContext(), mTvInitDreamDescription, "설명"));
         String merit = "꿈의 매력과";
         String motive = "계기 표현하기";
-        SpannableStringBuilder spannableMerit = Utils.replaceTextColor(getContext(),merit,"매력");
-        SpannableStringBuilder spannableMotive = Utils.replaceTextColor(getContext(),motive,"계기");
+        SpannableStringBuilder spannableMerit = Utils.replaceTextColor(getContext(), merit, "매력");
+        SpannableStringBuilder spannableMotive = Utils.replaceTextColor(getContext(), motive, "계기");
         mTvInitMeritAndMotive.setText(TextUtils.concat(spannableMerit, " ", spannableMotive));
     }
 
@@ -269,7 +269,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
                     // 내 이미지가 비어있을 경우
                     if (TextUtils.isEmpty(bean.getImage()))
                         Glide.with(getContext()).load(R.drawable.drawer_user).apply(new RequestOptions().circleCrop()).into(mIvDreamProfile);
-                    else{
+                    else {
                         ((ActivityMain) getActivity()).setProfile_image(bean.getImage());
                         Glide.with(getContext()).
                                 load(bean.getImage()).
@@ -415,9 +415,10 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
             R.id.btn_merit_and_motive_more, R.id.ll_comment,
             R.id.ll_cheering, R.id.ll_dream_title, R.id.ll_dream_description, R.id.tv_init_dream_title,
             R.id.tv_init_dream_description, R.id.tv_init_merit_and_motive,
-            R.id.btn_follow, R.id.ll_share,R.id.iv_comment})
+            R.id.btn_follow, R.id.ll_share, R.id.iv_comment})
     public void onViewClicked(View view) {
         Intent intent = null;
+        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
         switch (view.getId()) {
             case R.id.ll_dreams: // 내 꿈 레벨 (꿈 선택)
                 // 서버가 연동이 되어 있을 시에만
@@ -428,8 +429,10 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
             case R.id.ll_follower: // 팔로워
                 break;
             case R.id.iv_dream_profile: // 내 꿈 프로필 이미지
-                intent = new Intent(getContext(), ActivityGalleryCamera.class);
-                startActivityForResult(intent,FragmentMain.REQUEST_DREAM_PROFILE_IMAGE);
+                if (prefs.getMyProfileIndex() == prefs.getProfileIndex()) {
+                    intent = new Intent(getContext(), ActivityGalleryCamera.class);
+                    startActivityForResult(intent, FragmentMain.REQUEST_DREAM_PROFILE_IMAGE);
+                }
                 break;
             case R.id.btn_dream_description_more: // 내 꿈 더보기
                 if (isMyDreamMore) {
@@ -463,34 +466,40 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
                 break;
             case R.id.ll_dream_title: // 내 꿈 명칭 정하기 페이지 이동
             case R.id.tv_init_dream_title:
-                String valueStyle = mTvValueStyle.getText().toString();
-                String job = mTvJob.getText().toString();
-                ArrayList dreamTitle = null;
-                if (!TextUtils.isEmpty(valueStyle) &&
-                        !TextUtils.isEmpty(job)) {
-                    dreamTitle = new ArrayList();
-                    dreamTitle.add(valueStyle);
-                    dreamTitle.add(job);
+                if (prefs.getMyProfileIndex() == prefs.getProfileIndex()) {
+                    String valueStyle = mTvValueStyle.getText().toString();
+                    String job = mTvJob.getText().toString();
+                    ArrayList dreamTitle = null;
+                    if (!TextUtils.isEmpty(valueStyle) &&
+                            !TextUtils.isEmpty(job)) {
+                        dreamTitle = new ArrayList();
+                        dreamTitle.add(valueStyle);
+                        dreamTitle.add(job);
+                    }
+                    ((ActivityMain) getActivity()).replaceFragmentRight(FragmentDreamTitle.newInstance(dreamTitle), true);
                 }
-                ((ActivityMain) getActivity()).replaceFragmentRight(FragmentDreamTitle.newInstance(dreamTitle), true);
                 break;
             case R.id.ll_dream_description: // 핵심 문장으로 내 꿈 설명하기 페이지 이동
             case R.id.tv_init_dream_description:
-                ArrayList<String> dreamDescription = null;
-                if (!TextUtils.isEmpty(mTvDreamDescription.getText().toString())) {
-                    dreamDescription = new ArrayList<>();
-                    dreamDescription.add(mTvDreamDescription.getText().toString());
-                    for (int i = 0; i < mAdapter.size(); i++) {
-                        dreamDescription.add((String) mAdapter.get(i));
+                if (prefs.getMyProfileIndex() == prefs.getProfileIndex()) {
+                    ArrayList<String> dreamDescription = null;
+                    if (!TextUtils.isEmpty(mTvDreamDescription.getText().toString())) {
+                        dreamDescription = new ArrayList<>();
+                        dreamDescription.add(mTvDreamDescription.getText().toString());
+                        for (int i = 0; i < mAdapter.size(); i++) {
+                            dreamDescription.add((String) mAdapter.get(i));
+                        }
                     }
+                    ((ActivityMain) getActivity()).replaceFragmentRight(FragmentDreamDescription.newInstance(dreamDescription), true);
                 }
-                ((ActivityMain) getActivity()).replaceFragmentRight(FragmentDreamDescription.newInstance(dreamDescription), true);
                 break;
             case R.id.ll_merit_and_motive: // 이유 페이지 이동
             case R.id.tv_init_merit_and_motive:
-                String meritAndMotive = mTvMeritAndMotive.getText().toString();
-                if (TextUtils.isEmpty(meritAndMotive)) meritAndMotive = null;
-                ((ActivityMain) getActivity()).replaceFragmentRight(FragmentMeritAndMotive.newInstance(meritAndMotive), true);
+                if (prefs.getMyProfileIndex() == prefs.getProfileIndex()) {
+                    String meritAndMotive = mTvMeritAndMotive.getText().toString();
+                    if (TextUtils.isEmpty(meritAndMotive)) meritAndMotive = null;
+                    ((ActivityMain) getActivity()).replaceFragmentRight(FragmentMeritAndMotive.newInstance(meritAndMotive), true);
+                }
                 break;
             case R.id.btn_follow: // 팔로우
 
@@ -515,17 +524,21 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
         TextView tvDreamContents = h.getItemView(R.id.tv_contents);
         tvDreamContents.setText(strContents);
 
-        h.itemView.setOnClickListener(view -> {
-            ArrayList<String> dreamDescription = null;
-            if (!TextUtils.isEmpty(mTvDreamDescription.getText().toString())) {
-                dreamDescription = new ArrayList<>();
-                dreamDescription.add(mTvDreamDescription.getText().toString());
-                for (int j = 0; j < mAdapter.size(); j++) {
-                    dreamDescription.add((String) mAdapter.get(j));
+        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+
+        if (prefs.getMyProfileIndex() == prefs.getProfileIndex()) {
+            h.itemView.setOnClickListener(view -> {
+                ArrayList<String> dreamDescription = null;
+                if (!TextUtils.isEmpty(mTvDreamDescription.getText().toString())) {
+                    dreamDescription = new ArrayList<>();
+                    dreamDescription.add(mTvDreamDescription.getText().toString());
+                    for (int j = 0; j < mAdapter.size(); j++) {
+                        dreamDescription.add((String) mAdapter.get(j));
+                    }
                 }
-            }
-            ((ActivityMain) getActivity()).replaceFragmentRight(FragmentDreamDescription.newInstance(dreamDescription), true);
-        });
+                ((ActivityMain) getActivity()).replaceFragmentRight(FragmentDreamDescription.newInstance(dreamDescription), true);
+            });
+        }
 
         if (isMyDreamMore) {
             tvDreamContents.setMaxLines(1000);
@@ -550,7 +563,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
         if (requestCode == FragmentMain.REQUEST_DREAM_PRESENT_COMMENT) {
             Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
             httpGetProfilesIndex(prefs.getProfileIndex());
-        }else if(requestCode == FragmentMain.REQUEST_DREAM_PROFILE_IMAGE){
+        } else if (requestCode == FragmentMain.REQUEST_DREAM_PROFILE_IMAGE) {
             Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
             httpGetProfilesIndex(prefs.getProfileIndex());
         }

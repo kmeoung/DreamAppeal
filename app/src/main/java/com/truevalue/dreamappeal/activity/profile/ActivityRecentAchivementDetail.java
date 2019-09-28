@@ -116,6 +116,13 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
     }
 
     private void initView() {
+        Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityRecentAchivementDetail.this);
+        if(prefs.getProfileIndex() == prefs.getMyProfileIndex()){
+            mBtbBar.getmIvMore().setVisibility(View.VISIBLE);
+        }else{
+            mBtbBar.getmIvMore().setVisibility(View.INVISIBLE);
+        }
+
         Point size = Utils.getDisplaySize(this);
         Utils.setResizeView(mPagerImage, size.x, size.x);
     }

@@ -17,4 +17,8 @@ public interface IOBaseTitleBarListener {
     default void OnClickMoreBtn(){
 
     }
+
+    default void OnClickClose(){
+
+    }
 }

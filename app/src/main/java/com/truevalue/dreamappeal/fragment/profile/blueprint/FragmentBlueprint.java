@@ -2,12 +2,16 @@ package com.truevalue.dreamappeal.fragment.profile.blueprint;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -55,28 +59,30 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Call;
 
-import static android.app.Activity.RESULT_OK;
-
 public class FragmentBlueprint extends BaseFragment implements IORecyclerViewListener {
 
     private final int LISTITEM_TYPE_ABILITY_OPPORTUNITY_HEADER = 0;
     private final int LISTITEM_TYPE_ABILITY_OPPORTUNITY = 1;
     private final int LISTITEM_TYPE_OBJECT_HEADER = 2;
     private final int LISTITEM_TYPE_OBJECT = 3;
+    private final int LISTITEM_DEFAULT_ABILITY_OPPORTUNITY = 4;
+    private final int LISTITEM_DEFAULT_OBJECT = 5;
+
+    private String TYPE_DEFAULT_ABILITY_OPPORTUNITY = "TYPE_DEFAULT_ABILITY_OPPORTUNITY";
+    private String TYPE_DEFAULT_OBJECT = "TYPE_DEFAULT_OBJECT";
 
     @BindView(R.id.rv_blueprint)
     RecyclerView mRvBlueprint;
     @BindView(R.id.iv_comment)
     ImageView mIvComment;
-    @BindView(R.id.tv_comment_size)
-    TextView mTvCommentSize;
+    //    @BindView(R.id.tv_comment_size)
+//    TextView mTvCommentSize;
     @BindView(R.id.iv_profile)
     ImageView mIvProfile;
     @BindView(R.id.et_comment)
     EditText mEtComment;
     @BindView(R.id.btn_commit_comment)
-    Button mBtnCommitComment;
-
+    ImageButton mBtnCommitComment;
 
     private BaseRecyclerViewAdapter mAdapter;
     private boolean isViewCreated = false;
@@ -95,6 +101,34 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
         super.onViewCreated(view, savedInstanceState);
 
         if (mAdapter == null) initAdapter();
+
+        initView();
+    }
+
+    private void initView() {
+        mBtnCommitComment.setSelected(true);
+        mEtComment.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (mEtComment.getText().length() > 0) {
+                    mBtnCommitComment.setVisibility(View.VISIBLE);
+                    mIvComment.setVisibility(View.GONE);
+                } else {
+                    mBtnCommitComment.setVisibility(View.GONE);
+                    mIvComment.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     @Override
@@ -140,7 +174,7 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
                     ArrayList<BeanBlueprintAbilityOpportunity> opportunityList = new ArrayList<>();
                     try {
                         int commentCount = json.getInt("comment_count");
-                        mTvCommentSize.setText(commentCount + "개");
+//                        mTvCommentSize.setText(commentCount + "개");
                         String image = json.getString("user_image");
                         if (TextUtils.isEmpty(image))
                             Glide.with(getContext()).load(R.drawable.drawer_user).apply(new RequestOptions().circleCrop()).into(mIvProfile);
@@ -228,15 +262,22 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
                             for (int i = 0; i < max; i++) {
                                 mAdapter.add(opportunityList.get(i));
                             }
+                        } else { // 둘다 없을 시
+                            mAdapter.add(TYPE_DEFAULT_ABILITY_OPPORTUNITY);
                         }
                     }
 
                     mAdapter.add(new BeanObjectHeader()); // 실천목표 헤더
-
-                    JSONArray objects = json.getJSONArray("objects");
-                    for (int i = 0; i < objects.length(); i++) {
-                        BeanBlueprintObject bean = gson.fromJson(objects.getJSONObject(i).toString(), BeanBlueprintObject.class);
-                        mAdapter.add(bean);
+                    JSONArray objects = null;
+                    try {
+                        objects = json.getJSONArray("objects");
+                        for (int i = 0; i < objects.length(); i++) {
+                            BeanBlueprintObject bean = gson.fromJson(objects.getJSONObject(i).toString(), BeanBlueprintObject.class);
+                            mAdapter.add(bean);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        if (objects == null || objects.length() < 1) mAdapter.add(TYPE_DEFAULT_OBJECT);
                     }
                 }
             }
@@ -268,11 +309,15 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
             return BaseViewHolder.newInstance(R.layout.listitem_blueprint_object_header, parent, false);
         else if (viewType == LISTITEM_TYPE_OBJECT)
             return BaseViewHolder.newInstance(R.layout.listitem_object, parent, false);
+        else if (viewType == LISTITEM_DEFAULT_ABILITY_OPPORTUNITY || viewType == LISTITEM_DEFAULT_OBJECT)
+            return BaseViewHolder.newInstance(R.layout.listitem_deafult_text, parent, false);
         return null;
     }
 
     @Override
     public void onBindViewHolder(@NonNull BaseViewHolder h, int i) {
+        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+
         if (getItemViewType(i) == LISTITEM_TYPE_ABILITY_OPPORTUNITY_HEADER) {
             h.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -280,12 +325,16 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
                     ((ActivityMain) getActivity()).replaceFragmentRight(new FragmentAbilityOpportunity(), true);
                 }
             });
-        }
-
-        if (getItemViewType(i) == LISTITEM_TYPE_OBJECT_HEADER) {
+        } else if (getItemViewType(i) == LISTITEM_TYPE_OBJECT_HEADER) {
             ImageView ivAddObject = h.getItemView(R.id.iv_add_object);
             // todo : 추후 처리
             Button btn = h.getItemView(R.id.btn_abliity_opportunity);
+
+            if (prefs.getProfileIndex() == prefs.getMyProfileIndex()) {
+                ivAddObject.setVisibility(View.VISIBLE);
+            } else {
+                ivAddObject.setVisibility(View.GONE);
+            }
 
             ivAddObject.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -297,8 +346,14 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
         } else if (getItemViewType(i) == LISTITEM_TYPE_ABILITY_OPPORTUNITY) {
             BeanBlueprintAbilityOpportunity bean = (BeanBlueprintAbilityOpportunity) mAdapter.get(i);
             TextView tvContents = h.getItemView(R.id.tv_contents);
+            LinearLayout llItem = h.getItemView(R.id.ll_item);
             tvContents.setText(bean.getContents());
-
+            llItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((ActivityMain) getActivity()).replaceFragmentRight(new FragmentAbilityOpportunity(), true);
+                }
+            });
         } else if (getItemViewType(i) == LISTITEM_TYPE_OBJECT) {
             BeanBlueprintObject bean = (BeanBlueprintObject) mAdapter.get(i);
             TextView tvObjectTitle = h.getItemView(R.id.tv_object_title);
@@ -327,6 +382,18 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
                     ((ActivityMain) getActivity()).replaceFragmentRight(FragmentObjectStep.newInstance(bean.getIdx()), true);
                 }
             });
+        } else if (getItemViewType(i) == LISTITEM_DEFAULT_ABILITY_OPPORTUNITY) {
+            TextView tvView = h.getItemView(R.id.tv_default_text);
+            String merit = "꿈에 필요한 능력과";
+            String motive = "기회 정리하기";
+            SpannableStringBuilder spannableMerit = Utils.replaceTextColor(getContext(), merit, "능력");
+            SpannableStringBuilder spannableMotive = Utils.replaceTextColor(getContext(), motive, "기회");
+            tvView.setText(TextUtils.concat(spannableMerit, " ", spannableMotive));
+        } else if (getItemViewType(i) == LISTITEM_DEFAULT_OBJECT) {
+            TextView tvView = h.getItemView(R.id.tv_default_text);
+            String str = "능력/기회를 위한 실천목표 등록하기";
+            SpannableStringBuilder ssb = Utils.replaceTextColor(getContext(), str, "실천목표");
+            tvView.setText(ssb);
         }
     }
 
@@ -345,6 +412,11 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
             return LISTITEM_TYPE_ABILITY_OPPORTUNITY;
         else if (mAdapter.get(i) instanceof BeanBlueprintObject)
             return LISTITEM_TYPE_OBJECT;
+        else if (mAdapter.get(i) instanceof String) {
+            if (TextUtils.equals((String) mAdapter.get(i), TYPE_DEFAULT_ABILITY_OPPORTUNITY)) {
+                return LISTITEM_DEFAULT_ABILITY_OPPORTUNITY;
+            } else return LISTITEM_DEFAULT_OBJECT;
+        }
         return 0;
     }
 
@@ -388,6 +460,7 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
 
                         if (TextUtils.equals(code, SUCCESS)) {
                             httpGetBluePrint();
+                            mEtComment.setText("");
                         }
                     }
                 });

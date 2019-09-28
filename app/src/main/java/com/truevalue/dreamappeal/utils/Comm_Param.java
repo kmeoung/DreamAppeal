@@ -162,7 +162,7 @@ public class Comm_Param {
     // 실천인증 댓글 추가
     public static final String URL_API_PROFILES_INDEX_ACTIONPOST_INDEX_COMMENTS = URL_API_PROFILES_INDEX + "/action_posts/" + POST_INDEX + "/comments";
     // 실천인증 댓글 수정 / 삭제
-    public static final String URL_API_PROFILES_INDEX_ACTIONPOST_INDEX_COMMENTS_INDEX = URL_API_PROFILES_INDEX_ACTIONPOST + "/" + COMMENTS_INDEX;
+    public static final String URL_API_PROFILES_INDEX_ACTIONPOSTS_INDEX_COMMENTS_INDEX = URL_API_PROFILES_INDEX_ACTIONPOST_INDEX_COMMENTS + "/" + COMMENTS_INDEX;
 
     // 실현성과 댓글 좋아요
     public static final String URL_API_PROFILES_INDEX_PERFORMANCECOMMENTS= URL_API_PROFILES_INDEX + "/achievement_post_comments";
@@ -184,4 +184,19 @@ public class Comm_Param {
      * PATCH : 회원 정보 변경
      */
     public static final String URL_API_MEMBERS = URL_API + "/members";
+
+    public static final String EX_INDEX = "EX_INDEX";
+
+    public static final String URL_API_EXAMPLE = URL_API + "/example";
+    public static final String URL_API_EXAMPLE_PROFILE = URL_API_EXAMPLE + "/profile";
+    public static final String URL_API_EXAMPLE_ABILITY = URL_API_EXAMPLE + "/ability";
+    public static final String URL_API_EXAMPLE_OPPORTUNITY = URL_API_EXAMPLE + "/opportunity";
+    public static final String URL_API_EXAMPLE_OBJECT = URL_API_EXAMPLE + "/object";
+
+    public static final String URL_API_EXAMPLE_PROFILE_INDEX = URL_API_EXAMPLE_PROFILE + "/" + EX_INDEX;
+    public static final String URL_API_EXAMPLE_ABILITY_INDEX = URL_API_EXAMPLE_ABILITY + "/" + EX_INDEX;
+    public static final String URL_API_EXAMPLE_OPPORTUNITY_INDEX = URL_API_EXAMPLE_OPPORTUNITY + "/" + EX_INDEX;
+    public static final String URL_API_EXAMPLE_OBJECT_INDEX = URL_API_EXAMPLE_OBJECT + "/" + EX_INDEX;
+
+    public static final String URL_API_AD = URL_API + "/ad";
 }

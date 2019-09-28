@@ -1,13 +1,17 @@
 package com.truevalue.dreamappeal.activity.profile;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -42,7 +46,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -73,10 +76,14 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
     RecyclerView mRvAchivementImg;
     @BindView(R.id.et_input_comment)
     EditText mEtInputComment;
+    @BindView(R.id.ll_btns)
+    LinearLayout mLlBtns;
 
     private BaseRecyclerViewAdapter mAdapter;
     private BeanAchivementPostMain mBean = null;
     private BeanPostDetail mBeanDetail = null;
+    private boolean isEdit = false;
+    private ProgressDialog mDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,13 +94,11 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
         updateStatusbarTranslate(mBtbBar);
         // 상단바 연동
         mBtbBar.setIOBaseTitleBarListener(this);
-
+        mBtbBar.getmIvClose().setVisibility(View.VISIBLE);
         // Adapter 초기화
         initAdapter();
 
         initData();
-
-
     }
 
     private void initData() {
@@ -108,7 +113,58 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
                 mEtInputComment.setText(mBean.getContent());
                 // todo : 사진이 추가될 시 여기에도 추가 바람
             }
+            // todo : 임시
+            mLlBtns.setVisibility(View.GONE);
+            mRvAchivementImg.setVisibility(View.GONE);
+            initRightText();
+        }else{
+            mLlBtns.setVisibility(View.VISIBLE);
+            mRvAchivementImg.setVisibility(View.VISIBLE);
         }
+
+
+        mEtTitle.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                initRightText();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mEtInputComment.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                initRightText();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mDialog = new ProgressDialog(ActivityAddAchivement.this);
+        mDialog.setCancelable(false);
+    }
+
+    private void initRightText() {
+        if (TextUtils.isEmpty(mEtTitle.getText().toString()) || TextUtils.isEmpty(mEtInputComment.getText().toString())) {
+            mBtbBar.getmTvTextBtn().setSelected(false);
+        } else mBtbBar.getmTvTextBtn().setSelected(true);
     }
 
     /**
@@ -128,6 +184,11 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
      */
     @Override
     public void OnClickBack() {
+        finish();
+    }
+
+    @Override
+    public void OnClickClose() {
         finish();
     }
 
@@ -166,8 +227,6 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
 
         body.put("title", mEtTitle.getText().toString());
         body.put("content", mEtInputComment.getText().toString());
-        body.put("thumbnail_image", "");
-        body.put("tags", "");
 
         DAHttpClient client = DAHttpClient.getInstance(ActivityAddAchivement.this);
         client.Patch(url, header, body, new IOServerCallback() {
@@ -191,6 +250,9 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
      * 실현 성과 등록
      */
     private void httpPostAchivementPost() {
+        if (mDialog != null && !mDialog.isShowing())
+            mDialog.show();
+
         Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityAddAchivement.this);
         String url = Comm_Param.URL_API_ACHIVEMENT_POSTS;
         url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
@@ -200,7 +262,7 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
             return;
         }
 
-        if(mAdapter.size() < 1){
+        if (mAdapter.size() < 1) {
             Toast.makeText(getApplicationContext(), "이미지를 추가해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -222,6 +284,7 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
         client.Post(url, header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                if (mDialog != null && mDialog.isShowing()) mDialog.dismiss();
                 e.printStackTrace();
             }
 
@@ -272,6 +335,7 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
                 .replace(Comm_Param.POST_INDEX, String.valueOf(posts_index)), header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                if (mDialog != null && mDialog.isShowing()) mDialog.dismiss();
                 e.printStackTrace();
             }
 
@@ -295,7 +359,7 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
         });
     }
 
-    LinkedHashMap<Integer, String> mImageUploadCheck;
+    LinkedHashMap<Integer, String> mImageUploadCheck = null;
 
     private void httpPostUploadImage(int image_index, int posts_index, File file, String fileUrl, String uploadUrl) {
         // Create the connection and use it to upload the new object using the pre-signed URL.
@@ -303,13 +367,14 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
         DAHttpClient.getInstance(ActivityAddAchivement.this).Put(uploadUrl, file, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                if (mDialog != null && mDialog.isShowing()) mDialog.dismiss();
                 e.printStackTrace();
             }
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (response.isSuccessful()) {
-                    mImageUploadCheck.put(image_index,fileUrl);
+                    mImageUploadCheck.put(image_index, fileUrl);
 
                     if (mImageUploadCheck.size() == mAdapter.size()) {
                         profileUpdate(posts_index);
@@ -329,24 +394,27 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
         HashMap<String, String> body = new HashMap<>();
         JSONArray jArray = new JSONArray();
 
-        try {
-            for (int i = 0; i < mImageUploadCheck.size(); i++) {
-                JSONObject jObject = new JSONObject();
-                String fileUrl = mImageUploadCheck.get(i);
-                jObject.put("url", fileUrl);
-                jArray.put(jObject);
-            }
-            body.put("image", jArray.toString());
+        if(mImageUploadCheck != null) {
+            try {
+                for (int i = 0; i < mImageUploadCheck.size(); i++) {
+                    JSONObject jObject = new JSONObject();
+                    String fileUrl = mImageUploadCheck.get(i);
+                    jObject.put("url", fileUrl);
+                    jArray.put(jObject);
+                }
+                body.put("image", jArray.toString());
 
-        } catch (JSONException e) {
-            e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            body.put("thumbnail_image", mImageUploadCheck.get(0));
         }
-        body.put("thumbnail_image", mImageUploadCheck.get(0));
         client.Patch(Comm_Param.URL_API_ACHIVEMENT_POSTS_INDEX
                 .replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()))
                 .replace(Comm_Param.POST_INDEX, String.valueOf(post_index)), header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                if (mDialog != null && mDialog.isShowing()) mDialog.dismiss();
                 e.printStackTrace();
             }
 
@@ -354,6 +422,7 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
                 Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
+                if (mDialog != null && mDialog.isShowing()) mDialog.dismiss();
                 // 성공일 시
                 if (TextUtils.equals(code, SUCCESS)) {
                     setResult(RESULT_OK);
@@ -373,7 +442,22 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
     public void onBindViewHolder(@NonNull BaseViewHolder h, int i) {
         File file = (File) mAdapter.get(i);
         ImageView ivImage = h.getItemView(R.id.iv_achivement);
+        ImageView ivDelete = h.getItemView(R.id.iv_delete);
         Glide.with(ActivityAddAchivement.this).load(file).placeholder(R.drawable.ic_image_black_24dp).into(ivImage);
+
+        if (isEdit) {
+            ivDelete.setVisibility(View.VISIBLE);
+            ivDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mAdapter.remove(i);
+                    mAdapter.notifyDataSetChanged();
+                    initRightText();
+                }
+            });
+        } else {
+            ivDelete.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -391,11 +475,18 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_add_img: // 이미지 추가 버튼
-                Intent intent = new Intent(ActivityAddAchivement.this, ActivityGalleryCamera.class);
-                intent.putExtra(ActivityGalleryCamera.VIEW_TYPE_ADD_ACTION_POST, FragmentMain.REQUEST_ADD_ACHIVEMENT);
-                startActivityForResult(intent, REQUEST_GET_IMAGE);
+                if (!isEdit) {
+                    Intent intent = new Intent(ActivityAddAchivement.this, ActivityGalleryCamera.class);
+                    intent.putExtra(ActivityGalleryCamera.VIEW_TYPE_ADD_ACTION_POST, FragmentMain.REQUEST_ADD_ACHIVEMENT);
+                    startActivityForResult(intent, REQUEST_GET_IMAGE);
+                }
                 break;
             case R.id.btn_edit: // 수정 버튼
+                isEdit = !isEdit;
+                mIvAddImg.setActivated(isEdit);
+                mAdapter.notifyDataSetChanged();
+                if (isEdit) mBtnEdit.setText("완료");
+                else mBtnEdit.setText("삭제");
                 break;
         }
     }
@@ -407,8 +498,14 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
             if (requestCode == REQUEST_GET_IMAGE) {
                 File file = (File) data.getSerializableExtra(ActivityGalleryCamera.REQEUST_IMAGE_FILE);
                 mAdapter.add(file);
+                initRightText();
             }
         }
+    }
 
+    @Override
+    protected void onDestroy() {
+        if (mDialog != null && mDialog.isShowing()) mDialog.dismiss();
+        super.onDestroy();
     }
 }

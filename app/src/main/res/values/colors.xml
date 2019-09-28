@@ -14,5 +14,6 @@
     <color name="color_hint">#c1c1c1</color>
     <color name="color_ability">#d29500</color>
     <color name="color_opportunity">#be5108</color>
+    <color name="color_red">#FF3C22</color>
 
 </resources>

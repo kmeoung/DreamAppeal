@@ -16,7 +16,7 @@
         android:id="@+id/btb_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:is_back_visibility="visible"
+        app:is_back_visibility="gone"
         app:is_menu_visibility="gone"
         app:is_right_text_visibility="visible"
         app:is_search_visibility="gone"
@@ -73,6 +73,7 @@
             <!--Divider-->
 
             <LinearLayout
+                android:id="@+id/ll_btns"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:gravity="center_vertical"
@@ -84,7 +85,6 @@
                     android:layout_height="27dp"
                     android:layout_marginLeft="14dp"
                     android:src="@drawable/add_camera_btn" />
-
 
                 <Space
                     android:layout_width="0dp"
@@ -120,14 +120,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
+                android:background="@null"
                 android:fontFamily="@font/nanum_square_round_r"
                 android:gravity="left|top"
                 android:hint="코멘트 입력.."
                 android:padding="12dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/color_hint"
-                android:textSize="16sp"
-                android:background="@null"/>
+                android:textSize="16sp" />
 
         </LinearLayout>
 

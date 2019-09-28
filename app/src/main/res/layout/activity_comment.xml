@@ -42,8 +42,8 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingLeft="11dp"
-        android:paddingRight="11dp">
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp">
 
 
         <LinearLayout
@@ -82,44 +82,63 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:minHeight="35dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp">
 
                 <ImageView
                     android:id="@+id/iv_user"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/drawer_user" />
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/drawer_user"
+                    android:layout_marginLeft="10dp"/>
 
                 <EditText
                     android:id="@+id/et_input_comment"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="35dp"
                     android:layout_marginLeft="13dp"
-                    android:layout_marginTop="8dp"
                     android:layout_marginRight="13dp"
-                    android:layout_marginBottom="8dp"
                     android:layout_weight="1"
-                    android:background="@drawable/comment_input_bg"
+                    android:maxLines="4"
+                    android:background="@null"
                     android:hint="댓글 남기기"
                     android:paddingLeft="5dp"
                     android:paddingRight="8dp"
                     android:textColor="@color/black"
                     android:textColorHint="@color/gray"
-                    android:textSize="15sp" />
+                    android:textSize="16sp" />
 
-                <Button
+                <ImageButton
                     android:id="@+id/btn_commit_comment"
                     android:layout_width="50dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="35dp"
                     android:background="@null"
                     android:fontFamily="@font/nanum_square_round_b"
                     android:imeOptions="actionDone"
                     android:inputType="text"
-                    android:text="게시"
+                    android:text="등록"
                     android:textColor="@color/gray"
-                    android:textSize="19dp" />
+                    android:textSize="19dp"
+                    android:src="@drawable/ic_send"
+                    android:scaleType="fitCenter"/>
+
+                <!--<Button-->
+                    <!--android:id="@+id/btn_commit_comment"-->
+                    <!--android:layout_width="50dp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:background="@null"-->
+                    <!--android:fontFamily="@font/nanum_square_round_b"-->
+                    <!--android:imeOptions="actionDone"-->
+                    <!--android:inputType="text"-->
+                    <!--android:text="등록"-->
+                    <!--android:textColor="@color/gray"-->
+                    <!--android:textSize="19dp" />-->
+
 
             </LinearLayout>
 

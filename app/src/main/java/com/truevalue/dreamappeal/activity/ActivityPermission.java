@@ -1,6 +1,8 @@
 package com.truevalue.dreamappeal.activity;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -66,9 +68,15 @@ public class ActivityPermission extends BaseActivity {
                 // 권한 거부
 // 사용자가 해당권한을 거부했을때 해주어야 할 동작을 수행합니다
 //                CustomToast.makeText(this, "권한을 허용해주셔야 테스트가 가능합니다.", CustomToast.LENGTH_SHORT).show();
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE},
-                        REQUEST_CODE_PERMISSION);
+                AlertDialog.Builder builder = new AlertDialog.Builder(ActivityPermission.this);
+                builder.setMessage("권한을 허용해주셔야 정상적으로 앱 이용이 가능합니다.");
+                builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.show();
             }
 
         }

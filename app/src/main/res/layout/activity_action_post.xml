@@ -72,7 +72,7 @@
         <!--꿈 수식어 및 꿈 명-->
 
         <ImageView
-            android:id="@+id/iv_more"
+            android:id="@+id/iv_action_more"
             android:layout_width="45dp"
             android:layout_height="30dp"
             android:scaleX="0.5"

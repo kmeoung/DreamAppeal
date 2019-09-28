@@ -2,7 +2,9 @@ package com.truevalue.dreamappeal.fragment.profile.blueprint;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -132,6 +134,7 @@ public class FragmentAddContents extends BaseFragment implements IOBaseTitleBarL
         super.onViewCreated(view, savedInstanceState);
         // 상단바 연동
         mBtbBar.setIOBaseTitleBarListener(this);
+        mBtbBar.getmIvClose().setVisibility(View.VISIBLE);
         // 데이터 초기화
         initData();
         // View 초기화
@@ -163,6 +166,31 @@ public class FragmentAddContents extends BaseFragment implements IOBaseTitleBarL
             imm.showSoftInput(mEtAbilityOpportunity, 0);
             mTvHint.setVisibility(View.GONE);
         });
+
+        mEtAbilityOpportunity.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                initRightBtn();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        initRightBtn();
+    }
+
+    private void initRightBtn(){
+        if(mEtAbilityOpportunity.getText().length() > 0){
+            mBtbBar.getmTvTextBtn().setSelected(true);
+        }else mBtbBar.getmTvTextBtn().setSelected(false);
     }
 
     @Override

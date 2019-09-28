@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,7 +30,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
-import com.truevalue.dreamappeal.activity.profile.ActivityActionPost;
 import com.truevalue.dreamappeal.base.BaseActivity;
 import com.truevalue.dreamappeal.base.BaseItemDecorationVertical;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
@@ -85,7 +85,7 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
     @BindView(R.id.et_input_comment)
     EditText mEtInputComment;
     @BindView(R.id.btn_commit_comment)
-    Button mBtnCommitComment;
+    ImageButton mBtnCommitComment;
     @BindView(R.id.tv_writer)
     TextView mTvWriter;
     @BindView(R.id.iv_writer_reply_close)
@@ -100,6 +100,7 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
     private String mGetCommentUrl = null;
     private String mCommentUrl = null;
     private String mCheeringUrl = null;
+    private String mPatchUrl = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -125,23 +126,27 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
                 mGetCommentUrl = Comm_Param.URL_API_PROFILES_INDEX_INDEX_PRESENTCOMMENTS;
                 mCommentUrl = Comm_Param.URL_API_PROFILES_INDEX_PRESENTCOMMENTS;
                 mCheeringUrl = Comm_Param.URL_API_PROFILES_INDEX_PRESENTCOMMENTS_INDEX_MYINDEX;
+                mPatchUrl = Comm_Param.URL_API_PROFILES_INDEX_PRESENTCOMMENTS_INDEX;
                 break;
             case TYPE_PERFORMANCE:
                 mPostCount = getIntent().getIntExtra(EXTRA_POST_INDEX, -1);
                 mGetCommentUrl = Comm_Param.URL_API_PROFILES_INDEX_INDEX_PERFORMANCE_INDEX_COMMENTS.replace(Comm_Param.POST_INDEX, String.valueOf(mPostCount));
                 mCommentUrl = Comm_Param.URL_API_PROFILES_INDEX_PERFORMANCE.replace(Comm_Param.POST_INDEX, String.valueOf(mPostCount));
                 mCheeringUrl = Comm_Param.URL_API_PROFILES_INDEX_PERFORMANCECOMMENTS_INDEX_MYINDEX;
+                mPatchUrl = Comm_Param.URL_API_PROFILES_INDEX_PERFORMANCE_INDEX.replace(Comm_Param.POST_INDEX, String.valueOf(mPostCount));
                 break;
             case TYPE_BLUEPRINT:
                 mGetCommentUrl = Comm_Param.URL_API_PROFILES_INDEX_INDEX_BLUEPRINTCOMMENTS;
                 mCommentUrl = Comm_Param.URL_API_PROFILES_INDEX_BLUEPRINTCOMMENTS;
                 mCheeringUrl = Comm_Param.URL_API_PROFILES_INDEX_BLUEPRINTCOMMENTS_INDEX_MYINDEX;
+                mPatchUrl = Comm_Param.URL_API_PROFILES_INDEX_BLUEPRINTCOMMENTS_INDEX;
                 break;
             case TYPE_ACTION_POST:
                 mPostCount = getIntent().getIntExtra(EXTRA_POST_INDEX, -1);
                 mGetCommentUrl = Comm_Param.URL_API_PROFILES_INDEX_INDEX_ACTIONPOST_INDEX_COMMENTS.replace(Comm_Param.POST_INDEX, String.valueOf(mPostCount));
                 mCommentUrl = Comm_Param.URL_API_PROFILES_INDEX_ACTIONPOST_INDEX_COMMENTS.replace(Comm_Param.POST_INDEX, String.valueOf(mPostCount));
                 mCheeringUrl = Comm_Param.URL_API_PROFILES_INDEX_ACTIONPOSTCOMMENTS_INDEX_MYINDEX;
+                mPatchUrl = Comm_Param.URL_API_PROFILES_INDEX_ACTIONPOSTS_INDEX_COMMENTS_INDEX.replace(Comm_Param.POST_INDEX, String.valueOf(mPostCount));
                 break;
         }
         // 댓글 조회
@@ -163,9 +168,9 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (mEtInputComment.getText().toString().length() > 0) {
-                    mBtnCommitComment.setTextColor(getResources().getColor(R.color.colorAccent));
+                    mBtnCommitComment.setSelected(true);
                 } else {
-                    mBtnCommitComment.setTextColor(getResources().getColor(R.color.gray));
+                    mBtnCommitComment.setSelected(false);
                 }
             }
 
@@ -208,6 +213,9 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
     @Override
     public void onBindViewHolder(@NonNull BaseViewHolder h, int i) {
         BeanComment bean = (BeanComment) mAdapter.get(i);
+
+        Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityCommentDetail.this);
+
         if (getItemViewType(i) == LISTITEM_COMMENT) {
             TextView tvValueStyle = h.getItemView(R.id.tv_value_style);
             TextView tvJob = h.getItemView(R.id.tv_job);
@@ -219,8 +227,10 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
             TextView tvCommentTime = h.getItemView(R.id.tv_comment_time);
             ImageView ivComment = h.getItemView(R.id.iv_comment);
 
-            if(TextUtils.isEmpty(bean.getImage())) Glide.with(ActivityCommentDetail.this).load(R.drawable.drawer_user).apply(new RequestOptions().circleCrop()).into(ivComment);
-            else Glide.with(ActivityCommentDetail.this).load(bean.getImage()).placeholder(R.drawable.drawer_user).apply(new RequestOptions().circleCrop()).into(ivComment);
+            if (TextUtils.isEmpty(bean.getImage()))
+                Glide.with(ActivityCommentDetail.this).load(R.drawable.drawer_user).apply(new RequestOptions().circleCrop()).into(ivComment);
+            else
+                Glide.with(ActivityCommentDetail.this).load(bean.getImage()).placeholder(R.drawable.drawer_user).apply(new RequestOptions().circleCrop()).into(ivComment);
 
             tvCommentTime.setText(Utils.convertFromDate(bean.getRegister_date()));
 
@@ -242,7 +252,8 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
                 public void onClick(View view) {
                     mCommentIndex = bean.getIdx();
                     mLlWriter.setVisibility(View.VISIBLE);
-                    mTvWriter.setText(bean.getName());
+                    mTvWriter.setText("대댓글 : " + bean.getName());
+                    isEdit = false;
                 }
             });
 
@@ -258,80 +269,12 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
                     Intent intent = null;
                     switch (id) {
                         case R.id.menu_edit:
-
-                            break;
-                        case R.id.menu_delete:
-                            builder = new AlertDialog.Builder(ActivityCommentDetail.this)
-                                    .setTitle("댓글 삭제")
-                                    .setMessage("댓글을 삭제하시겠습니까?")
-                                    .setPositiveButton("네", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-                                        }
-                                    })
-                                    .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-                                        }
-                                    });
-                            dialog = builder.create();
-                            dialog.show();
-                            break;
-                    }
-                    return false;
-                }
-            });
-
-            h.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-
-                    return true;
-                }
-            });
-        } else if (getItemViewType(i) == LISTITEM_REPLY) {
-            TextView tvName = h.getItemView(R.id.tv_name);
-            TextView tvTag = h.getItemView(R.id.tv_tag);
-            TextView tvComment = h.getItemView(R.id.tv_comment);
-            TextView tvCommentTime = h.getItemView(R.id.tv_comment_time);
-
-            tvCommentTime.setText(Utils.convertFromDate(bean.getRegister_date()));
-            LinearLayout llCheering = h.getItemView(R.id.ll_cheering);
-            ImageView ivCheering = h.getItemView(R.id.iv_cheering);
-            TextView tvCheering = h.getItemView(R.id.tv_cheering);
-            ImageView ivComment = h.getItemView(R.id.iv_comment);
-
-            if(TextUtils.isEmpty(bean.getImage())) Glide.with(ActivityCommentDetail.this).load(R.drawable.drawer_user).apply(new RequestOptions().circleCrop()).into(ivComment);
-            else Glide.with(ActivityCommentDetail.this).load(bean.getImage()).placeholder(R.drawable.drawer_user).apply(new RequestOptions().circleCrop()).into(ivComment);
-
-            tvName.setText(bean.getName());
-            tvTag.setText("@" + bean.getParent_name());
-            tvComment.setText(bean.getContent());
-            ivCheering.setSelected(bean.getStatus());
-            tvCheering.setText(bean.getLike_count() + "개");
-
-            llCheering.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    httpPatchCheering(bean.getIdx());
-                }
-            });
-
-            PopupMenu popupMenu = new PopupMenu(ActivityCommentDetail.this, tvComment);
-            popupMenu.getMenuInflater().inflate(R.menu.menu_achivement_post, popupMenu.getMenu());
-
-            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    int id = item.getItemId();
-                    AlertDialog.Builder builder;
-                    AlertDialog dialog;
-                    Intent intent = null;
-                    switch (id) {
-                        case R.id.menu_edit:
-
+                            mCommentIndex = bean.getIdx();
+                            mLlWriter.setVisibility(View.VISIBLE);
+                            mTvWriter.setText("수정 : " + bean.getName());
+                            mEtInputComment.setText(bean.getContent());
+                            mEtInputComment.setSelection(mEtInputComment.getText().length());
+                            isEdit = true;
                             break;
                         case R.id.menu_delete:
                             builder = new AlertDialog.Builder(ActivityCommentDetail.this)
@@ -358,13 +301,98 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
                 }
             });
 
-            h.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
+            if (bean.getWriter_idx() == prefs.getMyProfileIndex()) {
+                h.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        popupMenu.show();
+                        return true;
+                    }
+                });
+            }
+        } else if (getItemViewType(i) == LISTITEM_REPLY) {
+            TextView tvName = h.getItemView(R.id.tv_name);
+            TextView tvTag = h.getItemView(R.id.tv_tag);
+            TextView tvComment = h.getItemView(R.id.tv_comment);
+            TextView tvCommentTime = h.getItemView(R.id.tv_comment_time);
 
-                    return true;
+            tvCommentTime.setText(Utils.convertFromDate(bean.getRegister_date()));
+            LinearLayout llCheering = h.getItemView(R.id.ll_cheering);
+            ImageView ivCheering = h.getItemView(R.id.iv_cheering);
+            TextView tvCheering = h.getItemView(R.id.tv_cheering);
+            ImageView ivComment = h.getItemView(R.id.iv_comment);
+
+            if (TextUtils.isEmpty(bean.getImage()))
+                Glide.with(ActivityCommentDetail.this).load(R.drawable.drawer_user).apply(new RequestOptions().circleCrop()).into(ivComment);
+            else
+                Glide.with(ActivityCommentDetail.this).load(bean.getImage()).placeholder(R.drawable.drawer_user).apply(new RequestOptions().circleCrop()).into(ivComment);
+
+            tvName.setText(bean.getName());
+            tvTag.setText("@" + bean.getParent_name());
+            tvComment.setText(bean.getContent());
+            ivCheering.setSelected(bean.getStatus());
+            tvCheering.setText(bean.getLike_count() + "개");
+
+            llCheering.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    httpPatchCheering(bean.getIdx());
                 }
             });
+
+            PopupMenu popupMenu = new PopupMenu(ActivityCommentDetail.this, tvComment);
+            popupMenu.getMenuInflater().inflate(R.menu.menu_achivement_post, popupMenu.getMenu());
+
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    int id = item.getItemId();
+                    AlertDialog.Builder builder;
+                    AlertDialog dialog;
+                    Intent intent = null;
+                    switch (id) {
+                        case R.id.menu_edit:
+                            mCommentIndex = bean.getIdx();
+                            mLlWriter.setVisibility(View.VISIBLE);
+                            mTvWriter.setText("수정 : " + bean.getName());
+                            mEtInputComment.setText(bean.getContent());
+                            mEtInputComment.setSelection(mEtInputComment.getText().length());
+                            isEdit = true;
+                            break;
+                        case R.id.menu_delete:
+                            builder = new AlertDialog.Builder(ActivityCommentDetail.this)
+                                    .setTitle("댓글 삭제")
+                                    .setMessage("댓글을 삭제하시겠습니까?")
+                                    .setPositiveButton("네", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            httpDeleteComment(bean.getIdx());
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                            dialog = builder.create();
+                            dialog.show();
+                            break;
+                    }
+                    return false;
+                }
+            });
+
+            if (bean.getWriter_idx() == prefs.getMyProfileIndex()) {
+                h.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        popupMenu.show();
+                        return true;
+                    }
+                });
+            }
         }
     }
 
@@ -404,10 +432,10 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
                         if (TextUtils.equals(code, SUCCESS)) {
                             mAdapter.clear();
                             JSONObject json = new JSONObject(body);
-                            try{
+                            try {
                                 String profileImage = json.getString("image");
                                 Glide.with(ActivityCommentDetail.this).load(profileImage).apply(new RequestOptions().circleCrop()).placeholder(R.drawable.drawer_user).into(mIvUser);
-                            }catch (JSONException e){
+                            } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                             JSONArray array = json.getJSONArray("comments");
@@ -479,8 +507,8 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
                         if (TextUtils.equals(code, SUCCESS)) {
                             mEtInputComment.setText("");
                             mCommentIndex = -1;
+                            isEdit = false;
                             mLlWriter.setVisibility(View.GONE);
-
                             httpGetComment(true);
                         }
                     }
@@ -495,10 +523,11 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
      */
     private void httpDeleteComment(int comment_index) {
         Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityCommentDetail.this);
-        String url = Comm_Param.URL_API_PROFILES_INDEX_PRESENTCOMMENTS_INDEX.replace(Comm_Param.COMMENTS_INDEX, String.valueOf(comment_index));
+        String url = mPatchUrl.replace(Comm_Param.COMMENTS_INDEX, String.valueOf(comment_index));
+        url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getMyProfileIndex()));
         HashMap header = Utils.getHttpHeader(prefs.getToken());
         HashMap<String, String> body = new HashMap<>();
-        body.put("my_profile_idx",String.valueOf(prefs.getMyProfileIndex()));
+        body.put("my_profile_idx", String.valueOf(prefs.getMyProfileIndex()));
         DAHttpClient.getInstance(ActivityCommentDetail.this)
                 .Delete(url, header, body, new IOServerCallback() {
                     @Override
@@ -509,8 +538,13 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
                     @Override
                     public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
                         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-
-                        if (TextUtils.equals(message, SUCCESS)) {
+                        if (TextUtils.equals(code, SUCCESS)) {
+                            if (mCommentIndex == comment_index) {
+                                mEtInputComment.setText("");
+                                mCommentIndex = -1;
+                                isEdit = false;
+                                mLlWriter.setVisibility(View.GONE);
+                            }
                             httpGetComment(false);
                         }
                     }
@@ -525,13 +559,14 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
      */
     private void httpPatchComment(int comment_index) {
         Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityCommentDetail.this);
-        String url = Comm_Param.URL_API_PROFILES_INDEX_PRESENTCOMMENTS_INDEX.replace(Comm_Param.COMMENTS_INDEX, String.valueOf(comment_index));
+        String url = mPatchUrl.replace(Comm_Param.COMMENTS_INDEX, String.valueOf(comment_index));
+        url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getMyProfileIndex()));
         HashMap header = Utils.getHttpHeader(prefs.getToken());
         HashMap<String, String> body = new HashMap<>();
-        body.put("my_profile_idx",String.valueOf(prefs.getMyProfileIndex()));
-        body.put("content",mEtInputComment.getText().toString());
+        body.put("my_profile_idx", String.valueOf(prefs.getMyProfileIndex()));
+        body.put("content", mEtInputComment.getText().toString());
         DAHttpClient.getInstance(ActivityCommentDetail.this)
-                .Patch(url, header, null, new IOServerCallback() {
+                .Patch(url, header, body, new IOServerCallback() {
                     @Override
                     public void onFailure(@NotNull Call call, @NotNull IOException e) {
                         e.printStackTrace();
@@ -540,8 +575,11 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
                     @Override
                     public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
                         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-
-                        if (TextUtils.equals(message, SUCCESS)) {
+                        if (TextUtils.equals(code, SUCCESS)) {
+                            mEtInputComment.setText("");
+                            mCommentIndex = -1;
+                            isEdit = false;
+                            mLlWriter.setVisibility(View.GONE);
                             httpGetComment(false);
                         }
                     }
@@ -573,10 +611,6 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
                         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                         if (TextUtils.equals(code, SUCCESS)) {
-                            mEtInputComment.setText("");
-                            mCommentIndex = -1;
-                            mLlWriter.setVisibility(View.GONE);
-
                             httpGetComment(false);
                         }
                     }
@@ -601,13 +635,18 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
             case R.id.btn_commit_comment:
                 if (TextUtils.isEmpty(mEtInputComment.getText().toString())) {
                     Toast.makeText(getApplicationContext(), "댓글을 입력해 주세요.", Toast.LENGTH_SHORT).show();
+                    return;
                 }
                 if (mCommentIndex == -1) {
                     // 댓글 등록
                     httpPostComment();
                 } else {
-                    // 대 댓글 등록
-                    httpPostComment(mCommentIndex);
+                    if (isEdit) {
+                        httpPatchComment(mCommentIndex);
+                    } else {
+                        // 대 댓글 등록
+                        httpPostComment(mCommentIndex);
+                    }
                 }
                 break;
         }

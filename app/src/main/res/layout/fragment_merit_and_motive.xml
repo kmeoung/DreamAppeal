@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        app:is_back_visibility="visible"
+        app:is_back_visibility="gone"
         app:is_menu_visibility="gone"
         app:is_right_text_visibility="visible"
         app:is_search_visibility="gone"

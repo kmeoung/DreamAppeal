@@ -17,6 +17,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:src="@drawable/error_btn"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:scaleX="0.75"
+        android:scaleY="0.75"/>
 
 </RelativeLayout>

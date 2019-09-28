@@ -12,7 +12,7 @@
         android:id="@+id/btb_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:is_back_visibility="visible"
+        app:is_back_visibility="gone"
         app:is_menu_visibility="gone"
         app:is_right_text_visibility="visible"
         app:is_search_visibility="gone"
@@ -164,26 +164,34 @@
             <!--예시 화면-->
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="242dp">
+                android:layout_height="360dp">
 
                 <androidx.viewpager.widget.ViewPager
-                    android:id="@+id/vp_pager"
+                    android:id="@+id/pager_image"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="360dp" />
 
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tl_tab"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/bg_black_box_indicator"
+                    android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
-                    app:tabIndicator="@null">
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:padding="5dp"
+                    android:gravity="center"
+                    android:id="@+id/ll_indicator">
 
-                    <com.google.android.material.tabs.TabItem
-                        android:layout_width="5dp"
-                        android:layout_height="5dp"
-                        android:icon="@drawable/circle_gray" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:text="10 / 10"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:id="@+id/tv_indicator"/>
 
-                </com.google.android.material.tabs.TabLayout>
+                </LinearLayout>
 
             </RelativeLayout>
             <!--예시 화면-->

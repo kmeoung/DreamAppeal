@@ -1,6 +1,7 @@
 package com.truevalue.dreamappeal.fragment.profile;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -70,6 +71,7 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
     private int mType = -1;
     private BeanActionPostDetail mBean = null;
     private ArrayList<File> mArrayImages = null;
+    private ProgressDialog mDialog;
 
     public static FragmentLevelChoice newInstance(int post_index, BeanActionPostDetail bean) {
         FragmentLevelChoice fragment = new FragmentLevelChoice();
@@ -98,10 +100,16 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initView();
         // init Adapter
         initAdapter();
         // init Data
         httpGetActionPostCategory();
+    }
+
+    private void initView() {
+        mDialog = new ProgressDialog(getContext());
+        mDialog.setCancelable(false);
     }
 
     @Override
@@ -115,6 +123,9 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
         btbBar.setTitle("해당 목표와 단계를 선택해주세요");
         btbBar.setIOBaseTitleBarListener(this);
         btbBar.getmTvTextBtn().setText("완료");
+        btbBar.getmIvClose().setVisibility(View.GONE);
+        btbBar.getmIvBack().setVisibility(View.VISIBLE);
+        btbBar.getmTvTextBtn().setSelected(true);
     }
 
     private IORecyclerViewListener mIOCategoryListener = new IORecyclerViewListener() {
@@ -305,6 +316,7 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
             Toast.makeText(getContext().getApplicationContext(), "실천목표를 선택해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
+        if (mDialog != null && !mDialog.isShowing()) mDialog.show();
         Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
         // 내 실천인증 추가
         String url = Comm_Param.URL_API_PROFILES_INDEX_ACTIONPOSTS
@@ -319,6 +331,7 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
                 .Post(url, header, body, new IOServerCallback() {
                     @Override
                     public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                        if (mDialog != null && mDialog.isShowing()) mDialog.dismiss();
                         e.printStackTrace();
                     }
 
@@ -334,6 +347,7 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
 //                                httpPatchActionPost(insertId);
                                 httpPostProfilesImage(insertId);
                             } else {
+                                if (mDialog != null && mDialog.isShowing()) mDialog.dismiss();
                                 getActivity().setResult(Activity.RESULT_OK);
                                 getActivity().finish();
                             }
@@ -364,28 +378,34 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
 
         JSONArray jArray = new JSONArray();
         try {
-            for (int i = 0; i < mImageUploadCheck.size(); i++) {
-                JSONObject jObject = new JSONObject();
-                String fileUrl = mImageUploadCheck.get(i);
-                jObject.put("url", fileUrl);
-                jArray.put(jObject);
+            if (mImageUploadCheck != null) {
+                for (int i = 0; i < mImageUploadCheck.size(); i++) {
+                    JSONObject jObject = new JSONObject();
+                    String fileUrl = mImageUploadCheck.get(i);
+                    jObject.put("url", fileUrl);
+                    jArray.put(jObject);
+                }
+                body.put("image", jArray.toString());
             }
-            body.put("image", jArray.toString());
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        body.put("thumbnail_image", mImageUploadCheck.get(0));
+
+        if (mImageUploadCheck != null) {
+            body.put("thumbnail_image", mImageUploadCheck.get(0));
+        }
         DAHttpClient.getInstance(getContext()).Patch(url, header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                if (mDialog != null && mDialog.isShowing()) mDialog.dismiss();
                 e.printStackTrace();
             }
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
                 Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-
+                if (mDialog != null && mDialog.isShowing()) mDialog.dismiss();
                 if (TextUtils.equals(code, SUCCESS)) {
                     getActivity().setResult(Activity.RESULT_OK);
                     getActivity().finish();
@@ -421,10 +441,11 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
         body.put("set", jArray.toString());
 
         client.Post(Comm_Param.URL_API_PROFILES_INDEX_INDEX_ACTIONPOSTS_INDEX_IMAGES
-                .replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()))
+                .replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getMyProfileIndex()))
                 .replace(Comm_Param.POST_INDEX, String.valueOf(posts_index)), header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                if (mDialog != null && mDialog.isShowing()) mDialog.dismiss();
                 e.printStackTrace();
             }
 
@@ -456,6 +477,7 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
         DAHttpClient.getInstance(getContext()).Put(uploadUrl, file, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                if (mDialog != null && mDialog.isShowing()) mDialog.dismiss();
                 e.printStackTrace();
             }
 

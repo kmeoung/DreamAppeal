@@ -5,13 +5,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,6 +39,7 @@ import com.truevalue.dreamappeal.base.BaseViewHolder;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
 import com.truevalue.dreamappeal.bean.BeanActionPost;
+import com.truevalue.dreamappeal.bean.BeanBlueprintObject;
 import com.truevalue.dreamappeal.bean.BeanObjectStepHeader;
 import com.truevalue.dreamappeal.bean.BeanObjectStepSubHeader;
 import com.truevalue.dreamappeal.fragment.FragmentMain;
@@ -68,6 +71,7 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
     private final int TYPE_TITLE_HEADER = 1;
     private final int TYPE_HEADER_SUB = 2;
     private final int TYPE_IMAGE = 3;
+    private final int TYPE_DEFAULT = 3;
 
     private final int REQUEST_ACTION_POST_DETAIL = 4050;
 
@@ -77,14 +81,14 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
     RecyclerView mRvAchivementIng;
     @BindView(R.id.iv_comment)
     ImageView mIvComment;
-    @BindView(R.id.tv_comment_size)
-    TextView mTvCommentSize;
+    //    @BindView(R.id.tv_comment_size)
+//    TextView mTvCommentSize;
     @BindView(R.id.iv_profile)
     ImageView mIvProfile;
     @BindView(R.id.et_comment)
     EditText mEtComment;
     @BindView(R.id.btn_commit_comment)
-    Button mBtnCommitComment;
+    ImageButton mBtnCommitComment;
 
 
     private BaseRecyclerViewAdapter mAdapter;
@@ -109,8 +113,36 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
         super.onViewCreated(view, savedInstanceState);
         // 상단바 연동
         mBtbBar.setIOBaseTitleBarListener(this);
+
+        initView();
         // Adapter 초기화
         initAdapter();
+    }
+
+    private void initView() {
+        mBtnCommitComment.setSelected(true);
+        mEtComment.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (mEtComment.getText().length() > 0) {
+                    mBtnCommitComment.setVisibility(View.VISIBLE);
+                    mIvComment.setVisibility(View.GONE);
+                } else {
+                    mBtnCommitComment.setVisibility(View.GONE);
+                    mIvComment.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     @Override
@@ -126,7 +158,7 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
 
         if (requestCode == FragmentMain.REQUEST_BLUEPRINT_COMMENT) {
             httpGetObjects();
-        }else if (requestCode == REQUEST_ACTION_POST_DETAIL) {
+        } else if (requestCode == REQUEST_ACTION_POST_DETAIL) {
             if (resultCode == RESULT_OK) {
                 httpGetObjects();
             }
@@ -182,8 +214,8 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
                         Glide.with(getContext()).load(R.drawable.drawer_user).apply(new RequestOptions().circleCrop()).into(mIvProfile);
                     else
                         Glide.with(getContext()).load(image).placeholder(R.drawable.drawer_user).apply(new RequestOptions().circleCrop()).into(mIvProfile);
-                    mTvCommentSize.setText(json.getInt("comment_count") + "개");
-
+//                    mTvCommentSize.setText(json.getInt("comment_count") + "개");
+                    // todo : 임시 이미지
                     JSONObject object = json.getJSONObject("object");
                     int total_action_post_count = json.getInt("total_action_post_count");
                     BeanObjectStepHeader header = gson.fromJson(object.toString(), BeanObjectStepHeader.class);
@@ -200,22 +232,29 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
                         e.printStackTrace();
                     }
 
-                    JSONArray object_steps = json.getJSONArray("object_steps");
-                    for (int i = 0; i < object_steps.length(); i++) {
-                        JSONObject object_step = object_steps.getJSONObject(i);
-                        BeanObjectStepSubHeader bean = gson.fromJson(object_step.toString(), BeanObjectStepSubHeader.class);
-                        bean.setPosition(i + 1);
-                        mAdapter.add(bean);
 
-                        try {
-                            JSONArray actionPosts = object_step.getJSONArray("action_posts");
-                            for (int j = 0; j < actionPosts.length(); j++) {
-                                BeanActionPost post = gson.fromJson(actionPosts.getJSONObject(j).toString(), BeanActionPost.class);
-                                mAdapter.add(post);
+                    JSONArray object_steps = null;
+                    try {
+                        object_steps = json.getJSONArray("object_steps");
+                        for (int i = 0; i < object_steps.length(); i++) {
+                            JSONObject object_step = object_steps.getJSONObject(i);
+                            BeanObjectStepSubHeader bean = gson.fromJson(object_step.toString(), BeanObjectStepSubHeader.class);
+                            bean.setPosition(i + 1);
+                            mAdapter.add(bean);
+
+                            try {
+                                JSONArray actionPosts = object_step.getJSONArray("action_posts");
+                                for (int j = 0; j < actionPosts.length(); j++) {
+                                    BeanActionPost post = gson.fromJson(actionPosts.getJSONObject(j).toString(), BeanActionPost.class);
+                                    mAdapter.add(post);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        if (object_steps == null || object_steps.length() < 1) mAdapter.add("세부단계");
                     }
                 }
             }
@@ -326,11 +365,14 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
             return BaseViewHolder.newInstance(R.layout.listitem_object_step_sub_header, parent, false);
         else if (TYPE_IMAGE == viewType)
             return BaseViewHolder.newInstance(R.layout.listitem_object_step_image, parent, false);
+        else if (TYPE_DEFAULT == viewType)
+            return BaseViewHolder.newInstance(R.layout.listitem_deafult_text, parent, false);
         else return null;
     }
 
     @Override
     public void onBindViewHolder(@NonNull BaseViewHolder h, int i) {
+        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
         if (getItemViewType(i) == TYPE_TITLE_HEADER) {
             BeanObjectStepHeader bean = (BeanObjectStepHeader) mAdapter.get(i);
             TextView tvTitle = h.getItemView(R.id.tv_title);
@@ -338,6 +380,14 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
             ImageView ivMore = h.getItemView(R.id.iv_more);
             TextView tvTotalCount = h.getItemView(R.id.tv_total_count);
             LinearLayout llComplete = h.getItemView(R.id.ll_complete);
+
+            if (prefs.getProfileIndex() == prefs.getMyProfileIndex()) {
+                ivMore.setVisibility(View.VISIBLE);
+                tvDetailStep.setVisibility(View.VISIBLE);
+            } else {
+                ivMore.setVisibility(View.GONE);
+                tvDetailStep.setVisibility(View.GONE);
+            }
 
             tvTitle.setText(bean.getObject_name());
             tvTotalCount.setText(String.format("총 인증 %d회", bean.getTotal_action_post_count()));
@@ -459,6 +509,12 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
                 }
             });
 
+            if (prefs.getProfileIndex() == prefs.getMyProfileIndex()) {
+                ivMore.setVisibility(View.VISIBLE);
+            } else {
+                ivMore.setVisibility(View.GONE);
+            }
+
             ivMore.setOnClickListener(view -> {
                 popupMenu.show();
             });
@@ -483,6 +539,10 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
                     startActivityForResult(intent, REQUEST_ACTION_POST_DETAIL);
                 }
             });
+        } else if (getItemViewType(i) == TYPE_DEFAULT) {
+            TextView tvDefault = h.getItemView(R.id.tv_default_text);
+            String str = "세부단계를 추가해 작은 것부터 실천해보세요";
+            tvDefault.setText(Utils.replaceTextColor(getContext(), str, "세부단계"));
         }
     }
 
@@ -499,6 +559,8 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
             return TYPE_HEADER_SUB;
         else if (mAdapter.get(i) instanceof BeanActionPost)
             return TYPE_IMAGE;
+        else if (mAdapter.get(i) instanceof String)
+            return TYPE_DEFAULT;
         else return 0;
 
     }
@@ -557,6 +619,7 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
 
                         if (TextUtils.equals(code, SUCCESS)) {
                             httpGetObjects();
+                            mEtComment.setText("");
                         }
                     }
                 });

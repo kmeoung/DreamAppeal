@@ -144,6 +144,7 @@ public class FragmentSearchAppealer extends BaseFragment implements IORecyclerVi
         HashMap header = Utils.getHttpHeader(prefs.getToken());
         HashMap<String, String> body = new HashMap<>();
         body.put("keyword", keyword);
+        body.put("idx",String.valueOf(prefs.getMyProfileIndex()));
         DAHttpClient.getInstance(getContext()).Post(Comm_Param.URL_SEARCH, header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {

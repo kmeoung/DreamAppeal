@@ -1,5 +1,6 @@
 package com.truevalue.dreamappeal.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -89,6 +90,7 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
     private ArrayList<String> mTabList;
     private File mImageFile;
     private int mViewType = -1;
+    private ProgressDialog mDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -112,6 +114,8 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
     }
 
     private void initView() {
+        mDialog = new ProgressDialog(ActivityGalleryCamera.this);
+        mDialog.setCancelable(false);
         mViewType = getIntent().getIntExtra(VIEW_TYPE_ADD_ACTION_POST, -1);
         if (mViewType != -1) {
 
@@ -158,6 +162,7 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
      * Image Upload
      */
     private void httpPostProfilesImage() {
+        if (mDialog != null && !mDialog.isShowing()) mDialog.show();
         Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityGalleryCamera.this);
 
         HashMap header = Utils.getHttpHeader(prefs.getToken());
@@ -172,6 +177,7 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
         client.Post(Comm_Param.URL_API_PROFILE_INDEX_IMAGE.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex())), header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                if (mDialog != null && mDialog.isShowing()) mDialog.dismiss();
                 e.printStackTrace();
             }
 
@@ -197,6 +203,7 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
         DAHttpClient.getInstance(ActivityGalleryCamera.this).Put(uploadUrl, file, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                if (mDialog != null && mDialog.isShowing()) mDialog.dismiss();
                 e.printStackTrace();
             }
 
@@ -221,6 +228,7 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
         client.Patch(Comm_Param.URL_API_PROFILES_INDEX.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex())), header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                if (mDialog != null && mDialog.isShowing()) mDialog.dismiss();
                 e.printStackTrace();
             }
 
@@ -228,6 +236,7 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
                 Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
+                if (mDialog != null && mDialog.isShowing()) mDialog.dismiss();
                 // 성공일 시
                 if (TextUtils.equals(code, SUCCESS)) {
                     setResult(RESULT_OK);
@@ -283,10 +292,12 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
             }
 
             if (mViewType == FragmentMain.REQUEST_ADD_ACHIVEMENT) {
-                Intent intent = new Intent();
-                intent.putExtra(REQEUST_IMAGE_FILE, file);
-                setResult(RESULT_OK, intent);
-                finish();
+                if (file != null) {
+                    Intent intent = new Intent();
+                    intent.putExtra(REQEUST_IMAGE_FILE, file);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
             } else {
                 httpPostProfilesImage();
             }
@@ -373,4 +384,9 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
     }
 
 
+    @Override
+    protected void onDestroy() {
+        if(mDialog != null && mDialog.isShowing()) mDialog.dismiss();
+        super.onDestroy();
+    }
 }

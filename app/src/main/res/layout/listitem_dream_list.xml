@@ -47,27 +47,27 @@
                         android:id="@+id/tv_value_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:fontFamily="@font/nanum_pen"
-                        android:text="천만 구독자"
-                        android:textColor="@color/black"
-                        android:textSize="22sp"
                         android:lines="1"
                         android:maxLines="1"
-                        android:ellipsize="end"/>
+                        android:text="천만 구독자"
+                        android:textColor="@color/black"
+                        android:textSize="22sp" />
 
                     <TextView
                         android:id="@+id/tv_job"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="9dp"
+                        android:ellipsize="end"
                         android:fontFamily="@font/bmjua"
+                        android:lines="1"
                         android:maxLength="30"
+                        android:maxLines="1"
                         android:text="크리에이터"
                         android:textColor="@color/black"
-                        android:textSize="27sp"
-                        android:lines="1"
-                        android:maxLines="1"
-                        android:ellipsize="end"/>
+                        android:textSize="27sp" />
 
 
                 </LinearLayout>
@@ -143,6 +143,36 @@
                         android:textSize="14sp" />
 
                 </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ProgressBar
+                    android:id="@+id/pb_exp"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:max="100"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:progress="0" />
+
+                <TextView
+                    android:id="@+id/tv_exp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:text="1 / 10"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
 
             </LinearLayout>
 

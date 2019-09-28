@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:ellipsize="end"
-                android:fontFamily="@font/nanum_square_round_r"
+                android:fontFamily="@font/bmjua"
                 android:lines="1"
                 android:maxLines="1"
                 android:text="몽환적인 세계로 이끄는"

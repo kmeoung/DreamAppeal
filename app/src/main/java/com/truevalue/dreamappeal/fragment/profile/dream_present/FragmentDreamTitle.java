@@ -1,18 +1,21 @@
 package com.truevalue.dreamappeal.fragment.profile.dream_present;
 
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.base.BaseFragment;
@@ -46,13 +49,16 @@ public class FragmentDreamTitle extends BaseFragment implements IOBaseTitleBarLi
     EditText mEtValueStyle;
     @BindView(R.id.et_job)
     EditText mEtJob;
-    @BindView(R.id.vp_pager)
-    ViewPager mVpPager;
-    @BindView(R.id.tl_tab)
-    TabLayout mTlTab;
-
+    @BindView(R.id.pager_image)
+    ViewPager mPagerImage;
+    @BindView(R.id.tv_indicator)
+    TextView mTvIndicator;
+    @BindView(R.id.ll_indicator)
+    LinearLayout mLlIndicator;
+    
     private boolean mIsAddProfiles = false;
     private ArrayList<String> mArrayTitles = null;
+
 
     public static FragmentDreamTitle newInstance(ArrayList<String> dream_titles) {
         FragmentDreamTitle fragment = new FragmentDreamTitle();
@@ -74,6 +80,7 @@ public class FragmentDreamTitle extends BaseFragment implements IOBaseTitleBarLi
         super.onViewCreated(view, savedInstanceState);
         // 상단바 연동
         mBtbBar.setIOBaseTitleBarListener(this);
+        mBtbBar.getmIvClose().setVisibility(View.VISIBLE);
         // 데이터 초기화
         initData();
     }
@@ -82,7 +89,48 @@ public class FragmentDreamTitle extends BaseFragment implements IOBaseTitleBarLi
         if (mArrayTitles != null) {
             if (!TextUtils.isEmpty(mArrayTitles.get(0))) mEtValueStyle.setText(mArrayTitles.get(0));
             if (!TextUtils.isEmpty(mArrayTitles.get(1))) mEtJob.setText(mArrayTitles.get(1));
+            initRightBtn();
         }
+        mEtJob.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                initRightBtn();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mEtValueStyle.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                initRightBtn();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+    }
+
+    private void initRightBtn() {
+        if (TextUtils.isEmpty(mEtJob.getText().toString()) || TextUtils.isEmpty(mEtValueStyle.getText().toString())) {
+            mBtbBar.getmTvTextBtn().setSelected(false);
+        } else mBtbBar.getmTvTextBtn().setSelected(true);
     }
 
     /**
@@ -90,6 +138,11 @@ public class FragmentDreamTitle extends BaseFragment implements IOBaseTitleBarLi
      */
     @Override
     public void OnClickBack() {
+
+    }
+
+    @Override
+    public void OnClickClose() {
         getActivity().onBackPressed();
     }
 

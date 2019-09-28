@@ -2,7 +2,9 @@ package com.truevalue.dreamappeal.fragment.profile.dream_present;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,6 +71,7 @@ public class FragmentMeritAndMotive extends BaseFragment implements IOBaseTitleB
         super.onViewCreated(view, savedInstanceState);
         // 상단바 연동
         mBtbBar.setIOBaseTitleBarListener(this);
+        mBtbBar.getmIvClose().setVisibility(View.VISIBLE);
         // 데이터 초기화
         initData();
         // 뷰 초기화
@@ -80,6 +83,7 @@ public class FragmentMeritAndMotive extends BaseFragment implements IOBaseTitleB
             if (!TextUtils.isEmpty(mMeritAndMotive)) {
                 mEtMeritAndMotive.setText(mMeritAndMotive);
                 mTvHint.setVisibility(View.GONE);
+                initRightBtn();
             }
         }
     }
@@ -93,10 +97,40 @@ public class FragmentMeritAndMotive extends BaseFragment implements IOBaseTitleB
             imm.showSoftInput(mEtMeritAndMotive, 0);
             mTvHint.setVisibility(View.GONE);
         });
+
+        mEtMeritAndMotive.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                initRightBtn();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+
+    private void initRightBtn(){
+        if (TextUtils.isEmpty(mEtMeritAndMotive.getText().toString())) {
+            mBtbBar.getmTvTextBtn().setSelected(false);
+        }else{
+            mBtbBar.getmTvTextBtn().setSelected(true);
+        }
     }
 
     @Override
     public void OnClickBack() {
+
+    }
+
+    @Override
+    public void OnClickClose() {
         getActivity().onBackPressed();
     }
 
