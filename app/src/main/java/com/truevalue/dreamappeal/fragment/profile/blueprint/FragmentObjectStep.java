@@ -386,7 +386,7 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
                         case R.id.menu_delete:
                             builder = new AlertDialog.Builder(getContext())
                                     .setTitle("실천 목표 삭제")
-                                    .setMessage("목표를 삭제하시겠습니까?")
+                                    .setMessage("목표를 삭제하시겠습니까?\n\n목표를 삭제하게 되면 하위에 있는 모든 게시물들이 삭제됩니다.")
                                     .setPositiveButton("네", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
@@ -437,7 +437,7 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
                         case R.id.menu_delete:
                             builder = new AlertDialog.Builder(getContext())
                                     .setTitle("실천 목표 세부사항 삭제")
-                                    .setMessage("세부사항을 삭제하시겠습니까?")
+                                    .setMessage("세부사항을 삭제하시겠습니까?\n\n세부사항을 삭제하게 되면 하위에 있는 모든 게시물들이 삭제됩니다.")
                                     .setPositiveButton("네", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
