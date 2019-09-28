@@ -305,9 +305,15 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
             TextView tvObjectCount = h.getItemView(R.id.tv_object_count);
             LinearLayout llComplete = h.getItemView(R.id.ll_complete);
             ImageView ivSize = h.getItemView(R.id.iv_size);
+            ImageView ivObject = h.getItemView(R.id.iv_object);
             tvObjectTitle.setText(bean.getObject_name());
             tvObjectCount.setText("총 인증\n\n" + bean.getTotal_action_post_count() + "회");
             Glide.with(this).load(R.drawable.ic_side_triangle_blue).into(ivSize);
+
+            if (TextUtils.isEmpty(bean.getThumbnail_image()))
+                Glide.with(this).load(R.drawable.ic_image_black_24dp).into(ivObject);
+            else
+                Glide.with(this).load(bean.getThumbnail_image()).apply(new RequestOptions().centerCrop()).placeholder(R.drawable.ic_image_black_24dp).into(ivObject);
             // 완료 여부
             if (bean.getComplete() == 0) {
                 llComplete.setVisibility(View.GONE);

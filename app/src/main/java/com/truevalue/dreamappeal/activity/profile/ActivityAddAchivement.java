@@ -45,6 +45,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -199,6 +200,11 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
             return;
         }
 
+        if(mAdapter.size() < 1){
+            Toast.makeText(getApplicationContext(), "이미지를 추가해주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         String token = prefs.getToken();
         HashMap header = Utils.getHttpHeader(token);
         HashMap<String, String> body = new HashMap();
@@ -276,23 +282,22 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
                 // 성공일 시
                 if (TextUtils.equals(code, SUCCESS)) {
                     JSONObject json = new JSONObject(body);
-                    mImageUploadCheck = new ArrayList<>();
+                    mImageUploadCheck = new LinkedHashMap<>();
                     JSONArray jsonUrl = json.getJSONArray("urlList");
                     for (int i = 0; i < jsonUrl.length(); i++) {
                         JSONObject url = jsonUrl.getJSONObject(i);
                         String fileURL = url.getString("fileURL");
                         String uploadURL = url.getString("uploadURL");
-                        httpPostUploadImage(posts_index, (File) mAdapter.get(i), fileURL, uploadURL);
+                        httpPostUploadImage(i, posts_index, (File) mAdapter.get(i), fileURL, uploadURL);
                     }
                 }
             }
         });
     }
 
-    private ArrayList<String> mImageUploadCheck = null;
-    private HashMap<Integer,String> imageMap = null;
+    LinkedHashMap<Integer, String> mImageUploadCheck;
 
-    private void httpPostUploadImage(int posts_index, File file, String fileUrl, String uploadUrl) {
+    private void httpPostUploadImage(int image_index, int posts_index, File file, String fileUrl, String uploadUrl) {
         // Create the connection and use it to upload the new object using the pre-signed URL.
 
         DAHttpClient.getInstance(ActivityAddAchivement.this).Put(uploadUrl, file, new Callback() {
@@ -304,7 +309,7 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (response.isSuccessful()) {
-                    mImageUploadCheck.add(fileUrl);
+                    mImageUploadCheck.put(image_index,fileUrl);
 
                     if (mImageUploadCheck.size() == mAdapter.size()) {
                         profileUpdate(posts_index);
@@ -368,7 +373,7 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
     public void onBindViewHolder(@NonNull BaseViewHolder h, int i) {
         File file = (File) mAdapter.get(i);
         ImageView ivImage = h.getItemView(R.id.iv_achivement);
-        Glide.with(ActivityAddAchivement.this).load(file).into(ivImage);
+        Glide.with(ActivityAddAchivement.this).load(file).placeholder(R.drawable.ic_image_black_24dp).into(ivImage);
     }
 
     @Override

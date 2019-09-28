@@ -1,19 +1,24 @@
 package com.truevalue.dreamappeal.activity.profile;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -21,14 +26,11 @@ import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityAddActionPost;
 import com.truevalue.dreamappeal.activity.ActivityCommentDetail;
-import com.truevalue.dreamappeal.activity.ActivityMain;
 import com.truevalue.dreamappeal.base.BaseActivity;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.bean.BeanActionPostDetail;
 import com.truevalue.dreamappeal.bean.BeanActionPostProfile;
-import com.truevalue.dreamappeal.fragment.FragmentMain;
-import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentAddContents;
 import com.truevalue.dreamappeal.http.DAHttpClient;
 import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.utils.Comm_Param;
@@ -36,10 +38,12 @@ import com.truevalue.dreamappeal.utils.Comm_Prefs;
 import com.truevalue.dreamappeal.utils.Utils;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -66,8 +70,6 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
     TextView mTvJob;
     @BindView(R.id.ll_dream_title)
     LinearLayout mLlDreamTitle;
-    @BindView(R.id.iv_img)
-    ImageView mIvImg;
     @BindView(R.id.iv_cheering)
     ImageView mIvCheering;
     @BindView(R.id.tv_cheering)
@@ -90,9 +92,18 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
     TextView mTvContents;
     @BindView(R.id.iv_more)
     ImageView mIvMore;
+    @BindView(R.id.pager_image)
+    ViewPager mPagerImage;
+    @BindView(R.id.tv_indicator)
+    TextView mTvIndicator;
+    @BindView(R.id.ll_indicator)
+    LinearLayout mLlIndicator;
+    @BindView(R.id.iv_comment)
+    ImageView mIvComment;
 
     private int mPostIndex = -1;
-    private BeanActionPostDetail mBean = null;
+    private BeanActionPostDetail mBean = null;private
+    ViewPagerAdapter mAdapter = null;
 
 
     @Override
@@ -105,8 +116,21 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
 //        initView();
         // 상단바 연동
         mBtbBar.setIOBaseTitleBarListener(this);
+        initAdapter();
         // 데이터 초기화
         initData();
+    }
+
+    private void initAdapter() {
+        mAdapter = new ViewPagerAdapter(ActivityActionPost.this);
+        mPagerImage.setAdapter(mAdapter);
+        mPagerImage.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                mTvIndicator.setText((position + 1) + " / " + mAdapter.getCount());
+            }
+        });
     }
 
     public void initData() {
@@ -153,8 +177,9 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
 
                     mTvValueStyle.setText(actionPostProfile.getValue_style());
                     mTvJob.setText(actionPostProfile.getJob());
-                    mBean = gson.fromJson(json.getJSONObject("action_post").toString(), BeanActionPostDetail.class);
+                    JSONObject action_post = json.getJSONObject("action_post");
 
+                    mBean = gson.fromJson(action_post.toString(), BeanActionPostDetail.class);
 //                    if (!TextUtils.isEmpty(actionPostProfile.getImage()))
 //                        Glide.with(ActivityActionPost.this).load(R.drawable.user).into(mIvImg);
 //                    else
@@ -166,6 +191,16 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
                     mTvTargetDetail.setText(mBean.getStep_name());
                     mIvCheering.setSelected(mBean.getStatus());
                     mTvTime.setText(Utils.convertFromDate(mBean.getRegister_date()));
+
+                    mTvIndicator.setText("0 / 0");
+                    JSONArray jArray = action_post.getJSONArray("image");
+                    mTvIndicator.setText("1 / " + jArray.length());
+                    for (int i = 0; i < jArray.length(); i++) {
+                        JSONObject jObject = jArray.getJSONObject(i);
+                        String url = jObject.getString("url");
+                        mAdapter.add(url);
+                    }
+                    mAdapter.notifyDataSetChanged();
 
                 }
             }
@@ -321,6 +356,54 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
         });
 
         popupMenu.show();
+    }
+
+    public class ViewPagerAdapter<String> extends PagerAdapter {
+
+        private ArrayList<String> mArray;
+        private Context mContext;
+
+        public ViewPagerAdapter(Context context) {
+            super();
+            mContext = context;
+            mArray = new ArrayList<>();
+        }
+
+        @Override
+        public int getCount() {
+            return mArray.size();
+        }
+
+        public void add(String item) {
+            this.mArray.add(item);
+        }
+
+        public String get(int i) {
+            return mArray.get(i);
+        }
+
+        @Override
+        public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
+            return view == object;
+        }
+
+        @Override
+        public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+            container.removeView((ImageView) object);
+        }
+
+        @NonNull
+        @Override
+        public Object instantiateItem(@NonNull ViewGroup container, int position) {
+            ImageView imageView = new ImageView(mContext);
+            String url = mArray.get(position);
+            Glide.with(ActivityActionPost.this)
+                    .load(url)
+                    .placeholder(R.drawable.ic_image_black_24dp)
+                    .into(imageView);
+            container.addView(imageView, 0);
+            return imageView;
+        }
     }
 
 

@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.base.BaseActivity;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
-import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.bean.BeanActionPostDetail;
 import com.truevalue.dreamappeal.fragment.profile.FragmentAddActionPost;
 import com.truevalue.dreamappeal.fragment.profile.FragmentLevelChoice;

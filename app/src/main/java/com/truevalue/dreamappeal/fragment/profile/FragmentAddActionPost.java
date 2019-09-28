@@ -1,12 +1,15 @@
 package com.truevalue.dreamappeal.fragment.profile;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -14,8 +17,11 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityAddActionPost;
+import com.truevalue.dreamappeal.activity.ActivityGalleryCamera;
+import com.truevalue.dreamappeal.activity.profile.ActivityAddAchivement;
 import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.base.BaseItemDecorationHorizontal;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
@@ -24,6 +30,7 @@ import com.truevalue.dreamappeal.base.BaseViewHolder;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
 import com.truevalue.dreamappeal.bean.BeanActionPostDetail;
+import com.truevalue.dreamappeal.fragment.FragmentMain;
 import com.truevalue.dreamappeal.http.DAHttpClient;
 import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.utils.Comm_Param;
@@ -33,19 +40,27 @@ import com.truevalue.dreamappeal.utils.Utils;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import okhttp3.Call;
 
-public class FragmentAddActionPost extends BaseFragment implements IORecyclerViewListener, IOBaseTitleBarListener {
+import static android.app.Activity.RESULT_OK;
 
+public class FragmentAddActionPost extends BaseFragment implements IORecyclerViewListener, IOBaseTitleBarListener {
+    public static final int REQUEST_GET_IMAGE = 1009;
     @BindView(R.id.rv_action_post_img)
     RecyclerView mRvActionPostImg;
     @BindView(R.id.et_input_comment)
     EditText mEtInputComment;
+    @BindView(R.id.iv_add_img)
+    ImageView mIvAddImg;
+    @BindView(R.id.btn_edit)
+    Button mBtnEdit;
 
     private BaseRecyclerViewAdapter mAdapter;
     private int mPostIndex = -1;
@@ -130,7 +145,9 @@ public class FragmentAddActionPost extends BaseFragment implements IORecyclerVie
 
     @Override
     public void onBindViewHolder(@NonNull BaseViewHolder h, int i) {
-
+        File file = (File) mAdapter.get(i);
+        ImageView ivImage = h.getItemView(R.id.iv_achivement);
+        Glide.with(getContext()).load(file).placeholder(R.drawable.ic_image_black_24dp).into(ivImage);
     }
 
     @Override
@@ -155,8 +172,14 @@ public class FragmentAddActionPost extends BaseFragment implements IORecyclerVie
             Toast.makeText(getContext().getApplicationContext(), "모든 항목을 입력해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        if(mAdapter.size() < 1){
+            Toast.makeText(getContext().getApplicationContext(), "이미지를 추가해주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if (mType == ActivityAddActionPost.TYPE_ADD_ACTION_POST) {
-            ((ActivityAddActionPost) getActivity()).replaceFragmentRight(FragmentLevelChoice.newInstance(comment), true);
+            ((ActivityAddActionPost) getActivity()).replaceFragmentRight(FragmentLevelChoice.newInstance(comment,mAdapter.getAll()), true);
         } else if (mType == ActivityAddActionPost.TYPE_EDIT_ACTION_POST) {
             httpPatchActionPost();
         }
@@ -187,10 +210,36 @@ public class FragmentAddActionPost extends BaseFragment implements IORecyclerVie
                 Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                 if (TextUtils.equals(code, SUCCESS)) {
-                    getActivity().setResult(Activity.RESULT_OK);
+                    getActivity().setResult(RESULT_OK);
                     getActivity().finish();
                 }
             }
         });
+    }
+
+    @OnClick({R.id.iv_add_img, R.id.btn_edit})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.iv_add_img:
+                Intent intent = new Intent(getContext(), ActivityGalleryCamera.class);
+                intent.putExtra(ActivityGalleryCamera.VIEW_TYPE_ADD_ACTION_POST, FragmentMain.REQUEST_ADD_ACHIVEMENT);
+                startActivityForResult(intent, REQUEST_GET_IMAGE);
+                break;
+            case R.id.btn_edit:
+                break;
+        }
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_GET_IMAGE) {
+                File file = (File) data.getSerializableExtra(ActivityGalleryCamera.REQEUST_IMAGE_FILE);
+                mAdapter.add(file);
+            }
+        }
     }
 }

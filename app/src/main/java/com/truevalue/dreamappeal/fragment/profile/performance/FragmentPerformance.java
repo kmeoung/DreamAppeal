@@ -326,9 +326,9 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
         ivCheering.setSelected(bean.getStatus());
 
         if (TextUtils.isEmpty(bean.getThumbnail_image()))
-            Glide.with(getContext()).load(R.drawable.user).into(ivThumbnail);
+            Glide.with(getContext()).load(R.drawable.ic_image_black_24dp).into(ivThumbnail);
         else
-            Glide.with(getContext()).load(bean.getThumbnail_image()).placeholder(R.drawable.user).into(ivThumbnail);
+            Glide.with(getContext()).load(bean.getThumbnail_image()).placeholder(R.drawable.ic_image_black_24dp).into(ivThumbnail);
 
         String tempProfileUrl = ((ActivityMain)getActivity()).getProfile_image();
         // todo : no Profile Image

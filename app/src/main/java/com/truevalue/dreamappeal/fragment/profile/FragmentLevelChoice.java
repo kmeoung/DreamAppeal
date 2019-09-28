@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityAddActionPost;
+import com.truevalue.dreamappeal.activity.profile.ActivityAddAchivement;
 import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
@@ -38,14 +39,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarListener {
 
@@ -63,6 +69,7 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
     private int mCategorySelected = -1;
     private int mType = -1;
     private BeanActionPostDetail mBean = null;
+    private ArrayList<File> mArrayImages = null;
 
     public static FragmentLevelChoice newInstance(int post_index, BeanActionPostDetail bean) {
         FragmentLevelChoice fragment = new FragmentLevelChoice();
@@ -72,11 +79,10 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
         return fragment;
     }
 
-
-    // todo : 이미지 업로드 성공 시 변경
-    public static FragmentLevelChoice newInstance(String contents) {
+    public static FragmentLevelChoice newInstance(String contents, ArrayList<File> image_list) {
         FragmentLevelChoice fragment = new FragmentLevelChoice();
         fragment.mContents = contents;
+        fragment.mArrayImages = image_list;
         fragment.mType = ActivityAddActionPost.TYPE_ADD_ACTION_POST;
         return fragment;
     }
@@ -295,7 +301,7 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
      * 실천인증 추가
      */
     private void httpPostActionPost() {
-        if(mCategorySelected == -1){
+        if (mCategorySelected == -1) {
             Toast.makeText(getContext().getApplicationContext(), "실천목표를 선택해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -325,8 +331,8 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
                                 JSONObject json = new JSONObject(body);
                                 JSONObject result = json.getJSONObject("result");
                                 int insertId = result.getInt("insertId");
-                                httpPatchActionPost(insertId);
-
+//                                httpPatchActionPost(insertId);
+                                httpPostProfilesImage(insertId);
                             } else {
                                 getActivity().setResult(Activity.RESULT_OK);
                                 getActivity().finish();
@@ -341,7 +347,7 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
      * 실천 인증 수정
      */
     private void httpPatchActionPost(int action_post_index) {
-        if(mCategorySelected == -1){
+        if (mCategorySelected == -1) {
             Toast.makeText(getContext().getApplicationContext(), "실천목표를 선택해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -355,6 +361,21 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
         HashMap<String, String> body = new HashMap<>();
         if (mCategorySelected != -1) body.put("object_idx", String.valueOf(mCategorySelected));
         if (mStepSelected != -1) body.put("step_idx", String.valueOf(mStepSelected));
+
+        JSONArray jArray = new JSONArray();
+        try {
+            for (int i = 0; i < mImageUploadCheck.size(); i++) {
+                JSONObject jObject = new JSONObject();
+                String fileUrl = mImageUploadCheck.get(i);
+                jObject.put("url", fileUrl);
+                jArray.put(jObject);
+            }
+            body.put("image", jArray.toString());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        body.put("thumbnail_image", mImageUploadCheck.get(0));
         DAHttpClient.getInstance(getContext()).Patch(url, header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -372,6 +393,85 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
             }
         });
     }
+
+    /**
+     * Image Upload
+     */
+    private void httpPostProfilesImage(int posts_index) {
+        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+
+        HashMap header = Utils.getHttpHeader(prefs.getToken());
+        DAHttpClient client = DAHttpClient.getInstance(getContext());
+        HashMap<String, String> body = new HashMap<>();
+        JSONArray jArray = new JSONArray();
+
+        try {
+            for (int i = 0; i < mArrayImages.size(); i++) {
+                File file = (File) mArrayImages.get(i);
+                JSONObject set = new JSONObject();
+                String[] fileInfo = file.getName().split("\\.");
+                set.put("key", fileInfo[0]);
+                set.put("type", fileInfo[1]);
+                jArray.put(set);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        body.put("set", jArray.toString());
+
+        client.Post(Comm_Param.URL_API_PROFILES_INDEX_INDEX_ACTIONPOSTS_INDEX_IMAGES
+                .replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()))
+                .replace(Comm_Param.POST_INDEX, String.valueOf(posts_index)), header, body, new IOServerCallback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
+                Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+
+                // 성공일 시
+                if (TextUtils.equals(code, SUCCESS)) {
+                    JSONObject json = new JSONObject(body);
+                    mImageUploadCheck = new LinkedHashMap<>();
+                    JSONArray jsonUrl = json.getJSONArray("urlList");
+                    for (int i = 0; i < jsonUrl.length(); i++) {
+                        JSONObject url = jsonUrl.getJSONObject(i);
+                        String fileURL = url.getString("fileURL");
+                        String uploadURL = url.getString("uploadURL");
+                        httpPostUploadImage(i, posts_index, (File) mArrayImages.get(i), fileURL, uploadURL);
+                    }
+                }
+            }
+        });
+    }
+
+    LinkedHashMap<Integer, String> mImageUploadCheck;
+
+    private void httpPostUploadImage(int image_index, int posts_index, File file, String fileUrl, String uploadUrl) {
+        // Create the connection and use it to upload the new object using the pre-signed URL.
+
+        DAHttpClient.getInstance(getContext()).Put(uploadUrl, file, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    mImageUploadCheck.put(image_index, fileUrl);
+
+                    if (mImageUploadCheck.size() == mArrayImages.size()) {
+                        httpPatchActionPost(posts_index);
+                    }
+                }
+            }
+        });
+    }
+
 
     @Override
     public void OnClickBack() {

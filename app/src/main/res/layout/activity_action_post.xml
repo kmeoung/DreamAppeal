@@ -170,11 +170,38 @@
                 android:orientation="vertical">
 
 
-                <ImageView
-                    android:id="@+id/iv_img"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="360dp"
-                    android:background="@drawable/blue_box" />
+                    android:layout_height="360dp">
+
+                    <androidx.viewpager.widget.ViewPager
+                        android:id="@+id/pager_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="360dp" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_indicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/bg_black_box_indicator"
+                        android:gravity="center"
+                        android:padding="5dp">
+
+                        <TextView
+                            android:id="@+id/tv_indicator"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/nanum_square_round_b"
+                            android:text="10 / 10"
+                            android:textColor="@color/white" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
 
                 <TextView
                     android:id="@+id/tv_contents"

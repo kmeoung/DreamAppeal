@@ -175,7 +175,6 @@ public class ActivityBestAchivementDetail extends BaseActivity {
                     for (int i = 0; i < jArray.length(); i++) {
                         JSONObject jObject = jArray.getJSONObject(i);
                         String url = jObject.getString("url");
-                        // todo : 현재 페이지 다중 이미지 조회 필요 및 수정 필요
                         mAdapter.add(url);
                     }
                     mAdapter.notifyDataSetChanged();

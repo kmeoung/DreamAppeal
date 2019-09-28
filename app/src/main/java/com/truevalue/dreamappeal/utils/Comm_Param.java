@@ -66,7 +66,6 @@ public class Comm_Param {
     // 실천 인증 조회
     public static final String URL_API_PROFILES_INDEX_INDEX_ACTIONPOSTS = URL_API_PROFILES_INDEX_INDEX + "/action_posts";
     public static final String URL_API_PROFILES_INDEX_INDEX_ACTIONPOSTS_INDEX = URL_API_PROFILES_INDEX_INDEX_ACTIONPOSTS + "/" + POST_INDEX;
-    public static final String URL_API_PROFILES_INDEX_INDEX_ACTIONPOSTS_INDEX_IMAGES = URL_API_PROFILES_INDEX_INDEX_ACTIONPOSTS_INDEX + "/images";
 
     // 내 꿈 소개 댓글 조회
     public static final String URL_API_PROFILES_INDEX_INDEX_PRESENTCOMMENTS = URL_API_PROFILES_INDEX_INDEX + "/present_comments";
@@ -128,12 +127,15 @@ public class Comm_Param {
     // 실천 인증 추가
     public static final String URL_API_PROFILES_INDEX_ACTIONPOSTS = URL_API_PROFILES_INDEX + "/action_posts";
     public static final String URL_API_PROFILES_INDEX_ACTIONPOST = URL_API_PROFILES_INDEX + "/action_post";
+
     // 실천 인증 카테고리 조회
     public static final String URL_API_PROFILES_INDEX_ACTIONPOSTS_CATEGORY = URL_API_PROFILES_INDEX_ACTIONPOSTS + "/category";
     // 실천 인증 카테고리 세부사항 조회
     public static final String URL_API_PROFILES_INDEX_ACTIONPOSTS_CATEGORY_INDEX = URL_API_PROFILES_INDEX_ACTIONPOSTS_CATEGORY + "/" + OBJECT_INDEX;
     // 실천 인증 상세 수정 / 삭제
     public static final String URL_API_PROFILES_INDEX_ACTIONPOSTS_INDEX = URL_API_PROFILES_INDEX_ACTIONPOSTS + "/" + POST_INDEX;
+    // 실천 인증 이미지 업로드
+    public static final String URL_API_PROFILES_INDEX_INDEX_ACTIONPOSTS_INDEX_IMAGES = URL_API_PROFILES_INDEX_ACTIONPOSTS_INDEX + "/images";
     public static final String URL_API_PROFILES_INDEX_ACTIONPOST_INDEX = URL_API_PROFILES_INDEX_ACTIONPOST + "/" + POST_INDEX;
     // 실천인증 좋아요
     public static final String URL_API_PROFILES_INDEX_ACTIONPOST_INDEX_LIKE_INDEX = URL_API_PROFILES_INDEX_ACTIONPOST_INDEX + "/like/" + MY_PROFILES_INDEX;

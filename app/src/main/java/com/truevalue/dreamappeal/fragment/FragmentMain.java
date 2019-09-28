@@ -20,6 +20,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
+import com.truevalue.dreamappeal.activity.ActivityAddActionPost;
 import com.truevalue.dreamappeal.activity.ActivityGalleryCamera;
 import com.truevalue.dreamappeal.activity.ActivityMain;
 import com.truevalue.dreamappeal.base.BaseFragment;
@@ -52,6 +53,7 @@ import static android.app.Activity.RESULT_OK;
 public class FragmentMain extends BaseFragment implements IOBaseTitleBarListener {
 
     public static final int REQUEST_SEARCH = 100;
+    // todo : 현재 사용 x
     public static final int REQUEST_ADD_POST = 101;
     public static final int REQUEST_ADD_ACHIVEMENT = 102;
     private static final int REQUEST_DREAM_PRESENT = 1000;
@@ -149,9 +151,12 @@ public class FragmentMain extends BaseFragment implements IOBaseTitleBarListener
             case R.id.iv_timeline: // 타임라인
                 break;
             case R.id.iv_add_board: // 게시글 추가
-                Intent intent = new Intent(getContext(), ActivityGalleryCamera.class);
-                intent.putExtra(ActivityGalleryCamera.VIEW_TYPE_ADD_ACTION_POST,FragmentMain.REQUEST_ADD_POST);
-                startActivityForResult(intent,REQUEST_ADD_POST);
+//                Intent intent = new Intent(getContext(), ActivityGalleryCamera.class);
+//                intent.putExtra(ActivityGalleryCamera.VIEW_TYPE_ADD_ACTION_POST,FragmentMain.REQUEST_ADD_POST);
+//                startActivityForResult(intent,REQUEST_ADD_POST);
+                Intent intent = new Intent(getContext(), ActivityAddActionPost.class);
+                intent.putExtra(ActivityAddActionPost.EXTRA_ACTION_POST_TYPE, ActivityAddActionPost.TYPE_ADD_ACTION_POST);
+                startActivityForResult(intent, REQUEST_ADD_POST);
                 break;
             case R.id.iv_notification: // 알림
                 break;
