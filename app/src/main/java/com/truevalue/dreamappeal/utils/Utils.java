@@ -7,12 +7,15 @@ import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
@@ -40,6 +43,23 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Utils {
+
+    public static SpannableStringBuilder replaceTextColor(Context context,TextView tv,String changeText){
+        String str = tv.getText().toString();
+        int first = str.indexOf(changeText);
+        int last = str.lastIndexOf(changeText) + changeText.length();
+        SpannableStringBuilder ssb = new SpannableStringBuilder(str);
+        ssb.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.colorAccent)), first, last, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return ssb;
+    }
+
+    public static SpannableStringBuilder replaceTextColor(Context context,String str,String changeText){
+        int first = str.indexOf(changeText);
+        int last = str.lastIndexOf(changeText) + changeText.length();
+        SpannableStringBuilder ssb = new SpannableStringBuilder(str);
+        ssb.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.colorAccent)), first, last, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return ssb;
+    }
 
     /**
      * DpToPixel 코드

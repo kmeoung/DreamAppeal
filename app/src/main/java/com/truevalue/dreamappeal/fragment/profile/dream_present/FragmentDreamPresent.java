@@ -1,8 +1,12 @@
 package com.truevalue.dreamappeal.fragment.profile.dream_present;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -156,6 +160,14 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
             int profiles_index = prefs.getProfileIndex();
             httpGetProfilesIndex(profiles_index);
         }
+
+        mTvInitDreamTitle.setText(Utils.replaceTextColor(getContext(),mTvInitDreamTitle,"명칭"));
+        mTvInitDreamDescription.setText(Utils.replaceTextColor(getContext(),mTvInitDreamDescription,"설명"));
+        String merit = "꿈의 매력과";
+        String motive = "계기 표현하기";
+        SpannableStringBuilder spannableMerit = Utils.replaceTextColor(getContext(),merit,"매력");
+        SpannableStringBuilder spannableMotive = Utils.replaceTextColor(getContext(),motive,"계기");
+        mTvInitMeritAndMotive.setText(TextUtils.concat(spannableMerit, " ", spannableMotive));
     }
 
     /**

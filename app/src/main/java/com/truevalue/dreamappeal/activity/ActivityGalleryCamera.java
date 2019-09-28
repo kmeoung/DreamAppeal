@@ -143,7 +143,6 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
 
                     break;
             }
-
         } else {
             mTvTextBtn.setOnClickListener(new View.OnClickListener() {
                 @Override

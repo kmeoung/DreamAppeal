@@ -222,10 +222,10 @@
                             android:id="@+id/tv_init_dream_title"
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
-                            android:background="@drawable/blue_box"
+                            android:background="@drawable/bg_default_box"
                             android:fontFamily="@font/nanum_square_round_b"
                             android:gravity="center"
-                            android:text="내 꿈의 명칭을 정해주세요"
+                            android:text="내 꿈에 특색있는 명칭 달기"
                             android:textColor="@color/black"
                             android:textSize="13sp" />
 
@@ -295,13 +295,17 @@
                     <TextView
                         android:id="@+id/tv_init_dream_description"
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:background="@drawable/blue_box"
+                        android:layout_height="90dp"
+                        android:background="@drawable/bg_default_box"
                         android:fontFamily="@font/nanum_square_round_b"
                         android:gravity="center"
-                        android:text="꿈에 대한 설명을 적어주세요"
+                        android:text="핵심문장으로 꿈 설명하기"
                         android:textColor="@color/black"
-                        android:textSize="13sp" />
+                        android:textSize="13sp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="10dp"/>
 
 
                 </RelativeLayout>
@@ -372,12 +376,14 @@
                             android:id="@+id/tv_init_merit_and_motive"
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
-                            android:background="@drawable/blue_box"
+                            android:background="@drawable/bg_default_box"
                             android:fontFamily="@font/nanum_square_round_b"
                             android:gravity="center"
-                            android:text="매력을 느낀 이유를 적어주세요"
+                            android:text=""
                             android:textColor="@color/black"
-                            android:textSize="13sp" />
+                            android:textSize="13sp"
+                            android:layout_marginRight="15dp"
+                            android:layout_marginTop="10dp"/>
 
 
                     </RelativeLayout>

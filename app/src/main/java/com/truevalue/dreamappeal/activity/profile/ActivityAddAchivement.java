@@ -290,6 +290,7 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
     }
 
     private ArrayList<String> mImageUploadCheck = null;
+    private HashMap<Integer,String> imageMap = null;
 
     private void httpPostUploadImage(int posts_index, File file, String fileUrl, String uploadUrl) {
         // Create the connection and use it to upload the new object using the pre-signed URL.
@@ -335,6 +336,7 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        body.put("thumbnail_image", mImageUploadCheck.get(0));
         client.Patch(Comm_Param.URL_API_ACHIVEMENT_POSTS_INDEX
                 .replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()))
                 .replace(Comm_Param.POST_INDEX, String.valueOf(post_index)), header, body, new IOServerCallback() {

@@ -1,20 +1,28 @@
 package com.truevalue.dreamappeal.activity.profile;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityCommentDetail;
@@ -35,6 +43,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -51,8 +60,6 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
     View mVStatus;
     @BindView(R.id.btb_bar)
     BaseTitleBar mBtbBar;
-    @BindView(R.id.iv_img)
-    ImageView mIvImg;
     @BindView(R.id.iv_cheering)
     ImageView mIvCheering;
     @BindView(R.id.tv_cheering)
@@ -71,8 +78,15 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
     LinearLayout mLlShare;
     @BindView(R.id.iv_comment)
     ImageView mIvComment;
+    @BindView(R.id.pager_image)
+    ViewPager mPagerImage;
+    @BindView(R.id.tv_indicator)
+    TextView mTvIndicator;
+    @BindView(R.id.ll_indicator)
+    LinearLayout mLlIndicator;
 
     private BeanPostDetail mBean = null;
+    private ViewPagerAdapter mAdapter = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,13 +98,26 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
         // 상단바 연동
         mBtbBar.setIOBaseTitleBarListener(this);
         mBtbBar.getmIvMore().setVisibility(View.VISIBLE);
+        initAdapter();
         initView();
         initData();
     }
 
+    private void initAdapter(){
+        mAdapter = new ViewPagerAdapter(ActivityRecentAchivementDetail.this);
+        mPagerImage.setAdapter(mAdapter);
+        mPagerImage.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                mTvIndicator.setText((position + 1) + " / " + mAdapter.getCount());
+            }
+        });
+    }
+
     private void initView() {
         Point size = Utils.getDisplaySize(this);
-        Utils.setResizeView(mIvImg, size.x, size.x);
+        Utils.setResizeView(mPagerImage, size.x, size.x);
     }
 
     private void initData() {
@@ -131,29 +158,27 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
                     mBtbBar.setTitle(mBean.getTitle());
                     // todo : 아직 검증이 필요함
                     Utils.setReadMore(mTvContents, mBean.getContent(), 3);
-                    if (TextUtils.isEmpty(mBean.getThumbnail_image()))
-                        Glide.with(getApplicationContext()).load(R.drawable.user).into(mIvImg);
-                    else
-                        Glide.with(getApplicationContext()).load(mBean.getThumbnail_image()).placeholder(R.drawable.user).into(mIvImg);
 
                     mTvCheering.setText(String.format("%d개", mBean.getLike_count()));
                     mTvComment.setText(String.format("%d개", mBean.getComment_count()));
                     mLlCheering.setSelected(mBean.isStatus());
                     mTvTime.setText(Utils.convertFromDate(mBean.getRegister_date()));
-
+                    mTvIndicator.setText("0 / 0");
                     JSONArray jArray = post.getJSONArray("image");
+                    mTvIndicator.setText("1 / " + jArray.length());
                     for (int i = 0; i < jArray.length(); i++) {
                         JSONObject jObject = jArray.getJSONObject(i);
                         String url = jObject.getString("url");
-                        Glide.with(ActivityRecentAchivementDetail.this).load(url).into(mIvImg);
                         // todo : 현재 페이지 다중 이미지 조회 필요 및 수정 필요
+                        mAdapter.add(url);
                     }
+                    mAdapter.notifyDataSetChanged();
                 }
             }
         });
     }
 
-    @OnClick({R.id.iv_back, R.id.ll_comment, R.id.ll_cheering,R.id.iv_comment})
+    @OnClick({R.id.iv_back, R.id.ll_comment, R.id.ll_cheering, R.id.iv_comment})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back: // 뒤로가기
@@ -341,6 +366,54 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
                 setResult(RESULT_OK);
                 finish();
             }
+        }
+    }
+
+    public class ViewPagerAdapter<String> extends PagerAdapter {
+
+        private ArrayList<String> mArray;
+        private Context mContext;
+
+        public ViewPagerAdapter(Context context) {
+            super();
+            mContext = context;
+            mArray = new ArrayList<>();
+        }
+
+        @Override
+        public int getCount() {
+            return mArray.size();
+        }
+
+        public void add(String item) {
+            this.mArray.add(item);
+        }
+
+        public String get(int i) {
+            return mArray.get(i);
+        }
+
+        @Override
+        public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
+            return view == object;
+        }
+
+        @Override
+        public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+            container.removeView((ImageView) object);
+        }
+
+        @NonNull
+        @Override
+        public Object instantiateItem(@NonNull ViewGroup container, int position) {
+            ImageView imageView = new ImageView(mContext);
+            String url =  mArray.get(position);
+            Glide.with(ActivityRecentAchivementDetail.this)
+                    .load(url)
+                    .placeholder(R.drawable.ic_image_black_24dp)
+                    .into(imageView);
+            container.addView(imageView, 0);
+            return imageView;
         }
     }
 }
