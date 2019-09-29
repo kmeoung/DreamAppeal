@@ -51,10 +51,17 @@ public class DialogProfile extends Dialog {
     ImageView mIvNormalProfileSet;
 
     private ActivityMain mActivityMain;
+    private BeanUser mBean;
 
     public DialogProfile(@NonNull Activity activity) {
         super(activity);
         mActivityMain = (ActivityMain) activity;
+    }
+
+    public DialogProfile(@NonNull Activity activity,BeanUser user) {
+        super(activity);
+        mActivityMain = (ActivityMain) activity;
+        mBean = user;
     }
 
     public DialogProfile(@NonNull Context context, int themeResId) {
@@ -86,36 +93,36 @@ public class DialogProfile extends Dialog {
     }
 
     private void initData(){
-        BeanUser bean = mActivityMain.getUser();
-        if(bean != null) {
-            mTvAddress.setText(bean.getLocation());
-            String gender = (bean.getGender() == 1) ? "여" : "남";
+        if(mBean != null) {
+            mTvAddress.setText(mBean.getLocation());
+            String gender = (mBean.getGender() == 1) ? "여" : "남";
             mTvGender.setText(gender);
-            mTvEmail.setText(bean.getEmail());
-            mTvName.setText(bean.getName());
-            mTvAge.setText(String.valueOf(calculateAgeForKorean(bean.getBirth())));
+            mTvEmail.setText(mBean.getEmail());
+            mTvName.setText(mBean.getName());
+            mTvAge.setText(String.valueOf(calculateAgeForKorean(mBean.getBirth())));
             // todo : 전화번호 추가 필요
             mTvPhone.setText("");
+            mTvPhone.setVisibility(View.GONE);
         }
     }
 
-    public static int calculateAgeForKorean(String ssn) { // ssn의 형식은 yyyymmdd 임
+    public static int calculateAgeForKorean(String ssn) { // ssn의 형식은 yyyy-MM-dd 임
 
         String today = ""; // 오늘 날짜
         int manAge = 0; // 만 나이
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
-        today = formatter.format(new Date()); // 시스템 날짜를 가져와서 yyyyMMdd 형태로 변환
+        today = formatter.format(new Date()); // 시스템 날짜를 가져와서 yyyy-MM-dd 형태로 변환
 
-        // today yyyyMMdd
+        // today yyyy-MM-dd
         int todayYear = Integer.parseInt(today.substring(0, 4));
-        int todayMonth = Integer.parseInt(today.substring(4, 6));
-        int todayDay = Integer.parseInt(today.substring(6, 8));
+        int todayMonth = Integer.parseInt(today.substring(5, 7));
+        int todayDay = Integer.parseInt(today.substring(8, 10));
 
         int ssnYear = Integer.parseInt(ssn.substring(0, 4));
-        int ssnMonth = Integer.parseInt(ssn.substring(4, 6));
-        int ssnDay = Integer.parseInt(ssn.substring(6, 8));
+        int ssnMonth = Integer.parseInt(ssn.substring(5, 7));
+        int ssnDay = Integer.parseInt(ssn.substring(8, 10));
 
 
         manAge = todayYear - ssnYear;
@@ -138,7 +145,7 @@ public class DialogProfile extends Dialog {
             case R.id.iv_normal_profile_set:
                 // todo : 추가 설정 필요
 //                mActivityMain.replaceFragment(new FragmentNormalProfile(),true);
-                dismiss();
+//                dismiss();
                 break;
             case R.id.iv_close:
                 dismiss();

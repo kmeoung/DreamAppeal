@@ -205,16 +205,12 @@ public class FragmentMain extends BaseFragment implements IOBaseTitleBarListener
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
-                if (TextUtils.equals(code, SUCCESS)) {
-                    JSONObject json = new JSONObject(body);
-                    Gson gson = new Gson();
-                    BeanUser bean = gson.fromJson(json.toString(),BeanUser.class);
-                    mBtbBar.setTitle(bean.getName() + " 드림프로필");
-                    ((ActivityMain) getActivity()).setUser(bean);
-                    // todo : Drawer 설정 필요
-                };
+                JSONObject json = new JSONObject(body);
+                Gson gson = new Gson();
+                BeanUser bean = gson.fromJson(json.toString(),BeanUser.class);
+                mBtbBar.setTitle(bean.getName() + " 드림프로필");
+                ((ActivityMain) getActivity()).setUser(bean);
             }
         });
     }

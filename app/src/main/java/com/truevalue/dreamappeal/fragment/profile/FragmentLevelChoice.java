@@ -300,6 +300,7 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
 
                             if (mStepSelected == -1 && mBean != null) {
                                 mStepSelected = mBean.getStep_idx();
+                                mBean.setStep_idx(-1);
                                 mAdapterStep.notifyDataSetChanged();
                             }
                         }
@@ -375,6 +376,7 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
         HashMap<String, String> body = new HashMap<>();
         if (mCategorySelected != -1) body.put("object_idx", String.valueOf(mCategorySelected));
         if (mStepSelected != -1) body.put("step_idx", String.valueOf(mStepSelected));
+        else body.put("step_idx","");
 
         JSONArray jArray = new JSONArray();
         try {

@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityLogin;
+import com.truevalue.dreamappeal.activity.ActivityMain;
 import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.dialog.DialogProfile;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
@@ -48,7 +49,7 @@ public class FragmentDrawer extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_profile:
-                DialogProfile dialog = new DialogProfile(getActivity());
+                DialogProfile dialog = new DialogProfile(getActivity(),((ActivityMain)getActivity()).getUser());
                 dialog.show();
                 break;
             case R.id.ll_logout:

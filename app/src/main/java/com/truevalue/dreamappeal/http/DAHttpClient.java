@@ -321,6 +321,18 @@ public class DAHttpClient {
                     });
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                callback.onResponse(call, serverCode, body, "", "");
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
                 }
             }
         });

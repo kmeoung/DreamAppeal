@@ -172,44 +172,70 @@
                     android:layout_height="match_parent" />
 
                 <LinearLayout
+                    android:id="@+id/ll_indicator"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_black_box_indicator"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="10dp"
-                    android:padding="5dp"
+                    android:background="@drawable/bg_black_box_indicator"
                     android:gravity="center"
-                    android:id="@+id/ll_indicator">
+                    android:padding="5dp">
 
                     <TextView
+                        android:id="@+id/tv_indicator"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/white"
-                        android:text="10 / 10"
                         android:fontFamily="@font/nanum_square_round_b"
-                        android:id="@+id/tv_indicator"/>
+                        android:text="10 / 10"
+                        android:textColor="@color/white" />
 
                 </LinearLayout>
 
             </RelativeLayout>
             <!--예시 화면-->
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black"/>
+
         </LinearLayout>
 
     </ScrollView>
 
-    <!--Divider-->
-    <ImageView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/black" />
-    <!--Divider-->
+        android:layout_height="80dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginTop="7dp"
-        android:background="@color/colorAccent"></LinearLayout>
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/pager_ad"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorAccent"/>
+
+        <LinearLayout
+            android:id="@+id/ll_ad_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_black_box_indicator"
+            android:gravity="center"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/tv_ad_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:text="10 / 10"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
 </LinearLayout>

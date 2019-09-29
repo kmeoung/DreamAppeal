@@ -55,8 +55,15 @@ public class FragmentMeritAndMotive extends BaseFragment implements IOBaseTitleB
     TextView mTvIndicator;
     @BindView(R.id.ll_indicator)
     LinearLayout mLlIndicator;
+    @BindView(R.id.pager_ad)
+    ViewPager mPagerAd;
+    @BindView(R.id.tv_ad_indicator)
+    TextView mTvAdIndicator;
+    @BindView(R.id.ll_ad_indicator)
+    LinearLayout mLlAdIndicator;
     private String mMeritAndMotive = null;
     private BasePagerAdapter mAdapter = null;
+    private BasePagerAdapter mAdAdapter = null;
 
     public static FragmentMeritAndMotive newInstance(String merit_motive) {
         FragmentMeritAndMotive fragment = new FragmentMeritAndMotive();
@@ -85,6 +92,7 @@ public class FragmentMeritAndMotive extends BaseFragment implements IOBaseTitleB
         initView();
 
         httpGetExampleImage();
+        httpGetAd();
     }
 
     private void initAdapter() {
@@ -95,6 +103,16 @@ public class FragmentMeritAndMotive extends BaseFragment implements IOBaseTitleB
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 mTvIndicator.setText((position + 1) + " / " + mAdapter.getCount());
+            }
+        });
+
+        mAdAdapter = new BasePagerAdapter(getContext());
+        mPagerAd.setAdapter(mAdAdapter);
+        mPagerAd.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                mTvAdIndicator.setText((position + 1) + " / " + mAdAdapter.getCount());
             }
         });
     }
@@ -125,6 +143,37 @@ public class FragmentMeritAndMotive extends BaseFragment implements IOBaseTitleB
                         mAdapter.add(imageUrl);
                     }
                     mAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+    }
+
+    /**
+     * http Get
+     * Get Ad Image
+     */
+    private void httpGetAd() {
+        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+        String url = Comm_Param.URL_API_AD;
+        HashMap header = Utils.getHttpHeader(prefs.getToken());
+        DAHttpClient.getInstance(getContext()).Get(url, header, null, new IOServerCallback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
+                if (TextUtils.equals(code, SUCCESS)) {
+                    JSONObject json = new JSONObject(body);
+                    JSONArray list = json.getJSONArray("adlist");
+                    mTvAdIndicator.setText(1 + " / " + list.length());
+                    for (int i = 0; i < list.length(); i++) {
+                        JSONObject urls = list.getJSONObject(i);
+                        String imageUrl = urls.getString("url");
+                        mAdAdapter.add(imageUrl);
+                    }
+                    mAdAdapter.notifyDataSetChanged();
                 }
             }
         });

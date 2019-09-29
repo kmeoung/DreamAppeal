@@ -18,7 +18,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
-import com.truevalue.dreamappeal.activity.profile.ActivityRecentAchivementDetail;
 import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.base.BasePagerAdapter;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
@@ -58,10 +57,17 @@ public class FragmentDreamTitle extends BaseFragment implements IOBaseTitleBarLi
     TextView mTvIndicator;
     @BindView(R.id.ll_indicator)
     LinearLayout mLlIndicator;
+    @BindView(R.id.pager_ad)
+    ViewPager mPagerAd;
+    @BindView(R.id.tv_ad_indicator)
+    TextView mTvAdIndicator;
+    @BindView(R.id.ll_ad_indicator)
+    LinearLayout mLlAdIndicator;
 
     private boolean mIsAddProfiles = false;
     private ArrayList<String> mArrayTitles = null;
     private BasePagerAdapter mAdapter = null;
+    private BasePagerAdapter mAdAdapter = null;
 
 
     public static FragmentDreamTitle newInstance(ArrayList<String> dream_titles) {
@@ -91,17 +97,28 @@ public class FragmentDreamTitle extends BaseFragment implements IOBaseTitleBarLi
         initData();
 
         httpGetExampleImage();
+        httpGetAd();
     }
 
 
-    private void initAdapter(){
+    private void initAdapter() {
         mAdapter = new BasePagerAdapter(getContext());
         mPagerImage.setAdapter(mAdapter);
-        mPagerImage.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
+        mPagerImage.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 mTvIndicator.setText((position + 1) + " / " + mAdapter.getCount());
+            }
+        });
+
+        mAdAdapter = new BasePagerAdapter(getContext());
+        mPagerAd.setAdapter(mAdAdapter);
+        mPagerAd.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                mTvAdIndicator.setText((position + 1) + " / " + mAdAdapter.getCount());
             }
         });
     }
@@ -110,9 +127,9 @@ public class FragmentDreamTitle extends BaseFragment implements IOBaseTitleBarLi
      * http Get
      * Get Example Image
      */
-    private void httpGetExampleImage(){
+    private void httpGetExampleImage() {
         Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
-        String url = Comm_Param.URL_API_EXAMPLE_PROFILE_INDEX.replace(Comm_Param.EX_INDEX,String.valueOf(1));
+        String url = Comm_Param.URL_API_EXAMPLE_PROFILE_INDEX.replace(Comm_Param.EX_INDEX, String.valueOf(1));
         HashMap header = Utils.getHttpHeader(prefs.getToken());
         DAHttpClient.getInstance(getContext()).Get(url, header, null, new IOServerCallback() {
             @Override
@@ -122,7 +139,7 @@ public class FragmentDreamTitle extends BaseFragment implements IOBaseTitleBarLi
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                if(TextUtils.equals(code,SUCCESS)){
+                if (TextUtils.equals(code, SUCCESS)) {
                     JSONObject json = new JSONObject(body);
                     JSONArray list = json.getJSONArray("ex_url");
                     mTvIndicator.setText(1 + " / " + list.length());
@@ -132,6 +149,37 @@ public class FragmentDreamTitle extends BaseFragment implements IOBaseTitleBarLi
                         mAdapter.add(imageUrl);
                     }
                     mAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+    }
+
+    /**
+     * http Get
+     * Get Ad Image
+     */
+    private void httpGetAd() {
+        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+        String url = Comm_Param.URL_API_AD;
+        HashMap header = Utils.getHttpHeader(prefs.getToken());
+        DAHttpClient.getInstance(getContext()).Get(url, header, null, new IOServerCallback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
+                if (TextUtils.equals(code, SUCCESS)) {
+                    JSONObject json = new JSONObject(body);
+                    JSONArray list = json.getJSONArray("adlist");
+                    mTvAdIndicator.setText(1 + " / " + list.length());
+                    for (int i = 0; i < list.length(); i++) {
+                        JSONObject urls = list.getJSONObject(i);
+                        String imageUrl = urls.getString("url");
+                        mAdAdapter.add(imageUrl);
+                    }
+                    mAdAdapter.notifyDataSetChanged();
                 }
             }
         });

@@ -11,7 +11,7 @@
         android:fontFamily="@font/nanum_square_round_r"
         android:gravity="center_vertical"
         android:hint="거주지를 입력해주세요"
-        android:imeOptions="actionNext"
+        android:imeOptions="actionDone"
         android:lines="1"
         android:maxLines="1"
         android:paddingLeft="5dp"

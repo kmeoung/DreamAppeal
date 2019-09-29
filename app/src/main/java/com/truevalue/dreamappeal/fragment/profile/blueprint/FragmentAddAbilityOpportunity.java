@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,9 +18,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.tabs.TabLayout;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.base.BaseFragment;
+import com.truevalue.dreamappeal.base.BasePagerAdapter;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.bean.BeanBlueprintAbilityOpportunity;
@@ -30,7 +31,9 @@ import com.truevalue.dreamappeal.utils.Comm_Prefs;
 import com.truevalue.dreamappeal.utils.Utils;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -50,16 +53,25 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
     EditText mEtAbilityOpportunity;
     @BindView(R.id.tv_hint)
     TextView mTvHint;
-    @BindView(R.id.vp_pager)
-    ViewPager mVpPager;
-    @BindView(R.id.tl_tab)
-    TabLayout mTlTab;
+    @BindView(R.id.pager_image)
+    ViewPager mPagerImage;
+    @BindView(R.id.tv_indicator)
+    TextView mTvIndicator;
+    @BindView(R.id.ll_indicator)
+    LinearLayout mLlIndicator;
+    @BindView(R.id.pager_ad)
+    ViewPager mPagerAd;
+    @BindView(R.id.tv_ad_indicator)
+    TextView mTvAdIndicator;
+    @BindView(R.id.ll_ad_indicator)
+    LinearLayout mLlAdIndicator;
 
     private int mType = -1;
     private boolean isEdit = false;
     private BeanBlueprintAbilityOpportunity mBean = null;
     private String mTitle;
-
+    private BasePagerAdapter mAdapter = null;
+    private BasePagerAdapter mAdAdapter = null;
 
     public static FragmentAddAbilityOpportunity newInstance(int type, String title) {
         FragmentAddAbilityOpportunity fragment = new FragmentAddAbilityOpportunity();
@@ -90,8 +102,103 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
         super.onViewCreated(view, savedInstanceState);
         mBtbBar.setIOBaseTitleBarListener(this);
         mBtbBar.getmIvClose().setVisibility(View.VISIBLE);
+
+        initAdapter();
         // 뷰 초기화
         initView();
+
+        httpGetExampleImage();
+        httpGetAd();
+    }
+
+    private void initAdapter() {
+        mAdapter = new BasePagerAdapter(getContext());
+        mPagerImage.setAdapter(mAdapter);
+        mPagerImage.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                mTvIndicator.setText((position + 1) + " / " + mAdapter.getCount());
+            }
+        });
+
+        mAdAdapter = new BasePagerAdapter(getContext());
+        mPagerAd.setAdapter(mAdAdapter);
+        mPagerAd.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                mTvAdIndicator.setText((position + 1) + " / " + mAdAdapter.getCount());
+            }
+        });
+    }
+
+    /**
+     * http Get
+     * Get Example Image
+     */
+    private void httpGetExampleImage() {
+        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+        String url = "";
+        if (mType == TYPE_ABILITY)
+            url = Comm_Param.URL_API_EXAMPLE_ABILITY_INDEX.replace(Comm_Param.EX_INDEX, String.valueOf(1));
+        else if (mType == TYPE_OPPORTUNITY)
+            url = Comm_Param.URL_API_EXAMPLE_OPPORTUNITY_INDEX.replace(Comm_Param.EX_INDEX, String.valueOf(1));
+
+        HashMap header = Utils.getHttpHeader(prefs.getToken());
+
+        DAHttpClient.getInstance(getContext()).Get(url, header, null, new IOServerCallback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
+                if (TextUtils.equals(code, SUCCESS)) {
+                    JSONObject json = new JSONObject(body);
+                    JSONArray list = json.getJSONArray("ex_url");
+                    mTvIndicator.setText(1 + " / " + list.length());
+                    for (int i = 0; i < list.length(); i++) {
+                        JSONObject urls = list.getJSONObject(i);
+                        String imageUrl = urls.getString("url");
+                        mAdapter.add(imageUrl);
+                    }
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+    }
+
+    /**
+     * http Get
+     * Get Ad Image
+     */
+    private void httpGetAd() {
+        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+        String url = Comm_Param.URL_API_AD;
+        HashMap header = Utils.getHttpHeader(prefs.getToken());
+        DAHttpClient.getInstance(getContext()).Get(url, header, null, new IOServerCallback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
+                if (TextUtils.equals(code, SUCCESS)) {
+                    JSONObject json = new JSONObject(body);
+                    JSONArray list = json.getJSONArray("adlist");
+                    mTvAdIndicator.setText(1 + " / " + list.length());
+                    for (int i = 0; i < list.length(); i++) {
+                        JSONObject urls = list.getJSONObject(i);
+                        String imageUrl = urls.getString("url");
+                        mAdAdapter.add(imageUrl);
+                    }
+                    mAdAdapter.notifyDataSetChanged();
+                }
+            }
+        });
     }
 
     @Override
@@ -166,10 +273,10 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
         });
     }
 
-    private void initRightBtn(){
-        if(mEtAbilityOpportunity.getText().length() > 0){
+    private void initRightBtn() {
+        if (mEtAbilityOpportunity.getText().length() > 0) {
             mBtbBar.getmTvTextBtn().setSelected(true);
-        }else{
+        } else {
             mBtbBar.getmTvTextBtn().setSelected(false);
         }
     }

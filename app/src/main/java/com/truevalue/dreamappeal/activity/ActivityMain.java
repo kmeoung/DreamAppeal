@@ -84,8 +84,7 @@ public class ActivityMain extends BaseActivity implements IOBaseTitleBarListener
     }
 
     public BeanUser getUser(){
-        if(mBeanUser == null) return null;
-        return getUser();
+        return mBeanUser;
     }
 
     public int getmProfileOrder() {

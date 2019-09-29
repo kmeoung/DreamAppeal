@@ -1,31 +1,13 @@
 package com.truevalue.dreamappeal.bean;
 
-import java.util.List;
+public class BeanUser {
 
-public abstract class BeanUser {
 
-    private String birth;
-    private List<AffiliationEntity> affiliation;
     private String email;
     private String location;
+    private String birth;
     private int gender;
     private String name;
-
-    public String getBirth() {
-        return birth;
-    }
-
-    public void setBirth(String birth) {
-        this.birth = birth;
-    }
-
-    public List<AffiliationEntity> getAffiliation() {
-        return affiliation;
-    }
-
-    public void setAffiliation(List<AffiliationEntity> affiliation) {
-        this.affiliation = affiliation;
-    }
 
     public String getEmail() {
         return email;
@@ -43,6 +25,14 @@ public abstract class BeanUser {
         this.location = location;
     }
 
+    public String getBirth() {
+        return birth;
+    }
+
+    public void setBirth(String birth) {
+        this.birth = birth;
+    }
+
     public int getGender() {
         return gender;
     }
@@ -57,17 +47,5 @@ public abstract class BeanUser {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public static class AffiliationEntity {
-        private String content;
-
-        public String getContent() {
-            return content;
-        }
-
-        public void setContent(String content) {
-            this.content = content;
-        }
     }
 }

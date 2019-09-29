@@ -227,7 +227,8 @@
                     android:fontFamily="@font/nanum_square_round_r"
                     android:text="휴대폰"
                     android:textColor="@color/gray"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/tv_phone"
@@ -237,7 +238,8 @@
                     android:fontFamily="@font/nanum_square_round_r"
                     android:text="010-1111-1111"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:visibility="gone"/>
 
             </LinearLayout>
 
