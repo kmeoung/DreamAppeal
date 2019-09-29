@@ -95,7 +95,7 @@ public class DialogProfile extends Dialog {
     private void initData(){
         if(mBean != null) {
             mTvAddress.setText(mBean.getLocation());
-            String gender = (mBean.getGender() == 1) ? "여" : "남";
+            String gender = (mBean.getGender() == 1) ? "남" : "여";
             mTvGender.setText(gender);
             mTvEmail.setText(mBean.getEmail());
             mTvName.setText(mBean.getName());
