@@ -107,22 +107,33 @@
                     android:visibility="gone"/>
 
 
-                <!--<ImageView-->
-                    <!--android:id="@+id/iv_comment"-->
-                    <!--android:layout_width="40dp"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:layout_marginRight="5dp"-->
-                    <!--android:scaleX="0.7"-->
-                    <!--android:scaleY="0.7"-->
-                    <!--android:src="@drawable/conversation" />-->
-
-                <ImageView
-                    android:id="@+id/iv_comment"
+                <RelativeLayout
+                    android:id="@+id/rl_comment"
                     android:layout_width="40dp"
                     android:layout_height="match_parent"
-                    android:scaleX="0.7"
-                    android:scaleY="0.7"
-                    android:src="@drawable/conversation" />
+                    android:layout_marginRight="5dp">
+
+                    <ImageView
+                        android:id="@+id/iv_comment"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:scaleX="0.7"
+                        android:scaleY="0.7"
+                        android:src="@drawable/ic_comment_bold" />
+
+                    <TextView
+                        android:id="@+id/tv_comment"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/bmjua"
+                        android:gravity="center"
+                        android:paddingBottom="3dp"
+                        android:text="0"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
+
+
+                </RelativeLayout>
 
             </LinearLayout>
 

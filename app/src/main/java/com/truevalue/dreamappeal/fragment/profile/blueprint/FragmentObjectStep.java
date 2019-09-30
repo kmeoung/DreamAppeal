@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,9 +30,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
+import com.truevalue.dreamappeal.activity.ActivityCommentDetail;
 import com.truevalue.dreamappeal.activity.ActivityMain;
 import com.truevalue.dreamappeal.activity.profile.ActivityActionPost;
-import com.truevalue.dreamappeal.activity.ActivityCommentDetail;
 import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseTitleBar;
@@ -39,7 +40,6 @@ import com.truevalue.dreamappeal.base.BaseViewHolder;
 import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.base.IORecyclerViewListener;
 import com.truevalue.dreamappeal.bean.BeanActionPost;
-import com.truevalue.dreamappeal.bean.BeanBlueprintObject;
 import com.truevalue.dreamappeal.bean.BeanObjectStepHeader;
 import com.truevalue.dreamappeal.bean.BeanObjectStepSubHeader;
 import com.truevalue.dreamappeal.fragment.FragmentMain;
@@ -79,16 +79,18 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
     BaseTitleBar mBtbBar;
     @BindView(R.id.rv_achivement_ing)
     RecyclerView mRvAchivementIng;
-    @BindView(R.id.iv_comment)
-    ImageView mIvComment;
-    //    @BindView(R.id.tv_comment_size)
-//    TextView mTvCommentSize;
     @BindView(R.id.iv_profile)
     ImageView mIvProfile;
     @BindView(R.id.et_comment)
     EditText mEtComment;
     @BindView(R.id.btn_commit_comment)
     ImageButton mBtnCommitComment;
+    @BindView(R.id.iv_comment)
+    ImageView mIvComment;
+    @BindView(R.id.tv_comment)
+    TextView mTvComment;
+    @BindView(R.id.rl_comment)
+    RelativeLayout mRlComment;
 
 
     private BaseRecyclerViewAdapter mAdapter;
@@ -131,10 +133,10 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (mEtComment.getText().length() > 0) {
                     mBtnCommitComment.setVisibility(View.VISIBLE);
-                    mIvComment.setVisibility(View.GONE);
+                    mRlComment.setVisibility(View.GONE);
                 } else {
                     mBtnCommitComment.setVisibility(View.GONE);
-                    mIvComment.setVisibility(View.VISIBLE);
+                    mRlComment.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -203,7 +205,8 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                if (!TextUtils.equals(code,SUCCESS) || Comm_Param.IS_TEST) Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                if (!TextUtils.equals(code, SUCCESS) || Comm_Param.IS_TEST)
+                    Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                 if (TextUtils.equals(code, SUCCESS)) {
                     mAdapter.clear();
@@ -214,7 +217,8 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
                         Glide.with(getContext()).load(R.drawable.drawer_user).apply(new RequestOptions().circleCrop()).into(mIvProfile);
                     else
                         Glide.with(getContext()).load(image).placeholder(R.drawable.drawer_user).apply(new RequestOptions().circleCrop()).into(mIvProfile);
-//                    mTvCommentSize.setText(json.getInt("comment_count") + "개");
+                    int commentCount = json.getInt("comment_count");
+                    mTvComment.setText(commentCount + "");
                     // todo : 임시 이미지
                     JSONObject object = json.getJSONObject("object");
                     int total_action_post_count = json.getInt("total_action_post_count");
