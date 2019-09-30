@@ -105,7 +105,6 @@ public class DAHttpClient {
                 .put(requestBody)
                 .build();
 
-
         Call call = mClient.newCall(request);
         call.enqueue(callback);
     }

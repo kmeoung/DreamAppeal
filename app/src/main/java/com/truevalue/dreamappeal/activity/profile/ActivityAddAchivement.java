@@ -319,10 +319,13 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
             for (int i = 0; i < mAdapter.size(); i++) {
                 File file = (File) mAdapter.get(i);
                 JSONObject set = new JSONObject();
-                String[] fileInfo = file.getName().split("\\.");
-                set.put("key", fileInfo[0]);
-                set.put("type", fileInfo[1]);
-                jArray.put(set);
+
+                if(file != null) {
+                    String[] fileInfo = file.getName().split("\\.");
+                    set.put("key", fileInfo[0]);
+                    set.put("type", fileInfo[1]);
+                    jArray.put(set);
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -341,7 +344,7 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                if (!TextUtils.equals(code,SUCCESS) || Comm_Param.IS_TEST) Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                 // 성공일 시
                 if (TextUtils.equals(code, SUCCESS)) {

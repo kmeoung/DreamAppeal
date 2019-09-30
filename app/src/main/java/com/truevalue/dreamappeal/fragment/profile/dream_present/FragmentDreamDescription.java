@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -99,6 +100,19 @@ public class FragmentDreamDescription extends BaseFragment implements IOBaseTitl
         httpGetExampleImage();
         httpGetAd();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+    }
+
 
     private void initAdapter() {
         mAdapter = new BasePagerAdapter(getContext());
@@ -223,10 +237,13 @@ public class FragmentDreamDescription extends BaseFragment implements IOBaseTitl
     }
 
     private void initRightText() {
+        // 한개라도 있으면 false 로 설정 모두 없으면 true
+        boolean isDetail =  (TextUtils.isEmpty(mEtDreamDescriptionDetail1.getText().toString())
+                && TextUtils.isEmpty(mEtDreamDescriptionDetail2.getText().toString())
+                && TextUtils.isEmpty(mEtDreamDescriptionDetail3.getText().toString()));
+
         if (TextUtils.isEmpty(mEtDreamDescription.getText().toString())
-                || TextUtils.isEmpty(mEtDreamDescriptionDetail1.getText().toString())
-                || TextUtils.isEmpty(mEtDreamDescriptionDetail2.getText().toString())
-                || TextUtils.isEmpty(mEtDreamDescriptionDetail3.getText().toString())) {
+                || !isDetail) {
             mBtbBar.getmTvTextBtn().setSelected(false);
         } else {
             mBtbBar.getmTvTextBtn().setSelected(true);
@@ -266,11 +283,13 @@ public class FragmentDreamDescription extends BaseFragment implements IOBaseTitl
 
         HashMap header = Utils.getHttpHeader(token);
         HashMap<String, String> body = new HashMap<>();
+        // 모두 비어있을 경우에만 true
+        boolean isDetail =  (TextUtils.isEmpty(mEtDreamDescriptionDetail1.getText().toString())
+                && TextUtils.isEmpty(mEtDreamDescriptionDetail2.getText().toString())
+                && TextUtils.isEmpty(mEtDreamDescriptionDetail3.getText().toString()));
 
         if (TextUtils.isEmpty(mEtDreamDescription.getText().toString())
-                || TextUtils.isEmpty(mEtDreamDescriptionDetail1.getText().toString())
-                || TextUtils.isEmpty(mEtDreamDescriptionDetail2.getText().toString())
-                || TextUtils.isEmpty(mEtDreamDescriptionDetail3.getText().toString())) {
+                || isDetail) {
             Toast.makeText(getContext().getApplicationContext(), "모든 항목을 입력해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -278,9 +297,9 @@ public class FragmentDreamDescription extends BaseFragment implements IOBaseTitl
         body.put("description", mEtDreamDescription.getText().toString());
         JSONArray jsonArray = new JSONArray();
         try {
-            jsonArray.put(new JSONObject().put("content", mEtDreamDescriptionDetail1.getText().toString()));
-            jsonArray.put(new JSONObject().put("content", mEtDreamDescriptionDetail2.getText().toString()));
-            jsonArray.put(new JSONObject().put("content", mEtDreamDescriptionDetail3.getText().toString()));
+            if(TextUtils.isEmpty(mEtDreamDescriptionDetail1.getText().toString())) jsonArray.put(new JSONObject().put("content", mEtDreamDescriptionDetail1.getText().toString()));
+            if(TextUtils.isEmpty(mEtDreamDescriptionDetail2.getText().toString())) jsonArray.put(new JSONObject().put("content", mEtDreamDescriptionDetail2.getText().toString()));
+            if(TextUtils.isEmpty(mEtDreamDescriptionDetail3.getText().toString())) jsonArray.put(new JSONObject().put("content", mEtDreamDescriptionDetail3.getText().toString()));
         } catch (JSONException e) {
             e.printStackTrace();
         }

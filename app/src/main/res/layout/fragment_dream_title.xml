@@ -83,17 +83,18 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="55dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nanum_pen"
                         android:text="수식어"
+                        android:minWidth="70dp"
                         android:textColor="@color/colorAccent"
                         android:textSize="25sp" />
 
                     <EditText
                         android:id="@+id/et_value_style"
                         style="@style/edit_text_under_bar_color"
-                        android:layout_width="180dp"
+                        android:layout_width="250dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="18dp"
                         android:fontFamily="@font/nanum_square_round_b"
@@ -102,7 +103,7 @@
                         android:inputType="text"
                         android:lines="1"
                         android:maxLines="1"
-                        android:paddingLeft="10dp"
+                        android:paddingLeft="5dp"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:theme="@style/edit_text_under_bar_color" />
@@ -120,17 +121,18 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="55dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nanum_pen"
                         android:text="직업명"
+                        android:minWidth="70dp"
                         android:textColor="@color/colorAccent"
                         android:textSize="25sp" />
 
                     <EditText
                         android:id="@+id/et_job"
                         style="@style/edit_text_under_bar_color"
-                        android:layout_width="180dp"
+                        android:layout_width="250dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="18dp"
                         android:fontFamily="@font/nanum_square_round_b"
@@ -139,7 +141,7 @@
                         android:inputType="text"
                         android:lines="1"
                         android:maxLines="1"
-                        android:paddingLeft="10dp"
+                        android:paddingLeft="5dp"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:theme="@style/edit_text_under_bar_color" />

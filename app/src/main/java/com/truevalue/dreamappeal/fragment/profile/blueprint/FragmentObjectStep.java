@@ -203,7 +203,7 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                if (!TextUtils.equals(code,SUCCESS) || Comm_Param.IS_TEST) Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                 if (TextUtils.equals(code, SUCCESS)) {
                     mAdapter.clear();

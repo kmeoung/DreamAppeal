@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -91,7 +92,6 @@ public class FragmentDreamTitle extends BaseFragment implements IOBaseTitleBarLi
         // 상단바 연동
         mBtbBar.setIOBaseTitleBarListener(this);
         mBtbBar.getmIvClose().setVisibility(View.VISIBLE);
-
         initAdapter();
         // 데이터 초기화
         initData();
@@ -100,6 +100,17 @@ public class FragmentDreamTitle extends BaseFragment implements IOBaseTitleBarLi
         httpGetAd();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+    }
 
     private void initAdapter() {
         mAdapter = new BasePagerAdapter(getContext());

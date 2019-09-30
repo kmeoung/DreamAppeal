@@ -82,33 +82,6 @@ public class Utils {
      * @return
      */
     public static String getRealPathFromURI(Context context, Uri contentUri) {
-//        Cursor cursor = null;
-//        try {
-////            String[] proj = {MediaStore.Video.Media.DATA};
-//            cursor = context.getContentResolver().query(contentUri, null, null, null, null);
-//            cursor.moveToFirst();
-//            String document_id = cursor.getString(0);
-//
-//            cursor = context.getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, null, null, null, null);
-//
-//            if (cursor.moveToFirst()) {
-//                do {
-//                    String id = cursor.getString(0);
-//
-//                    if (document_id.contains(id)) {
-//                        break;
-//                    }
-//                } while (cursor.moveToNext());
-//
-//            }
-//
-//            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
-//            return cursor.getString(column_index);
-//        } finally {
-//            if (cursor != null) {
-//                cursor.close();
-//            }
-//        }
         String result = null;
 
         Cursor cursor = context.getContentResolver().query(contentUri, null, null, null, null);

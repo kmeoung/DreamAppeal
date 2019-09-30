@@ -170,15 +170,6 @@ public class FragmentAddActionPost extends BaseFragment implements IORecyclerVie
         }
     }
 
-    /**
-     * Bind Temp Data
-     */
-    private void bindTempData() {
-        for (int i = 0; i < 10; i++) {
-            mAdapter.add("");
-        }
-    }
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return BaseViewHolder.newInstance(R.layout.listitem_achivement_list, parent, false);

@@ -38,7 +38,6 @@ public class ActivityAddActionPost extends BaseActivity {
     private int mPostIndex = -1;
     private BeanActionPostDetail mBean = null;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

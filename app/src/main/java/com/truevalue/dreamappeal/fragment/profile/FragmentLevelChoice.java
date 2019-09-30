@@ -241,7 +241,7 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
 
                     @Override
                     public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                        Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                        if (!TextUtils.equals(code,SUCCESS) || Comm_Param.IS_TEST) Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                         if (TextUtils.equals(code, SUCCESS)) {
                             mAdapterCategory.clear();
@@ -286,7 +286,7 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
 
                     @Override
                     public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                        Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                        if (!TextUtils.equals(code,SUCCESS) || Comm_Param.IS_TEST) Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                         if (TextUtils.equals(code, SUCCESS)) {
 
@@ -338,7 +338,7 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
 
                     @Override
                     public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                        Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                        if (!TextUtils.equals(code,SUCCESS) || Comm_Param.IS_TEST) Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                         if (TextUtils.equals(code, SUCCESS)) {
                             if (mCategorySelected != -1) {
@@ -430,16 +430,19 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
         try {
             for (int i = 0; i < mArrayImages.size(); i++) {
                 File file = (File) mArrayImages.get(i);
-                JSONObject set = new JSONObject();
-                String[] fileInfo = file.getName().split("\\.");
-                set.put("key", fileInfo[0]);
-                set.put("type", fileInfo[1]);
-                jArray.put(set);
+                if(file != null) {
+                    JSONObject set = new JSONObject();
+                    String[] fileInfo = file.getName().split("\\.");
+                    set.put("key", fileInfo[0]);
+                    set.put("type", fileInfo[1]);
+                    jArray.put(set);
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
+        if(jArray.length() > 0)
         body.put("set", jArray.toString());
 
         client.Post(Comm_Param.URL_API_PROFILES_INDEX_INDEX_ACTIONPOSTS_INDEX_IMAGES
@@ -453,7 +456,7 @@ public class FragmentLevelChoice extends BaseFragment implements IOBaseTitleBarL
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                if (!TextUtils.equals(code,SUCCESS) || Comm_Param.IS_TEST) Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                 // 성공일 시
                 if (TextUtils.equals(code, SUCCESS)) {

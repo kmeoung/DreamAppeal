@@ -21,7 +21,7 @@
         app:is_right_text_visibility="gone"
         app:is_search_visibility="invisible"
         app:right_text="등록"
-        app:title="응원 및 조언" />
+        app:title="응원 과 조언" />
     <!--툴바-->
 
     <androidx.recyclerview.widget.RecyclerView

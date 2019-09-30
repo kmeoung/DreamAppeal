@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,8 +27,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
-import com.truevalue.dreamappeal.activity.ActivityMain;
 import com.truevalue.dreamappeal.activity.ActivityCommentDetail;
+import com.truevalue.dreamappeal.activity.ActivityMain;
 import com.truevalue.dreamappeal.base.BaseFragment;
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter;
 import com.truevalue.dreamappeal.base.BaseViewHolder;
@@ -67,18 +68,20 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
     private final int LISTITEM_TYPE_OBJECT = 3;
     private final int LISTITEM_DEFAULT_ABILITY_OPPORTUNITY = 4;
     private final int LISTITEM_DEFAULT_OBJECT = 5;
+    @BindView(R.id.iv_profile)
+    ImageView mIvProfile;
+    @BindView(R.id.iv_comment)
+    ImageView mIvComment;
+    @BindView(R.id.tv_comment)
+    TextView mTvComment;
+    @BindView(R.id.rl_comment)
+    RelativeLayout mRlComment;
 
     private String TYPE_DEFAULT_ABILITY_OPPORTUNITY = "TYPE_DEFAULT_ABILITY_OPPORTUNITY";
     private String TYPE_DEFAULT_OBJECT = "TYPE_DEFAULT_OBJECT";
 
     @BindView(R.id.rv_blueprint)
     RecyclerView mRvBlueprint;
-    @BindView(R.id.iv_comment)
-    ImageView mIvComment;
-    //    @BindView(R.id.tv_comment_size)
-//    TextView mTvCommentSize;
-    @BindView(R.id.iv_profile)
-    ImageView mIvProfile;
     @BindView(R.id.et_comment)
     EditText mEtComment;
     @BindView(R.id.btn_commit_comment)
@@ -117,10 +120,10 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (mEtComment.getText().length() > 0) {
                     mBtnCommitComment.setVisibility(View.VISIBLE);
-                    mIvComment.setVisibility(View.GONE);
+                    mRlComment.setVisibility(View.GONE);
                 } else {
                     mBtnCommitComment.setVisibility(View.GONE);
-                    mIvComment.setVisibility(View.VISIBLE);
+                    mRlComment.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -165,7 +168,7 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                if (!TextUtils.equals(code,SUCCESS) || Comm_Param.IS_TEST) Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                 if (TextUtils.equals(code, SUCCESS)) {
                     mAdapter.clear();
                     Gson gson = new Gson();
@@ -174,7 +177,12 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
                     ArrayList<BeanBlueprintAbilityOpportunity> opportunityList = new ArrayList<>();
                     try {
                         int commentCount = json.getInt("comment_count");
-//                        mTvCommentSize.setText(commentCount + "개");
+                        if(commentCount < 1000){
+                            mTvComment.setText(commentCount + "");
+                        }else{
+                            mTvComment.setText((commentCount / 1000) + "K");
+                        }
+
                         String image = json.getString("user_image");
                         if (TextUtils.isEmpty(image))
                             Glide.with(getContext()).load(R.drawable.drawer_user).apply(new RequestOptions().circleCrop()).into(mIvProfile);
@@ -277,7 +285,8 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        if (objects == null || objects.length() < 1) mAdapter.add(TYPE_DEFAULT_OBJECT);
+                        if (objects == null || objects.length() < 1)
+                            mAdapter.add(TYPE_DEFAULT_OBJECT);
                     }
                 }
             }
@@ -389,6 +398,13 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
             SpannableStringBuilder spannableMerit = Utils.replaceTextColor(getContext(), merit, "능력");
             SpannableStringBuilder spannableMotive = Utils.replaceTextColor(getContext(), motive, "기회");
             tvView.setText(TextUtils.concat(spannableMerit, " ", spannableMotive));
+
+            h.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((ActivityMain) getActivity()).replaceFragmentRight(new FragmentAbilityOpportunity(), true);
+                }
+            });
         } else if (getItemViewType(i) == LISTITEM_DEFAULT_OBJECT) {
             TextView tvView = h.getItemView(R.id.tv_default_text);
             String str = "능력/기회를 위한 실천목표 등록하기";

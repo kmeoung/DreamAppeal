@@ -68,7 +68,7 @@ import static android.app.Activity.RESULT_OK;
 public class FragmentPerformance extends BaseFragment implements IORecyclerViewListener {
 
     private static final int TYPE_LIST_OTHER = 0;
-    private static final int TOP_BANNER_DELAY = 1000 * 4;
+    private static final int TOP_BANNER_DELAY = 1000 * 7;
 
     @BindView(R.id.rv_dream_description)
     RecyclerView mRvRecycle;
@@ -149,7 +149,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                if (!TextUtils.equals(code,SUCCESS) || Comm_Param.IS_TEST) Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                 JSONObject object = new JSONObject(body);
                 mProfileImage = object.getString("profile_image");
@@ -493,7 +493,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                if (!TextUtils.equals(code,SUCCESS) || Comm_Param.IS_TEST) Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                 if (TextUtils.equals(code, SUCCESS)) {
                     JSONObject json = new JSONObject(body);
@@ -594,7 +594,8 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
             View view = mInflater.inflate(R.layout.layout_achivement, container, false);
             TextView tvTitle = view.findViewById(R.id.tv_title);
             tvTitle.setText("대표 성과 " + (position + 1));
-            if (mBestPostList.size() > 0 && mBestPostList.get(position) != null) {
+            if (mBestPostList.size() > position
+                    && mBestPostList.get(position) != null) {
                 BeanBestPost bean = mBestPostList.get(position);
                 TextView tvBestPostAchivement = view.findViewById(R.id.tv_best_achivement);
                 tvBestPostAchivement.setText(bean.getTitle());

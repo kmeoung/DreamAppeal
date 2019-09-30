@@ -1,12 +1,9 @@
 package com.truevalue.dreamappeal.fragment.profile.dream_present;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -115,6 +112,8 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
     LinearLayout mLlShare;
     @BindView(R.id.iv_comment)
     ImageView mIvComment;
+    @BindView(R.id.ll_comment_detail)
+    LinearLayout mLlCommentDetail;
 
     private boolean isMyDreamMore = false;
     private boolean isMyDreamReason = false;
@@ -196,7 +195,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                if (!TextUtils.equals(code,SUCCESS) || Comm_Param.IS_TEST) Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                 // 성공일 시
                 if (TextUtils.equals(code, SUCCESS)) {
@@ -236,7 +235,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                if (!TextUtils.equals(code,SUCCESS) || Comm_Param.IS_TEST) Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                 if (TextUtils.equals(code, SUCCESS)) {
 
@@ -267,9 +266,10 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
                     mTvDreamDescription.setText(bean.getDescription());
                     mUserIndex = bean.getUser_idx();
                     // 내 이미지가 비어있을 경우
-                    if (TextUtils.isEmpty(bean.getImage()))
+                    if (TextUtils.isEmpty(bean.getImage())) {
                         Glide.with(getContext()).load(R.drawable.drawer_user).apply(new RequestOptions().circleCrop()).into(mIvDreamProfile);
-                    else {
+                        ((ActivityMain) getActivity()).setProfile_image("");
+                    } else {
                         ((ActivityMain) getActivity()).setProfile_image(bean.getImage());
                         Glide.with(getContext()).
                                 load(bean.getImage()).
@@ -344,37 +344,6 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
     }
 
     /**
-     * http get
-     * 응원하기 조회
-     * todo : 필요할 시에만 사용
-     */
-    private void httpGetLike() {
-        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
-        String url = Comm_Param.URL_API_PROFILES_INDEX_LIKE_MYPROFILEINDEX;
-        url = url.replace(Comm_Param.MY_PROFILES_INDEX, String.valueOf(prefs.getMyProfileIndex()));
-        url = url.replace(Comm_Param.PROFILES_INDEX, String.valueOf(prefs.getProfileIndex()));
-        HashMap header = Utils.getHttpHeader(prefs.getToken());
-        DAHttpClient.getInstance(getContext()).Get(url, header, null, new IOServerCallback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-
-                if (TextUtils.equals(code, SUCCESS)) {
-                    JSONObject json = new JSONObject(body);
-                    boolean isLike = json.getBoolean("status");
-
-                    mIvCheering.setSelected(isLike);
-                }
-            }
-        });
-    }
-
-    /**
      * http patch
      * 응원하기 / 취소
      */
@@ -392,7 +361,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                if (!TextUtils.equals(code,SUCCESS) || Comm_Param.IS_TEST) Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                 if (TextUtils.equals(code, SUCCESS)) {
                     JSONObject json = new JSONObject(body);
@@ -415,7 +384,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
             R.id.btn_merit_and_motive_more, R.id.ll_comment,
             R.id.ll_cheering, R.id.ll_dream_title, R.id.ll_dream_description, R.id.tv_init_dream_title,
             R.id.tv_init_dream_description, R.id.tv_init_merit_and_motive,
-            R.id.btn_follow, R.id.ll_share, R.id.iv_comment})
+            R.id.btn_follow, R.id.ll_share, R.id.iv_comment, R.id.ll_comment_detail})
     public void onViewClicked(View view) {
         Intent intent = null;
         Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
@@ -457,6 +426,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
                 break;
             case R.id.ll_comment: // 댓글
             case R.id.iv_comment:
+            case R.id.ll_comment_detail:
                 intent = new Intent(getContext(), ActivityCommentDetail.class);
                 intent.putExtra(ActivityCommentDetail.EXTRA_COMMENT_TYPE, ActivityCommentDetail.TYPE_DREAM_PRESENT);
                 startActivityForResult(intent, FragmentMain.REQUEST_DREAM_PRESENT_COMMENT);

@@ -235,7 +235,7 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
             tvCommentTime.setText(Utils.convertFromDate(bean.getRegister_date()));
 
             tvValueStyle.setText(bean.getValue_style());
-            tvJob.setText(bean.getJob());
+            tvJob.setText(bean.getJob() + " " + bean.getName());
             tvComment.setText(bean.getContent());
             ivCheering.setSelected(bean.getStatus());
             tvCheering.setText(bean.getLike_count() + "개");
@@ -427,7 +427,7 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
 
                     @Override
                     public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                        if (!TextUtils.equals(code,SUCCESS) || Comm_Param.IS_TEST) Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                         if (TextUtils.equals(code, SUCCESS)) {
                             mAdapter.clear();
@@ -608,7 +608,7 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
 
                     @Override
                     public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                        if (!TextUtils.equals(code,SUCCESS) || Comm_Param.IS_TEST) Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                         if (TextUtils.equals(code, SUCCESS)) {
                             httpGetComment(false);

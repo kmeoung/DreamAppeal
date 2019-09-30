@@ -183,7 +183,7 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                if (!TextUtils.equals(code,SUCCESS) || Comm_Param.IS_TEST) Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                 // 성공일 시
                 if (TextUtils.equals(code, SUCCESS)) {
@@ -310,28 +310,6 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
         }
     }
 
-    /**
-     * 어댑터 초기화
-     */
-    private void initAdapter() {
-        mTlTab.setupWithViewPager(mVpViewpager);
-        mVpViewpager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager()));
-
-        for (int i = 0; i < mTabList.size(); i++) {
-            mTlTab.getTabAt(i).setText(mTabList.get(i));
-        }
-        mVpViewpager.setOffscreenPageLimit(2);
-    }
-
-    /**
-     * 탭 초기화
-     */
-    private void initTab() {
-        mTabList = new ArrayList<>();
-        mTabList.add("갤러리");
-        mTabList.add("카메라");
-    }
-
     @OnClick({R.id.iv_back, R.id.tv_text_btn, R.id.tv_gallery, R.id.tv_camera})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -347,42 +325,6 @@ public class ActivityGalleryCamera extends BaseActivity implements LifecycleOwne
                 break;
         }
     }
-
-    /**
-     * ViewPager Adapter
-     * TODO : 사진 찍고 난 후 설정이 필요 , 사진찍고 난 후 갤러리 refresh도 해줘야 함
-     */
-    public class ViewPagerAdapter extends FragmentPagerAdapter {
-
-        public ViewPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-
-            switch (position) {
-                case 0: // 내 꿈 소개
-                    return new FragmentGallery();
-                case 1: // 실현 성과
-                    return new FragmentCamera();
-            }
-
-            return null;
-        }
-
-        @Override
-        public int getCount() {
-            return mTabList.size(); // 페이지 2개 고정
-        }
-
-        @Nullable
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mTabList.get(position);
-        }
-    }
-
 
     @Override
     protected void onDestroy() {
