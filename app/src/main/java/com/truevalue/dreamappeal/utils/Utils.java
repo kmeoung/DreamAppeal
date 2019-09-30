@@ -319,33 +319,46 @@ public class Utils {
         String strDate = "";
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy. MM. dd");
-        Calendar nowCal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance();
 
-        int nowHour = nowCal.get(Calendar.HOUR);
-        int nowMinute = nowCal.get(Calendar.MINUTE);
-        int nowSeconds = nowCal.get(Calendar.SECOND);
+        int nowHour = cal.get(Calendar.HOUR);
+        int nowMinute = cal.get(Calendar.MINUTE);
+        int nowSeconds = cal.get(Calendar.SECOND);
         try {
-            Date nowDate = sdf2.parse(sdf.format(nowCal.getTime()));
+            cal.set(Calendar.HOUR_OF_DAY,00);
+            cal.set(Calendar.MINUTE,00);
+            cal.set(Calendar.SECOND,00);
+            cal.set(Calendar.MILLISECOND,00);
 
-            nowCal.setTime(sdf.parse(strPostDate));
+            Date nowDate = cal.getTime();
 
-            Date postDate = sdf2.parse(sdf.format(nowCal.getTime()));
+            Date parseDate = sdf.parse(strPostDate);
+            cal.setTime(parseDate);
+
+            int postHour = cal.get(Calendar.HOUR);
+            int postMinute = cal.get(Calendar.MINUTE);
+            int postSeconds = cal.get(Calendar.SECOND);
+
+            cal.set(Calendar.HOUR_OF_DAY,00);
+            cal.set(Calendar.MINUTE,00);
+            cal.set(Calendar.SECOND,00);
+            cal.set(Calendar.MILLISECOND,00);
+
+            Date postDate = cal.getTime();
 
             if (nowDate.compareTo(postDate) > 0) {
-                strDate = sdf2.format(postDate);
+                SimpleDateFormat viewSdf = new SimpleDateFormat("yy. MM. dd");
+                strDate = viewSdf.format(postDate);
             } else {
-
-                int postHour = nowCal.get(Calendar.HOUR);
-                int postMinute = nowCal.get(Calendar.MINUTE);
-                int postSeconds = nowCal.get(Calendar.SECOND);
-
                 if (postHour < nowHour) {
                     strDate = String.format("%d시간전", nowHour - postHour);
                 } else {
                     if (postMinute < nowMinute) {
                         strDate = String.format("%d분전", nowMinute - postMinute);
                     } else {
-                        strDate = String.format("%d초전", nowSeconds - postSeconds);
+                        int second = nowSeconds - postSeconds;
+                        if(second < 0) second = 0;
+                        strDate = String.format("%d초전", second);
                     }
                 }
             }
