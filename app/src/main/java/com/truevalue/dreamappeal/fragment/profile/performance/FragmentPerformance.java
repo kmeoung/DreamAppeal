@@ -319,6 +319,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
         LinearLayout llComment = h.getItemView(R.id.ll_comment);
         TextView tvTime = h.getItemView(R.id.tv_time);
         ImageView ivComment = h.getItemView(R.id.iv_comment);
+        LinearLayout llCommentDetail = h.getItemView(R.id.ll_comment_detail);
 
         if(prefs.getProfileIndex() == prefs.getMyProfileIndex()){
             ibtnMore.setVisibility(View.VISIBLE);
@@ -426,12 +427,22 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
                 Intent intent = new Intent(getContext(), ActivityCommentDetail.class);
                 intent.putExtra(ActivityCommentDetail.EXTRA_COMMENT_TYPE, ActivityCommentDetail.TYPE_PERFORMANCE);
                 intent.putExtra(ActivityCommentDetail.EXTRA_POST_INDEX, bean.getIdx());
+                intent.putExtra(ActivityCommentDetail.EXTRA_OFF_KEYBOARD,"OFF");
                 startActivityForResult(intent, FragmentMain.REQUEST_PERFORMANCE_COMMENT);
             }
         };
 
-        llComment.setOnClickListener(listener);
+        llComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ActivityCommentDetail.class);
+                intent.putExtra(ActivityCommentDetail.EXTRA_COMMENT_TYPE, ActivityCommentDetail.TYPE_PERFORMANCE);
+                intent.putExtra(ActivityCommentDetail.EXTRA_POST_INDEX, bean.getIdx());
+                startActivityForResult(intent, FragmentMain.REQUEST_PERFORMANCE_COMMENT);
+            }
+        });
         ivComment.setOnClickListener(listener);
+        llCommentDetail.setOnClickListener(listener);
 
         llCheering.setOnClickListener(new View.OnClickListener() {
             @Override

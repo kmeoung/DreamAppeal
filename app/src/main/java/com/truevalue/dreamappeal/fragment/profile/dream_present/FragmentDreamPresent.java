@@ -425,10 +425,15 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
                 }
                 break;
             case R.id.ll_comment: // 댓글
+                intent = new Intent(getContext(), ActivityCommentDetail.class);
+                intent.putExtra(ActivityCommentDetail.EXTRA_COMMENT_TYPE, ActivityCommentDetail.TYPE_DREAM_PRESENT);
+                startActivityForResult(intent, FragmentMain.REQUEST_DREAM_PRESENT_COMMENT);
+                break;
             case R.id.iv_comment:
             case R.id.ll_comment_detail:
                 intent = new Intent(getContext(), ActivityCommentDetail.class);
                 intent.putExtra(ActivityCommentDetail.EXTRA_COMMENT_TYPE, ActivityCommentDetail.TYPE_DREAM_PRESENT);
+                intent.putExtra(ActivityCommentDetail.EXTRA_OFF_KEYBOARD,"OFF");
                 startActivityForResult(intent, FragmentMain.REQUEST_DREAM_PRESENT_COMMENT);
                 break;
             case R.id.ll_cheering: // 불꽃(좋아요)

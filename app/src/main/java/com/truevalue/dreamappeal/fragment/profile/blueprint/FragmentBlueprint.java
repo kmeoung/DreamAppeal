@@ -180,7 +180,13 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
                         if(commentCount < 1000){
                             mTvComment.setText(commentCount + "");
                         }else{
-                            mTvComment.setText((commentCount / 1000) + "K");
+                            int k = (commentCount / 1000);
+                            if(k < 1000) {
+                                mTvComment.setText(k + "K");
+                            }else{
+                                int m = (k / 1000);
+                                mTvComment.setText(m + "M");
+                            }
                         }
 
                         String image = json.getString("user_image");
@@ -299,6 +305,7 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
             case R.id.iv_comment:
                 Intent intent = new Intent(getContext(), ActivityCommentDetail.class);
                 intent.putExtra(ActivityCommentDetail.EXTRA_COMMENT_TYPE, ActivityCommentDetail.TYPE_BLUEPRINT);
+                intent.putExtra(ActivityCommentDetail.EXTRA_OFF_KEYBOARD,"OFF");
                 startActivityForResult(intent, FragmentMain.REQUEST_BLUEPRINT_COMMENT);
                 break;
             case R.id.btn_commit_comment:

@@ -65,6 +65,7 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
 
     public static final String EXTRA_COMMENT_TYPE = "EXTRA_COMMENT_TYPE";
     public static final String EXTRA_POST_INDEX = "EXTRA_POST_INDEX";
+    public static final String EXTRA_OFF_KEYBOARD = "EXTRA_OFF_KEYBOARD";
 
     public static final int TYPE_DREAM_PRESENT = 0;
     public static final int TYPE_PERFORMANCE = 1;
@@ -154,10 +155,12 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
     }
 
     private void initView() {
-        mEtInputComment.setFocusableInTouchMode(true);
-        mEtInputComment.requestFocus();
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(mEtInputComment, 0);
+        if(getIntent().getStringExtra(EXTRA_OFF_KEYBOARD) == null) {
+            mEtInputComment.setFocusableInTouchMode(true);
+            mEtInputComment.requestFocus();
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(mEtInputComment, 0);
+        }
 
         mEtInputComment.addTextChangedListener(new TextWatcher() {
             @Override

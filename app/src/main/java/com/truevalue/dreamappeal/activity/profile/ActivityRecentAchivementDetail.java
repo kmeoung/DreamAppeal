@@ -1,28 +1,20 @@
 package com.truevalue.dreamappeal.activity.profile;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.truevalue.dreamappeal.R;
 import com.truevalue.dreamappeal.activity.ActivityCommentDetail;
@@ -44,7 +36,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -85,6 +76,8 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
     TextView mTvIndicator;
     @BindView(R.id.ll_indicator)
     LinearLayout mLlIndicator;
+    @BindView(R.id.ll_comment_detail)
+    LinearLayout mLlCommentDetail;
 
     private BeanPostDetail mBean = null;
     private BasePagerAdapter mAdapter = null;
@@ -104,10 +97,10 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
         initData();
     }
 
-    private void initAdapter(){
+    private void initAdapter() {
         mAdapter = new BasePagerAdapter(ActivityRecentAchivementDetail.this);
         mPagerImage.setAdapter(mAdapter);
-        mPagerImage.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
+        mPagerImage.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
@@ -118,9 +111,9 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
 
     private void initView() {
         Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityRecentAchivementDetail.this);
-        if(prefs.getProfileIndex() == prefs.getMyProfileIndex()){
+        if (prefs.getProfileIndex() == prefs.getMyProfileIndex()) {
             mBtbBar.getmIvMore().setVisibility(View.VISIBLE);
-        }else{
+        } else {
             mBtbBar.getmIvMore().setVisibility(View.INVISIBLE);
         }
 
@@ -156,7 +149,8 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                if (!TextUtils.equals(code,SUCCESS) || Comm_Param.IS_TEST) Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                if (!TextUtils.equals(code, SUCCESS) || Comm_Param.IS_TEST)
+                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                 if (TextUtils.equals(code, SUCCESS)) {
                     Gson gson = new Gson();
                     JSONObject object = new JSONObject(body);
@@ -185,17 +179,25 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
         });
     }
 
-    @OnClick({R.id.iv_back, R.id.ll_comment, R.id.ll_cheering, R.id.iv_comment})
+    @OnClick({R.id.iv_back, R.id.ll_comment, R.id.ll_cheering, R.id.iv_comment,R.id.ll_comment_detail})
     public void onViewClicked(View view) {
+        Intent intent;
         switch (view.getId()) {
             case R.id.iv_back: // 뒤로가기
                 finish();
                 break;
             case R.id.ll_comment: // 댓글
-            case R.id.iv_comment:
-                Intent intent = new Intent(ActivityRecentAchivementDetail.this, ActivityCommentDetail.class);
+                intent = new Intent(ActivityRecentAchivementDetail.this, ActivityCommentDetail.class);
                 intent.putExtra(ActivityCommentDetail.EXTRA_COMMENT_TYPE, ActivityCommentDetail.TYPE_PERFORMANCE);
                 intent.putExtra(ActivityCommentDetail.EXTRA_POST_INDEX, mBean.getIdx());
+                startActivityForResult(intent, FragmentMain.REQUEST_BLUEPRINT_COMMENT);
+                break;
+            case R.id.iv_comment:
+            case R.id.ll_comment_detail:
+                intent = new Intent(ActivityRecentAchivementDetail.this, ActivityCommentDetail.class);
+                intent.putExtra(ActivityCommentDetail.EXTRA_COMMENT_TYPE, ActivityCommentDetail.TYPE_PERFORMANCE);
+                intent.putExtra(ActivityCommentDetail.EXTRA_POST_INDEX, mBean.getIdx());
+                intent.putExtra(ActivityCommentDetail.EXTRA_OFF_KEYBOARD,"OFF");
                 startActivityForResult(intent, FragmentMain.REQUEST_BLUEPRINT_COMMENT);
                 break;
             case R.id.ll_cheering: // 응원하기
@@ -351,7 +353,8 @@ public class ActivityRecentAchivementDetail extends BaseActivity implements IOBa
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                if (!TextUtils.equals(code,SUCCESS) || Comm_Param.IS_TEST) Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                if (!TextUtils.equals(code, SUCCESS) || Comm_Param.IS_TEST)
+                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                 if (TextUtils.equals(code, SUCCESS)) {
                     JSONObject json = new JSONObject(body);

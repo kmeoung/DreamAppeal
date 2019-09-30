@@ -200,14 +200,16 @@ public class FragmentDreamDescription extends BaseFragment implements IOBaseTitl
 
     private void initData() {
         if (mArrayDescription != null) {
-            if (!TextUtils.isEmpty(mArrayDescription.get(0)))
-                mEtDreamDescription.setText(mArrayDescription.get(0));
-            if (!TextUtils.isEmpty(mArrayDescription.get(1)))
-                mEtDreamDescriptionDetail1.setText(mArrayDescription.get(1));
-            if (!TextUtils.isEmpty(mArrayDescription.get(2)))
-                mEtDreamDescriptionDetail2.setText(mArrayDescription.get(2));
-            if (!TextUtils.isEmpty(mArrayDescription.get(3)))
-                mEtDreamDescriptionDetail3.setText(mArrayDescription.get(3));
+            for (int i = 0; i < mArrayDescription.size(); i++) {
+                if (i == 0 && !TextUtils.isEmpty(mArrayDescription.get(i)))
+                    mEtDreamDescription.setText(mArrayDescription.get(i));
+                else if (i == 1 && !TextUtils.isEmpty(mArrayDescription.get(i)))
+                    mEtDreamDescriptionDetail1.setText(mArrayDescription.get(i));
+                else if (i == 2 && !TextUtils.isEmpty(mArrayDescription.get(i)))
+                    mEtDreamDescriptionDetail2.setText(mArrayDescription.get(i));
+                else if (i == 3 && !TextUtils.isEmpty(mArrayDescription.get(i)))
+                    mEtDreamDescriptionDetail3.setText(mArrayDescription.get(i));
+            }
             initRightText();
         }
     }
@@ -238,12 +240,12 @@ public class FragmentDreamDescription extends BaseFragment implements IOBaseTitl
 
     private void initRightText() {
         // 한개라도 있으면 false 로 설정 모두 없으면 true
-        boolean isDetail =  (TextUtils.isEmpty(mEtDreamDescriptionDetail1.getText().toString())
-                && TextUtils.isEmpty(mEtDreamDescriptionDetail2.getText().toString())
+        boolean isDetail = ((TextUtils.isEmpty(mEtDreamDescriptionDetail1.getText().toString())
+                && TextUtils.isEmpty(mEtDreamDescriptionDetail2.getText().toString()))
                 && TextUtils.isEmpty(mEtDreamDescriptionDetail3.getText().toString()));
 
         if (TextUtils.isEmpty(mEtDreamDescription.getText().toString())
-                || !isDetail) {
+                || isDetail) {
             mBtbBar.getmTvTextBtn().setSelected(false);
         } else {
             mBtbBar.getmTvTextBtn().setSelected(true);
@@ -284,8 +286,8 @@ public class FragmentDreamDescription extends BaseFragment implements IOBaseTitl
         HashMap header = Utils.getHttpHeader(token);
         HashMap<String, String> body = new HashMap<>();
         // 모두 비어있을 경우에만 true
-        boolean isDetail =  (TextUtils.isEmpty(mEtDreamDescriptionDetail1.getText().toString())
-                && TextUtils.isEmpty(mEtDreamDescriptionDetail2.getText().toString())
+        boolean isDetail = ((TextUtils.isEmpty(mEtDreamDescriptionDetail1.getText().toString())
+                && TextUtils.isEmpty(mEtDreamDescriptionDetail2.getText().toString()))
                 && TextUtils.isEmpty(mEtDreamDescriptionDetail3.getText().toString()));
 
         if (TextUtils.isEmpty(mEtDreamDescription.getText().toString())
@@ -297,9 +299,12 @@ public class FragmentDreamDescription extends BaseFragment implements IOBaseTitl
         body.put("description", mEtDreamDescription.getText().toString());
         JSONArray jsonArray = new JSONArray();
         try {
-            if(TextUtils.isEmpty(mEtDreamDescriptionDetail1.getText().toString())) jsonArray.put(new JSONObject().put("content", mEtDreamDescriptionDetail1.getText().toString()));
-            if(TextUtils.isEmpty(mEtDreamDescriptionDetail2.getText().toString())) jsonArray.put(new JSONObject().put("content", mEtDreamDescriptionDetail2.getText().toString()));
-            if(TextUtils.isEmpty(mEtDreamDescriptionDetail3.getText().toString())) jsonArray.put(new JSONObject().put("content", mEtDreamDescriptionDetail3.getText().toString()));
+            if (!TextUtils.isEmpty(mEtDreamDescriptionDetail1.getText().toString()))
+                jsonArray.put(new JSONObject().put("content", mEtDreamDescriptionDetail1.getText().toString()));
+            if (!TextUtils.isEmpty(mEtDreamDescriptionDetail2.getText().toString()))
+                jsonArray.put(new JSONObject().put("content", mEtDreamDescriptionDetail2.getText().toString()));
+            if (!TextUtils.isEmpty(mEtDreamDescriptionDetail3.getText().toString()))
+                jsonArray.put(new JSONObject().put("content", mEtDreamDescriptionDetail3.getText().toString()));
         } catch (JSONException e) {
             e.printStackTrace();
         }

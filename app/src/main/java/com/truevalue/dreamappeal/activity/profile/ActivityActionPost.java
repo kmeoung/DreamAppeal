@@ -1,23 +1,19 @@
 package com.truevalue.dreamappeal.activity.profile;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
-import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
@@ -44,7 +40,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -101,6 +96,8 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
     ImageView mIvComment;
     @BindView(R.id.iv_action_more)
     ImageView mIvActionMore;
+    @BindView(R.id.ll_comment_detail)
+    LinearLayout mLlCommentDetail;
 
     private int mPostIndex = -1;
     private BeanActionPostDetail mBean = null;
@@ -172,7 +169,8 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                if (!TextUtils.equals(code,SUCCESS) || Comm_Param.IS_TEST) Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                if (!TextUtils.equals(code, SUCCESS) || Comm_Param.IS_TEST)
+                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                 if (TextUtils.equals(code, SUCCESS)) {
                     JSONObject json = new JSONObject(body);
@@ -252,14 +250,23 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
         finish();
     }
 
-    @OnClick({R.id.ll_comment, R.id.ll_cheering, R.id.iv_action_more, R.id.iv_comment})
+    @OnClick({R.id.ll_comment, R.id.ll_cheering, R.id.iv_action_more, R.id.iv_comment,R.id.ll_comment_detail})
     public void onViewClicked(View view) {
+        Intent intent;
         switch (view.getId()) {
             case R.id.ll_comment:
-            case R.id.iv_comment:
-                Intent intent = new Intent(ActivityActionPost.this, ActivityCommentDetail.class);
+                intent = new Intent(ActivityActionPost.this, ActivityCommentDetail.class);
                 intent.putExtra(ActivityCommentDetail.EXTRA_COMMENT_TYPE, ActivityCommentDetail.TYPE_ACTION_POST);
                 intent.putExtra(ActivityCommentDetail.EXTRA_POST_INDEX, mBean.getIdx());
+                intent.putExtra(ActivityCommentDetail.EXTRA_OFF_KEYBOARD,"OFF");
+                startActivityForResult(intent, REQUEST_COMMENT_DETAIL);
+                break;
+            case R.id.iv_comment:
+            case R.id.ll_comment_detail:
+                intent = new Intent(ActivityActionPost.this, ActivityCommentDetail.class);
+                intent.putExtra(ActivityCommentDetail.EXTRA_COMMENT_TYPE, ActivityCommentDetail.TYPE_ACTION_POST);
+                intent.putExtra(ActivityCommentDetail.EXTRA_POST_INDEX, mBean.getIdx());
+                intent.putExtra(ActivityCommentDetail.EXTRA_OFF_KEYBOARD,"OFF");
                 startActivityForResult(intent, REQUEST_COMMENT_DETAIL);
                 break;
             case R.id.ll_cheering:
@@ -292,7 +299,8 @@ public class ActivityActionPost extends BaseActivity implements IOBaseTitleBarLi
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                if (!TextUtils.equals(code,SUCCESS) || Comm_Param.IS_TEST) Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                if (!TextUtils.equals(code, SUCCESS) || Comm_Param.IS_TEST)
+                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                 if (TextUtils.equals(code, SUCCESS)) {
                     JSONObject json = new JSONObject(body);

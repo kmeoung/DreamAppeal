@@ -218,7 +218,17 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
                     else
                         Glide.with(getContext()).load(image).placeholder(R.drawable.drawer_user).apply(new RequestOptions().circleCrop()).into(mIvProfile);
                     int commentCount = json.getInt("comment_count");
-                    mTvComment.setText(commentCount + "");
+                    if(commentCount < 1000){
+                        mTvComment.setText(commentCount + "");
+                    }else{
+                        int k = (commentCount / 1000);
+                        if(k < 1000) {
+                            mTvComment.setText(k + "K");
+                        }else{
+                            int m = (k / 1000);
+                            mTvComment.setText(m + "M");
+                        }
+                    }
                     // todo : 임시 이미지
                     JSONObject object = json.getJSONObject("object");
                     int total_action_post_count = json.getInt("total_action_post_count");
@@ -580,6 +590,7 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
             case R.id.iv_comment:
                 Intent intent = new Intent(getContext(), ActivityCommentDetail.class);
                 intent.putExtra(ActivityCommentDetail.EXTRA_COMMENT_TYPE, ActivityCommentDetail.TYPE_BLUEPRINT);
+                intent.putExtra(ActivityCommentDetail.EXTRA_OFF_KEYBOARD,"OFF");
                 startActivityForResult(intent, FragmentMain.REQUEST_BLUEPRINT_COMMENT);
                 break;
             case R.id.iv_profile:
