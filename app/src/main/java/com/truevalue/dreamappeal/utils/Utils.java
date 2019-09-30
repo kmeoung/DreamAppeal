@@ -314,6 +314,11 @@ public class Utils {
         });
     }
 
+    /**
+     * 현재 시간 구해서 받는 작업
+     * @param strPostDate
+     * @return
+     */
     public static String convertFromDate(String strPostDate) {
 
         String strDate = "";
@@ -325,7 +330,8 @@ public class Utils {
         int nowMinute = nowCal.get(Calendar.MINUTE);
         int nowSeconds = nowCal.get(Calendar.SECOND);
         try {
-            Date nowDate = sdf2.parse(sdf.format(nowCal.getTime()));
+            String stringSdFormat = sdf.format(nowCal.getTime());
+            Date nowDate = sdf2.parse(stringSdFormat);
 
             nowCal.setTime(sdf.parse(strPostDate));
 
