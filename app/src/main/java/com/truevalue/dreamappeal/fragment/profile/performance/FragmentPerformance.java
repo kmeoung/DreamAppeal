@@ -152,7 +152,6 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
                 if (!TextUtils.equals(code,SUCCESS) || Comm_Param.IS_TEST) Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                 JSONObject object = new JSONObject(body);
-                mProfileImage = object.getString("profile_image");
 
                 Gson gson = new Gson();
                 JSONObject bestPosts = object.getJSONObject("best_posts");
