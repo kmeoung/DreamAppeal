@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -71,7 +72,7 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
     private final int TYPE_TITLE_HEADER = 1;
     private final int TYPE_HEADER_SUB = 2;
     private final int TYPE_IMAGE = 3;
-    private final int TYPE_DEFAULT = 3;
+    private final int TYPE_DEFAULT = 4;
 
     private final int REQUEST_ACTION_POST_DETAIL = 4050;
 
@@ -176,7 +177,8 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
             @Override
             public int getSpanSize(int i) {
                 if (mAdapter.get(i) instanceof BeanObjectStepHeader
-                        || mAdapter.get(i) instanceof BeanObjectStepSubHeader)
+                        || mAdapter.get(i) instanceof BeanObjectStepSubHeader
+                        || mAdapter.get(i) instanceof String)
                     return 3;
                 else return 1;
             }
@@ -218,13 +220,13 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
                     else
                         Glide.with(getContext()).load(image).placeholder(R.drawable.drawer_user).apply(new RequestOptions().circleCrop()).into(mIvProfile);
                     int commentCount = json.getInt("comment_count");
-                    if(commentCount < 1000){
+                    if (commentCount < 1000) {
                         mTvComment.setText(commentCount + "");
-                    }else{
+                    } else {
                         int k = (commentCount / 1000);
-                        if(k < 1000) {
+                        if (k < 1000) {
                             mTvComment.setText(k + "K");
-                        }else{
+                        } else {
                             int m = (k / 1000);
                             mTvComment.setText(m + "M");
                         }
@@ -235,9 +237,9 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
                     BeanObjectStepHeader header = gson.fromJson(object.toString(), BeanObjectStepHeader.class);
                     header.setTotal_action_post_count(total_action_post_count);
                     mAdapter.add(header);
-
+                    JSONArray noneStep = null;
                     try {
-                        JSONArray noneStep = json.getJSONArray("none_step_action_post");
+                        noneStep = json.getJSONArray("none_step_action_post");
                         for (int i = 0; i < noneStep.length(); i++) {
                             BeanActionPost post = gson.fromJson(noneStep.getJSONObject(i).toString(), BeanActionPost.class);
                             mAdapter.add(post);
@@ -250,6 +252,8 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
                     JSONArray object_steps = null;
                     try {
                         object_steps = json.getJSONArray("object_steps");
+                        if ((noneStep == null || noneStep.length() < 1) && (object_steps == null || object_steps.length() < 1))
+                            mAdapter.add("Default");
                         for (int i = 0; i < object_steps.length(); i++) {
                             JSONObject object_step = object_steps.getJSONObject(i);
                             BeanObjectStepSubHeader bean = gson.fromJson(object_step.toString(), BeanObjectStepSubHeader.class);
@@ -555,8 +559,13 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
             });
         } else if (getItemViewType(i) == TYPE_DEFAULT) {
             TextView tvDefault = h.getItemView(R.id.tv_default_text);
-            String str = "세부단계를 추가해 작은 것부터 실천해보세요";
-            tvDefault.setText(Utils.replaceTextColor(getContext(), str, "세부단계"));
+            String str1 = "세부단계를 추가해 작은 것부터 실천해보세요";
+            String str2 = "실천을 인증하면 여기에 표시됩니다";
+//            SpannableStringBuilder spannable1 = Utils.replaceTextColor(getContext(), str1, "세부단계");
+            SpannableStringBuilder spannable2 = Utils.replaceTextColor(getContext(), str2, R.color.light_gray, str2);
+            tvDefault.setText(TextUtils.concat(str1, "\n\n", spannable2));
+            tvDefault.setBackground(null);
+
         }
     }
 
@@ -590,7 +599,7 @@ public class FragmentObjectStep extends BaseFragment implements IOBaseTitleBarLi
             case R.id.iv_comment:
                 Intent intent = new Intent(getContext(), ActivityCommentDetail.class);
                 intent.putExtra(ActivityCommentDetail.EXTRA_COMMENT_TYPE, ActivityCommentDetail.TYPE_BLUEPRINT);
-                intent.putExtra(ActivityCommentDetail.EXTRA_OFF_KEYBOARD,"OFF");
+                intent.putExtra(ActivityCommentDetail.EXTRA_OFF_KEYBOARD, "OFF");
                 startActivityForResult(intent, FragmentMain.REQUEST_BLUEPRINT_COMMENT);
                 break;
             case R.id.iv_profile:

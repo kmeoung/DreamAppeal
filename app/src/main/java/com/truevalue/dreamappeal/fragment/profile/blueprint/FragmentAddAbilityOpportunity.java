@@ -1,6 +1,7 @@
 package com.truevalue.dreamappeal.fragment.profile.blueprint;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -12,6 +13,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,6 +68,8 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
     TextView mTvAdIndicator;
     @BindView(R.id.ll_ad_indicator)
     LinearLayout mLlAdIndicator;
+    @BindView(R.id.rl_ad)
+    RelativeLayout mRlAd;
 
     private int mType = -1;
     private boolean isEdit = false;
@@ -244,6 +248,9 @@ public class FragmentAddAbilityOpportunity extends BaseFragment implements IOBas
      * View 초기화
      */
     private void initView() {
+        Point point = Utils.getDisplaySize(getActivity());
+        Utils.setResizeView(mRlAd,point.x,point.x / 3);
+
         // Title 설정
         mBtbBar.setTitle(mTitle);
 

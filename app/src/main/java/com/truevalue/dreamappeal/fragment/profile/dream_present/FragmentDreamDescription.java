@@ -1,5 +1,6 @@
 package com.truevalue.dreamappeal.fragment.profile.dream_present;
 
+import android.graphics.Point;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,6 +68,9 @@ public class FragmentDreamDescription extends BaseFragment implements IOBaseTitl
     TextView mTvAdIndicator;
     @BindView(R.id.ll_ad_indicator)
     LinearLayout mLlAdIndicator;
+    @BindView(R.id.rl_ad)
+    RelativeLayout mRlAd;
+
     private ArrayList<String> mArrayDescription = null;
     private BasePagerAdapter mAdapter = null;
     private BasePagerAdapter mAdAdapter = null;
@@ -215,6 +220,9 @@ public class FragmentDreamDescription extends BaseFragment implements IOBaseTitl
     }
 
     private void initView() {
+        Point point = Utils.getDisplaySize(getActivity());
+        Utils.setResizeView(mRlAd,point.x,point.x / 3);
+
         TextWatcher tw = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

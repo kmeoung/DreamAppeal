@@ -1,6 +1,7 @@
 package com.truevalue.dreamappeal.fragment.profile.blueprint;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -12,6 +13,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,6 +68,8 @@ public class FragmentAddContents extends BaseFragment implements IOBaseTitleBarL
     TextView mTvAdIndicator;
     @BindView(R.id.ll_ad_indicator)
     LinearLayout mLlAdIndicator;
+    @BindView(R.id.rl_ad)
+    RelativeLayout mRlAd;
 
 
     private int mViewType = -1;
@@ -275,6 +279,9 @@ public class FragmentAddContents extends BaseFragment implements IOBaseTitleBarL
     }
 
     private void initVIew() {
+        Point point = Utils.getDisplaySize(getActivity());
+        Utils.setResizeView(mRlAd,point.x,point.x / 3);
+
         if (mViewType == EXTRA_TYPE_OBJECTS) {
             mTvHint.setText("갖출 능력과 만들어갈 기회를 위해\n어떤 실천을 해볼까?");
         } else if (mViewType == EXTRA_TYPE_OBJECT_STEP) {

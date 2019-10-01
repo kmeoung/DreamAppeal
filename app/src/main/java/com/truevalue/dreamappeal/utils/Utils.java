@@ -61,6 +61,14 @@ public class Utils {
         return ssb;
     }
 
+    public static SpannableStringBuilder replaceTextColor(Context context,String str,int color,String changeText){
+        int first = str.indexOf(changeText);
+        int last = str.lastIndexOf(changeText) + changeText.length();
+        SpannableStringBuilder ssb = new SpannableStringBuilder(str);
+        ssb.setSpan(new ForegroundColorSpan(context.getResources().getColor(color)), first, last, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return ssb;
+    }
+
     /**
      * DpToPixel 코드
      *

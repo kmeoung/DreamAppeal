@@ -1,5 +1,6 @@
 package com.truevalue.dreamappeal.fragment.profile.dream_present;
 
+import android.graphics.Point;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,6 +66,8 @@ public class FragmentDreamTitle extends BaseFragment implements IOBaseTitleBarLi
     TextView mTvAdIndicator;
     @BindView(R.id.ll_ad_indicator)
     LinearLayout mLlAdIndicator;
+    @BindView(R.id.rl_ad)
+    RelativeLayout mRlAd;
 
     private boolean mIsAddProfiles = false;
     private ArrayList<String> mArrayTitles = null;
@@ -96,6 +100,8 @@ public class FragmentDreamTitle extends BaseFragment implements IOBaseTitleBarLi
         // 데이터 초기화
         initData();
 
+        initView();
+
         httpGetExampleImage();
         httpGetAd();
     }
@@ -110,6 +116,11 @@ public class FragmentDreamTitle extends BaseFragment implements IOBaseTitleBarLi
     public void onPause() {
         super.onPause();
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+    }
+
+    private void initView(){
+        Point point = Utils.getDisplaySize(getActivity());
+        Utils.setResizeView(mRlAd,point.x,point.x / 3);
     }
 
     private void initAdapter() {

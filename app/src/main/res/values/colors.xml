@@ -8,8 +8,10 @@
     <color name="background">#fefefe</color>
     <color name="white">#ffffff</color>
     <color name="gray">#a0a0a0</color>
+    <color name="light_gray">#C2C2C2</color>
     <color name="bottom_nav_color">#fafafa</color>
     <color name="drawer_gray">#dfdfdf</color>
+    <color name="object_line">#eaeaea</color>
     <color name="tab_none_select_gray">#818181</color>
     <color name="color_hint">#c1c1c1</color>
     <color name="color_ability">#d29500</color>

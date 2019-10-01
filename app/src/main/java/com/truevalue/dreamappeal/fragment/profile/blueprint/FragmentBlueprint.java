@@ -168,7 +168,8 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                if (!TextUtils.equals(code,SUCCESS) || Comm_Param.IS_TEST) Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                if (!TextUtils.equals(code, SUCCESS) || Comm_Param.IS_TEST)
+                    Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                 if (TextUtils.equals(code, SUCCESS)) {
                     mAdapter.clear();
                     Gson gson = new Gson();
@@ -177,13 +178,13 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
                     ArrayList<BeanBlueprintAbilityOpportunity> opportunityList = new ArrayList<>();
                     try {
                         int commentCount = json.getInt("comment_count");
-                        if(commentCount < 1000){
+                        if (commentCount < 1000) {
                             mTvComment.setText(commentCount + "");
-                        }else{
+                        } else {
                             int k = (commentCount / 1000);
-                            if(k < 1000) {
+                            if (k < 1000) {
                                 mTvComment.setText(k + "K");
-                            }else{
+                            } else {
                                 int m = (k / 1000);
                                 mTvComment.setText(m + "M");
                             }
@@ -285,14 +286,15 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
                     JSONArray objects = null;
                     try {
                         objects = json.getJSONArray("objects");
+                        if (objects == null || objects.length() < 1)
+                            mAdapter.add(TYPE_DEFAULT_OBJECT);
                         for (int i = 0; i < objects.length(); i++) {
                             BeanBlueprintObject bean = gson.fromJson(objects.getJSONObject(i).toString(), BeanBlueprintObject.class);
                             mAdapter.add(bean);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        if (objects == null || objects.length() < 1)
-                            mAdapter.add(TYPE_DEFAULT_OBJECT);
+
                     }
                 }
             }
@@ -305,7 +307,7 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
             case R.id.iv_comment:
                 Intent intent = new Intent(getContext(), ActivityCommentDetail.class);
                 intent.putExtra(ActivityCommentDetail.EXTRA_COMMENT_TYPE, ActivityCommentDetail.TYPE_BLUEPRINT);
-                intent.putExtra(ActivityCommentDetail.EXTRA_OFF_KEYBOARD,"OFF");
+                intent.putExtra(ActivityCommentDetail.EXTRA_OFF_KEYBOARD, "OFF");
                 startActivityForResult(intent, FragmentMain.REQUEST_BLUEPRINT_COMMENT);
                 break;
             case R.id.btn_commit_comment:
@@ -414,7 +416,7 @@ public class FragmentBlueprint extends BaseFragment implements IORecyclerViewLis
             });
         } else if (getItemViewType(i) == LISTITEM_DEFAULT_OBJECT) {
             TextView tvView = h.getItemView(R.id.tv_default_text);
-            String str = "능력/기회를 위한 실천목표 등록하기";
+            String str = "능력/기회를 위한 실천목표를 등록해주세요";
             SpannableStringBuilder ssb = Utils.replaceTextColor(getContext(), str, "실천목표");
             tvView.setText(ssb);
         }

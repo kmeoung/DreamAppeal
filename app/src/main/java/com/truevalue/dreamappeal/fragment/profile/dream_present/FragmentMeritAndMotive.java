@@ -1,6 +1,7 @@
 package com.truevalue.dreamappeal.fragment.profile.dream_present;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -12,6 +13,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,6 +64,8 @@ public class FragmentMeritAndMotive extends BaseFragment implements IOBaseTitleB
     TextView mTvAdIndicator;
     @BindView(R.id.ll_ad_indicator)
     LinearLayout mLlAdIndicator;
+    @BindView(R.id.rl_ad)
+    RelativeLayout mRlAd;
     private String mMeritAndMotive = null;
     private BasePagerAdapter mAdapter = null;
     private BasePagerAdapter mAdAdapter = null;
@@ -204,6 +208,8 @@ public class FragmentMeritAndMotive extends BaseFragment implements IOBaseTitleB
     }
 
     private void initView() {
+        Point point = Utils.getDisplaySize(getActivity());
+        Utils.setResizeView(mRlAd,point.x,point.x / 3);
         // 처음 Hint 글자 안보이게 하고 Focus잡기
         mTvHint.setOnClickListener(v -> {
             mEtMeritAndMotive.setFocusableInTouchMode(true);

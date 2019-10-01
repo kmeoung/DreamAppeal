@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="150dp"
-    android:background="@color/colorAccent">
+    android:background="#006fc0">
 
     <ImageView
         android:id="@+id/iv_image"
@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:fontFamily="@font/bmjua"
+            android:fontFamily="@font/nanum_square_round_b"
             android:text="대표 성과"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
@@ -35,8 +35,8 @@
 
             <ImageView
                 android:id="@+id/iv_thumbnail"
-                android:layout_width="76dp"
-                android:layout_height="55dp"
+                android:layout_width="102.6dp"
+                android:layout_height="74.25dp"
                 android:layout_marginRight="15dp"
                 android:src="@drawable/ic_best_post"
                 android:scaleType="centerCrop"/>
@@ -46,11 +46,11 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:fontFamily="@font/nanum_square_round_r"
+                android:fontFamily="@font/bmjua"
                 android:gravity="center_vertical"
                 android:text="대표로 지정한 성과가\n여기에 표시됩니다"
                 android:textColor="@color/white"
-                android:textSize="17sp" />
+                android:textSize="20sp" />
 
         </LinearLayout>
 

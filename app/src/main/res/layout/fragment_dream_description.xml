@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="58dp"
+                android:layout_marginTop="15dp"
                 android:fontFamily="@font/nanum_pen"
                 android:text="한 문장으로 어떤 사람일까?"
                 android:textColor="@color/black"
@@ -79,7 +79,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginTop="52dp"
+                    android:layout_marginTop="26dp"
                     android:fontFamily="@font/nanum_pen"
                     android:text="구체적으로 어떤 일을 하는 걸까??"
                     android:textColor="@color/black"
@@ -206,7 +206,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:minHeight="44dp" />
+                android:minHeight="22dp" />
+
             <!--Divider-->
             <ImageView
                 android:layout_width="match_parent"
@@ -225,24 +226,24 @@
                     android:layout_height="match_parent" />
 
                 <LinearLayout
+                    android:id="@+id/ll_indicator"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_black_box_indicator"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="10dp"
-                    android:padding="5dp"
+                    android:background="@drawable/bg_black_box_indicator"
                     android:gravity="center"
-                    android:id="@+id/ll_indicator">
+                    android:padding="5dp">
 
                     <TextView
+                        android:id="@+id/tv_indicator"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/white"
-                        android:text="10 / 10"
                         android:fontFamily="@font/nanum_square_round_b"
-                        android:id="@+id/tv_indicator"/>
+                        android:text="10 / 10"
+                        android:textColor="@color/white" />
 
                 </LinearLayout>
 
@@ -256,44 +257,43 @@
                 android:background="@color/black" />
             <!--Divider-->
 
+            <RelativeLayout
+                android:id="@+id/rl_ad"
+                android:layout_width="match_parent"
+                android:layout_height="80dp">
+
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/pager_ad"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorAccent" />
+
+                <LinearLayout
+                    android:id="@+id/ll_ad_indicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/bg_black_box_indicator"
+                    android:gravity="center"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/tv_ad_indicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:text="10 / 10"
+                        android:textColor="@color/white" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
-
-
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="80dp">
-
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/pager_ad"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorAccent"/>
-
-        <LinearLayout
-            android:id="@+id/ll_ad_indicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/bg_black_box_indicator"
-            android:gravity="center"
-            android:padding="5dp">
-
-            <TextView
-                android:id="@+id/tv_ad_indicator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/nanum_square_round_b"
-                android:text="10 / 10"
-                android:textColor="@color/white" />
-
-        </LinearLayout>
-
-    </RelativeLayout>
 
 </LinearLayout>
