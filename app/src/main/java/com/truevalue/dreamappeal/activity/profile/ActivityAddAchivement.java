@@ -250,8 +250,6 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
      * 실현 성과 등록
      */
     private void httpPostAchivementPost() {
-        if (mDialog != null && !mDialog.isShowing())
-            mDialog.show();
 
         Comm_Prefs prefs = Comm_Prefs.getInstance(ActivityAddAchivement.this);
         String url = Comm_Param.URL_API_ACHIVEMENT_POSTS;
@@ -266,6 +264,9 @@ public class ActivityAddAchivement extends BaseActivity implements IOBaseTitleBa
             Toast.makeText(getApplicationContext(), "이미지를 추가해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
+		
+		if (mDialog != null && !mDialog.isShowing())
+            mDialog.show();
 
         String token = prefs.getToken();
         HashMap header = Utils.getHttpHeader(token);

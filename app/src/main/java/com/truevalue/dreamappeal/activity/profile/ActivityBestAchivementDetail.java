@@ -220,13 +220,13 @@ public class ActivityBestAchivementDetail extends BaseActivity {
     }
 
     private void actionMore() {
-        String[] list = {"대표 성과 내리기", "수정", "삭제"};
+        String[] list = {"대표 성과에서 내리기", "수정", "삭제"};
         AlertDialog.Builder builder = new AlertDialog.Builder(ActivityBestAchivementDetail.this);
         builder.setItems(list, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 switch (list[i]) {
-                    case "대표 성과 내리기":
+                    case "대표 성과에서 내리기":
                         if (mBestIndex != -1) httpPatchBestAchivement(mBestIndex);
                         break;
                     case "수정":
