@@ -348,7 +348,7 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
         else
             Glide.with(getContext()).load(bean.getThumbnail_image()).placeholder(R.drawable.ic_image_black_24dp).into(ivThumbnail);
 
-        String tempProfileUrl = ((ActivityMain)getActivity()).getProfile_image();
+        String tempProfileUrl = bean.getProfile_image();
         // todo : no Profile Image
         if (tempProfileUrl == null)
             Glide.with(getContext()).load(R.drawable.drawer_user).apply(new RequestOptions().circleCrop()).into(ivProfile);

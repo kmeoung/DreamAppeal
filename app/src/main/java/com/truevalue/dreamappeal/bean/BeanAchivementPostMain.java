@@ -13,7 +13,16 @@ public class BeanAchivementPostMain implements Serializable {
     private String title;
     private int profile_idx;
     private int idx;
+	private String profile_image;
 
+	public void setProfile_image(String proile_image){
+		this.profile_image = profile_image;
+	}
+	
+	public String getProfile_image(){
+		return profile_image;
+	}
+	
     public boolean getStatus() {
         return status;
     }
