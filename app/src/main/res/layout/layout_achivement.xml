@@ -24,7 +24,7 @@
             android:text="대표 성과"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -36,8 +36,8 @@
             <ImageView
                 android:id="@+id/iv_thumbnail"
                 android:layout_width="130dp"
-                android:layout_height="130dp"
-                android:layout_marginLeft="-10dp"
+                android:layout_height="95dp"
+                android:layout_marginLeft="-16dp"
                 android:layout_marginRight="7dp"
                 android:src="@drawable/ic_best_post"
                 android:scaleType="centerCrop"/>
@@ -51,7 +51,7 @@
                 android:gravity="center_vertical"
                 android:text="대표로 지정한 성과가\n여기에 표시됩니다"
                 android:textColor="@color/white"
-                android:textSize="30sp" />
+                android:textSize="28sp" />
 
         </LinearLayout>
 
