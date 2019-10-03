@@ -22,10 +22,6 @@ import butterknife.ButterKnife;
 public class ActivityIntro extends BaseActivity {
 
     private static final int DELAY = 1000 * 1;
-    @BindView(R.id.v_status)
-    View mVStatus;
-    @BindView(R.id.iv_logo)
-    ImageView mIvLogo;
 
     private Handler handler = new Handler() {
         @Override
@@ -72,7 +68,6 @@ public class ActivityIntro extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
-        ButterKnife.bind(this);
         // 상태 창 투명화
         updateStatusbarTranslate();
     }
