@@ -1,11 +1,18 @@
 package com.truevalue.dreamappeal.utils;
 
+import com.truevalue.dreamappeal.BuildConfig;
+
 public class Comm_Param {
     // todo : 테스트 용
-    public static final boolean IS_TEST = false;
+    public static final boolean REAL = !BuildConfig.DEBUG;
 
     public static final String APP_NAME = "DreamAppal";
-    public static final String URL_API = "http://ec2-15-164-168-185.ap-northeast-2.compute.amazonaws.com:8080";
+    // DEV 서버
+    public static final String DEV_API = "http://ec2-15-164-118-112.ap-northeast-2.compute.amazonaws.com:8080";
+    // REAL 서버
+    public static final String REAL_API = "http://ec2-15-164-168-185.ap-northeast-2.compute.amazonaws.com:8080";
+    // API
+    public static final String URL_API = REAL ? REAL_API : DEV_API;
 
     // 프로필 인덱스
     public static final String PROFILES_INDEX = "PROFILES_INDEX";
@@ -52,7 +59,7 @@ public class Comm_Param {
     public static final String URL_API_PROFILES_INDEX_LIST = URL_API_PROFILES + "/" + USER_INDEX + "/list";
 
     // 내 꿈 이미지 업로드
-    public static final String URL_API_PROFILE_INDEX_IMAGE  = URL_API_PROFILES_INDEX + "/images";
+    public static final String URL_API_PROFILE_INDEX_IMAGE = URL_API_PROFILES_INDEX + "/images";
 
     // 실현 성과
     public static final String URL_API_MYPROFILEINDEX_ACHIVEMENT_POSTS = URL_API_PROFILES_INDEX_INDEX + "/achievement_posts";
@@ -93,7 +100,6 @@ public class Comm_Param {
 
     // 성과 이미지 업로드
     public static final String URL_API_ACHIVEMENT_POSTS_INDEX_IMAGES = URL_API_ACHIVEMENT_POSTS_INDEX + "/images";
-
 
 
     public static final String URL_API_ACHIVEMENT_BEST_POST = URL_API_ACHIVEMENT_POSTS + "/best_post";
@@ -155,7 +161,7 @@ public class Comm_Param {
     public static final String URL_API_PROFILES_INDEX_BLUEPRINTCOMMENTS_INDEX_MYINDEX = URL_API_PROFILES_INDEX_BLUEPRINTCOMMENTS_INDEX + "/like/" + MY_PROFILES_INDEX;
 
     // 실현성과 댓글 추가
-    public static final String URL_API_PROFILES_INDEX_PERFORMANCE= URL_API_PROFILES_INDEX + "/achievement_posts/" + POST_INDEX + "/comments";
+    public static final String URL_API_PROFILES_INDEX_PERFORMANCE = URL_API_PROFILES_INDEX + "/achievement_posts/" + POST_INDEX + "/comments";
     // 실현성과 댓글 수정 / 삭제
     public static final String URL_API_PROFILES_INDEX_PERFORMANCE_INDEX = URL_API_PROFILES_INDEX_PERFORMANCE + "/" + COMMENTS_INDEX;
 
@@ -165,12 +171,12 @@ public class Comm_Param {
     public static final String URL_API_PROFILES_INDEX_ACTIONPOSTS_INDEX_COMMENTS_INDEX = URL_API_PROFILES_INDEX_ACTIONPOST_INDEX_COMMENTS + "/" + COMMENTS_INDEX;
 
     // 실현성과 댓글 좋아요
-    public static final String URL_API_PROFILES_INDEX_PERFORMANCECOMMENTS= URL_API_PROFILES_INDEX + "/achievement_post_comments";
+    public static final String URL_API_PROFILES_INDEX_PERFORMANCECOMMENTS = URL_API_PROFILES_INDEX + "/achievement_post_comments";
     public static final String URL_API_PROFILES_INDEX_PERFORMANCECOMMENTS_INDEX = URL_API_PROFILES_INDEX_PERFORMANCECOMMENTS + "/" + COMMENTS_INDEX;
     public static final String URL_API_PROFILES_INDEX_PERFORMANCECOMMENTS_INDEX_MYINDEX = URL_API_PROFILES_INDEX_PERFORMANCECOMMENTS_INDEX + "/like/" + MY_PROFILES_INDEX;
 
     // 실천인증 댓글 좋아요
-    public static final String URL_API_PROFILES_INDEX_ACTIONPOSTCOMMENTS= URL_API_PROFILES_INDEX + "/action_post_comments";
+    public static final String URL_API_PROFILES_INDEX_ACTIONPOSTCOMMENTS = URL_API_PROFILES_INDEX + "/action_post_comments";
     public static final String URL_API_PROFILES_INDEX_ACTIONPOSTCOMMENTS_INDEX = URL_API_PROFILES_INDEX_ACTIONPOSTCOMMENTS + "/" + COMMENTS_INDEX;
     public static final String URL_API_PROFILES_INDEX_ACTIONPOSTCOMMENTS_INDEX_MYINDEX = URL_API_PROFILES_INDEX_ACTIONPOSTCOMMENTS_INDEX + "/like/" + MY_PROFILES_INDEX;
 

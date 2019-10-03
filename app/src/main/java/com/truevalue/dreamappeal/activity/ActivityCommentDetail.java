@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -430,7 +429,7 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
 
                     @Override
                     public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                        if (!TextUtils.equals(code,SUCCESS) || Comm_Param.IS_TEST) Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                        if (!TextUtils.equals(code,SUCCESS) || Comm_Param.REAL) Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                         if (TextUtils.equals(code, SUCCESS)) {
                             mAdapter.clear();
@@ -611,7 +610,7 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
 
                     @Override
                     public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                        if (!TextUtils.equals(code,SUCCESS) || Comm_Param.IS_TEST) Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                        if (!TextUtils.equals(code,SUCCESS) || Comm_Param.REAL) Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                         if (TextUtils.equals(code, SUCCESS)) {
                             httpGetComment(false);

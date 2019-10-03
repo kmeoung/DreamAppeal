@@ -157,7 +157,7 @@ public class ActivityBestAchivementDetail extends BaseActivity {
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                if (!TextUtils.equals(code, SUCCESS) || Comm_Param.IS_TEST)
+                if (!TextUtils.equals(code, SUCCESS) || Comm_Param.REAL)
                     Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                 if (TextUtils.equals(code, SUCCESS)) {
                     Gson gson = new Gson();
@@ -346,7 +346,7 @@ public class ActivityBestAchivementDetail extends BaseActivity {
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                if (!TextUtils.equals(code, SUCCESS) || Comm_Param.IS_TEST)
+                if (!TextUtils.equals(code, SUCCESS) || Comm_Param.REAL)
                     Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                 if (TextUtils.equals(code, SUCCESS)) {

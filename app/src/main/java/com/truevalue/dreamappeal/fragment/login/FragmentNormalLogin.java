@@ -22,7 +22,6 @@ import com.truevalue.dreamappeal.base.IOBaseTitleBarListener;
 import com.truevalue.dreamappeal.http.IOServerCallback;
 import com.truevalue.dreamappeal.utils.Comm_Param;
 import com.truevalue.dreamappeal.utils.Comm_Prefs;
-import com.truevalue.dreamappeal.utils.Utils;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -61,7 +60,7 @@ public class FragmentNormalLogin extends BaseFragment implements IOBaseTitleBarL
         super.onViewCreated(view, savedInstanceState);
         mBtbBar.setIOBaseTitleBarListener(this);
         // TODO : 테스트용
-        if (Comm_Param.IS_TEST) {
+        if (Comm_Param.REAL) {
             mEtId.setText("debug@gmail.com");
             mEtPassword.setText("debug");
         }
