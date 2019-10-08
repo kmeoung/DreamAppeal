@@ -30,18 +30,12 @@
 
         <Spinner
             android:id="@+id/sp_title"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:fontFamily="@font/nanum_square_round_r"
-            android:gravity="center"
-            android:minHeight="45dp" />
-
-        <Space
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:fontFamily="@font/nanum_square_round_r"
+            android:gravity="center"
             android:minHeight="45dp" />
-
         <TextView
             android:id="@+id/tv_text_btn"
             android:layout_width="48dp"

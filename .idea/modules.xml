@@ -3,8 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DreamAppeal.iml" filepath="$PROJECT_DIR$/DreamAppeal.iml" />
-      <module fileurl="file://$PROJECT_DIR$/DreamAppeal.iml" filepath="$PROJECT_DIR$/DreamAppeal.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Old.iml" filepath="$PROJECT_DIR$/Old.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

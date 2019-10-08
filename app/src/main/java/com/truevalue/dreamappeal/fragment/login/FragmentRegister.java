@@ -99,7 +99,7 @@ public class FragmentRegister extends BaseFragment implements IOBaseTitleBarList
         mTvDate.setText(String.format("%02d", date));
 
         // TODO : 테스트용
-        if (Comm_Param.REAL) {
+        if (!Comm_Param.REAL) {
             mEtId.setText("debug@gmail.com");
             mEtName.setText("debug");
             mEtPassword.setText("debug");

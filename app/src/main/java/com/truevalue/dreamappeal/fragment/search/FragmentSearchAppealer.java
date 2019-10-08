@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -43,7 +44,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.Call;
 
-public class FragmentSearchAppealer extends BaseFragment implements IORecyclerViewListener, ActivitySearch.IOSearchListener {
+public class FragmentSearchAppealer extends BaseFragment implements IORecyclerViewListener, ActivitySearch.IOSearchListener{
 
     @BindView(R.id.rv_popular)
     RecyclerView mRvPopular;
@@ -108,7 +109,7 @@ public class FragmentSearchAppealer extends BaseFragment implements IORecyclerVi
 
         h.itemView.setOnClickListener(v -> {
             Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
-            prefs.setProfileIndex(bean.getIdx(),false);
+            prefs.setProfileIndex(bean.getIdx(), false);
             getActivity().setResult(Activity.RESULT_OK);
             getActivity().finish();
         });
@@ -126,9 +127,9 @@ public class FragmentSearchAppealer extends BaseFragment implements IORecyclerVi
 
     @Override
     public void search(String text) {
-        if(text.length() > 0) {
+        if (text.length() > 1) {
             httpPostSearch(text);
-        }else{
+        } else {
             mAdapter.clear();
         }
     }
@@ -144,7 +145,7 @@ public class FragmentSearchAppealer extends BaseFragment implements IORecyclerVi
         HashMap header = Utils.getHttpHeader(prefs.getToken());
         HashMap<String, String> body = new HashMap<>();
         body.put("keyword", keyword);
-        body.put("idx",String.valueOf(prefs.getMyProfileIndex()));
+        body.put("idx", String.valueOf(prefs.getMyProfileIndex()));
         DAHttpClient.getInstance(getContext()).Post(Comm_Param.URL_SEARCH, header, body, new IOServerCallback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -153,7 +154,8 @@ public class FragmentSearchAppealer extends BaseFragment implements IORecyclerVi
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                if (!TextUtils.equals(code,SUCCESS) || Comm_Param.REAL) Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                if (!TextUtils.equals(code, SUCCESS) || Comm_Param.REAL)
+                    Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                 if (TextUtils.equals(code, SUCCESS)) {
                     mAdapter.clear();

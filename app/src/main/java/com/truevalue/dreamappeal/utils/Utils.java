@@ -343,7 +343,7 @@ public class Utils {
             Date parseDate = sdf.parse(strPostDate);
             cal.setTime(parseDate);
 
-            int postHour = cal.get(Calendar.HOUR);
+            int postHour = cal.get(Calendar.HOUR_OF_DAY);
             int postMinute = cal.get(Calendar.MINUTE);
             int postSeconds = cal.get(Calendar.SECOND);
 

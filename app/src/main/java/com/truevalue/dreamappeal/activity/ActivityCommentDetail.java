@@ -24,6 +24,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -60,7 +61,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Call;
 
-public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBarListener, IORecyclerViewListener {
+public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBarListener, IORecyclerViewListener , SwipeRefreshLayout.OnRefreshListener {
 
     public static final String EXTRA_COMMENT_TYPE = "EXTRA_COMMENT_TYPE";
     public static final String EXTRA_POST_INDEX = "EXTRA_POST_INDEX";
@@ -74,8 +75,6 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
     private final int LISTITEM_COMMENT = 0;
     private final int LISTITEM_REPLY = 1;
 
-    @BindView(R.id.v_status)
-    View mVStatus;
     @BindView(R.id.btb_bar)
     BaseTitleBar mBtbBar;
     @BindView(R.id.rv_comment)
@@ -92,6 +91,8 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
     ImageView mIvWriterReplyClose;
     @BindView(R.id.ll_writer)
     LinearLayout mLlWriter;
+    @BindView(R.id.srl_layout)
+    SwipeRefreshLayout mSrlLayout;
     private BaseRecyclerViewAdapter mAdapter;
     private int mType = -1;
     private boolean isEdit = false;
@@ -154,7 +155,21 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
     }
 
     private void initView() {
-        if(getIntent().getStringExtra(EXTRA_OFF_KEYBOARD) == null) {
+        mSrlLayout.setOnRefreshListener(this);
+        mSrlLayout.setColorSchemeResources(
+                R.color.colorAccent,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light
+        );
+        mBtbBar.getmTvTitle().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mRvComment.scrollToPosition(0);
+            }
+        });
+
+        if (getIntent().getStringExtra(EXTRA_OFF_KEYBOARD) == null) {
             mEtInputComment.setFocusableInTouchMode(true);
             mEtInputComment.requestFocus();
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -429,7 +444,8 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
 
                     @Override
                     public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                        if (!TextUtils.equals(code,SUCCESS) || Comm_Param.REAL) Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                        if (!TextUtils.equals(code, SUCCESS) || Comm_Param.REAL)
+                            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                         if (TextUtils.equals(code, SUCCESS)) {
                             mAdapter.clear();
@@ -610,7 +626,8 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
 
                     @Override
                     public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                        if (!TextUtils.equals(code,SUCCESS) || Comm_Param.REAL) Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                        if (!TextUtils.equals(code, SUCCESS) || Comm_Param.REAL)
+                            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                         if (TextUtils.equals(code, SUCCESS)) {
                             httpGetComment(false);
@@ -658,5 +675,11 @@ public class ActivityCommentDetail extends BaseActivity implements IOBaseTitleBa
     public void onBackPressed() {
         setResult(RESULT_OK);
         super.onBackPressed();
+    }
+
+    @Override
+    public void onRefresh() {
+        httpGetComment(true);
+        mSrlLayout.setRefreshing(false);
     }
 }

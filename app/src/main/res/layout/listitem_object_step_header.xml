@@ -61,7 +61,7 @@
                 android:fontFamily="@font/nanum_square_round_r"
                 android:text="세부단계 +"
                 android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
 
             <Space
                 android:layout_width="0dp"
