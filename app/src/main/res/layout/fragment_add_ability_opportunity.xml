@@ -46,8 +46,9 @@
                     android:gravity="left|top"
                     android:imeOptions="actionDone"
                     android:inputType="text"
-                    android:maxLength="40"
                     android:padding="10dp"
+                    android:maxLines="2"
+                    android:maxLength="40"
                     android:textSize="16sp" />
 
                 <TextView
@@ -58,7 +59,6 @@
                     android:ellipsize="end"
                     android:fontFamily="@font/nanum_square_round_b"
                     android:gravity="center"
-                    android:maxLength="40"
                     android:maxLines="2"
                     android:text="터치하여 내용을 입력해주세요"
                     android:textColor="#a0a0a0"
