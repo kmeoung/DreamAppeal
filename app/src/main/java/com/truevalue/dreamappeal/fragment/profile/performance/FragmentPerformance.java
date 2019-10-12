@@ -199,7 +199,6 @@ public class FragmentPerformance extends BaseFragment implements IORecyclerViewL
     }
 
     private void initAdapter() {
-
         mPagerAdapter = new ViewPagerAdapter(getContext());
         mAdapter = new BaseRecyclerViewAdapter(getContext(), this);
         mRvRecycle.setAdapter(mAdapter);

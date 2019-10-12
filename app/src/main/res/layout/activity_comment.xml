@@ -130,19 +130,6 @@
                     android:textColor="@color/gray"
                     android:textSize="19dp" />
 
-                <!--<Button-->
-                <!--android:id="@+id/btn_commit_comment"-->
-                <!--android:layout_width="50dp"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:background="@null"-->
-                <!--android:fontFamily="@font/nanum_square_round_b"-->
-                <!--android:imeOptions="actionDone"-->
-                <!--android:inputType="text"-->
-                <!--android:text="등록"-->
-                <!--android:textColor="@color/gray"-->
-                <!--android:textSize="19dp" />-->
-
-
             </LinearLayout>
 
         </LinearLayout>
