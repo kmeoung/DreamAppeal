@@ -112,7 +112,7 @@ public class FragmentDreamList extends BaseFragment implements IOBaseTitleBarLis
         Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
         if (prefs.getMyProfileIndex() == prefs.getProfileIndex()) {
             mLlEditList.setVisibility(View.VISIBLE);
-        }else mLlEditList.setVisibility(View.GONE);
+        } else mLlEditList.setVisibility(View.GONE);
 
         httpGetDreamList();
         mTvLevelInfo.setText("< 경험치 획득 > 실천 등록 + 10 / 성과 등록 + 30");
@@ -137,7 +137,8 @@ public class FragmentDreamList extends BaseFragment implements IOBaseTitleBarLis
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                if (!TextUtils.equals(code,SUCCESS) || Comm_Param.REAL) Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                if (!TextUtils.equals(code, SUCCESS) || Comm_Param.REAL)
+                    Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                 if (TextUtils.equals(code, SUCCESS)) {
                     JSONObject object = new JSONObject(body);
@@ -187,6 +188,42 @@ public class FragmentDreamList extends BaseFragment implements IOBaseTitleBarLis
                 }
             }
         });
+    }
+
+    /**
+     * Profile 변경 시 서버 호출 (토큰 재 설정)
+     *
+     * @param profile_order
+     */
+    private void httpPatchChangeProfile(int profile_order) {
+        Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+        String url = Comm_Param.URL_API_USERS_TOKENS_CHANGE;
+        HashMap header = Utils.getHttpHeader(prefs.getToken());
+        HashMap<String,String> body = new HashMap();
+        body.put("profile_order", String.valueOf(profile_order));
+        DAHttpClient.getInstance(getContext())
+                .Patch(url, header, body, new IOServerCallback() {
+                    @Override
+                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
+                        Toast.makeText(getActivity().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+
+                        if(TextUtils.equals(code,SUCCESS)){
+                            JSONObject json = new JSONObject(body);
+                            String token = json.getString("token");
+                            int profile_idx = json.getInt("profile_idx");
+                            Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+                            prefs.setToken(token);
+                            prefs.setProfileIndex(profile_idx,true);
+
+                            getActivity().onBackPressed();
+                        }
+                    }
+                });
     }
 
     /**
@@ -311,7 +348,6 @@ public class FragmentDreamList extends BaseFragment implements IOBaseTitleBarLis
         } else { // 수정 모드가 아닐 경우
             h.itemView.setOnClickListener(v -> {
                 Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
-
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
                         .setTitle("프로필 선택")
                         .setMessage("프로필을 선택하시겠습니까?")
@@ -324,16 +360,9 @@ public class FragmentDreamList extends BaseFragment implements IOBaseTitleBarLis
                                     dialog.dismiss();
                                     return;
                                 } else {
-                                    boolean isMy = false;
-                                    if (prefs.getProfileIndex() == prefs.getMyProfileIndex()) {
-                                        isMy = true;
-                                    }
-                                    prefs.setProfileIndex(bean.getIdx(), isMy);
-                                    Toast.makeText(getContext().getApplicationContext(), "성공적으로 변경되었습니다.", Toast.LENGTH_SHORT).show();
-                                    ((ActivityMain) getActivity()).setmProfileOrder(bean.getProfile_order());
+                                    httpPatchChangeProfile(bean.getProfile_order());
                                 }
                                 dialog.dismiss();
-                                getActivity().onBackPressed();
                             }
                         })
                         .setNegativeButton("아니오", new DialogInterface.OnClickListener() {

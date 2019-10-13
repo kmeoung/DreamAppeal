@@ -311,12 +311,12 @@ public class FragmentDreamTitle extends BaseFragment implements IOBaseTitleBarLi
 
                 // 성공일 시
                 if (TextUtils.equals(code, SUCCESS)) {
-                    JSONObject object = new JSONObject(body);
-                    JSONObject result = object.getJSONObject("result");
-                    Gson gson = new Gson();
-                    BeanProfiles bean = gson.fromJson(result.toString(), BeanProfiles.class);
-                    Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
-                    prefs.setProfileIndex(bean.getInsertId(), true);
+//                    JSONObject object = new JSONObject(body);
+//                    JSONObject result = object.getJSONObject("result");
+//                    Gson gson = new Gson();
+//                    BeanProfiles bean = gson.fromJson(result.toString(), BeanProfiles.class);
+//                    Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+//                    prefs.setProfileIndex(bean.getInsertId(), true);
 
                     getActivity().onBackPressed();
                 }

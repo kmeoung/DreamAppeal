@@ -47,6 +47,9 @@ public class Comm_Param {
 
     public static final String URL_API_USERS_TOKENS = URL_API_USERS + "/tokens";
     public static final String URL_API_USERS_SIGNUP = URL_API_USERS + "/signup";
+
+    // 내 프로필 변경
+    public static final String URL_API_USERS_TOKENS_CHANGE = URL_API_USERS_TOKENS + "/change";
     // todo : 그냥 호출
     // 내 꿈 소개 등록
     public static final String URL_API_PROFILES = URL_API + "/profiles";

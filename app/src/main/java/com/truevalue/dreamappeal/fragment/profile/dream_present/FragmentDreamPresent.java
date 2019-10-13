@@ -195,15 +195,18 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                if (!TextUtils.equals(code,SUCCESS) || Comm_Param.REAL) Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                if (!TextUtils.equals(code, SUCCESS) || Comm_Param.REAL)
+                    Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                 // 성공일 시
                 if (TextUtils.equals(code, SUCCESS)) {
                     JSONObject object = new JSONObject(body);
                     JSONObject result = object.getJSONObject("result");
+                    String token = object.getString("token");
+                    Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
+                    prefs.setToken(token);
                     Gson gson = new Gson();
                     BeanProfiles bean = gson.fromJson(result.toString(), BeanProfiles.class);
-                    Comm_Prefs prefs = Comm_Prefs.getInstance(getContext());
                     prefs.setProfileIndex(bean.getInsertId(), true);
                     // 내 꿈 조회 호출
                     httpGetProfilesIndex(bean.getInsertId());
@@ -235,7 +238,8 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                if (!TextUtils.equals(code,SUCCESS) || Comm_Param.REAL) Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                if (!TextUtils.equals(code, SUCCESS) || Comm_Param.REAL)
+                    Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                 if (TextUtils.equals(code, SUCCESS)) {
 
@@ -361,7 +365,8 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
 
             @Override
             public void onResponse(@NotNull Call call, int serverCode, String body, String code, String message) throws IOException, JSONException {
-                if (!TextUtils.equals(code,SUCCESS) || Comm_Param.REAL) Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                if (!TextUtils.equals(code, SUCCESS) || Comm_Param.REAL)
+                    Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                 if (TextUtils.equals(code, SUCCESS)) {
                     JSONObject json = new JSONObject(body);
@@ -433,7 +438,7 @@ public class FragmentDreamPresent extends BaseFragment implements IORecyclerView
             case R.id.ll_comment_detail:
                 intent = new Intent(getContext(), ActivityCommentDetail.class);
                 intent.putExtra(ActivityCommentDetail.EXTRA_COMMENT_TYPE, ActivityCommentDetail.TYPE_DREAM_PRESENT);
-                intent.putExtra(ActivityCommentDetail.EXTRA_OFF_KEYBOARD,"OFF");
+                intent.putExtra(ActivityCommentDetail.EXTRA_OFF_KEYBOARD, "OFF");
                 startActivityForResult(intent, FragmentMain.REQUEST_DREAM_PRESENT_COMMENT);
                 break;
             case R.id.ll_cheering: // 불꽃(좋아요)
